@@ -1,0 +1,15 @@
+/// \mainpage The Error Code Xero Robot Framework
+///
+/// This software framework is the robot framework used by Error Code Xero.  It is
+/// divided into two seperate libraries.
+///
+/// The library org.xero1425.misc contains various source code that is independent of
+/// the WPILib library.  This source code could be used in any contenxt.
+///
+/// The library org.xero1425.base contains the base architecture for the WPILib based
+/// robot source code.  Error Code Xero does not use the Command framework from WPILib
+/// but rather has its own framework.  This framework along with many other useful classes
+/// for creating a robot, tuning a robot, and diagnosing problems on a robot are found in
+/// this library.
+///
+

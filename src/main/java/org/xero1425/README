@@ -1,0 +1,13 @@
+This is the main directory for the Xero1425 software framework.
+This code is stored in a seperate submodule so it can be common across multiple robots.
+To add this code to your robbot, do the folllowing.
+
+Note, testing the submodules.
+
+To use this framework, do the following:
+
+cd src/main/java
+mkdir org
+cd org
+git submodule add -b main https://github.com/errorcodexero/xero1425.git xero1425
+git commit -a -m "added xero framework code"
