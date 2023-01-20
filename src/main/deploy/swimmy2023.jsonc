@@ -1,0 +1,8 @@
+{
+    "system": {
+        "pneumatics": {
+            "type": "REVPH",
+        }
+    }
+
+}

@@ -1,0 +1,3 @@
+#!/bin/bash
+
+/bin/ssh lvuser@10.14.25.2 "rm /u/logfile*"

@@ -1,0 +1,25 @@
+
+{
+    "stimulus" :
+    [
+        {
+            "time" : 0.0,
+            "events" :
+            [
+                {
+                    "model" : "fms",
+                    "instance" : "1",
+                    "values" : 
+                    {
+                        "comment" : "automode must be set to the correct testmode in droid param file",
+                        "start" : 0.2,
+                        "autonomous" : 0.0,
+                        "between" : 0.0,
+                        "teleop" : 4.0,
+                        "fms" : false
+                    }
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,66 @@
+#!/bin/bash
+
+function detectos()
+{
+    myname="$(uname -s)"
+    case "${myname}" in
+	Linux*) ostype="linux";;
+	Darwin*) ostype="macos";;
+	CYGWIN*) ostype="windows";;
+	*) ostype="unknown";;
+    esac
+}
+
+function initwin()
+{
+    export JAVA_HOME="C:/users/public/wpilib/2021/jdk"
+    echo "initialzing for windows"
+}
+
+function initmacos()
+{
+    echo "initialzing for macos"
+    export JAVA_HOME="/Library/Java/JavaVirtualMachines/adoptopenjdk-11.jdk/Contents/Home"
+}
+
+function initlinux()
+{
+    echo "initialzing for linux"
+    export JAVA_HOME=~/wpilib/2021/jdk
+}
+
+echo -n "Cleaning the build to ensure a fresh build ... "
+./gradlew --console=plain clean > /dev/null 2>&1
+echo done
+
+tmpfile=$(mktemp -dt "$(basename $0).XXXXXXXXXX")
+
+echo -n "Building robot code ... "
+./gradlew --console=plain build > $tmpfile/out 2>&1
+
+if [ $? -ne 0 ]; then
+    echo FAILED
+    echo
+    echo
+    cat $tmpfile/out
+    echo
+    echo
+    echo ==========================================================================
+    echo "The build of the robot code failed, therefore the simulation tests were skipped."
+    echo "Please fix the build errors and run this script again"
+    rm -rf $tmpfile
+    exit 1
+fi
+
+echo build complete and all unit tests passed.
+echo
+echo
+
+
+EXIT_STATUS=0
+./runtests
+if [ $? -ne 0 ]; then
+    EXIT_STATUS=1
+fi
+
+exit $EXIT_STATUS
