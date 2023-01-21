@@ -10,9 +10,9 @@ public class ArmSubsystem extends Subsystem {
     public ArmSubsystem(Subsystem parent) throws Exception {
         super(parent, "arm");
 
-        motor_a_ = new MotorEncoderSubsystem(this, "motor_a", false);
+        motor_a_ = new MotorEncoderSubsystem(this, "arm_motor_a", false);
         addChild(motor_a_);
-        motor_b_ = new MotorEncoderSubsystem(this, "motor_b", false);
+        motor_b_ = new MotorEncoderSubsystem(this, "arm_motor_b", false);
         addChild(motor_b_);
 
 

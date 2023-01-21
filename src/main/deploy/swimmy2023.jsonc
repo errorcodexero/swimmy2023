@@ -1,11 +1,170 @@
 {
     "system": {
+        "messages": {},
         "pneumatics": {
             "type": "REVPH",
+            "min-pressure": 100.0,
+            "max-pressure": 120.0
         }
     },
     "subsystems": {
+        "arm_motor_a": {
+            "hw": {
+                "motors": {
+                    "1": {
+                        "type": "sparkmax-brushless",
+                        "canid": 1000
+                    }
+                },
+                "encoder": {
+                    "type": "motor",
+                    "m": 1,
+                    "b": 0
+                }
+            }
+        },
+        "arm_motor_b": {
+            "hw": {
+                "motors": {
+                    "1": {
+                        "type": "sparkmax-brushless",
+                        "canid": 1001
+                    }
+                },
+                "encoder": {
+                    "type": "motor",
+                    "m": 1,
+                    "b": 0
+                }
+            }
+        },
+        "swimmy2023oi": {
+            "swerve_gamepad": {
+                "index": 0,
+                "angle": {
+                    "maximum": 180,
+                    "deadband": 0.05
+                },
+                "position": {
+                    "maximum": 4.5,
+                    "deadband": {
+                        "x": 0.1,
+                        "y": 0.1
+                    }
+                },
+                "power": 1.5
+            },
+        },
+        "db": {
+            "physical": {
+                "width": 0.5715,
+                "length": 0.5842,
+                "path": {
+                    "maxv": 2.0,
+                    "maxa": 2.0
+                },
+                "max-angular-speed": 100,
+                "max-angular-accel": 100
+            },
+            "hw": {
+                "gyro": {
+                    "type": "navx",
+                    "start-time": 3.0
+                },
+                "fl": {
+                    "steer": {
+                        "canid": 11
+                    },
+                    "drive": {
+                        "canid": 12
+                    },
+                    "encoder": {
+                        "canid": 13,
+                        "offset": 75.0
+                    }
+                },
+                "fr": {
+                    "steer": {
+                        "canid": 21
+                    },
+                    "drive": {
+                        "canid": 22
+                    },
+                    "encoder": {
+                        "canid": 23,
+                        "offset": 99.7
+                    }
+                },
+                "bl": {
+                    "steer": {
+                        "canid": 41
+                    },
+                    "drive": {
+                        "canid": 42
+                    },
+                    "encoder": {
+                        "canid": 43,
+                        "offset": -79.9
+                    }
+                },
+                "br": {
+                    "steer": {
+                        "canid": 31
+                    },
+                    "drive": {
+                        "canid": 32
+                    },
+                    "encoder": {
+                        "canid": 33,
+                        "offset": 45.45
+                    }
+                }
+            },
+            "pids": {
+                "fl": {
+                    "kp": 0,
+                    "ki": 0,
+                    "kd": 0,
+                    "kf": 0,
+                    "min": -1.0,
+                    "max": 1.0,
+                    "imax": 0.0
+                },
+                "fr": {
+                    "kp": 0,
+                    "ki": 0,
+                    "kd": 0,
+                    "kf": 0,
+                    "min": -1.0,
+                    "max": 1.0,
+                    "imax": 0.0
+                },
+                "bl": {
+                    "kp": 0,
+                    "ki": 0,
+                    "kd": 0,
+                    "kf": 0,
+                    "min": -1.0,
+                    "max": 1.0,
+                    "imax": 0.0
+                },
+                "br": {
+                    "kp": 0,
+                    "ki": 0,
+                    "kd": 0,
+                    "kf": 0,
+                    "min": -1.0,
+                    "max": 1.0,
+                    "imax": 0.0
+                }
+            }
+        }
+    },
+    "testmode": {
+        "enabled": true,
+        "which": 0, 
+        "0": {
 
+        }
     }
-
 }

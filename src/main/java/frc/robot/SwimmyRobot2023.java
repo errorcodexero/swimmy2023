@@ -11,6 +11,8 @@ import org.xero1425.misc.MissingParameterException;
 import org.xero1425.misc.SimArgs;
 import org.xero1425.misc.XeroPathType;
 
+import frc.robot.automodes.SwimmyRobotAutoController;
+
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -25,7 +27,7 @@ public class SwimmyRobot2023 extends XeroRobot {
   }
   
   public String getName() {
-    return "SwimmyRobot2023";
+    return "swimmy2023";
   }
 
   public String getSimulationFileName() {
@@ -48,8 +50,11 @@ public class SwimmyRobot2023 extends XeroRobot {
   @Override
   protected AutoController createAutoController() throws MissingParameterException, BadParameterTypeException {
     AutoController ctrl;
-
-    ctrl = null;
+    try {
+      ctrl = new SwimmyRobotAutoController(this);
+    } catch (Exception ex) {
+      ctrl = null;
+    }
 
     return ctrl;
   }
