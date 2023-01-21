@@ -59,10 +59,10 @@ public class TankDrivePathFollowerAction extends TankDrivePathAction {
 
     // The data columns to plot with this action
     static final String[] plot_columns_ = {             
-        "time", 
-        "ltpos", "lapos", "ltvel", "lavel", "ltaccel", "laaccel", "lout","lticks","lvout","laout","lpout","ldout","lerr",
-        "rtpos", "rapos", "rtvel", "ravel", "rtaccel", "raaccel", "rout","rticks","rvout","raout","rpout","rdout","rerr",
-        "thead", "ahead", "angerr(degs)", "angcorr(p)", "pid-p(p)", "pid-i(i)", "pid-d(p)", "pid-f(p)"
+        "time (s)", 
+        "ltpos (m)", "lapos (m)", "ltvel (m/s)", "lavel (m/s)", "ltaccel (m/s/s)", "laaccel (m/s/s)", "lout (volts)","lticks (ticks)","lvout (volts)","laout (volts)","lpout (volts)","ldout (volts)","lerr",
+        "rtpos (m)", "rapos (m)", "rtvel (m/s)", "ravel (m/s)", "rtaccel (m/s/s)", "raaccel (m/s/s)", "rout (volts)","rticks (ticks)","rvout (volts)","raout (volts)","rpout (volts)","rdout (volts)","rerr",
+        "thead (degs)", "ahead (degs)", "angerr (degs)", "angcorr", "pid-p", "pid-i", "pid-d", "pid-f"
     } ;
 
     // The data elements to extract from the path

@@ -16,7 +16,7 @@ public class MotorEncoderPowerAction extends MotorPowerAction
     private int plot_id_ ;
 
     // The columns to plot
-    private static String[] plot_columns_ = {"time","pos","vel","accel","out","encoder" } ;
+    private static String[] plot_columns_ = { "time (s)","pos (m)","vel (m/s)","accel (m/s/s)","out (v)","encoder (ticks)" } ;
 
     /// \brief Create the MotorEncoderPowerAction that applies a fixed power value then is done
     /// \param motor the subsystem to apply the action to

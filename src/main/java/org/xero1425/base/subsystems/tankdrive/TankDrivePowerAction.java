@@ -34,7 +34,7 @@ public class TankDrivePowerAction extends TankDriveAction {
     private static int plot_number_ = 0 ;
 
     // The set of columns to plot
-    private static final String [] plot_columns_ = { "time", "dist", "velocity", "acceleration", "lticks", "rticks", "left", "right" } ;
+    private static final String [] plot_columns_ = { "time (sec)", "dist (m)", "velocity (m/s)", "acceleration (m/s/s)", "lticks (ticks)", "rticks (ticks)", "left (v)", "right (v)" } ;
 
     /// \brief Create the action.  Once power is assigned to the drive base, this action is complete.
     /// \param drive the tankdrive subsystem

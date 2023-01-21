@@ -85,7 +85,7 @@ public class MotorEncoderGotoAction extends MotorAction {
     static int name_id_ = 0 ;
 
     // The columns to plot
-    static final String [] plot_columns_ = { "time", "tpos (m)", "apos (m)", "tvel (m/s)", "avel (m/s)", "out" } ;
+    static final String [] plot_columns_ = { "time (sec)", "tpos (m)", "apos (m)", "tvel (m/s)", "avel (m/s)", "out (volts)" } ;
 
     /// \brief Create the action
     /// \param sub the MotorEncoderSubsystem subsystem for the action    

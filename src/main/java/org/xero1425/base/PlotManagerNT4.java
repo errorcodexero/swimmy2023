@@ -12,6 +12,9 @@ import edu.wpi.first.networktables.PubSubOption;
 import edu.wpi.first.networktables.StringArrayPublisher;
 import edu.wpi.first.networktables.StringArrayTopic;
 import java.util.Map ;
+
+import com.fasterxml.jackson.core.Version;
+
 import java.util.HashMap ;
 
 /// \file
@@ -35,6 +38,8 @@ public class PlotManagerNT4 implements IPlotManager
         public StringArrayPublisher columnNamesPublisher_ ;
         public IntegerTopic countTopic_ ;
         public IntegerPublisher countPublisher_ ;
+        public IntegerTopic versionTopic_ ;
+        public IntegerPublisher versionPublisher_ ;
         public DoubleTopic [] dataTopics_ ;
         public DoublePublisher [] dataPublishers_ ;
         public int count_ ;
@@ -56,6 +61,7 @@ public class PlotManagerNT4 implements IPlotManager
     static private final String ColumnsEntry = "columns" ;
     static private final String DataEntry = "data" ;
     static private final String CountEntry = "count" ;
+    static private final String VersionEntry = "version" ;
     
     int next_plot_id_ ;
     String plot_table_ ;
@@ -102,6 +108,7 @@ public class PlotManagerNT4 implements IPlotManager
         p.columnNamesTopic_ = inst.getStringArrayTopic(plotkey + "/" + ColumnsEntry) ;
         p.completeTopic_ = inst.getBooleanTopic(plotkey + "/" + CompleteEntry) ;
         p.countTopic_ = inst.getIntegerTopic(plotkey + "/" + CountEntry) ;
+        p.versionTopic_ = inst.getIntegerTopic(plotkey + "/" + VersionEntry) ;
 
         return id ;
     }
@@ -125,6 +132,9 @@ public class PlotManagerNT4 implements IPlotManager
 
         p.countPublisher_ = p.countTopic_.publish() ;
         p.countPublisher_.set(0) ;
+
+        p.versionPublisher_ = p.versionTopic_.publish() ;
+        p.versionPublisher_.set(4) ;
 
         p.dataTopics_ = new DoubleTopic[cols.length] ;
         p.dataPublishers_ = new DoublePublisher[cols.length] ;

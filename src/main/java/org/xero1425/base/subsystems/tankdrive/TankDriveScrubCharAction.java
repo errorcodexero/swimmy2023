@@ -96,5 +96,5 @@ public class TankDriveScrubCharAction extends TankDriveAction {
     private double start_angle_;
     private final double total_;
     private final int plot_id_;
-    private static String [] plot_columns_ = { "time", "angle", "lticks", "rticks", "power" } ;
+    private static String [] plot_columns_ = { "time (sec)", "angle (degs)", "lticks (ticks)", "rticks (ticks)", "power (volts)" } ;
 } ;

@@ -22,6 +22,7 @@ public class PlotManager implements IPlotManager
     static private String PointsEntry = "points" ;
     static private String ColumnsEntry = "columns" ;
     static private String DataEntry = "data" ;
+    static private String VersionEntry = "version" ;
     
     int next_plot_id_ ;
     String plot_table_ ;
@@ -79,6 +80,9 @@ public class PlotManager implements IPlotManager
 
         entry = table.getEntry(PointsEntry) ;
         entry.setNumber(0) ;
+
+        entry = table.getEntry(VersionEntry) ;
+        entry.setNumber(3) ;
 
         entry = table.getEntry(CompleteEntry) ;
         entry.setBoolean(false) ;

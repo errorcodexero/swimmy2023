@@ -3,6 +3,9 @@
         "pneumatics": {
             "type": "REVPH",
         }
+    },
+    "subsystems": {
+
     }
 
 }
