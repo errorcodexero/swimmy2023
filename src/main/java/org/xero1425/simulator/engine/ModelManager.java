@@ -30,6 +30,7 @@ public class ModelManager {
             logger.startMessage(MessageType.Error);
             logger.add("cannot read models file ").addQuoted(file).add(" - ");
             logger.add("error occurred while reading file") ;
+            logger.endMessage();
             return false;
         }
 
@@ -38,6 +39,7 @@ public class ModelManager {
             logger.startMessage(MessageType.Error);
             logger.add("cannot read models file ").addQuoted(file).add(" - ");
             logger.add("top level json object does not contains a models entry");
+            logger.endMessage();
             return false;
         }
 
