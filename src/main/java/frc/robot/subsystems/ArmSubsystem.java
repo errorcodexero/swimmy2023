@@ -17,7 +17,5 @@ public class ArmSubsystem extends Subsystem {
             motor_b_ = new MotorEncoderSubsystem(this, "motor_b", false);
             addChild(motor_b_);
         }
-
     }
-
 }

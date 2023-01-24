@@ -10,6 +10,8 @@ import org.xero1425.misc.BadParameterTypeException;
 import org.xero1425.misc.MissingParameterException;
 import org.xero1425.misc.SimArgs;
 import org.xero1425.misc.XeroPathType;
+import org.xero1425.simulator.engine.ModelFactory;
+import org.xero1425.simulator.engine.SimulationEngine;
 
 import frc.robot.automodes.SwimmyRobotAutoController;
 
@@ -38,7 +40,11 @@ public class SwimmyRobot2023 extends XeroRobot {
       return "automode";
   }
 
-
+  protected void addRobotSimulationModels() {
+    ModelFactory factory = SimulationEngine.getInstance().getModelFactory();
+    factory.registerModel("arm", "frc.models.ArmModel");
+  }  
+  
   protected void hardwareInit() throws Exception {
     
     enablePneumaticsAnalog() ;
