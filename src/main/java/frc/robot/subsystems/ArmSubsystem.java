@@ -12,9 +12,9 @@ public class ArmSubsystem extends Subsystem {
     public ArmSubsystem(Subsystem parent) throws Exception {
         super(parent, "arm");
         if (RobotBase.isSimulation()) {
-            motor_a_ = new MotorEncoderSubsystem(this, "arm_motor_a", false);
+            motor_a_ = new MotorEncoderSubsystem(this, "arm-motor-a", false);
             addChild(motor_a_);
-            motor_b_ = new MotorEncoderSubsystem(this, "motor_b", false);
+            motor_b_ = new MotorEncoderSubsystem(this, "arm-motor-b", false);
             addChild(motor_b_);
         }
     }
