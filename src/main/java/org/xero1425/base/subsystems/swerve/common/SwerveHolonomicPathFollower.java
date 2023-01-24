@@ -2,24 +2,20 @@ package org.xero1425.base.subsystems.swerve.common;
 
 import org.xero1425.base.motors.BadMotorRequestException;
 import org.xero1425.base.motors.MotorRequestFailedException;
-import org.xero1425.misc.ISettingsSupplier;
+import org.xero1425.misc.BadParameterTypeException;
 import org.xero1425.misc.MessageLogger;
 import org.xero1425.misc.MessageType;
+import org.xero1425.misc.MissingParameterException;
 import org.xero1425.misc.XeroPath;
 import org.xero1425.misc.XeroPathSegment;
 
-import edu.wpi.first.math.controller.HolonomicDriveController;
-import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import edu.wpi.first.math.trajectory.TrapezoidProfile;
 
-public class SwerveHolonomicPathFollower extends SwerveDriveAction {
+public class SwerveHolonomicPathFollower extends SwerveHolonomicControllerAction {
 
     private String pathname_ ;
-    private HolonomicDriveController ctrl_ ;
     private XeroPath path_;
     private int index_ ;
     private boolean setpose_ ;
@@ -34,7 +30,7 @@ public class SwerveHolonomicPathFollower extends SwerveDriveAction {
         "ax (m)", "ay (m)", "aa (deg)"
     } ;
 
-    public SwerveHolonomicPathFollower(SwerveBaseSubsystem sub, String pathname, boolean setpose) {
+    public SwerveHolonomicPathFollower(SwerveBaseSubsystem sub, String pathname, boolean setpose) throws BadParameterTypeException, MissingParameterException {
         super(sub) ;
 
         pathname_ = pathname ;
@@ -46,42 +42,11 @@ public class SwerveHolonomicPathFollower extends SwerveDriveAction {
 
     @Override
     public void start() throws Exception {
-        double kp, ki, kd ;
-
         super.start() ;
 
         getSubsystem().startPlot(plot_id_, columns_);
 
         start_ = getSubsystem().getRobot().getTime() ;
-
-        double maxv = getSubsystem().getSettingsValue("physical:max-angular-speed").getDouble() ;
-        double maxa = getSubsystem().getSettingsValue("physical:max-angular-accel").getDouble() ;
-
-        kp = getSubsystem().getSettingsValue("pid:xctrl:kp").getDouble() ;
-        ki = getSubsystem().getSettingsValue("pid:xctrl:ki").getDouble() ;
-        kd = getSubsystem().getSettingsValue("pid:xctrl:kd").getDouble() ;
-        PIDController xctrl = new PIDController(kp, ki, kd) ;
-
-        kp = getSubsystem().getSettingsValue("pid:yctrl:kp").getDouble() ;
-        ki = getSubsystem().getSettingsValue("pid:yctrl:ki").getDouble() ;
-        kd = getSubsystem().getSettingsValue("pid:yctrl:kd").getDouble() ;
-        PIDController yctrl = new PIDController(kp, ki, kd) ;
-
-        kp = getSubsystem().getSettingsValue("pid:rotation:kp").getDouble() ;
-        ki = getSubsystem().getSettingsValue("pid:rotation:ki").getDouble() ;
-        kd = getSubsystem().getSettingsValue("pid:rotation:kd").getDouble() ;
-        TrapezoidProfile.Constraints constraints = new TrapezoidProfile.Constraints(maxv, maxa) ;
-        ProfiledPIDController thetactrl = new ProfiledPIDController(kp, ki, kd, constraints) ;
-        thetactrl.enableContinuousInput(-Math.PI, Math.PI);
-        
-        ctrl_ = new HolonomicDriveController(xctrl, yctrl, thetactrl) ;
-        ctrl_.setEnabled(true);
-
-        ISettingsSupplier settings = getSubsystem().getRobot().getSettingsSupplier() ;
-        double xytol = settings.get("subsystems:swervedrive:holonomic-path-following:xy-tolerance").getDouble() ;
-        double angletol = settings.get("subsystems:swervedrive:holonomic-path-following:angle-tolerance").getDouble() ;
-        ctrl_.setTolerance(new Pose2d(xytol, xytol, Rotation2d.fromDegrees(angletol))) ;
-
         path_ = getSubsystem().getRobot().getPathManager().getPath(pathname_);
 
         if (setpose_) {
@@ -129,7 +94,7 @@ public class SwerveHolonomicPathFollower extends SwerveDriveAction {
             getSubsystem().addPlotData(plot_id_, plot_data_) ;
 
             double velocity = getVelocityFromPath(index_) ;
-            ChassisSpeeds speed = ctrl_.calculate(getSubsystem().getPose(), target, velocity, target.getRotation()) ;
+            ChassisSpeeds speed = controller().calculate(getSubsystem().getPose(), target, velocity, target.getRotation()) ;
             getSubsystem().drive(speed) ;
             index_++ ;
         }

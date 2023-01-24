@@ -94,7 +94,7 @@ public class XeroPathManager
         else if (path_type_ == XeroPathType.SwerveHolonomic) 
         {
             exts_ = new String[1] ;
-            exts_[0] = "_main.csv" ;
+            exts_[0] = "-main.csv" ;
         }
     }
 
@@ -221,7 +221,7 @@ public class XeroPathManager
 
             for(int i = 0 ; i < iters.size() ; i++)
             {
-                if (recs[i].size() != 10)
+                if (recs[i].size() != 9)
                 {
                     logger_.startMessage(MessageType.Error) ;
                     logger_.add("cannot load path '").add(name) ;
@@ -297,7 +297,7 @@ public class XeroPathManager
     }
 
     private XeroPathSegment parseCSVRecord(CSVRecord r) throws NumberFormatException {
-        double time, x, y, pos, vel, accel, jerk, heading, curv, rot ;
+        double time, x, y, pos, vel, accel, heading, curv, rot ;
 
         time = Double.parseDouble(r.get(0)) ;
         x = Double.parseDouble(r.get(1)) ;
@@ -305,11 +305,10 @@ public class XeroPathManager
         pos = Double.parseDouble(r.get(3)) ;
         vel = Double.parseDouble(r.get(4)) ;
         accel = Double.parseDouble(r.get(5)) ;
-        jerk = Double.parseDouble(r.get(6)) ;
-        heading = Double.parseDouble(r.get(7)) ;
-        curv = Double.parseDouble(r.get(8)) ;
-        rot = Double.parseDouble(r.get(9)) ;
+        heading = Double.parseDouble(r.get(6)) ;
+        curv = Double.parseDouble(r.get(7)) ;
+        rot = Double.parseDouble(r.get(8)) ;
 
-        return new XeroPathSegment(time, x, y, pos, vel, accel, jerk, heading, curv, rot) ;
+        return new XeroPathSegment(time, x, y, pos, vel, accel, 0.0, heading, curv, rot) ;
     }
 }

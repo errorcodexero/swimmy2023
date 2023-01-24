@@ -257,14 +257,18 @@ public abstract class SwerveBaseSubsystem extends DriveBaseSubsystem {
         endPlot(plotid_);
         plotid_ = -1 ;
     }
-   
-    public Trajectory createTrajectory(Pose2d end) {
-        List<Pose2d> poses = new ArrayList<Pose2d>() ;
-        poses.add(getPose()) ;
-        poses.add(end) ;
+
+    public Trajectory createTrajectory(List<Pose2d> waypoints) {
         TrajectoryConfig config = new TrajectoryConfig(maxv_, maxa_) ;
         config.setKinematics(kinematics_) ;
-        return TrajectoryGenerator.generateTrajectory(poses, config) ;
+        return TrajectoryGenerator.generateTrajectory(waypoints, config) ;
+    }
+   
+    public Trajectory createTrajectory(Pose2d end) {
+        List<Pose2d> waypoints = new ArrayList<Pose2d>() ;
+        waypoints.add(getPose()) ;
+        waypoints.add(end) ;
+        return createTrajectory(waypoints) ;
     }
 
     protected void newPlotData() {
