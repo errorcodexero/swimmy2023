@@ -1,14 +1,34 @@
 {
     "system": {
-        "messages": {},
+        "messages": {
+            // Robot framework settings
+            "actions": true,
+            "pathmanager": false,
+            "xerorobot": false,
+            "simulator": false,
+            "limelight-edgar" : false,
+
+            // Special settings
+            "pathfollowing": false,
+
+            // Subsystem related messages
+            "swervedrive": false,
+            "swerve2023oi": false,
+
+            "arm-motor-lower" : false,
+            "arm-motor-upper" : false
+        },
+        "verbose": {
+        },
+        "plotting": true,
         "pneumatics": {
             "type": "REVPH",
-            "min-pressure": 100.0,
-            "max-pressure": 120.0
+            "min-pressure" : 100.0,
+            "max-pressure" : 120.0
         }
-    },
+    },  
     "subsystems": {
-        "arm-motor-a": {
+        "arm-motor-lower": {
             "hw": {
                 "motors": {
                     "1": {
@@ -23,7 +43,7 @@
                 }
             }
         },
-        "arm-motor-b": {
+        "arm-motor-upper": {
             "hw": {
                 "motors": {
                     "1": {
@@ -162,9 +182,43 @@
     },
     "testmode": {
         "enabled": true,
-        "which": 0, 
+        "which": 12,
         "0": {
-
+            "angle": 0.0,
+            "power": 0.2
+        },
+        "1": {
+            "angle": 0.0,
+            "power": 0.5,
+            "duration": 3
+        },
+        "2": {
+            "angle": 0.0,
+            "speed": 0.5
+        },
+        "3": {
+            "angle": 0.0,
+            "speed": 2,
+            "duration": 6.0
+        },
+        "4": {
+            "name": "test-8mx"
+        },
+        "5": {
+            "angle": 0.0,
+            "power": 0.1,
+            "duration": 10
+        },
+        "10" : {
+            "power" : 1.0,
+            "duration" : 2
+        },
+        "11" : {
+            "power" : 0.2,
+            "duration" : 1.0
+        },
+        "12" : {
+            
         }
     }
 }

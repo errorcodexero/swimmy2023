@@ -2,6 +2,7 @@ package frc.robot;
 
 import org.xero1425.base.XeroRobot;
 import org.xero1425.base.subsystems.RobotSubsystem;
+import org.xero1425.base.subsystems.swerve.common.SwerveBaseSubsystem;
 import org.xero1425.base.subsystems.swerve.sdsswerve.SDSSwerveDriveSubsystem;
 import org.xero1425.base.subsystems.vision.LimeLightSubsystem;
 
@@ -29,12 +30,22 @@ public class Swimmy2023RobotSubsystem extends RobotSubsystem {
         addChild(limelight_);
         
         gpm_ = new GPMSubsystem(this);
-        addChild(gpm_);
-
-
-        
-
-        
+        addChild(gpm_);        
     }
 
+    public GPMSubsystem getGPM() {
+        return gpm_ ;
+    }
+
+    public SwerveBaseSubsystem getSwerve() {
+        return db_ ;
+    }
+
+    public Swimmy2023OISubsystem getOI() {
+        return oi_ ;
+    }
+
+    public LimeLightSubsystem getLimeLight() {
+        return limelight_ ;
+    }
 }
