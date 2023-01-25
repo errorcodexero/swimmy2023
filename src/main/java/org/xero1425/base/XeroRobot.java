@@ -195,7 +195,25 @@ public abstract class XeroRobot extends TimedRobot {
         motors_ = new MotorFactory(logger_, settings_);
 
         // Create the plot manager
-        plot_mgr_ = new PlotManager("/XeroPlot");
+        int ver ;
+        
+        try {
+            ver = settings_.get("system:plotting:version").getInteger() ;
+        }
+        catch(Exception ex) {
+            ver = 3 ;
+        }
+
+        if (ver == 4) {
+            plot_mgr_ = new PlotManagerNT4("/XeroPlot") ;
+        }
+        else {
+            //
+            // In all cases fall back to the proven plotting unless the version
+            // is explictly 4
+            //
+            plot_mgr_ = new PlotManager("/XeroPlot");
+        }
 
         // Store the initial time
         last_time_ = getTime();
@@ -361,7 +379,7 @@ public abstract class XeroRobot extends TimedRobot {
         /// Initialize the plotting subsystem
         start = getTime() ;
         try {
-            v = settings_.get("system:plotting").getBoolean();
+            v = settings_.get("system:plotting:enabled").getBoolean();
             if (v == true)
                 plot_mgr_.enable(true);
             else

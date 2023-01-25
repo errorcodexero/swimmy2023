@@ -20,7 +20,10 @@
         },
         "verbose": {
         },
-        "plotting": true,
+        "plotting": {
+            "enabled" : true,
+            "version" : 3
+        },
         "pneumatics": {
             "type": "REVPH",
             "min-pressure" : 100.0,
@@ -33,7 +36,7 @@
                 "motors": {
                     "1": {
                         "type": "sparkmax-brushless",
-                        "canid": 1000
+                        "canid": 1
                     }
                 },
                 "encoder": {
@@ -48,7 +51,7 @@
                 "motors": {
                     "1": {
                         "type": "sparkmax-brushless",
-                        "canid": 1001
+                        "canid": 2
                     }
                 },
                 "encoder": {
@@ -75,16 +78,23 @@
                 "power": 1.5
             }
         },
-        "db": {
-            "physical": {
-                "width": 0.5715,
-                "length": 0.5842,
-                "path": {
-                    "maxv": 2.0,
-                    "maxa": 2.0
+        "swerve": {
+            "pid": {
+                "xctrl": {
+                    "kp": 3.0,
+                    "ki": 0,
+                    "kd": 0
                 },
-                "max-angular-speed": 100,
-                "max-angular-accel": 100
+                "yctrl": {
+                    "kp": 3.0,
+                    "ki": 0,
+                    "kd": 0
+                },
+                "rotation": {
+                    "kp": 13.0,
+                    "ki": 0,
+                    "kd": 0
+                }
             },
             "hw": {
                 "gyro": {
@@ -142,41 +152,61 @@
             },
             "pids": {
                 "fl": {
-                    "kp": 0,
-                    "ki": 0,
-                    "kd": 0,
-                    "kf": 0,
+                    "kp": 0.0, //0.02,
+                    "ki": 0.0,
+                    "kd": 0.0,
+                    "kf": 0.2193,
                     "min": -1.0,
                     "max": 1.0,
                     "imax": 0.0
                 },
                 "fr": {
-                    "kp": 0,
-                    "ki": 0,
-                    "kd": 0,
-                    "kf": 0,
+                    "kp": 0.0, //0.02,
+                    "ki": 0.0,
+                    "kd": 0.0,
+                    "kf": 0.2183,
                     "min": -1.0,
                     "max": 1.0,
                     "imax": 0.0
                 },
                 "bl": {
-                    "kp": 0,
-                    "ki": 0,
-                    "kd": 0,
-                    "kf": 0,
+                    "kp": 0.0, //0.02,
+                    "ki": 0.0,
+                    "kd": 0.0,
+                    "kf": 0.2160,
                     "min": -1.0,
                     "max": 1.0,
                     "imax": 0.0
                 },
                 "br": {
-                    "kp": 0,
-                    "ki": 0,
-                    "kd": 0,
-                    "kf": 0,
+                    "kp": 0.0, //0.02,
+                    "ki": 0.0,
+                    "kd": 0.0,
+                    "kf": 0.2183,
                     "min": -1.0,
                     "max": 1.0,
                     "imax": 0.0
                 }
+            },
+            "physical": {
+                "width": 0.5715, // meters
+                "length": 0.5842, // meters
+                "path" : {
+                    "maxv" : 2.0,
+                    "maxa" : 2.0
+                },
+                "max-angular-speed": 100,
+                "max-angular-accel": 100
+            },
+            "electrical": {
+                "max-voltage": 12.0,
+                "nominal-voltage": 11.0,
+                "steer-current-limit": 10.0,
+                "drive-current-limit": 30.0
+            },
+            "holonomic-path-following": {
+                "xy-tolerance": 0.05,
+                "angle-tolerance": 2.0
             }
         }
     },
@@ -190,7 +220,7 @@
         "1": {
             "angle": 0.0,
             "power": 0.5,
-            "duration": 3
+            "duration": 1
         },
         "2": {
             "angle": 0.0,

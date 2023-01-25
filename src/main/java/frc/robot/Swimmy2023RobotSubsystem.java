@@ -20,7 +20,7 @@ public class Swimmy2023RobotSubsystem extends RobotSubsystem {
         super(robot, "Swimmy2023RobotSubsystem") ;
 
 
-        db_ = new SDSSwerveDriveSubsystem(this, "db" );
+        db_ = new SDSSwerveDriveSubsystem(this, "swerve" );
         addChild(db_);
 
         oi_ = new Swimmy2023OISubsystem(this, db_);
