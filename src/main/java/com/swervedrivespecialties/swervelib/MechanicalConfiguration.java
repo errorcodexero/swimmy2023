@@ -1,4 +1,4 @@
-package org.xero1425.swervelib;
+package com.swervedrivespecialties.swervelib;
 
 import java.util.Objects;
 
@@ -9,7 +9,7 @@ import java.util.Objects;
  * Mk3 swerve module has two configurations, standard and fast, and therefore should have two configurations
  * ({@link SdsModuleConfigurations#MK3_STANDARD} and {@link SdsModuleConfigurations#MK3_FAST} respectively).
  */
-public class ModuleConfiguration {
+public class MechanicalConfiguration {
     private final double wheelDiameter;
     private final double driveReduction;
     private final boolean driveInverted;
@@ -30,7 +30,7 @@ public class ModuleConfiguration {
      * @param steerInverted  Whether the steer motor should be inverted. If there is an odd number of gear reductions
      *                       this is typically true.
      */
-    public ModuleConfiguration(double wheelDiameter, double driveReduction, boolean driveInverted,
+    public MechanicalConfiguration(double wheelDiameter, double driveReduction, boolean driveInverted,
                                double steerReduction, boolean steerInverted) {
         this.wheelDiameter = wheelDiameter;
         this.driveReduction = driveReduction;
@@ -82,7 +82,7 @@ public class ModuleConfiguration {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ModuleConfiguration that = (ModuleConfiguration) o;
+        MechanicalConfiguration that = (MechanicalConfiguration) o;
         return Double.compare(that.getWheelDiameter(), getWheelDiameter()) == 0 &&
                 Double.compare(that.getDriveReduction(), getDriveReduction()) == 0 &&
                 isDriveInverted() == that.isDriveInverted() &&
@@ -103,7 +103,7 @@ public class ModuleConfiguration {
 
     @Override
     public String toString() {
-        return "ModuleConfiguration{" +
+        return "MechanicalConfiguration{" +
                 "wheelDiameter=" + wheelDiameter +
                 ", driveReduction=" + driveReduction +
                 ", driveInverted=" + driveInverted +

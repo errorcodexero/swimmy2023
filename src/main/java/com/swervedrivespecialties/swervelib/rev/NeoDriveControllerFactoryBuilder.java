@@ -1,13 +1,13 @@
-package org.xero1425.swervelib.rev;
+package com.swervedrivespecialties.swervelib.rev;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
 import com.revrobotics.RelativeEncoder;
-import org.xero1425.swervelib.DriveController;
-import org.xero1425.swervelib.DriveControllerFactory;
-import org.xero1425.swervelib.ModuleConfiguration;
+import com.swervedrivespecialties.swervelib.DriveController;
+import com.swervedrivespecialties.swervelib.DriveControllerFactory;
+import com.swervedrivespecialties.swervelib.MechanicalConfiguration;
 
-import static org.xero1425.swervelib.rev.RevUtils.checkNeoError;
+import static com.swervedrivespecialties.swervelib.rev.RevUtils.checkNeoError;
 
 public final class NeoDriveControllerFactoryBuilder {
     private double nominalVoltage = Double.NaN;
@@ -37,9 +37,9 @@ public final class NeoDriveControllerFactoryBuilder {
 
     private class FactoryImplementation implements DriveControllerFactory<ControllerImplementation, Integer> {
         @Override
-        public ControllerImplementation create(Integer id, ModuleConfiguration moduleConfiguration) {
+        public ControllerImplementation create(Integer id, String _canbus, MechanicalConfiguration mechConfiguration) {
             CANSparkMax motor = new CANSparkMax(id, CANSparkMaxLowLevel.MotorType.kBrushless);
-            motor.setInverted(moduleConfiguration.isDriveInverted());
+            motor.setInverted(mechConfiguration.isDriveInverted());
 
             // Setup voltage compensation
             if (hasVoltageCompensation()) {
@@ -58,7 +58,7 @@ public final class NeoDriveControllerFactoryBuilder {
 
             // Setup encoder
             RelativeEncoder encoder = motor.getEncoder();
-            double positionConversionFactor = Math.PI * moduleConfiguration.getWheelDiameter() * moduleConfiguration.getDriveReduction();
+            double positionConversionFactor = Math.PI * mechConfiguration.getWheelDiameter() * mechConfiguration.getDriveReduction();
             encoder.setPositionConversionFactor(positionConversionFactor);
             encoder.setVelocityConversionFactor(positionConversionFactor / 60.0);
 
@@ -76,6 +76,11 @@ public final class NeoDriveControllerFactoryBuilder {
         }
 
         @Override
+        public Object getDriveMotor() {
+            return this.motor;
+        }
+
+        @Override
         public void setReferenceVoltage(double voltage) {
             motor.setVoltage(voltage);
         }
@@ -86,8 +91,8 @@ public final class NeoDriveControllerFactoryBuilder {
         }
 
         @Override
-        public double getDistance() {
-            return encoder.getPosition() ;
+        public double getStateDistance() {
+            return encoder.getPosition();
         }
     }
 }

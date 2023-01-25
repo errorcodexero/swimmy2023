@@ -1,12 +1,12 @@
-package org.xero1425.swervelib.ctre;
+package com.swervedrivespecialties.swervelib.ctre;
 
 import com.ctre.phoenix.motorcontrol.*;
-import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
-import org.xero1425.swervelib.*;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import com.swervedrivespecialties.swervelib.*;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardContainer;
 
-import static org.xero1425.swervelib.ctre.CtreUtils.checkCtreError;
+import static com.swervedrivespecialties.swervelib.ctre.CtreUtils.checkCtreError;
 
 public final class Falcon500SteerControllerFactoryBuilder {
     private static final int CAN_TIMEOUT_MS = 250;
@@ -67,11 +67,11 @@ public final class Falcon500SteerControllerFactoryBuilder {
         return Double.isFinite(currentLimit);
     }
 
-    public <T> SteerControllerFactory<ControllerImplementation, Falcon500SteerConfiguration<T>> build(AbsoluteEncoderFactory<T> absoluteEncoderFactory) {
+    public <T> SteerControllerFactory<ControllerImplementation, SteerConfiguration<T>> build(AbsoluteEncoderFactory<T> absoluteEncoderFactory) {
         return new FactoryImplementation<>(absoluteEncoderFactory);
     }
 
-    private class FactoryImplementation<T> implements SteerControllerFactory<ControllerImplementation, Falcon500SteerConfiguration<T>> {
+    private class FactoryImplementation<T> implements SteerControllerFactory<ControllerImplementation, SteerConfiguration<T>> {
         private final AbsoluteEncoderFactory<T> encoderFactory;
 
         private FactoryImplementation(AbsoluteEncoderFactory<T> encoderFactory) {
@@ -85,10 +85,10 @@ public final class Falcon500SteerControllerFactoryBuilder {
         }
 
         @Override
-        public ControllerImplementation create(Falcon500SteerConfiguration<T> steerConfiguration, ModuleConfiguration moduleConfiguration) {
+        public ControllerImplementation create(SteerConfiguration<T> steerConfiguration, String canbus, MechanicalConfiguration mechConfiguration) {
             AbsoluteEncoder absoluteEncoder = encoderFactory.create(steerConfiguration.getEncoderConfiguration());
 
-            final double sensorPositionCoefficient = 2.0 * Math.PI / TICKS_PER_ROTATION * moduleConfiguration.getSteerReduction();
+            final double sensorPositionCoefficient = 2.0 * Math.PI / TICKS_PER_ROTATION * mechConfiguration.getSteerReduction();
             final double sensorVelocityCoefficient = sensorPositionCoefficient * 10.0;
 
             TalonFXConfiguration motorConfiguration = new TalonFXConfiguration();
@@ -115,7 +115,7 @@ public final class Falcon500SteerControllerFactoryBuilder {
                 motorConfiguration.supplyCurrLimit.enable = true;
             }
 
-            TalonFX motor = new TalonFX(steerConfiguration.getMotorPort());
+            WPI_TalonFX motor = new WPI_TalonFX(steerConfiguration.getMotorPort(), canbus);
             checkCtreError(motor.configAllSettings(motorConfiguration, CAN_TIMEOUT_MS), "Failed to configure Falcon 500 settings");
 
             if (hasVoltageCompensation()) {
@@ -123,7 +123,7 @@ public final class Falcon500SteerControllerFactoryBuilder {
             }
             checkCtreError(motor.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, CAN_TIMEOUT_MS), "Failed to set Falcon 500 feedback sensor");
             motor.setSensorPhase(true);
-            motor.setInverted(moduleConfiguration.isSteerInverted() ? TalonFXInvertType.CounterClockwise : TalonFXInvertType.Clockwise);
+            motor.setInverted(mechConfiguration.isSteerInverted() ? TalonFXInvertType.CounterClockwise : TalonFXInvertType.Clockwise);
             motor.setNeutralMode(NeutralMode.Brake);
 
             checkCtreError(motor.setSelectedSensorPosition(absoluteEncoder.getAbsoluteAngle() / sensorPositionCoefficient, 0, CAN_TIMEOUT_MS), "Failed to set Falcon 500 encoder position");
@@ -150,7 +150,7 @@ public final class Falcon500SteerControllerFactoryBuilder {
         private static final int ENCODER_RESET_ITERATIONS = 500;
         private static final double ENCODER_RESET_MAX_ANGULAR_VELOCITY = Math.toRadians(0.5);
 
-        private final TalonFX motor;
+        private final WPI_TalonFX motor;
         private final double motorEncoderPositionCoefficient;
         private final double motorEncoderVelocityCoefficient;
         private final TalonFXControlMode motorControlMode;
@@ -160,7 +160,7 @@ public final class Falcon500SteerControllerFactoryBuilder {
 
         private double resetIteration = 0;
 
-        private ControllerImplementation(TalonFX motor,
+        private ControllerImplementation(WPI_TalonFX motor,
                                          double motorEncoderPositionCoefficient,
                                          double motorEncoderVelocityCoefficient,
                                          TalonFXControlMode motorControlMode,
@@ -170,6 +170,16 @@ public final class Falcon500SteerControllerFactoryBuilder {
             this.motorEncoderVelocityCoefficient = motorEncoderVelocityCoefficient;
             this.motorControlMode = motorControlMode;
             this.absoluteEncoder = absoluteEncoder;
+        }
+
+        @Override
+        public Object getSteerMotor() {
+            return this.motor;
+        }
+
+        @Override
+        public AbsoluteEncoder getSteerEncoder() {
+            return this.absoluteEncoder;
         }
 
         @Override

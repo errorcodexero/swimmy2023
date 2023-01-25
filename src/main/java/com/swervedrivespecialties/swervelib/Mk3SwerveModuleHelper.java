@@ -1,11 +1,13 @@
-package org.xero1425.swervelib;
+package com.swervedrivespecialties.swervelib;
 
-import org.xero1425.swervelib.ctre.*;
-import org.xero1425.swervelib.rev.NeoDriveControllerFactoryBuilder;
-import org.xero1425.swervelib.rev.NeoSteerConfiguration;
-import org.xero1425.swervelib.rev.NeoSteerControllerFactoryBuilder;
+import com.swervedrivespecialties.swervelib.ctre.*;
+import com.swervedrivespecialties.swervelib.rev.*;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 
+/**
+ * @deprecated use {@link MkSwerveModuleBuilder} instead, which provides support for CANivores.
+ */
+@Deprecated(since = "2023.1.2.0", forRemoval = true)
 public final class Mk3SwerveModuleHelper {
     private Mk3SwerveModuleHelper() {
     }
@@ -17,7 +19,7 @@ public final class Mk3SwerveModuleHelper {
                 .build();
     }
 
-    private static SteerControllerFactory<?, Falcon500SteerConfiguration<CanCoderAbsoluteConfiguration>> getFalcon500SteerFactory(Mk3ModuleConfiguration configuration) {
+    private static SteerControllerFactory<?, SteerConfiguration<CanCoderAbsoluteConfiguration>> getFalcon500SteerFactory(Mk3ModuleConfiguration configuration) {
         return new Falcon500SteerControllerFactoryBuilder()
                 .withVoltageCompensation(configuration.getNominalVoltage())
                 .withPidConstants(0.2, 0.0, 0.1)
@@ -34,7 +36,7 @@ public final class Mk3SwerveModuleHelper {
                 .build();
     }
 
-    private static SteerControllerFactory<?, NeoSteerConfiguration<CanCoderAbsoluteConfiguration>> getNeoSteerFactory(Mk3ModuleConfiguration configuration) {
+    private static SteerControllerFactory<?, SteerConfiguration<CanCoderAbsoluteConfiguration>> getNeoSteerFactory(Mk3ModuleConfiguration configuration) {
         return new NeoSteerControllerFactoryBuilder()
                 .withVoltageCompensation(configuration.getNominalVoltage())
                 .withPidConstants(1.0, 0.0, 0.1)
@@ -73,7 +75,7 @@ public final class Mk3SwerveModuleHelper {
         ).create(
                 container,
                 driveMotorPort,
-                new Falcon500SteerConfiguration<>(
+                new SteerConfiguration<>(
                         steerMotorPort,
                         new CanCoderAbsoluteConfiguration(steerEncoderPort, steerOffset)
                 )
@@ -128,7 +130,7 @@ public final class Mk3SwerveModuleHelper {
                 getFalcon500SteerFactory(configuration)
         ).create(
                 driveMotorPort,
-                new Falcon500SteerConfiguration<>(
+                new SteerConfiguration<>(
                         steerMotorPort,
                         new CanCoderAbsoluteConfiguration(steerEncoderPort, steerOffset)
                 )
@@ -184,7 +186,7 @@ public final class Mk3SwerveModuleHelper {
         ).create(
                 container,
                 driveMotorPort,
-                new NeoSteerConfiguration<>(
+                new SteerConfiguration<>(
                         steerMotorPort,
                         new CanCoderAbsoluteConfiguration(steerEncoderPort, steerOffset)
                 )
@@ -239,7 +241,7 @@ public final class Mk3SwerveModuleHelper {
                 getNeoSteerFactory(configuration)
         ).create(
                 driveMotorPort,
-                new NeoSteerConfiguration<>(
+                new SteerConfiguration<>(
                         steerMotorPort,
                         new CanCoderAbsoluteConfiguration(steerEncoderPort, steerOffset)
                 )
@@ -295,7 +297,7 @@ public final class Mk3SwerveModuleHelper {
         ).create(
                 container,
                 driveMotorPort,
-                new NeoSteerConfiguration<>(
+                new SteerConfiguration<>(
                         steerMotorPort,
                         new CanCoderAbsoluteConfiguration(steerEncoderPort, steerOffset)
                 )
@@ -350,7 +352,7 @@ public final class Mk3SwerveModuleHelper {
                 getNeoSteerFactory(configuration)
         ).create(
                 driveMotorPort,
-                new NeoSteerConfiguration<>(
+                new SteerConfiguration<>(
                         steerMotorPort,
                         new CanCoderAbsoluteConfiguration(steerEncoderPort, steerOffset)
                 )
@@ -406,7 +408,7 @@ public final class Mk3SwerveModuleHelper {
         ).create(
                 container,
                 driveMotorPort,
-                new Falcon500SteerConfiguration<>(
+                new SteerConfiguration<>(
                         steerMotorPort,
                         new CanCoderAbsoluteConfiguration(steerEncoderPort, steerOffset)
                 )
@@ -461,7 +463,7 @@ public final class Mk3SwerveModuleHelper {
                 getFalcon500SteerFactory(configuration)
         ).create(
                 driveMotorPort,
-                new Falcon500SteerConfiguration<>(
+                new SteerConfiguration<>(
                         steerMotorPort,
                         new CanCoderAbsoluteConfiguration(steerEncoderPort, steerOffset)
                 )
@@ -498,13 +500,13 @@ public final class Mk3SwerveModuleHelper {
          */
         FAST(SdsModuleConfigurations.MK3_FAST);
 
-        private final ModuleConfiguration configuration;
+        private final MechanicalConfiguration configuration;
 
-        GearRatio(ModuleConfiguration configuration) {
+        GearRatio(MechanicalConfiguration configuration) {
             this.configuration = configuration;
         }
 
-        public ModuleConfiguration getConfiguration() {
+        public MechanicalConfiguration getConfiguration() {
             return configuration;
         }
     }

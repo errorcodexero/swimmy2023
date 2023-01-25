@@ -1,4 +1,4 @@
-package org.xero1425.swervelib;
+package com.swervedrivespecialties.swervelib;
 
 @FunctionalInterface
 public interface AbsoluteEncoderFactory<Configuration> {

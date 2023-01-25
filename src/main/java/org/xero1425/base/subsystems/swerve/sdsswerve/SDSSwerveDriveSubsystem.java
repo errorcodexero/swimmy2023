@@ -1,22 +1,23 @@
 package org.xero1425.base.subsystems.swerve.sdsswerve;
 
-import org.xero1425.swervelib.Mk4ModuleConfiguration;
-import org.xero1425.swervelib.Mk4iSwerveModuleHelper;
-import org.xero1425.swervelib.SwerveModule;
-
 import org.xero1425.base.subsystems.Subsystem;
 import org.xero1425.base.subsystems.swerve.common.SwerveBaseSubsystem;
 import org.xero1425.misc.BadParameterTypeException;
 import org.xero1425.misc.MissingParameterException;
 import org.xero1425.misc.PIDCtrl;
 
+import com.swervedrivespecialties.swervelib.MkSwerveModuleBuilder;
+import com.swervedrivespecialties.swervelib.MotorType;
+import com.swervedrivespecialties.swervelib.SdsModuleConfigurations;
+import com.swervedrivespecialties.swervelib.SwerveModule;
+
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 
 public class SDSSwerveDriveSubsystem extends SwerveBaseSubsystem {
@@ -46,11 +47,6 @@ public class SDSSwerveDriveSubsystem extends SwerveBaseSubsystem {
     public SDSSwerveDriveSubsystem(Subsystem parent, String name) throws Exception {
         super(parent, name) ;
 
-        ShuffleboardLayout lay ;
-        int drive, steer, encoder ;
-        double offset ;
-        Mk4ModuleConfiguration config = new Mk4ModuleConfiguration() ;
-
         speeds_ = new double[4] ;
         powers_ = new double[4] ;
         angles_ = new double[4] ;
@@ -61,73 +57,22 @@ public class SDSSwerveDriveSubsystem extends SwerveBaseSubsystem {
         pid_ctrls_[BL] = createPIDCtrl("bl") ;
         pid_ctrls_[BR] = createPIDCtrl("br") ;
 
-        if (isSettingDefined("electrical:drive-current-limit")) {
-            config.setDriveCurrentLimit(getSettingsValue("electrical:drive-current-limit").getDouble()) ;
-        }
-
-        if (isSettingDefined("electrical:steer-current-limit")) {
-            config.setSteerCurrentLimit(getSettingsValue("electrical:steer-current-limit").getDouble()) ;
-        }
-
-        if (isSettingDefined("electrical:nominal-voltage")) {
-            nominal_voltage_ = getSettingsValue("electrical:nominal-voltage").getDouble() ;
-            config.setNominalVoltage(nominal_voltage_) ;
+        if (DriverStation.isFMSAttached()) {
+            fl_ = createSwerveModule("fl", -1) ;
+            fr_ = createSwerveModule("fr", -1) ;
+            bl_ = createSwerveModule("bl", -1) ;
+            br_ = createSwerveModule("br", -1) ;
         }
         else {
-            nominal_voltage_ = 12.0 ;
+            fl_ = createSwerveModule("fl", 0) ;
+            fr_ = createSwerveModule("fr", 2) ;
+            bl_ = createSwerveModule("bl", 4) ;
+            br_ = createSwerveModule("br", 6) ;
         }
-
-        ShuffleboardTab shuffleboardTab = Shuffleboard.getTab("Drivetrain");
-
-        lay = shuffleboardTab.getLayout("FLModule", BuiltInLayouts.kList).withSize(2, 4).withPosition(0, 0) ;
-        drive = getSettingsValue("hw:fl:drive:canid").getInteger() ;
-        steer = getSettingsValue("hw:fl:steer:canid").getInteger() ;
-        encoder = getSettingsValue("hw:fl:encoder:canid").getInteger() ;
-        offset = Math.toRadians(getSettingsValue("hw:fl:encoder:offset").getDouble()) ;
-
-        if (isVerbose())
-            fl_ = Mk4iSwerveModuleHelper.createFalcon500(lay, config, Mk4iSwerveModuleHelper.GearRatio.L2, drive, steer, encoder, offset) ;
-        else
-            fl_ = Mk4iSwerveModuleHelper.createFalcon500(config, Mk4iSwerveModuleHelper.GearRatio.L2, drive, steer, encoder, offset) ;
-
-        lay = shuffleboardTab.getLayout("FRModule", BuiltInLayouts.kList).withSize(2, 4).withPosition(0, 0) ;
-        drive = getSettingsValue("hw:fr:drive:canid").getInteger() ;
-        steer = getSettingsValue("hw:fr:steer:canid").getInteger() ;
-        encoder = getSettingsValue("hw:fr:encoder:canid").getInteger() ;
-        offset = Math.toRadians(getSettingsValue("hw:fr:encoder:offset").getDouble()) ;
-
-        if (isVerbose())
-            fr_ = Mk4iSwerveModuleHelper.createFalcon500(lay, config, Mk4iSwerveModuleHelper.GearRatio.L2, drive, steer, encoder, offset) ;
-        else
-            fr_ = Mk4iSwerveModuleHelper.createFalcon500(config, Mk4iSwerveModuleHelper.GearRatio.L2, drive, steer, encoder, offset) ;
-
-        lay = shuffleboardTab.getLayout("BLModule", BuiltInLayouts.kList).withSize(2, 4).withPosition(0, 0) ;
-        drive = getSettingsValue("hw:bl:drive:canid").getInteger() ;
-        steer = getSettingsValue("hw:bl:steer:canid").getInteger() ;
-        encoder = getSettingsValue("hw:bl:encoder:canid").getInteger() ;
-        offset = Math.toRadians(getSettingsValue("hw:bl:encoder:offset").getDouble()) ;
-        if (isVerbose())
-            bl_ = Mk4iSwerveModuleHelper.createFalcon500(lay, config, Mk4iSwerveModuleHelper.GearRatio.L2, drive, steer, encoder, offset) ;
-        else
-            bl_ = Mk4iSwerveModuleHelper.createFalcon500(config, Mk4iSwerveModuleHelper.GearRatio.L2, drive, steer, encoder, offset) ;        
-
-        lay = shuffleboardTab.getLayout("BRModule", BuiltInLayouts.kList).withSize(2, 4).withPosition(0, 0) ;
-        drive = getSettingsValue("hw:br:drive:canid").getInteger() ;
-        steer = getSettingsValue("hw:br:steer:canid").getInteger() ;
-        encoder = getSettingsValue("hw:br:encoder:canid").getInteger() ;
-        offset = Math.toRadians(getSettingsValue("hw:br:encoder:offset").getDouble()) ;
-        if (isVerbose())
-            br_ = Mk4iSwerveModuleHelper.createFalcon500(lay, config, Mk4iSwerveModuleHelper.GearRatio.L2, drive, steer, encoder, offset) ;
-        else
-            br_ = Mk4iSwerveModuleHelper.createFalcon500(config, Mk4iSwerveModuleHelper.GearRatio.L2, drive, steer, encoder, offset) ;        
 
         createOdometry(); 
     }
 
-    private PIDCtrl createPIDCtrl(String name) throws MissingParameterException, BadParameterTypeException {
-        String pidname = "subsystems:" + getName() + ":pids:" + name ;
-        return new PIDCtrl(getRobot().getSettingsSupplier(), pidname, false) ;
-    }
 
     public SwerveModuleState getModuleState(int which) {
         SwerveModuleState st = null ;
@@ -158,19 +103,19 @@ public class SDSSwerveDriveSubsystem extends SwerveBaseSubsystem {
 
         switch(which) {
             case FL:
-                st = new SwerveModulePosition(fl_.getDistance(), new Rotation2d(fl_.getSteerAngle())) ;
+                st = new SwerveModulePosition(fl_.getDriveDistance(), new Rotation2d(fl_.getSteerAngle())) ;
                 break ;
 
             case FR:
-                st = new SwerveModulePosition(fr_.getDistance(), new Rotation2d(fr_.getSteerAngle())) ;
+                st = new SwerveModulePosition(fr_.getDriveDistance(), new Rotation2d(fr_.getSteerAngle())) ;
                 break ;
                 
             case BL:
-                st = new SwerveModulePosition(bl_.getDistance(), new Rotation2d(bl_.getSteerAngle())) ;
+                st = new SwerveModulePosition(bl_.getDriveDistance(), new Rotation2d(bl_.getSteerAngle())) ;
                 break ;
                 
             case BR:
-                st = new SwerveModulePosition(br_.getDistance(), new Rotation2d(br_.getSteerAngle())) ;
+                st = new SwerveModulePosition(br_.getDriveDistance(), new Rotation2d(br_.getSteerAngle())) ;
                 break ;
         }
 
@@ -193,7 +138,6 @@ public class SDSSwerveDriveSubsystem extends SwerveBaseSubsystem {
         chassis_speed_ = speed ;     
         mode_ = Mode.Chassis ;
     }
-
 
     @Override
     public void setRawTargets(boolean power, double [] angles, double [] speeds_powers)  {
@@ -265,5 +209,47 @@ public class SDSSwerveDriveSubsystem extends SwerveBaseSubsystem {
         fr_.set(powers_[FR] * nominal_voltage_, Math.toRadians(angles_[FR])) ;
         bl_.set(powers_[BL] * nominal_voltage_, Math.toRadians(angles_[BL])) ;
         br_.set(powers_[BR] * nominal_voltage_, Math.toRadians(angles_[BR])) ;                      
+    }
+
+    
+    private SwerveModule createSwerveModule(String which, int pos) throws BadParameterTypeException, MissingParameterException {
+        ShuffleboardTab shuffleboardTab = Shuffleboard.getTab("Drivetrain");
+        SwerveModule ret ;
+
+        int drive = getSettingsValue("hw:" + which + ":drive:canid").getInteger() ;
+        String drivebus = getSettingsValue("hw:" + which + ":drive:bus").getString() ;
+        int steer = getSettingsValue("hw:" + which + ":steer:canid").getInteger() ;
+        String steerbus = getSettingsValue("hw:" + which + ":steer:bus").getString() ;
+        int encoder = getSettingsValue("hw:" + which + ":encoder:canid").getInteger() ;
+        String encoderbus = getSettingsValue("hw:" + which + ":encoder:bus").getString() ;
+        double offset = Math.toRadians(getSettingsValue("hw:" + which + ":encoder:offset").getDouble()) ;
+
+        if (pos == -1) {
+            ret = new MkSwerveModuleBuilder()
+            .withGearRatio(SdsModuleConfigurations.MK4I_L2)
+            .withDriveMotor(MotorType.FALCON, drive, drivebus)
+            .withSteerMotor(MotorType.FALCON, steer, steerbus)
+            .withSteerEncoderPort(encoder, encoderbus)
+            .withSteerOffset(offset)
+            .build() ;
+        }
+        else {
+            ret = new MkSwerveModuleBuilder()
+                    .withLayout(shuffleboardTab.getLayout("FL", BuiltInLayouts.kList)
+                        .withSize(2, 4)
+                        .withPosition(0, 0))
+                    .withGearRatio(SdsModuleConfigurations.MK4I_L2)
+                    .withDriveMotor(MotorType.FALCON, drive, drivebus)
+                    .withSteerMotor(MotorType.FALCON, steer, steerbus)
+                    .withSteerEncoderPort(encoder, encoderbus)
+                    .withSteerOffset(offset)
+                    .build() ;
+        }
+        return ret ;
+    }
+
+    private PIDCtrl createPIDCtrl(String name) throws MissingParameterException, BadParameterTypeException {
+        String pidname = "subsystems:" + getName() + ":pids:" + name ;
+        return new PIDCtrl(getRobot().getSettingsSupplier(), pidname, false) ;
     }
 }
