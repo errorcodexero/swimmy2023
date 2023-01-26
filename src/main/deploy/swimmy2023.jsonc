@@ -12,7 +12,7 @@
             "pathfollowing": false,
 
             // Subsystem related messages
-            "swervedrive": false,
+            "swerve": true,
             "swerve2023oi": false,
 
             "arm-motor-lower" : false,
@@ -224,15 +224,15 @@
     },
     "testmode": {
         "enabled": true,
-        "which": 12,
+        "which": 1,
         "0": {
             "angle": 0.0,
             "power": 0.2
         },
         "1": {
             "angle": 0.0,
-            "power": 0.5,
-            "duration": 1
+            "power": 0.1,
+            "duration": 4
         },
         "2": {
             "angle": 0.0,
@@ -259,8 +259,7 @@
             "power" : 0.2,
             "duration" : 1.0
         },
-        "12" : {
-            
+        "12" : {   
         }
     }
 }

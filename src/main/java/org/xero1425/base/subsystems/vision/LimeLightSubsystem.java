@@ -199,10 +199,17 @@ public class LimeLightSubsystem extends Subsystem implements IVisionLocalization
     }
 
     private String pose3dToString(Pose3d p) {
-        String st = p.getTranslation().toString() ;
-        st += ", rx " + p.getRotation().getX() ;
-        st += ", ry " + p.getRotation().getY() ;
-        st += ", rz " + p.getRotation().getZ() ;
+        String st ;
+
+        if (p == null) {
+            st = "<NULL>" ;
+        }
+        else {
+            st = p.getTranslation().toString() ;
+            st += ", rx " + p.getRotation().getX() ;
+            st += ", ry " + p.getRotation().getY() ;
+            st += ", rz " + p.getRotation().getZ() ;
+        }
         return st ;
     }
 

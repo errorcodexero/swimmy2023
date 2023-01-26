@@ -15,7 +15,6 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
@@ -47,6 +46,8 @@ public class SDSSwerveDriveSubsystem extends SwerveBaseSubsystem {
     public SDSSwerveDriveSubsystem(Subsystem parent, String name) throws Exception {
         super(parent, name) ;
 
+        nominal_voltage_ = 12.0 ;
+
         speeds_ = new double[4] ;
         powers_ = new double[4] ;
         angles_ = new double[4] ;
@@ -64,7 +65,6 @@ public class SDSSwerveDriveSubsystem extends SwerveBaseSubsystem {
 
         createOdometry(); 
     }
-
 
     public SwerveModuleState getModuleState(int which) {
         SwerveModuleState st = null ;
@@ -133,6 +133,7 @@ public class SDSSwerveDriveSubsystem extends SwerveBaseSubsystem {
 
     @Override
     public void setRawTargets(boolean power, double [] angles, double [] speeds_powers)  {
+
         angles_ = angles.clone() ;
         if (power) {
             mode_ = Mode.RawPower ;
@@ -196,13 +197,11 @@ public class SDSSwerveDriveSubsystem extends SwerveBaseSubsystem {
             powers_[BL] = pid_ctrls_[BL].getOutput(speeds_[BL], getModuleState(BL).speedMetersPerSecond, getRobot().getDeltaTime()) ;
             powers_[BR] = pid_ctrls_[BR].getOutput(speeds_[BR], getModuleState(BR).speedMetersPerSecond, getRobot().getDeltaTime()) ;
         }
-
         fl_.set(powers_[FL] * nominal_voltage_, Math.toRadians(angles_[FL])) ;
         fr_.set(powers_[FR] * nominal_voltage_, Math.toRadians(angles_[FR])) ;
         bl_.set(powers_[BL] * nominal_voltage_, Math.toRadians(angles_[BL])) ;
         br_.set(powers_[BR] * nominal_voltage_, Math.toRadians(angles_[BR])) ;                      
     }
-
     
     private SwerveModule createSwerveModule(String which, int pos) throws BadParameterTypeException, MissingParameterException {
         ShuffleboardTab shuffleboardTab = Shuffleboard.getTab("Drivetrain");
@@ -227,7 +226,7 @@ public class SDSSwerveDriveSubsystem extends SwerveBaseSubsystem {
         }
         else {
             ret = new MkSwerveModuleBuilder()
-                    .withLayout(shuffleboardTab.getLayout(which, BuiltInLayouts.kList)
+                    .withLayout(shuffleboardTab.getLayout(which.toUpperCase() + "Module", BuiltInLayouts.kList)
                         .withSize(2, 4)
                         .withPosition(0, 0))
                     .withGearRatio(SdsModuleConfigurations.MK4I_L2)

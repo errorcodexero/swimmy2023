@@ -427,6 +427,22 @@ public final class MessageLogger
 
         return this;        
     }  
+
+    public MessageLogger add(final String name, final double[] data) {
+        final ThreadData per = getPerThreadData();
+        if (per.enabled_&& per.in_message_) {
+            per.message_.append(" ") ;
+            per.message_.append(name) ;
+            per.message_.append(" = [") ;
+            for(int i = 0 ; i < data.length ; i++) {
+                per.message_.append(" ") ;
+                per.message_.append(Double.toString(data[i])) ;
+            }
+            per.message_.append("]") ;
+        }
+
+        return this;  
+    }
     
     /// \brief add a name value pair to the message
     /// \param name the name to add

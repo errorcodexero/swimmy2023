@@ -47,7 +47,7 @@ public class SwimmyRobot2023 extends XeroRobot {
   
   protected void hardwareInit() throws Exception {
     
-    enablePneumaticsAnalog() ;
+    // enablePneumaticsAnalog() ;
 
     Swimmy2023RobotSubsystem robot = new Swimmy2023RobotSubsystem(this);
     setRobotSubsystem(robot);

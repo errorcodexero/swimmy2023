@@ -225,7 +225,6 @@ public abstract class XeroRobot extends TimedRobot {
             server_.start() ;
         }
         catch(IOException ex) {
-
         }
     }
 
