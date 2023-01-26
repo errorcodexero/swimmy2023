@@ -103,48 +103,60 @@
                 },
                 "fl": {
                     "steer": {
+                        "bus" : "",
                         "canid": 11
                     },
                     "drive": {
+                        "bus" : "",
                         "canid": 12
                     },
                     "encoder": {
+                        "bus" : "",
                         "canid": 13,
                         "offset": 75.0
                     }
                 },
                 "fr": {
                     "steer": {
+                        "bus" : "",
                         "canid": 21
                     },
                     "drive": {
+                        "bus" : "",
                         "canid": 22
                     },
                     "encoder": {
+                        "bus" : "",
                         "canid": 23,
                         "offset": 99.7
                     }
                 },
                 "bl": {
                     "steer": {
+                        "bus" : "",
                         "canid": 41
                     },
                     "drive": {
+                        "bus" : "",
                         "canid": 42
                     },
                     "encoder": {
+                        "bus" : "",
                         "canid": 43,
                         "offset": -79.9
                     }
                 },
                 "br": {
                     "steer": {
+                        "bus" : "",
                         "canid": 31
                     },
                     "drive": {
+                        "bus" : "",
                         "canid": 32
                     },
                     "encoder": {
+                        "bus" : "",
                         "canid": 33,
                         "offset": 45.45
                     }

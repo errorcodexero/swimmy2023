@@ -57,18 +57,10 @@ public class SDSSwerveDriveSubsystem extends SwerveBaseSubsystem {
         pid_ctrls_[BL] = createPIDCtrl("bl") ;
         pid_ctrls_[BR] = createPIDCtrl("br") ;
 
-        if (DriverStation.isFMSAttached()) {
-            fl_ = createSwerveModule("fl", -1) ;
-            fr_ = createSwerveModule("fr", -1) ;
-            bl_ = createSwerveModule("bl", -1) ;
-            br_ = createSwerveModule("br", -1) ;
-        }
-        else {
-            fl_ = createSwerveModule("fl", 0) ;
-            fr_ = createSwerveModule("fr", 2) ;
-            bl_ = createSwerveModule("bl", 4) ;
-            br_ = createSwerveModule("br", 6) ;
-        }
+        fl_ = createSwerveModule("fl", 0) ;
+        fr_ = createSwerveModule("fr", 2) ;
+        bl_ = createSwerveModule("bl", 4) ;
+        br_ = createSwerveModule("br", 6) ;
 
         createOdometry(); 
     }
@@ -235,7 +227,7 @@ public class SDSSwerveDriveSubsystem extends SwerveBaseSubsystem {
         }
         else {
             ret = new MkSwerveModuleBuilder()
-                    .withLayout(shuffleboardTab.getLayout("FL", BuiltInLayouts.kList)
+                    .withLayout(shuffleboardTab.getLayout(which, BuiltInLayouts.kList)
                         .withSize(2, 4)
                         .withPosition(0, 0))
                     .withGearRatio(SdsModuleConfigurations.MK4I_L2)
