@@ -2,6 +2,7 @@ package org.xero1425.base.subsystems.swerve.sdsswerve;
 
 import org.xero1425.swervelib.Mk4ModuleConfiguration;
 import org.xero1425.swervelib.Mk4iSwerveModuleHelper;
+import org.xero1425.swervelib.SDSModuleGlobalConfig;
 import org.xero1425.swervelib.SwerveModule;
 
 import org.xero1425.base.subsystems.Subsystem;
@@ -50,6 +51,9 @@ public class SDSSwerveDriveSubsystem extends SwerveBaseSubsystem {
         int drive, steer, encoder ;
         double offset ;
         Mk4ModuleConfiguration config = new Mk4ModuleConfiguration() ;
+
+        String bus = getSettingsValue("hw:bus").getString() ;
+        SDSModuleGlobalConfig.setCanBus(bus) ;
 
         speeds_ = new double[4] ;
         powers_ = new double[4] ;

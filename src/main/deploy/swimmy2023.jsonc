@@ -97,6 +97,7 @@
                 }
             },
             "hw": {
+                "bus" : "",
                 "gyro": {
                     "type": "navx",
                     "start-time": 3.0

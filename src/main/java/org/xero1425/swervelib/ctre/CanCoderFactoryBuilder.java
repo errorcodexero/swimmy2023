@@ -2,6 +2,7 @@ package org.xero1425.swervelib.ctre;
 
 import org.xero1425.swervelib.AbsoluteEncoder;
 import org.xero1425.swervelib.AbsoluteEncoderFactory;
+import org.xero1425.swervelib.SDSModuleGlobalConfig;
 
 import com.ctre.phoenix.sensors.AbsoluteSensorRange;
 import com.ctre.phoenix.sensors.CANCoder;
@@ -29,7 +30,7 @@ public class CanCoderFactoryBuilder {
             config.magnetOffsetDegrees = Math.toDegrees(configuration.getOffset());
             config.sensorDirection = direction == Direction.CLOCKWISE;
 
-            CANCoder encoder = new CANCoder(configuration.getId());
+            CANCoder encoder = new CANCoder(configuration.getId(), SDSModuleGlobalConfig.getCanBus()) ;
             CtreUtils.checkCtreError(encoder.configAllSettings(config, 250), "Failed to configure CANCoder");
 
             CtreUtils.checkCtreError(encoder.setStatusFramePeriod(CANCoderStatusFrame.SensorData, periodMilliseconds, 250), "Failed to configure CANCoder update rate");

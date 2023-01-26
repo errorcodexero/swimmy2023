@@ -9,6 +9,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
 import org.xero1425.swervelib.DriveController;
 import org.xero1425.swervelib.DriveControllerFactory;
 import org.xero1425.swervelib.ModuleConfiguration;
+import org.xero1425.swervelib.SDSModuleGlobalConfig;
 
 public final class Falcon500DriveControllerFactoryBuilder {
     private static final double TICKS_PER_ROTATION = 2048.0;
@@ -58,7 +59,7 @@ public final class Falcon500DriveControllerFactoryBuilder {
                 motorConfiguration.supplyCurrLimit.enable = true;
             }
 
-            TalonFX motor = new TalonFX(driveConfiguration);
+            TalonFX motor = new TalonFX(driveConfiguration, SDSModuleGlobalConfig.getCanBus()) ;
             CtreUtils.checkCtreError(motor.configAllSettings(motorConfiguration), "Failed to configure Falcon 500");
 
             if (hasVoltageCompensation()) {
