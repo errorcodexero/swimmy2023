@@ -213,16 +213,16 @@ public class SDSSwerveDriveSubsystem extends SwerveBaseSubsystem {
         String steerbus = getSettingsValue("hw:" + which + ":steer:bus").getString() ;
         int encoder = getSettingsValue("hw:" + which + ":encoder:canid").getInteger() ;
         String encoderbus = getSettingsValue("hw:" + which + ":encoder:bus").getString() ;
-        double offset = Math.toRadians(getSettingsValue("hw:" + which + ":encoder:offset").getDouble()) ;
+        double offset = getSettingsValue("hw:" + which + ":encoder:offset").getDouble() ;
 
         if (pos == -1) {
             ret = new MkSwerveModuleBuilder()
-            .withGearRatio(SdsModuleConfigurations.MK4I_L2)
-            .withDriveMotor(MotorType.FALCON, drive, drivebus)
-            .withSteerMotor(MotorType.FALCON, steer, steerbus)
-            .withSteerEncoderPort(encoder, encoderbus)
-            .withSteerOffset(offset)
-            .build() ;
+                .withGearRatio(SdsModuleConfigurations.MK4I_L2)
+                .withDriveMotor(MotorType.FALCON, drive, drivebus)
+                .withSteerMotor(MotorType.FALCON, steer, steerbus)
+                .withSteerEncoderPort(encoder, encoderbus)
+                .withSteerOffset(Math.toRadians(offset))
+                .build() ;
         }
         else {
             ret = new MkSwerveModuleBuilder()
@@ -233,7 +233,7 @@ public class SDSSwerveDriveSubsystem extends SwerveBaseSubsystem {
                     .withDriveMotor(MotorType.FALCON, drive, drivebus)
                     .withSteerMotor(MotorType.FALCON, steer, steerbus)
                     .withSteerEncoderPort(encoder, encoderbus)
-                    .withSteerOffset(offset)
+                    .withSteerOffset(Math.toRadians(offset))
                     .build() ;
         }
         return ret ;
