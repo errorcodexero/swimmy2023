@@ -30,7 +30,7 @@ import org.xero1425.misc.SettingsValue.SettingsType;
 public class MotorFactory {
     private MessageLogger logger_;                              // The system wide message logger
     private ISettingsSupplier settings_;                        // The system wide settings file
-    private Map<Integer, MotorController> motors_;              // The map of motors
+    private Map<String, Map<Integer, MotorController>> motors_;              // The map of motors
 
     private static final String BrakeMode = "brake" ;
     private static final String CoastMode = "coast" ;
@@ -41,7 +41,8 @@ public class MotorFactory {
     public MotorFactory(MessageLogger logger, ISettingsSupplier settings) {
         logger_ = logger;
         settings_ = settings;
-        motors_ = new HashMap<Integer, MotorController>();
+        motors_ = new HashMap<String, Map<Integer, MotorController>>();
+        motors_.put("", new HashMap<Integer, MotorController>()) ;
     }
 
     /// \brief This method creates a new motor based on the settings in the settings file.
@@ -174,19 +175,34 @@ public class MotorFactory {
         logger_.endMessage();
     }
 
+    private MotorController getMotorController(String bus, int canid) {
+        MotorController ret = null ;
+
+        if (motors_.containsKey(bus)) {
+            Map<Integer, MotorController> map = motors_.get(bus) ;
+            ret = map.get(canid) ;
+        }
+
+        return ret ;
+    }
+
     //
     // Create a single motor from the settings in the settings file
     //
     private MotorController createSingleMotor(String name, String id, boolean leader) throws BadParameterTypeException, BadMotorRequestException, MotorRequestFailedException {
             
-        String typeparam = id + ":type";                  // This parameter holds the type of the motor
+        String typeparam = id + ":type";                // This parameter holds the type of the motor
         String canparam = id + ":canid";                // This parameter holds the CAN id of the motor
+        String busparam = id + ":bus" ;                 // This parameter holds the bus name of the motor
 
         // Test to see if the motor has a CAN id
         boolean hasid = settings_.isDefined(canparam) && settings_.getOrNull(canparam).isInteger();
 
         // Test to see if the motor has a type
         boolean hastype = settings_.isDefined(typeparam) && settings_.getOrNull(typeparam).isString();
+
+        // Test to see if the motor has a bus
+        boolean hasbus = settings_.isDefined(busparam) && settings_.getOrNull(busparam).isString() ;
 
         if (!hasid) {
             String msg = "missing motor id '" + canparam + "' - cannot create motor" ;
@@ -200,16 +216,24 @@ public class MotorFactory {
             return null;
         }
 
+        if (!hasbus) {
+            String msg = "missing motor bus '" + busparam + "' - cannot create motor" ;
+            errorMessage(id, msg);
+            return null;
+        }
+
         //
-        // Get the CAN id from the settings file
+        // Get the CAN id and bus for the motor
         //
+        String bus = settings_.getOrNull(busparam).getString() ;
         int canid = settings_.getOrNull(canparam).getInteger();
-        if (motors_.containsKey(canid)) {
+
+        MotorController dup = getMotorController(bus, canid) ;
+        if (dup != null) {
             //
             // There is already a motor with this CAN id.  Signal an error.
             //
-            MotorController dup = motors_.get(canid);
-            errorMessage(id, "cannot create motor, can id is already in use '" + dup.getName() + "'");
+            errorMessage(id, "cannot create motor, can id is already in use on bus '" + bus + "' - motor name '" + dup.getName() + "'");
             return null;
         }
 
@@ -217,6 +241,15 @@ public class MotorFactory {
         // Get the motor type from the settings file
         //
         String type = settings_.getOrNull(typeparam).getString();
+
+        //
+        // Check to be sure the bus is "" except for the TalonFX
+        //
+        if (!type.equals("talon-fx") && !bus.equals("")) {
+            errorMessage(id, "cannot create motor, the bus value can only be non-empty for TalonFX motors") ;
+            return null;
+        }
+
         MotorController ctrl = null;
 
         //
@@ -227,7 +260,7 @@ public class MotorFactory {
         } else if (type.equals("talon-srx")) {
             ctrl = new CTREMotorController(name, canid, CTREMotorController.MotorType.TalonSRX);
         } else if (type.equals("talon-fx")) {
-            ctrl = new TalonFXMotorController(name, canid, leader);
+            ctrl = new TalonFXMotorController(name, bus, canid, leader);
         } else if (type.equals("victor-spx")) {
             ctrl = new CTREMotorController(name, canid, CTREMotorController.MotorType.VictorSPX);
         } else if (type.equals("sparkmax-brushless")) {

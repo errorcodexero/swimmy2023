@@ -46,14 +46,18 @@ public class TalonFXMotorController extends MotorController
     /// \brief Create a new TalonFX Motor Controller.
     /// \param name the name of this motor
     /// \param index the CAN address of this motor controller
-    public TalonFXMotorController(String name, int canid, boolean leader) throws MotorRequestFailedException {
+    public TalonFXMotorController(String name, String bus, int canid, boolean leader) throws MotorRequestFailedException {
         super(name) ;
 
         inverted_ = false ;
         type_ = PidType.None ;
 
         if (RobotBase.isSimulation()) {
-            sim_ = SimDevice.create(SimDeviceName, canid) ;
+            String simname = SimDeviceName ;
+            if (bus.length() > 0) {
+                simname += "-" + bus ;
+            }
+            sim_ = SimDevice.create(simname, canid) ;
 
             //
             // Create a simulated motor that can be accessed by simulation models
@@ -69,7 +73,7 @@ public class TalonFXMotorController extends MotorController
             sim_power_ = null ;
             sim_encoder_ = null ;
 
-            controller_ = new TalonFX(canid) ;
+            controller_ = new TalonFX(canid, bus) ;
             controller_.configFactoryDefault() ;
             
             controller_.configVoltageCompSaturation(11.0, ControllerTimeout) ;

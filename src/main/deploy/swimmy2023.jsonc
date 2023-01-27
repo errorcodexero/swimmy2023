@@ -12,13 +12,14 @@
             "pathfollowing": false,
 
             // Subsystem related messages
-            "swervedrive": false,
+            "swerve": false,
             "swerve2023oi": false,
 
             "arm-motor-lower" : false,
             "arm-motor-upper" : false
         },
         "verbose": {
+            "swerve" : true,
         },
         "plotting": {
             "enabled" : true,
@@ -35,8 +36,9 @@
             "hw": {
                 "motors": {
                     "1": {
-                        "type": "sparkmax-brushless",
-                        "canid": 1
+                        "type": "talon-fx",
+                        "canid": 1,
+                        "bus" : ""
                     }
                 },
                 "encoder": {
@@ -50,8 +52,9 @@
             "hw": {
                 "motors": {
                     "1": {
-                        "type": "sparkmax-brushless",
-                        "canid": 2
+                        "type": "talon-fx",
+                        "canid": 2,
+                        "bus" : ""
                     }
                 },
                 "encoder": {
@@ -97,7 +100,7 @@
                 }
             },
             "hw": {
-                "bus" : "",
+                "bus" : "DriveBase",
                 "gyro": {
                     "type": "navx",
                     "start-time": 3.0
@@ -111,7 +114,7 @@
                     },
                     "encoder": {
                         "canid": 13,
-                        "offset": 75.0
+                        "offset": -222.4
                     }
                 },
                 "fr": {
@@ -123,7 +126,7 @@
                     },
                     "encoder": {
                         "canid": 23,
-                        "offset": 99.7
+                        "offset": -297.4
                     }
                 },
                 "bl": {
@@ -135,7 +138,7 @@
                     },
                     "encoder": {
                         "canid": 43,
-                        "offset": -79.9
+                        "offset": -142.47
                     }
                 },
                 "br": {
@@ -147,7 +150,7 @@
                     },
                     "encoder": {
                         "canid": 33,
-                        "offset": 45.45
+                        "offset": -76.1
                     }
                 }
             },
