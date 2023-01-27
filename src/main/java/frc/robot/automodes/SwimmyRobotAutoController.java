@@ -25,6 +25,10 @@ public class SwimmyRobotAutoController extends AutoController {
                 logger.add(ex.getMessage()).endMessage();
                 robot.logStackTrace(ex.getStackTrace());
             }
+
+            addAutoMode(new SwimmyAutoModeLeft(this));
+            addAutoMode(new SwimmyAutoModeMiddle(this));
+            addAutoMode(new SwimmyAutoModeRight(this));
         }
     
         public void updateAutoMode(int mode, String gamedata) {

@@ -56,6 +56,7 @@ public class SwimmyRobot2023 extends XeroRobot {
   @Override
   protected AutoController createAutoController() throws MissingParameterException, BadParameterTypeException {
     AutoController ctrl;
+    
     try {
       ctrl = new SwimmyRobotAutoController(this);
     } catch (Exception ex) {
