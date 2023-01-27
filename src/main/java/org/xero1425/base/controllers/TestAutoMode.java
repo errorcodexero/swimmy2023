@@ -14,16 +14,13 @@ import org.xero1425.misc.SettingsValue;
 /// \brief This class is the base class for the standard test mode auto mode that is
 /// created for each robot.  There is expected to be a derived class that is robot specific
 /// that supplies the specific test modes needed.
-public class TestAutoMode extends AutoMode {
+public abstract class TestAutoMode extends AutoMode {
     
     // The test mode to run
     private int which_ ;
 
     // The parameters for each test
     private Map<Integer, Map<String, SettingsValue>> parameters_ ;
-
-    // The settings name string for the which value
-    static private final String Which = "testmode:which";
 
     // The settings name string for the top level test mode key
     static private final String TestModeKey = "testmode" ;
@@ -35,8 +32,6 @@ public class TestAutoMode extends AutoMode {
         super(ctrl, name) ;
 
         ISettingsSupplier parser = ctrl.getRobot().getSettingsSupplier() ;
-        which_ = parser.get(Which).getInteger() ;
-
         parameters_ = new HashMap<>() ;
 
         for(String key : parser.getAllKeys(TestModeKey)) {
@@ -62,9 +57,15 @@ public class TestAutoMode extends AutoMode {
 
     /// \brief Returns the number of the test to run
     /// \returns the number of the test to run.
-    protected int getTestNumber() {
-        return which_;
+    public abstract String setTestNumber(int which)  throws Exception  ;
+    
+    public String setTestModeTestNumber(int which)  throws Exception  {
+        which_ = which ;
+        String ret = setTestNumber(which) ;
+        return ret ;
     }
+
+    public abstract String getCurrentModeName() ;
 
     /// \brief Returns the double value of a given parameter from the settings file test mode settings
     /// \returns the name value from the settings file    

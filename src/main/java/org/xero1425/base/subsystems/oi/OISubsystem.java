@@ -137,6 +137,11 @@ public class OISubsystem extends Subsystem {
             dev.init(ltype);
     }
 
+    public void initAutoModes() {
+        for (OIDevice dev : devices_)
+            dev.initAutoModes() ;
+    }
+
     /// \brief Called each robot loop to compute the state of the OI device.  This method
     /// also tries to create a new gamepad if one does not exist.
     @Override
@@ -195,13 +200,13 @@ public class OISubsystem extends Subsystem {
     public int getAutoModeSelector() {
         for(OIDevice dev : devices_)
         {
-            int mode = dev.getAutoModeSelector() ;
-            if (mode != -1) {
-                return mode ;
+            int sel = dev.getAutoModeSelector() ;
+            if (sel != Integer.MAX_VALUE) {
+                return sel ;
             }
         }
 
-        return -1 ;
+        return Integer.MAX_VALUE ;
     }
 
     /// \brief Add a new HID device to this OI subsystem

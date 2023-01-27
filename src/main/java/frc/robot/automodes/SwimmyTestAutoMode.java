@@ -18,90 +18,108 @@ import frc.robot.subsystems.GPMSubsystem;
 
 public class SwimmyTestAutoMode extends TestAutoMode {
 
-    public SwimmyTestAutoMode(AutoController ctrl)
-            throws InvalidActionRequest, Exception {
+    private int which_ ;
+    private String current_ ;
+
+    public SwimmyTestAutoMode(AutoController ctrl) throws InvalidActionRequest, Exception {
         super(ctrl, "Swimmy-Test-Mode");
 
+        which_ = -1 ;
+        current_ = "" ;
+    }
+
+    @Override
+    public String getCurrentModeName() {
+        return current_ ;
+    }
+
+    @Override
+    public String setTestNumber(int which) throws Exception {
+
+        if (which_ == which)
+            return current_ ;
+
+        which_ = which ;
+
+        clear() ;
+
+        AutoController ctrl = getAutoController() ;
         Swimmy2023RobotSubsystem robotsys = (Swimmy2023RobotSubsystem) ctrl.getRobot().getRobotSubsystem();
         SwerveBaseSubsystem swerve = (SwerveBaseSubsystem) robotsys.getDB();
-        MotorEncoderSubsystem armFirst = null ;
-        MotorEncoderSubsystem armSecond = null ;
-
-        double angles[] = new double[4] ;
-        double powers[] = new double[4] ;
+        MotorEncoderSubsystem armLower = null ;
+        MotorEncoderSubsystem armUpper = null ;
 
         GPMSubsystem gpm = robotsys.getGPM() ;
         ArmSubsystem arm = gpm.getArm() ;
 
         if (RobotBase.isSimulation()) {
-            armFirst = arm.getMotorA() ;
-            armSecond = arm.getMotorB() ;
+            armLower = arm.getMotorA() ;
+            armUpper = arm.getMotorB() ;
         }
 
-        switch (getTestNumber()) {
-            case 0:
+        switch (which_) {
+            case 1:
                 // Set the steering motor to the angle given, and the drive motor to the power given.  Run indefintely.  Action will
                 // stop the plot after the default plot interval (four seconds)
+                current_ = "Swerve Angle/Power" ;
                 addSubActionPair(swerve, new SwervePowerAngleAction(swerve, getDouble("angle"), getDouble("power")), true) ;
                 break;
 
-            case 1:
+            case 2:
                 // Set the steering motor to the angle given, and the drive motor to the power given.  Run  until the duration has expired
+                current_ = "Swerve Angle/Power/Duration" ;
                 addSubActionPair(swerve, new SwervePowerAngleAction(swerve, getDouble("angle"), getDouble("power"), getDouble("duration")), true) ;
                 break ;
 
-            case 2:
+            case 3:
                 // Set the steering motor to the angle given, and the drive motor to the speed given.  Run indefintely.  Action will
                 // stop the plot after the default plot interval (four seconds).  Since speed is given, the PID controller will try to
                 // maintain the target speed
+                current_ = "Swerve Angle/Speed" ;
                 addSubActionPair(swerve, new SwerveSpeedAngleAction(swerve, getDouble("angle"), getDouble("speed")), true) ;
                 break;
 
-            case 3:
+            case 4:
                 // Set the steering motor to the angle given, and the drive motor to the speed given.  Run  until the duration has expired.
                 // Since speed is given, the PID controller will try to maintain the target speed
+                current_ = "Swerve Angle/Speed/Duration" ;
                 addSubActionPair(swerve, new SwerveSpeedAngleAction(swerve, getDouble("angle"), getDouble("speed"), getDouble("duration")), true) ;
                 break ;                
 
-            case 4:
-                // Run the path follower against the path given
-                addSubActionPair(swerve, new SwerveHolonomicPathFollower(swerve, getString("name"), true), true);
-                break ;
-
             case 5:
-                // Set the steering motor to the angle given, and the drive motor to the power given.  Run  until the duration has expired
-                angles[0] = getDouble("angle");
-                angles[1] = getDouble("angle");
-                angles[2] = getDouble("angle");
-                angles[3] = getDouble("angle");
-                powers[0] = getDouble("power");
-                powers[1] = getDouble("power");
-                powers[2] = getDouble("power");
-                powers[3] = getDouble("power");
-                addSubActionPair(swerve, new SwervePowerAngleAction(swerve, angles, powers, getDouble("duration")), true) ;
+                // Run the path follower against the path given
+                current_ = "Swerve Holonimic Path Follower" ;
+                addSubActionPair(swerve, new SwerveHolonomicPathFollower(swerve, getString("name"), true), true);
                 break ;
                 
             case 10:
+                current_ = "Lower Arm Power/Duration" ;
                 if (RobotBase.isSimulation()) {
-                    addSubActionPair(armFirst, new MotorEncoderPowerAction(armFirst, getDouble("power"), getDouble("duration")), true) ;
+                    addSubActionPair(armLower, new MotorEncoderPowerAction(armLower, getDouble("power"), getDouble("duration")), true) ;
                 }
                 break ;
 
             case 11:
+                current_ = "Upper Arm Power/Duration" ;
                 if (RobotBase.isSimulation()) {
-                    addSubActionPair(armSecond, new MotorEncoderPowerAction(armSecond, getDouble("power"), getDouble("duration")), true) ;
+                    addSubActionPair(armUpper, new MotorEncoderPowerAction(armUpper, getDouble("power"), getDouble("duration")), true) ;
                 }
                 break ;
 
             case 12:
+                current_ = "Lower Arm StairStep Power/Duration" ;
                 if (RobotBase.isSimulation()) {
                     double [] mtimes = { 4.0, 4.0, 4.0, 4.0, 4.0 } ;
                     double [] mpowers = { 0.1, 0.3, 0.5, 0.7, 0.9 } ;
-                    addSubActionPair(armFirst, new MotorEncoderMultiPowerAction(armFirst, mtimes, mpowers), true) ; ;
+                    addSubActionPair(armLower, new MotorEncoderMultiPowerAction(armLower, mtimes, mpowers), true) ; ;
                 }
-                break ;                
+                break ;
 
+            default:
+                current_ = "" ;
+                break ;
         }
+
+        return current_ ;
     }
-    
 }

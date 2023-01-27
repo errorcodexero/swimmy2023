@@ -19,6 +19,7 @@
             "arm-motor-upper" : false
         },
         "verbose": {
+            "swerve" : true
         },
         "plotting": {
             "enabled" : true,
@@ -212,33 +213,26 @@
         }
     },
     "testmode": {
-        "enabled": true,
-        "which": 12,
-        "0": {
+        "1": {
             "angle": 0.0,
             "power": 0.2
         },
-        "1": {
+        "2": {
             "angle": 0.0,
             "power": 0.5,
             "duration": 1
         },
-        "2": {
+        "3": {
             "angle": 0.0,
             "speed": 0.5
         },
-        "3": {
+        "4": {
             "angle": 0.0,
             "speed": 2,
             "duration": 6.0
         },
-        "4": {
-            "name": "test-8mx"
-        },
         "5": {
-            "angle": 0.0,
-            "power": 0.1,
-            "duration": 10
+            "name": "test-8mx"
         },
         "10" : {
             "power" : 1.0,

@@ -1,0 +1,24 @@
+{
+    "stimulus" :
+    [
+        {
+            "time" : 0.0,
+            "events" :
+            [
+                {
+                    "model" : "fms",
+                    "instance" : "1",
+                    "values" : 
+                    {
+                        "comment" : "automode must be set to the correct testmode in settomgs file",
+                        "start" : 1000,
+                        "autonomous" : 0.0,
+                        "between" : 0.0,
+                        "teleop" : 0.0,
+                        "connected" : false
+                    }
+                }
+            ]
+        }
+    ]
+}

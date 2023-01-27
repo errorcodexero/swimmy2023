@@ -67,6 +67,22 @@ public class FMSModel extends SimulationModel {
             teleop_time_ = getDoublePropertyWithDefault("test", null, test_time_) ;
         }
 
+        if (hasProperty("connected")) {
+            boolean attached = false ;
+            SettingsValue v = getProperty("connected") ;
+            if (v.isBoolean()) {
+                
+                try {
+                    attached = v.getBoolean() ;
+                }
+                catch(BadParameterTypeException ex) {
+                    attached = false ;
+                }
+            }
+
+            DriverStationSim.setFmsAttached(attached);
+        }
+
         if (hasProperty("alliance")) {
             AllianceStationID id = AllianceStationID.Red1 ;
             SettingsValue v = getProperty("alliance") ;
@@ -232,7 +248,7 @@ public class FMSModel extends SimulationModel {
             test_time_ = getDoublePropertyWithDefault(name, value, test_time_) ;
             ret = true ;
         }
-        else if (name.equals("fms")) {
+        else if (name.equals("connected")) {
             if (!value.isBoolean()) {
                 final MessageLogger logger = getEngine().getMessageLogger() ;
                 logger.startMessage(MessageType.Error) ;
@@ -292,5 +308,4 @@ public class FMSModel extends SimulationModel {
 
         return ret ;
     }
-
 }

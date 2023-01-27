@@ -47,6 +47,10 @@ public abstract class OIDevice
         hid_device_ = null ;
     }
 
+    public void initAutoModes() {
+
+    }
+
     /// \brief Return the the name of the device
     /// \returns the name of the device
     public String getName() {
@@ -89,7 +93,7 @@ public abstract class OIDevice
     /// \brief Return the state of the auto mode selector, if one exists.  Otherwise return -1 if 
     /// this device does not contain an auto mode selector
     public int getAutoModeSelector() {
-        return -1 ;
+        return Integer.MAX_VALUE ;
     }
 
     /// \brief enable this HID device

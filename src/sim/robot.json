@@ -13,6 +13,7 @@
                 "autonomous" : 15.0,
                 "between" : 2.0,
                 "teleop" : 135.0,
+                "connected" : false,
                 "create_early" : true                
             }            
         },

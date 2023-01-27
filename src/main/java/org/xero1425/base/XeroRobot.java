@@ -43,6 +43,7 @@ import org.xero1425.base.controllers.BaseController;
 import org.xero1425.base.controllers.AutoController;
 import org.xero1425.base.controllers.AutoMode;
 import org.xero1425.base.controllers.TeleopController;
+import org.xero1425.base.controllers.TestAutoMode;
 import org.xero1425.base.controllers.TestController ;
 
 /// \file
@@ -241,6 +242,10 @@ public abstract class XeroRobot extends TimedRobot {
         }
         
         return auto_controller_.getAllAutomodes() ;
+    }
+
+    public TestAutoMode getTestAutoMode() {
+        return auto_controller_.getTestAutoMode() ;
     }
 
     /// \brief returns true if pneumatics are enabled
@@ -461,6 +466,8 @@ public abstract class XeroRobot extends TimedRobot {
             if (auto_controller_ != null && isSimulation()) {
                 checkPaths() ;
             }
+
+            getRobotSubsystem().getOI().initAutoModes() ;
         }
         catch(Exception ex) {
             logger_.startMessage(MessageType.Error);
@@ -938,7 +945,17 @@ public abstract class XeroRobot extends TimedRobot {
             logger_.add("    FMS Attached: ").add(str).endMessage();
     }
 
-    private void displayAutoModeState() {
+    int save1 ;
+    String save2 ;
+
+    private void displayAutoModeState(boolean success) {
+        String str = auto_controller_.getAutoModeName() ;
+
+        if (save1 != automode_ || !save2.equals(str)) {
+            save1 = automode_ ;
+            save2 = str ;
+        }
+
         SmartDashboard.putNumber("AutoModeNumber", automode_) ;
         SmartDashboard.putString("AutoModeName", auto_controller_.getAutoModeName()) ;
     }
@@ -947,16 +964,25 @@ public abstract class XeroRobot extends TimedRobot {
         if (auto_controller_ != null) {
             String msg = DriverStation.getGameSpecificMessage() ;
 
-            int sel = -1 ;
+            int sel ;
 
             if (robot_subsystem_.getOI() != null) {
                 sel = getAutoModeSelection() ;
-                if (sel != automode_ || msg.equals(game_data_) || DriverStation.isFMSAttached() != fms_connection_ || auto_controller_.isTestMode())
+                if (sel != automode_ || !msg.equals(game_data_) || DriverStation.isFMSAttached() != fms_connection_)
                 {
                     automode_ = sel ;
                     game_data_ = msg ;
                     fms_connection_ = DriverStation.isFMSAttached() ;
-                    displayAutoModeState() ;
+
+                    boolean success ;
+                    try {
+                        success = auto_controller_.updateAutoMode(sel, msg);
+                    }
+                    catch(Exception ex) {
+                        success = false ;
+                    }
+
+                    displayAutoModeState(success) ;
                 }
             }
 
