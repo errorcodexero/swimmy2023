@@ -36,7 +36,6 @@ public class JsonSettingsParser implements ISettingsSupplier {
     }
 
     public boolean readFile(String filename) {
-        
         logger_.startMessage(MessageType.Info);
         logger_.add("reading JSON robots setting file ").addQuoted(filename) ;
         logger_.endMessage();    

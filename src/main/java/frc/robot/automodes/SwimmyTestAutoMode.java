@@ -12,9 +12,9 @@ import org.xero1425.base.subsystems.swerve.common.SwervePowerAngleAction;
 import org.xero1425.base.subsystems.swerve.common.SwerveSpeedAngleAction;
 
 import edu.wpi.first.wpilibj.RobotBase;
-import frc.robot.Swimmy2023RobotSubsystem;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.GPMSubsystem;
+import frc.robot.subsystems.Swimmy2023RobotSubsystem;
 
 public class SwimmyTestAutoMode extends TestAutoMode {
 

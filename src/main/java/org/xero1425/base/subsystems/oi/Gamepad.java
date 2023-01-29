@@ -193,7 +193,7 @@ public abstract class Gamepad extends OIDevice
 
     /// \brief Returns true if the right trigger is pressed
     /// \returns true if the right trigger is pressed    
-    public boolean isLBackButtonPrssed() {
+    public boolean isLBackButtonPressed() {
         boolean ret ;
 
         try {

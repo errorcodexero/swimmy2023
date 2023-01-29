@@ -1,13 +1,10 @@
-package frc.robot;
+package frc.robot.subsystems;
 
 import org.xero1425.base.XeroRobot;
 import org.xero1425.base.subsystems.RobotSubsystem;
 import org.xero1425.base.subsystems.swerve.common.SwerveBaseSubsystem;
 import org.xero1425.base.subsystems.swerve.sdsswerve.SDSSwerveDriveSubsystem;
 import org.xero1425.base.subsystems.vision.LimeLightSubsystem;
-
-import frc.robot.subsystems.GPMSubsystem;
-import frc.robot.subsystems.Swimmy2023OISubsystem;
 
 
 public class Swimmy2023RobotSubsystem extends RobotSubsystem {
