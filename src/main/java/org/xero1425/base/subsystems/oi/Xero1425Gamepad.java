@@ -172,7 +172,7 @@ public class Xero1425Gamepad extends Gamepad {
                 }
                 else {
                     double boost = DriverStation.getStickAxis(getIndex(), AxisNumber.LTRIGGER.value) ;
-                    boolean slow = isLBackButtonPrssed() ;
+                    boolean slow = isLBackButtonPressed() ;
 
                     double power = scalePower(-ly, boost, slow) ;
                     double spin = (Math.abs(rx) > 0.01) ? scaleTurn(rx, boost, slow) : 0.0 ;

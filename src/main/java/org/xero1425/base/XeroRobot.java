@@ -708,7 +708,7 @@ public abstract class XeroRobot extends TimedRobot {
     // \brief return the MAC address for the practice bot, expected to be overridden by the derived class
     /// \returns the MAC address for the practice bot
     protected byte[] getPracticeBotMacAddress() {
-        return null;
+        return new byte[] { 0x01, 0x02, 0x03, 0x04, 0x05, 0x06 } ;
     }
 
     /// \brief returns true if the current robot is the practice bot.  This is done by comparing the MAC

@@ -14,6 +14,7 @@ import org.xero1425.simulator.engine.ModelFactory;
 import org.xero1425.simulator.engine.SimulationEngine;
 
 import frc.robot.automodes.SwimmyRobotAutoController;
+import frc.robot.subsystems.Swimmy2023RobotSubsystem;
 
 
 /**

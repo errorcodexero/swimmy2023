@@ -1,15 +1,30 @@
 package org.xero1425.base.subsystems.oi;
 
 import org.xero1425.base.LoopType;
+import org.xero1425.base.subsystems.RobotSubsystem;
 import org.xero1425.base.subsystems.swerve.common.SwerveBaseSubsystem;
 import org.xero1425.base.subsystems.swerve.common.SwerveDriveChassisSpeedAction;
 import org.xero1425.misc.BadParameterTypeException;
 import org.xero1425.misc.MissingParameterException;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.DriverStation;
 
 public class SwerveDriveGamepad extends Gamepad {
+    public enum SwerveResetButton {
+        A,
+        B,
+        X,
+        Y,
+        LJoy,
+        RJoy,
+        RBack,
+        LBack,
+        RTrigger,
+        LTrigger
+    }
+
     private SwerveBaseSubsystem db_;
     private double angle_maximum_;
     private double pos_maximum_;
@@ -18,6 +33,7 @@ public class SwerveDriveGamepad extends Gamepad {
     private double deadband_rotate_ ;
     private double power_ ;
     private SwerveDriveChassisSpeedAction action_;
+    private SwerveResetButton[] reset_buttons_ ;
 
     public SwerveDriveGamepad(OISubsystem oi, int index, SwerveBaseSubsystem drive_) throws Exception {
         super(oi, "swerve_gamepad", index);
@@ -31,6 +47,11 @@ public class SwerveDriveGamepad extends Gamepad {
         }
 
         db_ = drive_;
+        reset_buttons_ = null ;
+    }
+
+    public void setSwerveResetButtons(SwerveResetButton[] buttons) {
+        reset_buttons_ = buttons ;
     }
 
     @Override
@@ -52,6 +73,42 @@ public class SwerveDriveGamepad extends Gamepad {
     @Override
     public void computeState() {
         super.computeState();
+
+        boolean reset = false ;
+
+        if (reset_buttons_ != null && reset_buttons_.length > 0) {
+            reset = true ;
+
+            for(SwerveResetButton button : reset_buttons_) {
+                boolean bstate = false ;
+
+                switch(button) {
+                    case A: bstate = isAPressed() ; break ;
+                    case B: bstate = isAPressed() ; break ;
+                    case X: bstate = isAPressed() ; break ;
+                    case Y: bstate = isAPressed() ; break ;
+                    case LBack: bstate = isAPressed() ; break ;
+                    case RBack: bstate = isAPressed() ; break ;
+                    case LJoy: bstate = isAPressed() ; break ;
+                    case RJoy: bstate = isAPressed() ; break ;
+                    case LTrigger: bstate = isAPressed() ; break ;
+                    case RTrigger: bstate = isAPressed() ; break ;
+                } ;
+
+                if (!bstate) {
+                    reset = false ;
+                    break ;
+                }
+            }
+        }
+
+        if (reset) {
+            RobotSubsystem robotSubsystem = getSubsystem().getRobot().getRobotSubsystem();
+            SwerveBaseSubsystem db = (SwerveBaseSubsystem)robotSubsystem.getDB() ;
+            if (db != null) {
+                db.setPose(new Pose2d()) ;
+            }
+        }
     }
 
     @Override

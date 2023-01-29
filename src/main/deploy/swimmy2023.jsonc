@@ -12,13 +12,14 @@
             "pathfollowing": false,
 
             // Subsystem related messages
-            "swervedrive": false,
+            "swerve": false,
             "swerve2023oi": false,
 
             "arm-motor-lower" : false,
             "arm-motor-upper" : false
         },
         "verbose": {
+            "swerve" : true
         },
         "plotting": {
             "enabled" : true,
@@ -35,8 +36,9 @@
             "hw": {
                 "motors": {
                     "1": {
-                        "type": "sparkmax-brushless",
-                        "canid": 1
+                        "type": "talon-fx",
+                        "canid": 1,
+                        "bus" : ""
                     }
                 },
                 "encoder": {
@@ -50,8 +52,9 @@
             "hw": {
                 "motors": {
                     "1": {
-                        "type": "sparkmax-brushless",
-                        "canid": 2
+                        "type": "talon-fx",
+                        "canid": 2,
+                        "bus" : ""
                     }
                 },
                 "encoder": {
@@ -97,7 +100,7 @@
                 }
             },
             "hw": {
-                "bus" : "",
+                "bus" : "DriveBase",
                 "gyro": {
                     "type": "navx",
                     "start-time": 3.0
@@ -111,7 +114,10 @@
                     },
                     "encoder": {
                         "canid": 13,
-                        "offset": 75.0
+                        "offset": {
+                            "PRACTICE" : 1.0,
+                            "COMPETITION" : -218.85
+                        }
                     }
                 },
                 "fr": {
@@ -123,7 +129,10 @@
                     },
                     "encoder": {
                         "canid": 23,
-                        "offset": 99.7
+                        "offset": {
+                            "PRACTICE" : 1.0,
+                            "COMPETITION" : -295.5
+                        }
                     }
                 },
                 "bl": {
@@ -135,7 +144,10 @@
                     },
                     "encoder": {
                         "canid": 43,
-                        "offset": -79.9
+                        "offset": {
+                            "PRACTICE" : 1.0,
+                            "COMPETITION" : -146.1
+                        }
                     }
                 },
                 "br": {
@@ -147,43 +159,70 @@
                     },
                     "encoder": {
                         "canid": 33,
-                        "offset": 45.45
+                        "offset": {
+                            "PRACTICE" : 1.0,
+                            "COMPETITION" : -77.96
+                        }
                     }
                 }
             },
             "pids": {
                 "fl": {
-                    "kp": 0.0, //0.02,
+                    "kp":  {
+                        "PRACTICE" : 0.02,
+                        "COMPETITION" : 0.00            // 0.06
+                    },
                     "ki": 0.0,
                     "kd": 0.0,
-                    "kf": 0.2193,
+                    "kf" : {
+                        "PRACTICE" : 0.0,
+                        "COMPETITION" : 0.224895986
+                    },
                     "min": -1.0,
                     "max": 1.0,
                     "imax": 0.0
                 },
                 "fr": {
-                    "kp": 0.0, //0.02,
+                    "kp":  {
+                        "PRACTICE" : 0.02,
+                        "COMPETITION" : 0.00                // 1.0
+                    },
                     "ki": 0.0,
                     "kd": 0.0,
-                    "kf": 0.2183,
+                    "kf" : {
+                        "PRACTICE" : 0.0,
+                        "COMPETITION" : 0.223224251
+                    },
                     "min": -1.0,
                     "max": 1.0,
                     "imax": 0.0
                 },
                 "bl": {
-                    "kp": 0.0, //0.02,
+                    "kp":  {
+                        "PRACTICE" : 0.02,
+                        "COMPETITION" : 0.00                    // 1.0
+                    },
                     "ki": 0.0,
                     "kd": 0.0,
-                    "kf": 0.2160,
+                    "kf" : {
+                        "PRACTICE" : 0.02,
+                        "COMPETITION" : 0.231975503
+                    },
                     "min": -1.0,
                     "max": 1.0,
                     "imax": 0.0
                 },
                 "br": {
-                    "kp": 0.0, //0.02,
+                    "kp":  {
+                        "PRACTICE" : 0.02,
+                        "COMPETITION" : 0.00                    // 1.0
+                    },
                     "ki": 0.0,
                     "kd": 0.0,
-                    "kf": 0.2183,
+                    "kf" : {
+                        "PRACTICE" : 0.02,
+                        "COMPETITION" : 0.224366166
+                    },
                     "min": -1.0,
                     "max": 1.0,
                     "imax": 0.0
@@ -213,15 +252,15 @@
     },
     "testmode": {
         "enabled": true,
-        "which": 12,
+        "which": 3,
         "0": {
             "angle": 0.0,
             "power": 0.2
         },
         "1": {
             "angle": 0.0,
-            "power": 0.5,
-            "duration": 1
+            "power": 0.9,
+            "duration": 1.7
         },
         "2": {
             "angle": 0.0,
@@ -229,8 +268,8 @@
         },
         "3": {
             "angle": 0.0,
-            "speed": 2,
-            "duration": 6.0
+            "speed": 1,
+            "duration": 4.0
         },
         "4": {
             "name": "test-8mx"
