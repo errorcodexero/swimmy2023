@@ -1,4 +1,4 @@
-package frc.robot.subsystems;
+package frc.robot.subsystems.arm;
 
 import org.xero1425.base.subsystems.Subsystem;
 import org.xero1425.base.subsystems.motorsubsystem.MotorEncoderSubsystem;
@@ -11,19 +11,19 @@ public class ArmSubsystem extends Subsystem {
 
     public ArmSubsystem(Subsystem parent) throws Exception {
         super(parent, "arm");
-        if (RobotBase.isSimulation()) {
-            motor_lower_ = new MotorEncoderSubsystem(this, "arm-motor-lower", false);
-            addChild(motor_lower_);
-            motor_upper_ = new MotorEncoderSubsystem(this, "arm-motor-upper", false);
-            addChild(motor_upper_);
-        }
+        
+        motor_lower_ = new MotorEncoderSubsystem(this, "arm-motor-lower", false);
+        addChild(motor_lower_);
+        
+        motor_upper_ = new MotorEncoderSubsystem(this, "arm-motor-upper", false);
+        addChild(motor_upper_);
     }
 
-    public MotorEncoderSubsystem getMotorA() {
+    public MotorEncoderSubsystem getLowerSubsystem() {
         return motor_lower_ ;
     }
 
-    public MotorEncoderSubsystem getMotorB() {
+    public MotorEncoderSubsystem getUpperSubsystem() {
         return motor_upper_ ;
     }
 }

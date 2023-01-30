@@ -1,6 +1,9 @@
-package frc.robot.subsystems;
+package frc.robot.subsystems.gpm;
 
 import org.xero1425.base.subsystems.Subsystem;
+
+import frc.robot.subsystems.arm.ArmSubsystem;
+import frc.robot.subsystems.grabber.GrabberSubsystem;
 
 public class GPMSubsystem extends Subsystem {
     private ArmSubsystem armSubsystem_;

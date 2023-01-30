@@ -1,4 +1,4 @@
-package frc.robot.subsystems;
+package frc.robot.subsystems.grabber;
 
 import org.xero1425.base.subsystems.Subsystem;
 

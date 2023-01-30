@@ -6,6 +6,8 @@ import org.xero1425.base.subsystems.swerve.common.SwerveBaseSubsystem;
 import org.xero1425.base.subsystems.swerve.sdsswerve.SDSSwerveDriveSubsystem;
 import org.xero1425.base.subsystems.vision.LimeLightSubsystem;
 
+import frc.robot.subsystems.gpm.GPMSubsystem;
+
 
 public class Swimmy2023RobotSubsystem extends RobotSubsystem {
     private GPMSubsystem gpm_;
@@ -17,8 +19,8 @@ public class Swimmy2023RobotSubsystem extends RobotSubsystem {
         super(robot, "Swimmy2023RobotSubsystem") ;
 
 
-        db_ = new SDSSwerveDriveSubsystem(this, "swerve" );
-        addChild(db_);
+        // db_ = new SDSSwerveDriveSubsystem(this, "swerve" );
+        // addChild(db_);
 
         oi_ = new Swimmy2023OISubsystem(this, db_);
         addChild(oi_);

@@ -12,8 +12,8 @@ import org.xero1425.base.subsystems.swerve.common.SwervePowerAngleAction;
 import org.xero1425.base.subsystems.swerve.common.SwerveSpeedAngleAction;
 
 import edu.wpi.first.wpilibj.RobotBase;
-import frc.robot.subsystems.ArmSubsystem;
-import frc.robot.subsystems.GPMSubsystem;
+import frc.robot.subsystems.arm.ArmSubsystem;
+import frc.robot.subsystems.gpm.GPMSubsystem;
 import frc.robot.subsystems.Swimmy2023RobotSubsystem;
 
 public class SwimmyTestAutoMode extends TestAutoMode {
@@ -24,8 +24,8 @@ public class SwimmyTestAutoMode extends TestAutoMode {
 
         Swimmy2023RobotSubsystem robotsys = (Swimmy2023RobotSubsystem) ctrl.getRobot().getRobotSubsystem();
         SwerveBaseSubsystem swerve = (SwerveBaseSubsystem) robotsys.getDB();
-        MotorEncoderSubsystem armFirst = null ;
-        MotorEncoderSubsystem armSecond = null ;
+        MotorEncoderSubsystem armLower = null ;
+        MotorEncoderSubsystem armUpper = null ;
 
         double angles[] = new double[4] ;
         double powers[] = new double[4] ;
@@ -33,10 +33,8 @@ public class SwimmyTestAutoMode extends TestAutoMode {
         GPMSubsystem gpm = robotsys.getGPM() ;
         ArmSubsystem arm = gpm.getArm() ;
 
-        if (RobotBase.isSimulation()) {
-            armFirst = arm.getMotorA() ;
-            armSecond = arm.getMotorB() ;
-        }
+        armLower = arm.getLowerSubsystem() ;
+        armUpper = arm.getUpperSubsystem() ;
 
         switch (getTestNumber()) {
             case 0:
@@ -82,22 +80,18 @@ public class SwimmyTestAutoMode extends TestAutoMode {
                 break ;
                 
             case 10:
-                if (RobotBase.isSimulation()) {
-                    addSubActionPair(armFirst, new MotorEncoderPowerAction(armFirst, getDouble("power"), getDouble("duration")), true) ;
-                }
+                addSubActionPair(armLower, new MotorEncoderPowerAction(armLower, getDouble("power"), getDouble("duration")), true) ;
                 break ;
 
             case 11:
-                if (RobotBase.isSimulation()) {
-                    addSubActionPair(armSecond, new MotorEncoderPowerAction(armSecond, getDouble("power"), getDouble("duration")), true) ;
-                }
+                addSubActionPair(armUpper, new MotorEncoderPowerAction(armUpper, getDouble("power"), getDouble("duration")), true) ;
                 break ;
 
-            case 12:
+            case 19:
                 if (RobotBase.isSimulation()) {
                     double [] mtimes = { 4.0, 4.0, 4.0, 4.0, 4.0 } ;
                     double [] mpowers = { 0.1, 0.3, 0.5, 0.7, 0.9 } ;
-                    addSubActionPair(armFirst, new MotorEncoderMultiPowerAction(armFirst, mtimes, mpowers), true) ; ;
+                    addSubActionPair(armLower, new MotorEncoderMultiPowerAction(armLower, mtimes, mpowers), true) ; ;
                 }
                 break ;                
 
