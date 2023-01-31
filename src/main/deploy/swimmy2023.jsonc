@@ -179,7 +179,7 @@
                 "fl": {
                     "kp":  {
                         "PRACTICE" : 0.02,
-                        "COMPETITION" : 0.00            // 0.06 - tenative, see comment above
+                        "COMPETITION" : 0.6 //0.3            // 0.06 - tenative, see comment above
                     },
                     "ki": 0.0,
                     "kd": 0.0,
@@ -194,7 +194,7 @@
                 "fr": {
                     "kp":  {
                         "PRACTICE" : 0.02,
-                        "COMPETITION" : 0.00                // 1.0 - tenative, see comment above
+                        "COMPETITION" : 1//1.5               // 1.0 - tenative, see comment above
                     },
                     "ki": 0.0,
                     "kd": 0.0,
@@ -209,7 +209,7 @@
                 "bl": {
                     "kp":  {
                         "PRACTICE" : 0.02,
-                        "COMPETITION" : 0.00                    // 1.0 - tenative, see comment above
+                        "COMPETITION" : 1//0.45                   // 1.0 - tenative, see comment above
                     },
                     "ki": 0.0,
                     "kd": 0.0,
@@ -224,7 +224,7 @@
                 "br": {
                     "kp":  {
                         "PRACTICE" : 0.02,
-                        "COMPETITION" : 0.00                    // 1.0 - tenative, see comment above
+                        "COMPETITION" : 1//0.45                    // 1.0 - tenative, see comment above
                     },
                     "ki": 0.0,
                     "kd": 0.0,
@@ -261,7 +261,7 @@
     },
     "testmode": {
         "enabled": true,
-        "which": 11,
+        "which": 3,
         "0": {
             "angle": 0.0,
             "power": 0.2
@@ -278,7 +278,7 @@
         "3": {
             "angle": 0.0,
             "speed": 1,
-            "duration": 4.0
+            "duration": 2.0
         },
         "4": {
             "name": "test-8mx"

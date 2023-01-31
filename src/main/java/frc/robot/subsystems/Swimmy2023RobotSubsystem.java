@@ -18,9 +18,8 @@ public class Swimmy2023RobotSubsystem extends RobotSubsystem {
     public Swimmy2023RobotSubsystem(XeroRobot robot) throws Exception {
         super(robot, "Swimmy2023RobotSubsystem") ;
 
-
-        // db_ = new SDSSwerveDriveSubsystem(this, "swerve" );
-        // addChild(db_);
+        db_ = new SDSSwerveDriveSubsystem(this, "swerve" );
+        addChild(db_);
 
         oi_ = new Swimmy2023OISubsystem(this, db_);
         addChild(oi_);
