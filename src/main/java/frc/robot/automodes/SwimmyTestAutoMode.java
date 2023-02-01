@@ -14,6 +14,8 @@ import org.xero1425.base.subsystems.swerve.common.SwerveSpeedAngleAction;
 import edu.wpi.first.wpilibj.RobotBase;
 import frc.robot.subsystems.arm.ArmSubsystem;
 import frc.robot.subsystems.gpm.GPMSubsystem;
+import frc.robot.subsystems.grabber.GrabberOpenAction;
+import frc.robot.subsystems.grabber.GrabberSubsystem;
 import frc.robot.subsystems.Swimmy2023RobotSubsystem;
 
 public class SwimmyTestAutoMode extends TestAutoMode {
@@ -26,15 +28,21 @@ public class SwimmyTestAutoMode extends TestAutoMode {
         SwerveBaseSubsystem swerve = (SwerveBaseSubsystem) robotsys.getDB();
         MotorEncoderSubsystem armLower = null ;
         MotorEncoderSubsystem armUpper = null ;
+        MotorEncoderSubsystem grabberLeft = null ;
+        MotorEncoderSubsystem grabberRight = null ;
 
         double angles[] = new double[4] ;
         double powers[] = new double[4] ;
 
         GPMSubsystem gpm = robotsys.getGPM() ;
         ArmSubsystem arm = gpm.getArm() ;
+        GrabberSubsystem grabber = gpm.getGrabber();
 
         armLower = arm.getLowerSubsystem() ;
         armUpper = arm.getUpperSubsystem() ;
+
+        grabberLeft = grabber.getLeftSubsystem() ;
+        grabberRight = grabber.getRightSubsystem() ;
 
         switch (getTestNumber()) {
             case 0:
@@ -87,14 +95,30 @@ public class SwimmyTestAutoMode extends TestAutoMode {
                 addSubActionPair(armUpper, new MotorEncoderPowerAction(armUpper, getDouble("power"), getDouble("duration")), true) ;
                 break ;
 
+            case 12:
+                addSubActionPair(armLower, new MotorEncoderPowerAction(armLower, getDouble("lowerpower"), getDouble("lowerduration")), false) ;
+                addSubActionPair(armUpper, new MotorEncoderPowerAction(armUpper, getDouble("upperpower"), getDouble("upperduration")), true) ;
+                break ;
+
             case 19:
                 if (RobotBase.isSimulation()) {
                     double [] mtimes = { 4.0, 4.0, 4.0, 4.0, 4.0 } ;
                     double [] mpowers = { 0.1, 0.3, 0.5, 0.7, 0.9 } ;
                     addSubActionPair(armLower, new MotorEncoderMultiPowerAction(armLower, mtimes, mpowers), true) ; ;
                 }
-                break ;                
+                break ;
 
+            case 20:
+                addSubActionPair(grabberLeft, new MotorEncoderPowerAction(grabberLeft, getDouble("power"), getDouble("duration")), true) ;
+                break ;
+
+            case 21:
+                addSubActionPair(grabberRight, new MotorEncoderPowerAction(grabberRight, getDouble("power"), getDouble("duration")), true) ;
+                break ;
+
+            case 29:
+                addSubActionPair(grabber, new GrabberOpenAction(grabber), true) ;
+                break ;
         }
     }
     

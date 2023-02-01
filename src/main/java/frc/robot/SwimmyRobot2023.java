@@ -13,6 +13,7 @@ import org.xero1425.misc.XeroPathType;
 import org.xero1425.simulator.engine.ModelFactory;
 import org.xero1425.simulator.engine.SimulationEngine;
 
+import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import frc.robot.automodes.SwimmyRobotAutoController;
 import frc.robot.subsystems.Swimmy2023RobotSubsystem;
 
@@ -27,6 +28,8 @@ public class SwimmyRobot2023 extends XeroRobot {
 
   public SwimmyRobot2023() {
     super(0.02) ;
+
+    LiveWindow.enableAllTelemetry();
   }
   
   public String getName() {

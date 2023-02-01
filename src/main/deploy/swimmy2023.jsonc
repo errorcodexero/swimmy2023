@@ -37,7 +37,7 @@
                 "motors": {
                     "1": {
                         "type": "talon-fx",
-                        "canid": 2,
+                        "canid": 1,
                         "bus" : "",
                         "inverted" : true,
                         "neutral_mode": "coast"
@@ -55,9 +55,53 @@
                 "motors": {
                     "1": {
                         "type": "talon-fx",
-                        "canid": 1,
+                        "canid": 2,
                         "bus" : "",
                         "inverted" : false,
+                        "neutral_mode": "coast"
+                    }
+                },
+                "encoder": {
+                    "type": "motor",
+                    "m": 1,
+                    "b": 0
+                }
+            }
+        },
+        "grabber" : {
+            "hw" : {
+                "solenoids" : {
+                    "solenoid" : 0
+                },
+                "sensor" : 0
+            }
+        },
+        "grabber-motor-left": {
+            "hw": {
+                "motors": {
+                    "1": {
+                        "type": "sparkmax-brushless",
+                        "canid": 3,
+                        "bus" : "",
+                        "inverted" : false,
+                        "neutral_mode": "coast"
+                    }
+                },
+                "encoder": {
+                    "type": "motor",
+                    "m": 1,
+                    "b": 0
+                }
+            }
+        },
+        "grabber-motor-right": {
+            "hw": {
+                "motors": {
+                    "1": {
+                        "type": "sparkmax-brushless",
+                        "canid": 4,
+                        "bus" : "",
+                        "inverted" : true,
                         "neutral_mode": "coast"
                     }
                 },
@@ -261,7 +305,7 @@
     },
     "testmode": {
         "enabled": true,
-        "which": 3,
+        "which": 29,
         "0": {
             "angle": 0.0,
             "power": 0.2
@@ -289,15 +333,28 @@
             "duration": 10
         },
         "10" : {
-            "power" : 0.2,
-            "duration" : 2.0
+            "power" : 0.3,
+            "duration" : 4.0
         },
         "11" : {
             "power" : 0.1,
-            "duration" : 2.0
+            "duration" : 0.5
         },
         "12" : {
-            
+            "upperpower" : 0.2,
+            "upperduration" : 3.0,
+            "lowerpower" : 0.2,
+            "lowerduration" : 4.0
+        },
+        "20" : {
+            "power" : 0.2,
+            "duration" : 3.0            
+        },
+        "21" : {
+            "power" : 0.2,
+            "duration" : 3.0            
+        },
+        "29" : {
         }
     }
 }
