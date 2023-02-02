@@ -3,8 +3,6 @@ package frc.robot.subsystems.arm;
 import org.xero1425.base.subsystems.Subsystem;
 import org.xero1425.base.subsystems.motorsubsystem.MotorEncoderSubsystem;
 
-import edu.wpi.first.wpilibj.RobotBase;
-
 public class ArmSubsystem extends Subsystem {
     private MotorEncoderSubsystem motor_lower_;
     private MotorEncoderSubsystem motor_upper_;
