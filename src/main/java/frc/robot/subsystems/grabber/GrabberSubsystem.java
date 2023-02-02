@@ -33,6 +33,10 @@ public class GrabberSubsystem extends Subsystem {
         solenoid_.set(true);
     }
 
+    public void close() {
+        solenoid_.set(false);
+    }
+
     @Override
     protected void computeMyState() {
         sensor_value_ = sensor_.get() ;
