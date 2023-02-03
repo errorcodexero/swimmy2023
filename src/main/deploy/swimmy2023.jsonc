@@ -361,7 +361,7 @@
                         "x": 0,
                         "y": 0
                     },
-                    "right": {
+                    "right": { //closer to edge of field
                         "x": 0,
                         "y": 0
                     }     
@@ -421,7 +421,7 @@
                         "x": 0,
                         "y": 0
                     },
-                    "right": {
+                    "right": { //closer to edge of field
                         "x": 0,
                         "y": 0
                     }     
