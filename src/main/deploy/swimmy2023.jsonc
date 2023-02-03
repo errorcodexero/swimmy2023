@@ -46,7 +46,8 @@
                 "encoder": {
                     "type": "motor",
                     "m": 1,
-                    "b": 0
+                    "b": 0,
+                    "units" : "ticks"
                 }
             }
         },
@@ -64,7 +65,8 @@
                 "encoder": {
                     "type": "motor",
                     "m": 1,
-                    "b": 0
+                    "b": 0,
+                    "units" : "ticks"
                 }
             }
         },
@@ -90,7 +92,8 @@
                 "encoder": {
                     "type": "motor",
                     "m": 1,
-                    "b": 0
+                    "b": 0,
+                    "units" : "ticks"
                 }
             }
         },
@@ -108,7 +111,8 @@
                 "encoder": {
                     "type": "motor",
                     "m": 1,
-                    "b": 0
+                    "b": 0,
+                    "units" : "ticks"
                 }
             }
         },
@@ -305,7 +309,7 @@
     },
     "testmode": {
         "enabled": true,
-        "which": 29,
+        "which": 19,
         "0": {
             "angle": 0.0,
             "power": 0.2

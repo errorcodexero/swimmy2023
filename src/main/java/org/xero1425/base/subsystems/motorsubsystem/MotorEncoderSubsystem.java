@@ -139,6 +139,9 @@ public class MotorEncoderSubsystem extends MotorSubsystem
         use_ctrl_velocity_ = false ;
     }
 
+    public String getUnits() {
+        return encoder_.getUnits();
+    }
     
     public double getMaxPos() {
         return max_value_ ;

@@ -16,7 +16,7 @@ public class MotorEncoderPowerAction extends MotorPowerAction
     private int plot_id_ ;
 
     // The columns to plot
-    private static String[] plot_columns_ = { "time (s)","pos (m)","vel (m/s)","accel (m/s/s)","out (v)","encoder (ticks)" } ;
+    private String[] plot_columns_ = { "time (s)","pos (%%units%%)","vel (%%units%%/s)","accel (%%units%%/s/s)","out (v)","encoder (ticks)" } ;
 
     /// \brief Create the MotorEncoderPowerAction that applies a fixed power value then is done
     /// \param motor the subsystem to apply the action to
@@ -63,7 +63,8 @@ public class MotorEncoderPowerAction extends MotorPowerAction
         super.start() ;
 
         start_ = getSubsystem().getRobot().getTime() ;
-        getSubsystem().startPlot(plot_id_, plot_columns_);
+        MotorEncoderSubsystem sub = (MotorEncoderSubsystem)getSubsystem();
+        getSubsystem().startPlot(plot_id_, convertUnits(plot_columns_, sub.getUnits()));
     }
 
     /// \brief Called each robot loop.  Calls the base class to perform the action and then

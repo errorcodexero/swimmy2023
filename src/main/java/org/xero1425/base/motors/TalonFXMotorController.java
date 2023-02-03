@@ -90,11 +90,7 @@ public class TalonFXMotorController extends MotorController
                 controller_.setStatusFramePeriod(StatusFrameEnhanced.Status_1_General, 255, ControllerTimeout) ;
             }
 
-            //
-            //
             controller_.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 20, ControllerTimeout) ;
-
-            // controller_.configNeutralDeadband(0.1) ;
         }
     }
 

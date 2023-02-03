@@ -22,4 +22,15 @@ public abstract class MotorAction extends Action
     public MotorSubsystem getSubsystem() {
         return motor_subsystem_;
     }
+
+    protected String[] convertUnits(String[] columns, String units) {
+        String[] ret = new String[columns.length];
+
+        for(int i = 0 ; i < columns.length ; i++) {
+            String fixed = columns[i].replace("%%units%%", units) ;
+            ret[i] = fixed ;
+        }
+
+        return ret;
+    }
 }

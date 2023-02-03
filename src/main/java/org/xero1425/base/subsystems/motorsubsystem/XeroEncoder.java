@@ -40,6 +40,9 @@ public class XeroEncoder {
     // The mapper that maps units from encoder units to real world units
     private EncoderMapper mapper_ ;
 
+    // The units for the mapped values
+    private String units_ ;
+
     /// \brief Create a new XeroEncoder object
     /// \param robot the robot this encoder is part of, used to get settings and the message logger
     /// \param cname the name of the encoder
@@ -49,6 +52,10 @@ public class XeroEncoder {
             throws BadParameterTypeException, MissingParameterException, EncoderConfigException,
             BadMotorRequestException {
         createEncoder(robot, cname, ctrl);
+    }
+
+    public String getUnits() {
+        return units_ ;
     }
 
     /// \brief get the raw encoder count from the encoder
@@ -232,6 +239,7 @@ public class XeroEncoder {
     
         quad_m_ = settings.get(cname + ":m").getDouble() ;
         quad_b_ = settings.get(cname + ":b").getDouble() ;
+        units_ = settings.get(cname + ":units").getString() ;
     }
 
     private void createQuadEncoder(XeroRobot robot, String cname)
@@ -246,6 +254,7 @@ public class XeroEncoder {
         quad_ = new Encoder(i1, i2) ;
         quad_m_ = settings.get(cname + ":m").getDouble() ;
         quad_b_ = settings.get(cname + ":b").getDouble() ;
+        units_ = settings.get(cname + ":units").getString() ;
     }
 
     private void createAnalogEncoder(XeroRobot robot, String cname)
@@ -265,6 +274,7 @@ public class XeroEncoder {
         emax = settings.get(cname + ":emax").getDouble() ;
         rc = settings.get(cname + ":rc").getDouble() ;
         ec = settings.get(cname + ":ec").getDouble() ;
+        units_ = settings.get(cname + ":units").getString() ;
 
         mapper_ = new EncoderMapper(rmax, rmin, emax, emin) ;
         mapper_.calibrate(rc, ec) ;
@@ -289,6 +299,7 @@ public class XeroEncoder {
         emax = settings.get(cname + ":emax").getDouble() ;
         rc = settings.get(cname + ":rc").getDouble() ;
         ec = settings.get(cname + ":ec").getDouble() ;
+        units_ = settings.get(cname + ":units").getString() ;
 
         mapper_ = new EncoderMapper(rmax, rmin, emax, emin) ;
         mapper_.calibrate(rc, ec) ;

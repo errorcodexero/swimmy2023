@@ -85,7 +85,7 @@ public class MotorEncoderGotoAction extends MotorAction {
     static int name_id_ = 0 ;
 
     // The columns to plot
-    static final String [] plot_columns_ = { "time (sec)", "tpos (m)", "apos (m)", "tvel (m/s)", "avel (m/s)", "out (volts)" } ;
+    private String [] plot_columns_ = { "time (sec)", "tpos (%%units%%)", "apos (%%units%%)", "tvel (%%units%%/s)", "avel (%%units%%/s)", "out (volts)" } ;
 
     /// \brief Create the action
     /// \param sub the MotorEncoderSubsystem subsystem for the action    
@@ -135,7 +135,8 @@ public class MotorEncoderGotoAction extends MotorAction {
     public void start() throws Exception {
         super.start() ;
         setTarget() ;
-        getSubsystem().startPlot(plot_id_, plot_columns_) ;
+        MotorEncoderSubsystem sub = (MotorEncoderSubsystem)getSubsystem();
+        getSubsystem().startPlot(plot_id_, convertUnits(plot_columns_, sub.getUnits()));
     }
 
     /// \brief Called once per robot loop to adjust the motor power to follow the motion plan
