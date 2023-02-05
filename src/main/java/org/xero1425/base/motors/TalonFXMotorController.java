@@ -284,7 +284,7 @@ public class TalonFXMotorController extends MotorController
     /// \brief Return the velocity of the motor from the PID loop running in the controller
     /// \returns the velocity of the motor from the PID loop running in the controller
     public double getVelocity() throws BadMotorRequestException, MotorRequestFailedException {
-        double ret = controller_.getSelectedSensorVelocity() ;
+        double ret = controller_.getSelectedSensorVelocity() * 10 ;
         return ret ;
     }
 

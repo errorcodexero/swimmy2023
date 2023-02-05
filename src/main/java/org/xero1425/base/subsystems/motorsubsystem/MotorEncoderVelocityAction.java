@@ -47,7 +47,7 @@ public class MotorEncoderVelocityAction extends MotorAction {
     private XeroTimer plot_timer_ ;
 
     // The columns to plot
-    private static String [] columns_ = { "time", "target(rpm)", "actual(rpm)"}  ;
+    private static String [] columns_ = { "time", "target (u)", "actual (u)"}  ;
 
     /// \brief Create a new MotorEncoderVelocityAction
     /// \param sub the target MotorEncoderSubsystem

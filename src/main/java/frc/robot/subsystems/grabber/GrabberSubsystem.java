@@ -29,6 +29,10 @@ public class GrabberSubsystem extends Subsystem {
         solenoid_ = new XeroSolenoid(this, "solenoid") ;
     }
 
+    public boolean isSensorActive() {
+        return sensor_value_ ;
+    }
+
     public void open() {
         solenoid_.set(true);
     }
@@ -39,7 +43,7 @@ public class GrabberSubsystem extends Subsystem {
 
     @Override
     protected void computeMyState() {
-        sensor_value_ = sensor_.get() ;
+        sensor_value_ = !sensor_.get() ;
         putDashboard("grabber", DisplayType.Always, sensor_value_);
     }
 

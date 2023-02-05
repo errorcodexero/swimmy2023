@@ -20,13 +20,13 @@ public class ArmGotoAction extends Action {
 
     @Override
     public void start() throws Exception {
+        super.start() ;
+
         lower_action_ = new MotorEncoderGotoAction(arm_.getLowerSubsystem(), lower_target_, true) ;
         arm_.getLowerSubsystem().setAction(lower_action_, true) ;
 
         upper_action_ = new MotorEncoderGotoAction(arm_.getUpperSubsystem(), upper_target_, true) ;
         arm_.getUpperSubsystem().setAction(upper_action_, true) ;
-
-        arm_.getLowerSubsystem().setAction(lower_action_, true) ;
     }
 
     @Override

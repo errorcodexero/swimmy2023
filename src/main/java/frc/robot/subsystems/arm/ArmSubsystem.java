@@ -10,10 +10,10 @@ public class ArmSubsystem extends Subsystem {
     public ArmSubsystem(Subsystem parent) throws Exception {
         super(parent, "arm");
         
-        motor_lower_ = new MotorEncoderSubsystem(this, "arm-motor-lower", false);
+        motor_lower_ = new MotorEncoderSubsystem(this, "arm-motor-lower", false, true);
         addChild(motor_lower_);
         
-        motor_upper_ = new MotorEncoderSubsystem(this, "arm-motor-upper", false);
+        motor_upper_ = new MotorEncoderSubsystem(this, "arm-motor-upper", false, true);
         addChild(motor_upper_);
     }
 
@@ -23,6 +23,13 @@ public class ArmSubsystem extends Subsystem {
 
     public MotorEncoderSubsystem getUpperSubsystem() {
         return motor_upper_ ;
+    }
+
+    @Override
+    public void computeMyState() throws Exception {
+        super.computeMyState();
+
+        putDashboard("UPPER", DisplayType.Always, motor_upper_.getPosition());
     }
 }
 

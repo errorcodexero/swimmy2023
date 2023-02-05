@@ -1,11 +1,14 @@
 package frc.robot.automodes;
 
+import org.xero1425.base.actions.DelayAction;
 import org.xero1425.base.actions.InvalidActionRequest;
 import org.xero1425.base.controllers.AutoController;
 import org.xero1425.base.controllers.TestAutoMode;
+import org.xero1425.base.subsystems.motorsubsystem.MotorEncoderGotoAction;
 import org.xero1425.base.subsystems.motorsubsystem.MotorEncoderMultiPowerAction;
 import org.xero1425.base.subsystems.motorsubsystem.MotorEncoderPowerAction;
 import org.xero1425.base.subsystems.motorsubsystem.MotorEncoderSubsystem;
+import org.xero1425.base.subsystems.motorsubsystem.MotorEncoderVelocityAction;
 import org.xero1425.base.subsystems.swerve.common.SwerveBaseSubsystem;
 import org.xero1425.base.subsystems.swerve.common.SwerveHolonomicPathFollower;
 import org.xero1425.base.subsystems.swerve.common.SwervePowerAngleAction;
@@ -13,7 +16,9 @@ import org.xero1425.base.subsystems.swerve.common.SwerveSpeedAngleAction;
 
 import edu.wpi.first.wpilibj.RobotBase;
 import frc.robot.subsystems.arm.ArmSubsystem;
+import frc.robot.subsystems.gpm.GPMCollectAction;
 import frc.robot.subsystems.gpm.GPMSubsystem;
+import frc.robot.subsystems.grabber.GrabberCloseAction;
 import frc.robot.subsystems.grabber.GrabberOpenAction;
 import frc.robot.subsystems.grabber.GrabberSubsystem;
 import frc.robot.subsystems.Swimmy2023RobotSubsystem;
@@ -88,6 +93,7 @@ public class SwimmyTestAutoMode extends TestAutoMode {
                 break ;
                 
             case 10:
+                addSubActionPair(armUpper, new MotorEncoderGotoAction(armUpper, getDouble("height"), true), true) ;
                 addSubActionPair(armLower, new MotorEncoderPowerAction(armLower, getDouble("power"), getDouble("duration")), true) ;
                 break ;
 
@@ -96,8 +102,38 @@ public class SwimmyTestAutoMode extends TestAutoMode {
                 break ;
 
             case 12:
-                addSubActionPair(armLower, new MotorEncoderPowerAction(armLower, getDouble("lowerpower"), getDouble("lowerduration")), false) ;
-                addSubActionPair(armUpper, new MotorEncoderPowerAction(armUpper, getDouble("upperpower"), getDouble("upperduration")), true) ;
+                addSubActionPair(armLower, new MotorEncoderVelocityAction(armLower, "follower", getDouble("velocity")), true) ;
+                break ;
+
+            case 13:
+                addSubActionPair(armUpper, new MotorEncoderVelocityAction(armUpper, "follower", getDouble("velocity")), true) ;
+                break ;
+
+            case 14:
+                addSubActionPair(armUpper, new MotorEncoderGotoAction(armUpper, getDouble("height"), true), true) ;
+                addSubActionPair(armLower, new MotorEncoderGotoAction(armLower, getDouble("target"), true), true) ;
+                break ;                
+
+            case 15:
+                addSubActionPair(armUpper, new MotorEncoderGotoAction(armUpper, getDouble("target"), true), true) ;
+                break ;
+
+            case 17:
+                addSubActionPair(armUpper, new MotorEncoderGotoAction(armUpper, 20000, true), true) ;
+                addAction(new DelayAction(getAutoController().getRobot(), 2.0)) ;
+                addSubActionPair(armUpper, new MotorEncoderGotoAction(armUpper, 50000, true), true) ;
+                addAction(new DelayAction(getAutoController().getRobot(), 2.0)) ;
+                addSubActionPair(armUpper, new MotorEncoderGotoAction(armUpper, 30000, true), true) ;
+                addAction(new DelayAction(getAutoController().getRobot(), 2.0)) ;
+                break ;
+
+            case 18:
+                addSubActionPair(armUpper, new MotorEncoderGotoAction(armUpper, getDouble("upper"), true), false) ;
+                addSubActionPair(armLower, new MotorEncoderGotoAction(armLower, getDouble("lower"), true), true) ;
+                addAction(new DelayAction(getAutoController().getRobot(), 2.0)) ;
+                addSubActionPair(armLower, new MotorEncoderGotoAction(armLower, 0, true), false) ;
+                addAction(new DelayAction(getAutoController().getRobot(), 0.5)) ;
+                addSubActionPair(armUpper, new MotorEncoderGotoAction(armUpper, 0, true), true) ;
                 break ;
 
             case 19:
@@ -116,8 +152,16 @@ public class SwimmyTestAutoMode extends TestAutoMode {
                 addSubActionPair(grabberRight, new MotorEncoderPowerAction(grabberRight, getDouble("power"), getDouble("duration")), true) ;
                 break ;
 
-            case 29:
-                addSubActionPair(grabber, new GrabberOpenAction(grabber), true) ;
+            case 27:
+                addSubActionPair(grabber, new GrabberCloseAction(grabber, getDouble("double")), true) ;
+                break ;
+
+            case 28:
+                addSubActionPair(grabber, new GrabberOpenAction(grabber, getDouble("power")), true) ;
+                break ;
+
+            case 30:
+                addSubActionPair(gpm, new GPMCollectAction(gpm), true);
                 break ;
         }
     }

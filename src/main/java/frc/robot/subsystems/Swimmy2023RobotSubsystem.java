@@ -24,8 +24,8 @@ public class Swimmy2023RobotSubsystem extends RobotSubsystem {
         oi_ = new Swimmy2023OISubsystem(this, db_);
         addChild(oi_);
 
-        limelight_ = new LimeLightSubsystem(this, "limelight");
-        addChild(limelight_);
+        // limelight_ = new LimeLightSubsystem(this, "limelight");
+        // addChild(limelight_);
         
         gpm_ = new GPMSubsystem(this);
         addChild(gpm_);        

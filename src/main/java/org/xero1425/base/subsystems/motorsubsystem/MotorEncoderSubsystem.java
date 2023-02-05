@@ -241,6 +241,7 @@ public class MotorEncoderSubsystem extends MotorSubsystem
         super.computeMyState();
 
         double pos = encoder_.getPosition() ;
+
         speedometer_.update(getRobot().getDeltaTime(), pos) ;
 
         MessageLogger logger = getRobot().getMessageLogger()  ;
