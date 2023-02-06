@@ -2,6 +2,8 @@ package frc.robot.subsystems.grabber;
 
 import org.xero1425.base.actions.Action;
 import org.xero1425.base.subsystems.motorsubsystem.MotorPowerAction;
+import org.xero1425.misc.BadParameterTypeException;
+import org.xero1425.misc.MissingParameterException;
 
 public class GrabberOpenAction extends Action {
 
@@ -13,6 +15,15 @@ public class GrabberOpenAction extends Action {
         super(sub.getRobot().getMessageLogger());
         sub_ = sub ;
 
+        left_ = new MotorPowerAction(sub_.getLeftSubsystem(), power) ;
+        right_ = new MotorPowerAction(sub_.getRightSubsystem(), power) ;
+    }
+
+    public GrabberOpenAction(GrabberSubsystem sub) throws BadParameterTypeException, MissingParameterException {
+        super(sub.getRobot().getMessageLogger());
+        sub_ = sub ;
+
+        double power = sub.getSettingsValue("open:power").getDouble();
         left_ = new MotorPowerAction(sub_.getLeftSubsystem(), power) ;
         right_ = new MotorPowerAction(sub_.getRightSubsystem(), power) ;
     }

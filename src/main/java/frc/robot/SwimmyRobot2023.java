@@ -15,7 +15,7 @@ import org.xero1425.simulator.engine.SimulationEngine;
 
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import frc.robot.automodes.SwimmyRobotAutoController;
-import frc.robot.subsystems.Swimmy2023RobotSubsystem;
+import frc.robot.subsystems.toplevel.Swimmy2023RobotSubsystem;
 
 
 /**
@@ -41,12 +41,13 @@ public class SwimmyRobot2023 extends XeroRobot {
       if (ret != null)
           return ret;
 
-      return "automode";
+      return "collect";
   }
 
   protected void addRobotSimulationModels() {
     ModelFactory factory = SimulationEngine.getInstance().getModelFactory();
     factory.registerModel("arm", "frc.models.ArmModel");
+    factory.registerModel("swimmyoi", "frc.models.SwimmyOIModel");
   }  
   
   protected void hardwareInit() throws Exception {

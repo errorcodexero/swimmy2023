@@ -1,0 +1,38 @@
+{
+    "stimulus" :
+    [
+        {
+            "time" : 0.0,
+            "events" :
+            [
+                {
+                    "model" : "fms",
+                    "instance" : "1",
+                    "values" : 
+                    {
+                        "start" : 0.2,
+                        "autonomous" : 0.0,
+                        "between" : 0.0,
+                        "teleop" : 120.0,
+                        "fms" : false,
+                        "alliance" : "red1"
+                    }
+                }
+            ]
+        },
+        {
+            "time" : 1.0,
+            "events" : 
+            [
+                {
+                    "model" : "swimmyoi",
+                    "instance" : "1",
+                    "values" : 
+                    {
+                        "collect_v_place" : 1
+                    }
+                }
+            ]
+        }
+    ]
+}

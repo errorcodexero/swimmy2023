@@ -3,6 +3,8 @@ package frc.robot.subsystems.grabber;
 import org.xero1425.base.actions.Action;
 import org.xero1425.base.misc.XeroTimer;
 import org.xero1425.base.subsystems.motorsubsystem.MotorPowerAction;
+import org.xero1425.misc.BadParameterTypeException;
+import org.xero1425.misc.MissingParameterException;
 
 public class GrabberCloseAction extends Action {
 
@@ -15,6 +17,19 @@ public class GrabberCloseAction extends Action {
         super(sub.getRobot().getMessageLogger());
 
         sub_ = sub ;
+
+        left_ = new MotorPowerAction(sub_.getLeftSubsystem(), 0.0) ;
+        right_ = new MotorPowerAction(sub_.getRightSubsystem(), 0.0) ;
+
+        timer_ = new XeroTimer(sub.getRobot(), "grabber-close-timer", delay);
+    }
+
+    public GrabberCloseAction(GrabberSubsystem sub) throws BadParameterTypeException, MissingParameterException {
+        super(sub.getRobot().getMessageLogger());
+
+        sub_ = sub ;
+
+        double delay = sub.getSettingsValue("close:delay").getDouble();
 
         left_ = new MotorPowerAction(sub_.getLeftSubsystem(), 0.0) ;
         right_ = new MotorPowerAction(sub_.getRightSubsystem(), 0.0) ;

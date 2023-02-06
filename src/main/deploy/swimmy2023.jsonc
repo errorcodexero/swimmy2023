@@ -139,6 +139,18 @@
                     "solenoid" : 0
                 },
                 "sensor" : 0
+            },
+            "open" : {
+                //
+                // The motor power to run the grabber motors while collecting a game piece
+                //
+                "power" : 0.4
+            },
+            "close" : {
+                //
+                // The delay between closing the grabber and stopping the motors when grabbing
+                // a game piece
+                "delay" : 0.2
             }
         },
         "grabber-motor-left": {
@@ -194,6 +206,38 @@
                     }
                 },
                 "power": 1.5
+            },
+            "panel" : {
+                "index" : 2,
+                "outputs" : {
+                    "state1" : 0,
+                    "state2" : 1
+                },
+                "gadgets" : {
+                    "collect_v_place" : 1,
+                    "cone_v_cube" : {
+                        "1" : 2,
+                        "2" : 3
+                    },
+                    "auto_v_manual" : 4,
+                    "lock" : 5,
+                    "abort" : 6,
+                    "apriltag" : {
+                        "1" : 7,
+                        "2" : 8
+                    },
+                    "slot" : {
+                        "1" : 9,
+                        "2" : 10
+                    },
+                    "height" : {
+                        "1" : 11,
+                        "2" : 12
+                    },
+                    "endgame" : 13,
+                    "turtle" : 14,
+                    "action" : 15
+                }
             }
         },
         "swerve": {
@@ -369,35 +413,39 @@
                 "angle-tolerance": 2.0
             }
         },
-        "gpm" : {
+        "arm" : {
             "collect" : {
-                "grabber" : {
-                    //
-                    // The motor power to run the grabber motors while collecting a game piece
-                    //
-                    "power" : 0.4,
-
-                    //
-                    // The delay between closing the grabber and stopping the motors when grabbing
-                    // a game piece
-                    "closedelay" : 0.2
-                },
                 "extend" : {
-                    "lower" : 100000,
-                    "upper" : 103000
+                    "1" : {
+                        "lower" : 100000,
+                        "upper" : 103000
+                    }
                 },
-                "retract1" : {
-                    "lower" : 100000,
-                    "upper" : 106000
+                "retract" : {
+                    "1" : {
+                        "lower" : 100000,
+                        "upper" : 106000
+                    },
+                    "2" : {
+                        "lower" : 60000,
+                        "upper" : 106000
+                    },
+                    "3" : {
+                        "lower" : 0,
+                        "upper" : 0                        
+                    }
+                }
+            },
+            "place" : {
+                "extend" : {
+
                 },
-                "retract2" : {
-                    "lower" : 60000,
-                    "upper" : 106000
-                },
-                "grabber" : {
-                    "power" : 0.4
+                "retract" : {
+
                 }
             }
+        },
+        "gpm" : {
         }
     }, 
     "field": { // TODO: update with actual (x,y) field coordinates (as xero path gen would generate coordinates)

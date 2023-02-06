@@ -21,7 +21,7 @@ import frc.robot.subsystems.gpm.GPMSubsystem;
 import frc.robot.subsystems.grabber.GrabberCloseAction;
 import frc.robot.subsystems.grabber.GrabberOpenAction;
 import frc.robot.subsystems.grabber.GrabberSubsystem;
-import frc.robot.subsystems.Swimmy2023RobotSubsystem;
+import frc.robot.subsystems.toplevel.Swimmy2023RobotSubsystem;
 
 public class SwimmyTestAutoMode extends TestAutoMode {
 

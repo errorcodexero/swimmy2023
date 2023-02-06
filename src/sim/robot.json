@@ -11,8 +11,6 @@
             "props" : {
                 "start" : 1.0,
                 "autonomous" : 15.0,
-                "between" : 2.0,
-                "teleop" : 135.0,
                 "create_early" : true                
             }            
         },
@@ -28,15 +26,40 @@
             }
         },
         {
+            "model" : "swimmyoi",
+            "instance" : "1",
+            "props" : {
+                "index" : 2,
+                "name" : "Error Code Xero Custom OI",
+                "axes" : 8,
+                "buttons" : 16,
+                "povs" : 1,
+                "create_early" : true,
+                "name-collect_v_place" : 1,
+                "name-cone_v_cube:1" : 2,
+                "name-cone_v_cube:2" : 3,
+                "name-auto_v_manual" : 4,
+                "name-lock" : 5,
+                "name-abort" : 6,
+                "name-apriltag:1" : 7,
+                "name-apriltag:2" : 8,
+                "name-slot:1" : 9,
+                "name-slot:2" : 10,
+                "name-height:1" : 11,
+                "name-height:2" : 12,
+                "name-endgame" : 13,
+                "name-turtle" : 14,
+                "name-action" : 15
+            }
+        },
+        {
             "model" : "arm",
             "instance" : "1",
             "props" : {
                 "first:motor:type" : "sparkmax-brushless",
                 "first:motor:index" : 1,
                 "first:degrees_per_second_per_volt" : 180,
-                "second:motor:type" : "sparkmax-brushless",
-                "second:motor:index" : 2,
-                "second:degrees_per_second_per_volt" : 180
+                "second:motor:type" : "sparkmax-brushless"
             }
         }
     ]
