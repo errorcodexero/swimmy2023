@@ -83,9 +83,9 @@ public class LimeLightSubsystem extends Subsystem implements IVisionLocalization
         if (found_ && valid_targets_ && fuds_ != null && fuds_.length > 0) {
             ret = new LocationData() ;
             ret.id = fuds_[0].id ;
-            ret.location = fuds_[0].robotToField ;
+            ret.location = fuds_[0].robotToField ;                  // TODO: what coordinate system are these coordinates in?
             ret.type = LocationType.RobotFieldLocation ;
-            ret.when = ts_ ;                                        // TODO is this right?  Only if they are using the new NT4 time syn functions
+            ret.when = ts_ ;                                        // TODO is this right?
         }
 
         return ret ;
@@ -131,20 +131,20 @@ public class LimeLightSubsystem extends Subsystem implements IVisionLocalization
     public String getStatus() {
         String st = "" ;
 
-        if (!found_) {
-            st = "<B>Limelight device not found</B>" ;
-        }
-        else {
-            if (!valid_targets_) {
-                st = "<B>No targets detected</B>" ;
-            }
-            else {
-                st += getRetroStatus() ;
-                st += getFiducialStatus() ;
-                st += getClassifierStatus() ;
-                st += getDetectorStatus() ;
-            }
-        }
+        // if (!found_) {
+        //     st = "<B>Limelight device not found</B>" ;
+        // }
+        // else {
+        //     if (!valid_targets_) {
+        //         st = "<B>No targets detected</B>" ;
+        //     }
+        //     else {
+        //         st += getRetroStatus() ;
+        //         st += getFiducialStatus() ;
+        //         st += getClassifierStatus() ;
+        //         st += getDetectorStatus() ;
+        //     }
+        // }
 
         return st ;
     }
@@ -189,90 +189,90 @@ public class LimeLightSubsystem extends Subsystem implements IVisionLocalization
         return ret ;
     }
 
-    private String getRetroStatus() {
-        int count = 0 ;
-        if (retro_ != null) {
-            count = retro_.length ;
-        }
-        String st = "<br>Retro Targets, " + count + " detected<hr>" ;
-        return st ;
-    }
+    // private String getRetroStatus() {
+    //     int count = 0 ;
+    //     if (retro_ != null) {
+    //         count = retro_.length ;
+    //     }
+    //     String st = "<br>Retro Targets, " + count + " detected<hr>" ;
+    //     return st ;
+    // }
 
-    private String pose3dToString(Pose3d p) {
-        String st = p.getTranslation().toString() ;
-        st += ", rx " + p.getRotation().getX() ;
-        st += ", ry " + p.getRotation().getY() ;
-        st += ", rz " + p.getRotation().getZ() ;
-        return st ;
-    }
+    // private String pose3dToString(Pose3d p) {
+    //     String st = p.getTranslation().toString() ;
+    //     st += ", rx " + p.getRotation().getX() ;
+    //     st += ", ry " + p.getRotation().getY() ;
+    //     st += ", rz " + p.getRotation().getZ() ;
+    //     return st ;
+    // }
 
-    private String getOneFiducialStatus(Fiducial f) {
-        String st = "" ;
+    // private String getOneFiducialStatus(Fiducial f) {
+    //     String st = "" ;
 
-        st += "<table border=\"1\">" ;
-        st += "<tr><th>Item</th><th>Value</th></tr>" ;
-        st += "<tr><td>ID</td><td>" + f.id + "</td></tr>" ;
-        st += "<tr><td>Family</td><td>" + f.family + "</td></tr>" ;
-        st += "<tr><td>ta</td><td>" + f.ta + "</td></tr>" ;
-        st += "<tr><td>tx</td><td>" + f.tx + "</td></tr>" ;
-        st += "<tr><td>txp</td><td>" + f.txp + "</td></tr>" ;
-        st += "<tr><td>ty</td><td>" + f.ty + "</td></tr>" ;
-        st += "<tr><td>typ</td><td>" + f.typ + "</td></tr>" ;
-        st += "<tr><td>Cam-To-Target</td><td>" + pose3dToString(f.camToTarget) + "</td></tr>" ;
-        st += "<tr><td>Robot-To-Field</td><td>" + pose3dToString(f.robotToField) + "</td></tr>" ;
-        st += "<tr><td>Robot-To-Target</td><td>" + pose3dToString(f.robotToTarget) + "</td></tr>" ;
-        st += "<tr><td>Target-To-Camera</td><td>" + pose3dToString(f.targetToCamera) + "</td></tr>" ;
-        st += "<tr><td>Target-To-Robot</td><td>" + pose3dToString(f.targetToRobot) + "</td></tr>" ;
+    //     st += "<table border=\"1\">" ;
+    //     st += "<tr><th>Item</th><th>Value</th></tr>" ;
+    //     st += "<tr><td>ID</td><td>" + f.id + "</td></tr>" ;
+    //     st += "<tr><td>Family</td><td>" + f.family + "</td></tr>" ;
+    //     st += "<tr><td>ta</td><td>" + f.ta + "</td></tr>" ;
+    //     st += "<tr><td>tx</td><td>" + f.tx + "</td></tr>" ;
+    //     st += "<tr><td>txp</td><td>" + f.txp + "</td></tr>" ;
+    //     st += "<tr><td>ty</td><td>" + f.ty + "</td></tr>" ;
+    //     st += "<tr><td>typ</td><td>" + f.typ + "</td></tr>" ;
+    //     st += "<tr><td>Cam-To-Target</td><td>" + pose3dToString(f.camToTarget) + "</td></tr>" ;
+    //     st += "<tr><td>Robot-To-Field</td><td>" + pose3dToString(f.robotToField) + "</td></tr>" ;
+    //     st += "<tr><td>Robot-To-Target</td><td>" + pose3dToString(f.robotToTarget) + "</td></tr>" ;
+    //     st += "<tr><td>Target-To-Camera</td><td>" + pose3dToString(f.targetToCamera) + "</td></tr>" ;
+    //     st += "<tr><td>Target-To-Robot</td><td>" + pose3dToString(f.targetToRobot) + "</td></tr>" ;
 
-        st += "</table>";
-        return st ;
-    }
+    //     st += "</table>";
+    //     return st ;
+    // }
 
-    private String getFiducialStatus() {
-        int count ;
+    // private String getFiducialStatus() {
+    //     int count ;
 
-        if (fuds_ == null) {
-            count = 0 ;
-        }
-        else {
-            count = fuds_.length ;
-        }
-        String st = "<br>Fiducial Targets, " + count + " detected<hr>" ;
+    //     if (fuds_ == null) {
+    //         count = 0 ;
+    //     }
+    //     else {
+    //         count = fuds_.length ;
+    //     }
+    //     String st = "<br>Fiducial Targets, " + count + " detected<hr>" ;
 
-        if (count > 0) {
-            for(int i = 0 ; i < fuds_.length ; i++) {
-                st += getOneFiducialStatus(fuds_[i]) ;
-            }
-        }
-        return st ;
-    }
+    //     if (count > 0) {
+    //         for(int i = 0 ; i < fuds_.length ; i++) {
+    //             st += getOneFiducialStatus(fuds_[i]) ;
+    //         }
+    //     }
+    //     return st ;
+    // }
 
-    private String getClassifierStatus() {
-        int count ;
+    // private String getClassifierStatus() {
+    //     int count ;
 
-        if (classifiers_ == null) {
-            count = 0 ;
-        }
-        else {
-            count = classifiers_.length ;
-        }
-        String st = "<br>Classifier Targets, " + count + " detected<hr>" ;
-        return st ;
+    //     if (classifiers_ == null) {
+    //         count = 0 ;
+    //     }
+    //     else {
+    //         count = classifiers_.length ;
+    //     }
+    //     String st = "<br>Classifier Targets, " + count + " detected<hr>" ;
+    //     return st ;
 
-    }
+    // }
 
-    private String getDetectorStatus() {
-        int count ;
+    // private String getDetectorStatus() {
+    //     int count ;
 
-        if (detectors_ == null) {
-            count = 0 ;
-        }
-        else {
-            count = detectors_.length ;
-        }
-        String st = "<br>Detector Targets, " + count + " detected<hr>" ;
-        return st ;
-    }
+    //     if (detectors_ == null) {
+    //         count = 0 ;
+    //     }
+    //     else {
+    //         count = detectors_.length ;
+    //     }
+    //     String st = "<br>Detector Targets, " + count + " detected<hr>" ;
+    //     return st ;
+    // }
 
     private String getStringFromObject(JSONObject obj, String name, String def) {
         String ret = def ;
@@ -443,7 +443,7 @@ public class LimeLightSubsystem extends Subsystem implements IVisionLocalization
 
                 JSONObject fud = (JSONObject)temp ;
                 Fiducial f = new Fiducial() ;
-                f.id = getIntFromObject(fud, "fID", -1) ;
+                f.id = getIntFromObject(fud, "id", -1) ;
                 f.family = getStringFromObject(fud, "fam", "") ;
                 f.camToTarget = getPose3dFromObject(fud, "t6c_ts", null) ;
                 f.robotToField = getPose3dFromObject(fud, "t6r_fs", null) ;

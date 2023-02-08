@@ -29,6 +29,12 @@ public class RobotOperation {
 
     private Action action_ ;
     private GamePiece gp_ ;
+
+    //
+    // This is the tag we are interested in independent of the alliance color.
+    // Tag 0 is always closest to the middle of the field.  Tag 1 is always the
+    // cooperation grid.  Tag 2 is the grid closest to the edge of the field.
+    // 
     private int tag_ ;
     private Slot slot_ ;
     private Location loc_ ;
@@ -39,6 +45,14 @@ public class RobotOperation {
         tag_ = 0 ;
         slot_ = Slot.Right;
         loc_ = Location.Middle ;
+    }
+
+    public RobotOperation(RobotOperation oper) {
+        action_ = oper.getAction();
+        gp_ = oper.getGamePiece() ;
+        tag_ = oper.getAprilTag();
+        slot_ = oper.getSlot();
+        loc_ = oper.getLocation() ;
     }
 
     public RobotOperation(Action a, GamePiece gp, int t, Slot s, Location l) {
@@ -87,5 +101,35 @@ public class RobotOperation {
 
     public void setLocation(Location l) {
         loc_ = l ;
+    }
+
+    public String toString() {
+        String ret = "[" ;
+        ret += action_.toString() ;
+        ret += ", " + gp_.toString();
+        ret += ", Tag " + tag_ ;
+        ret += ", Slot " + slot_.toString();
+        ret += ", Loc " + loc_.toString();
+        ret += "]" ;
+        return ret ;
+    }
+
+    public boolean equals(RobotOperation oper) {
+        if (action_ != oper.getAction())
+            return false ;
+
+        if (gp_ != oper.getGamePiece())
+            return false ;
+
+        if (tag_ != oper.getAprilTag())
+            return false ;
+
+        if (slot_ != oper.getSlot())
+            return false ;
+
+        if (loc_ != oper.getLocation())
+            return false ;
+
+        return true ;
     }
 }

@@ -1,0 +1,89 @@
+{
+    "_version": "3",
+    "generator": "errorcodexeroswerve",
+    "groups": [
+        {
+            "name": "TestStraight",
+            "paths": [
+                {
+                    "constraints": [
+                    ],
+                    "endvelocity": 0,
+                    "maxacceleration": 2,
+                    "maxvelocity": 2,
+                    "name": "Test2m",
+                    "points": [
+                        {
+                            "heading": 0,
+                            "swrot": 0,
+                            "swrotvel": 0,
+                            "x": 2,
+                            "y": 2
+                        },
+                        {
+                            "heading": 0,
+                            "swrot": 0,
+                            "swrotvel": 0,
+                            "x": 4,
+                            "y": 2
+                        }
+                    ],
+                    "startvelocity": 0
+                }
+            ]
+        },
+        {
+            "name": "Hard",
+            "paths": [
+                {
+                    "constraints": [
+                    ],
+                    "endvelocity": 0,
+                    "maxacceleration": 2,
+                    "maxvelocity": 2,
+                    "name": "Loop",
+                    "points": [
+                        {
+                            "heading": 0,
+                            "swrot": 0,
+                            "swrotvel": 0,
+                            "x": 2,
+                            "y": 2
+                        },
+                        {
+                            "heading": 0,
+                            "swrot": 0,
+                            "swrotvel": 0,
+                            "x": 3,
+                            "y": 3
+                        },
+                        {
+                            "heading": -90,
+                            "swrot": 0,
+                            "swrotvel": 0,
+                            "x": 5,
+                            "y": 2
+                        },
+                        {
+                            "heading": 180,
+                            "swrot": 0,
+                            "swrotvel": 0,
+                            "x": 3,
+                            "y": 1
+                        },
+                        {
+                            "heading": 180,
+                            "swrot": 0,
+                            "swrotvel": 0,
+                            "x": 2,
+                            "y": 2
+                        }
+                    ],
+                    "startvelocity": 0
+                }
+            ]
+        }
+    ],
+    "outdir": "C:/cygwin64/home/butch/robottools/robots/swimmy2023/src/main/deploy/paths",
+    "units": "m"
+}

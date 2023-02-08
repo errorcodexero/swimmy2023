@@ -76,7 +76,7 @@ public class SwimmyTestAutoMode extends TestAutoMode {
 
             case 4:
                 // Run the path follower against the path given
-                addSubActionPair(swerve, new SwerveHolonomicPathFollower(swerve, getString("name"), true), true);
+                addSubActionPair(swerve, new SwerveHolonomicPathFollower(swerve, getString("name"), true, 3.0), true);
                 break ;
 
             case 5:

@@ -5,11 +5,11 @@ import org.xero1425.base.subsystems.oi.OIPanel;
 import org.xero1425.base.subsystems.oi.OIPanelButton;
 import org.xero1425.base.subsystems.oi.OISubsystem;
 import org.xero1425.base.subsystems.oi.OILed.State;
-import org.xero1425.base.subsystems.oi.OISubsystem.GamePadType;
 import org.xero1425.misc.BadParameterTypeException;
+import org.xero1425.misc.MessageLogger;
+import org.xero1425.misc.MessageType;
 import org.xero1425.misc.MissingParameterException;
 
-import frc.robot.subsystems.toplevel.LocationData;
 import frc.robot.subsystems.toplevel.RobotOperation;
 import frc.robot.subsystems.toplevel.Swimmy2023RobotSubsystem;
 import frc.robot.subsystems.toplevel.RobotOperation.Action;
@@ -39,7 +39,6 @@ public class Swimmy2023OIDevice extends OIPanel {
 
     private RobotOperation oper_ ;
 
-    private LocationData loc_data_ ;
 
     public Swimmy2023OIDevice(OISubsystem parent, String name, int index) throws BadParameterTypeException, MissingParameterException {
         super(parent, name, index);
@@ -47,7 +46,6 @@ public class Swimmy2023OIDevice extends OIPanel {
         state_output1_.setState(State.OFF) ;
         state_output2_.setState(State.OFF) ;
 
-        loc_data_ = new LocationData() ;
         oper_ = new RobotOperation() ;
     }
 
@@ -57,6 +55,8 @@ public class Swimmy2023OIDevice extends OIPanel {
 
     @Override
     public void generateActions() {
+
+        RobotOperation oper = new RobotOperation(oper_) ;
 
         if (getValue(collect_v_place_gadget_) == 1) {
             oper_.setAction(Action.Collect) ;
@@ -83,15 +83,15 @@ public class Swimmy2023OIDevice extends OIPanel {
         switch(getValue(april_tag1_gadget_) | (getValue(april_tag2_gadget_) << 1)) 
         {
             case 0:
-                oper_.setAprilTag(loc_data_.getGridTag(0)) ;
+                oper_.setAprilTag(0) ;
                 break ;
 
             case 1:
-                oper_.setAprilTag(loc_data_.getGridTag(1)) ;
+                oper_.setAprilTag(1) ;
                 break ;
 
             case 2:
-                oper_.setAprilTag(loc_data_.getGridTag(2)) ;
+                oper_.setAprilTag(2) ;
                 break ;
         }
 
@@ -133,6 +133,13 @@ public class Swimmy2023OIDevice extends OIPanel {
             Swimmy2023RobotSubsystem sub = (Swimmy2023RobotSubsystem)getSubsystem().getRobot().getRobotSubsystem();
             sub.setOperation(oper_) ;
             oper_ = new RobotOperation() ;
+        }
+
+        if (!oper.equals(oper_)) {
+            MessageLogger logger = getSubsystem().getRobot().getMessageLogger() ;
+            logger.startMessage(MessageType.Debug, getSubsystem().getLoggerID());
+            logger.add("Operation Changes: " + oper.toString() + " -> " + oper_.toString());
+            logger.endMessage();
         }
     }
 

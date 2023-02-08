@@ -15,6 +15,12 @@
             }            
         },
         {
+            "model" : "limelight",
+            "instance" : "1",
+            "props" : {
+            }
+        },
+        {
             "model": "drivergamepad",
             "instance": "1",
             "props": {
@@ -56,10 +62,12 @@
             "model" : "arm",
             "instance" : "1",
             "props" : {
-                "first:motor:type" : "sparkmax-brushless",
+                "first:motor:type" : "talon-fx",
                 "first:motor:index" : 1,
                 "first:degrees_per_second_per_volt" : 180,
-                "second:motor:type" : "sparkmax-brushless"
+                "second:motor:type" : "talon-fx",
+                "second:motor:index" : 2,
+                "second:degrees_per_second_per_volt" : 180
             }
         }
     ]

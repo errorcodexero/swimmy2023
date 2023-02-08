@@ -11,9 +11,12 @@ import org.xero1425.misc.MessageLogger;
 import org.xero1425.misc.MessageType;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import frc.robot.SwimmyRobot2023;
 import frc.robot.subsystems.gpm.GPMCollectAction;
 import frc.robot.subsystems.gpm.GPMSubsystem;
 import frc.robot.subsystems.oi.Swimmy2023OISubsystem;
+import frc.robot.subsystems.toplevel.RobotOperation.Action;
+import frc.robot.subsystems.toplevel.RobotOperation.Slot;
 
 
 public class Swimmy2023RobotSubsystem extends RobotSubsystem {
@@ -33,11 +36,6 @@ public class Swimmy2023RobotSubsystem extends RobotSubsystem {
     private LimeLightSubsystem limelight_;
 
     //
-    // Location data for the game
-    // 
-    private LocationData locdata_ ;
-
-    //
     // Actions we assign to the various subsystems
     //
     private SwerveDriveToPoseAction drive_to_;
@@ -46,12 +44,16 @@ public class Swimmy2023RobotSubsystem extends RobotSubsystem {
     //
     // The current operation
     //
+    private FieldLocationData locdata_ ;
     private RobotOperation operation_ ;
     private State state_ ;
     private Pose2d target_pose_ ;
     
     public Swimmy2023RobotSubsystem(XeroRobot robot) throws Exception {
         super(robot, "Swimmy2023RobotSubsystem") ;
+
+        SwimmyRobot2023 swimmy = (SwimmyRobot2023)robot ;
+        locdata_ = swimmy.getFieldData() ;
 
         db_ = new SDSSwerveDriveSubsystem(this, "swerve" );
         addChild(db_);
@@ -65,8 +67,6 @@ public class Swimmy2023RobotSubsystem extends RobotSubsystem {
         gpm_ = new GPMSubsystem(this);
         addChild(gpm_);     
         
-        locdata_ = new LocationData();
-
         shelf_collect_action_ = new GPMCollectAction(gpm_);
 
         operation_ = null;
@@ -90,15 +90,40 @@ public class Swimmy2023RobotSubsystem extends RobotSubsystem {
     }
 
     public boolean setOperation(RobotOperation oper) {
-        boolean ret = false ;
+        if (operation_ != null) {
+            //
+            // If another operation is set, we cannot override it.  The gunner must press
+            // abort to stop the current operation before assigning a new operation.
+            //
+            return false ;
+        }
 
-        if (operation_ == null) {
-            ret = true ;
-            operation_ = oper ;
-            state_ = State.LookingForTag;
-        } 
+        if (oper.getAction() == Action.Collect) {
+            //
+            // These are collect rules for the OI
+            //
+            if (oper.getSlot() == Slot.Middle) {
+                //
+                // For collecting, only the left and right slot are valid.
+                //
+                return false ;
+            }
+        }
+        else {
+            //
+            // These are place rules for the OI
+            //
+            // TODO: add rules about having a cone/cube and not selecting the right location
+            //
+        }
 
-        return ret;
+        MessageLogger logger = getRobot().getMessageLogger() ;
+        logger.startMessage(MessageType.Debug, getLoggerID()) ;
+        logger.add("Starting operation: " + oper.toString()) ;
+        logger.endMessage();
+
+        operation_ = oper ;
+        return true ;
     }
 
     public void abort() {
@@ -110,6 +135,8 @@ public class Swimmy2023RobotSubsystem extends RobotSubsystem {
                 break ;
 
             case DrivingToLocation:
+                oi_.enableGamepad() ;
+                oi_.getGamePad().rumble(1.0, 2.0);
                 drive_to_.cancel() ;
                 break ;
         }
@@ -123,7 +150,6 @@ public class Swimmy2023RobotSubsystem extends RobotSubsystem {
         super.run() ;
 
         Gamepad gp = oi_.getGamePad() ;
-
         if (gp.isEnabled() == false && gp.isXPressed() && gp.isAPressed()) {
             abort() ;
             gp.enable();
@@ -139,6 +165,7 @@ public class Swimmy2023RobotSubsystem extends RobotSubsystem {
         State orig = state_ ;
         switch(state_) {
             case Idle:
+                state_ = State.LookingForTag ;
                 break;
 
             case LookingForTag:
@@ -146,11 +173,7 @@ public class Swimmy2023RobotSubsystem extends RobotSubsystem {
                 break;
 
             case DrivingToLocation:
-                if (drive_to_.isDone() && shelf_collect_action_.isDone()) {
-                    oi_.enableGamepad() ;
-                    oi_.getGamePad().rumble(1.0, 2.0);
-                    state_ = State.Idle;
-                }
+                driveToLocation();
                 break ;
         }
 
@@ -162,12 +185,55 @@ public class Swimmy2023RobotSubsystem extends RobotSubsystem {
         }
     }
 
+    private int getTargetTag() {
+        int tag = -1 ;
+
+        if (operation_.getAction() == Action.Collect) {
+            tag = locdata_.getLoadingStationTag() ;
+        }
+        else {
+            tag = locdata_.getGridTag(operation_.getAprilTag());
+        }
+
+        return tag ;
+    }
+
+    private void driveToLocation() {
+        if (operation_.getAction() == Action.Collect) {
+            //
+            // We are collecting, the drive to location and the shelf collect action
+            // are running in parallel.  The arm should be deployed and when the drive base
+            // drives to the game piece, we should detect it and finish the collect.  This
+            // finishes the collect operation
+            //
+            if (shelf_collect_action_.isDone()) {
+                oi_.enableGamepad() ;
+                oi_.getGamePad().rumble(1.0, 2.0);
+                state_ = State.Idle;
+                operation_ = null ;
+            }
+        }
+        else {
+            //
+            // We are placing.
+            //
+            
+        }
+    }
+
     private void lookingForTag() {
-        if (limelight_.hasAprilTag(operation_.getAprilTag())) {
+        int tag = getTargetTag() ;
+
+        MessageLogger logger = getRobot().getMessageLogger() ;
+        logger.startMessage(MessageType.Debug, getLoggerID());
+        logger.add("looking for april tag");
+        logger.endMessage();
+
+        if (limelight_.hasAprilTag(tag)) {
             oi_.disableGamepad() ;
 
             if (operation_.getAction() == RobotOperation.Action.Collect) {
-                target_pose_ = locdata_.getGridPose(operation_.getAprilTag(), operation_.getSlot());
+                target_pose_ = locdata_.getGridPose(tag, operation_.getSlot());
             }
             else {
                 target_pose_ = locdata_.getLoadingStationPose(operation_.getSlot());

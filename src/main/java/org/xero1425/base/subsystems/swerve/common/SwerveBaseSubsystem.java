@@ -166,15 +166,18 @@ public abstract class SwerveBaseSubsystem extends DriveBaseSubsystem {
         poss[3] = getModulePosition(BR) ;
         estimator_.update(Rotation2d.fromDegrees(gyro().getYaw()), poss) ;
 
+        boolean added = false;
         if (vision_ != null) {
             LocationData lc = vision_.getLocation() ;
             if (lc != null) {
                 if (lc.type == LocationType.RobotFieldLocation) {
                     Pose2d p2d = lc.location.toPose2d() ;
                     addVisionMeasurement(p2d, lc.when) ;
+                    added = true ;
                 }
             }
         }
+        putDashboard("addvision", DisplayType.Always, added);
 
         Pose2d p = getPose() ;
         double dist = p.getTranslation().getDistance(last_pose_.getTranslation()) ;

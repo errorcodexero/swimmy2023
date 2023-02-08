@@ -13,8 +13,9 @@
 
             // Subsystem related messages
             "swerve": false,
-            "swerve2023oi": false,
-
+            "swimmy2023oi" : false,
+            "Swimmy2023RobotSubsystem" : false,
+            "limelight" : false,
             "arm-motor-lower" : false,
             "arm-motor-upper" : false
         },
@@ -243,12 +244,12 @@
         "swerve": {
             "pid": {
                 "xctrl": {
-                    "kp": 3.0,
+                    "kp": 18.0,
                     "ki": 0,
                     "kd": 0
                 },
                 "yctrl": {
-                    "kp": 3.0,
+                    "kp": 6.0,
                     "ki": 0,
                     "kd": 0
                 },
@@ -274,7 +275,7 @@
                     "encoder": {
                         "canid": 13,
                         "offset": {
-                            "PRACTICE" : 1.0,
+                            "PRACTICE" : -285.47,
                             "COMPETITION" : -218.85
                         }
                     }
@@ -289,7 +290,7 @@
                     "encoder": {
                         "canid": 23,
                         "offset": {
-                            "PRACTICE" : 1.0,
+                            "PRACTICE" : -259.89,
                             "COMPETITION" : -295.5
                         }
                     }
@@ -304,7 +305,7 @@
                     "encoder": {
                         "canid": 43,
                         "offset": {
-                            "PRACTICE" : 1.0,
+                            "PRACTICE" : -79.36,
                             "COMPETITION" : -146.1
                         }
                     }
@@ -319,7 +320,7 @@
                     "encoder": {
                         "canid": 33,
                         "offset": {
-                            "PRACTICE" : 1.0,
+                            "PRACTICE" : -314.12,
                             "COMPETITION" : -77.96
                         }
                     }
@@ -333,13 +334,13 @@
             "pids": {
                 "fl": {
                     "kp":  {
-                        "PRACTICE" : 0.02,
+                        "PRACTICE" : 0.0,
                         "COMPETITION" : 0.6 //0.3            // 0.06 - tenative, see comment above
                     },
                     "ki": 0.0,
                     "kd": 0.0,
                     "kf" : {
-                        "PRACTICE" : 0.0,
+                        "PRACTICE" : 0.22272211,
                         "COMPETITION" : 0.224895986
                     },
                     "min": -1.0,
@@ -348,13 +349,13 @@
                 },
                 "fr": {
                     "kp":  {
-                        "PRACTICE" : 0.02,
+                        "PRACTICE" : 0.0,
                         "COMPETITION" : 1//1.5               // 1.0 - tenative, see comment above
                     },
                     "ki": 0.0,
                     "kd": 0.0,
                     "kf" : {
-                        "PRACTICE" : 0.0,
+                        "PRACTICE" : 0.222039656,
                         "COMPETITION" : 0.223224251
                     },
                     "min": -1.0,
@@ -363,13 +364,13 @@
                 },
                 "bl": {
                     "kp":  {
-                        "PRACTICE" : 0.02,
+                        "PRACTICE" : 0.0,
                         "COMPETITION" : 1//0.45                   // 1.0 - tenative, see comment above
                     },
                     "ki": 0.0,
                     "kd": 0.0,
                     "kf" : {
-                        "PRACTICE" : 0.02,
+                        "PRACTICE" : 0.22181802,
                         "COMPETITION" : 0.231975503
                     },
                     "min": -1.0,
@@ -378,13 +379,13 @@
                 },
                 "br": {
                     "kp":  {
-                        "PRACTICE" : 0.02,
+                        "PRACTICE" : 0.0,
                         "COMPETITION" : 1//0.45                    // 1.0 - tenative, see comment above
                     },
                     "ki": 0.0,
                     "kd": 0.0,
                     "kf" : {
-                        "PRACTICE" : 0.02,
+                        "PRACTICE" : 0.222286438,
                         "COMPETITION" : 0.224366166
                     },
                     "min": -1.0,
@@ -448,131 +449,9 @@
         "gpm" : {
         }
     }, 
-    "field": { // TODO: update with actual (x,y) field coordinates (as xero path gen would generate coordinates)
-        "red":{
-            "grid": { 
-                "1": { //middle of field
-                    "grid-id": 3,
-                    "left": {
-                        "x": 0,
-                        "y": 0
-                    },
-                    "middle": {
-                        "x": 0,
-                        "y": 0
-                    },
-                    "right": {
-                        "x": 0,
-                        "y": 0
-                    }     
-                },
-                "2": { //coopertition grid of field
-                    "grid-id": 2,
-                    "left": {
-                        "x": 0,
-                        "y": 0
-                    },
-                    "middle": {
-                        "x": 0,
-                        "y": 0
-                    },
-                    "right": {
-                        "x": 0,
-                        "y": 0
-                    }     
-                },  
-                "3": { //edge of field
-                    "grid-id": 1,
-                    "left": {
-                        "x": 0,
-                        "y": 0
-                    },
-                    "middle": {
-                        "x": 0,
-                        "y": 0
-                    },
-                    "right": {
-                        "x": 0,
-                        "y": 0
-                    }     
-                },
-                "10": { //loading station
-                    "grid-id": 5,
-                    "edge": { //closer to edge of field
-                        "x": 0,
-                        "y": 0
-                    },
-                    "non-edge": { 
-                        "x": 0,
-                        "y": 0
-                    }     
-                }
-            }
-        },
-        "blue": {
-            "grid": { 
-                "1": { //middle of field
-                    "grid-id": 6,
-                    "left": {
-                        "x": 0,
-                        "y": 0
-                    },
-                    "middle": {
-                        "x": 0,
-                        "y": 0
-                    },
-                    "right": {
-                        "x": 0,
-                        "y": 0
-                    }     
-                },
-                "2": { //coopertition grid of field
-                    "grid-id": 7,
-                    "left": {
-                        "x": 0,
-                        "y": 0
-                    },
-                    "middle": {
-                        "x": 0,
-                        "y": 0
-                    },
-                    "right": {
-                        "x": 0,
-                        "y": 0
-                    }     
-                },  
-                "3": { //edge of field
-                    "grid-id": 8,
-                    "left": {
-                        "x": 0,
-                        "y": 0
-                    },
-                    "middle": {
-                        "x": 0,
-                        "y": 0
-                    },
-                    "right": {
-                        "x": 0,
-                        "y": 0
-                    }     
-                },
-                "10": { //loading station
-                    "grid-id": 4,
-                    "edge": { //closer to edge of field
-                        "x": 0,
-                        "y": 0
-                    },
-                    "non-edge": { 
-                        "x": 0,
-                        "y": 0
-                    }     
-                }
-            }
-        }
-    },
     "testmode": {
         "enabled": true,
-        "which": 30,
+        "which": 4,
         "0": {
             "angle": 0.0,
             "power": 0.2
@@ -580,7 +459,7 @@
         "1": {
             "angle": 0.0,
             "power": 0.9,
-            "duration": 1.7
+            "duration": 2.25
         },
         "2": {
             "angle": 0.0,
@@ -588,11 +467,11 @@
         },
         "3": {
             "angle": 0.0,
-            "speed": 1,
-            "duration": 2.0
+            "speed": 1.0,
+            "duration": 3.0
         },
         "4": {
-            "name": "test-8mx"
+            "name": "Hard-Loop"
         },
         "5": {
             "angle": 0.0,

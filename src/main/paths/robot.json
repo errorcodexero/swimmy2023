@@ -1,0 +1,15 @@
+{
+    "_version": "1",
+    "drivetype": 1,
+    "efflength": 0.705,
+    "effwidth": 0.60325,
+    "lengthunits": "m",
+    "maxacceleration": 4,
+    "maxvelocity": 4,
+    "name": "swimmy",
+    "robotlength": 0.705,
+    "robotwidth": 0.60325,
+    "timestep": 0.02,
+    "weight": 95,
+    "weightunits": "lbs"
+}

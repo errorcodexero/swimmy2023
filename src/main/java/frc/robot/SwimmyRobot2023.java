@@ -13,8 +13,8 @@ import org.xero1425.misc.XeroPathType;
 import org.xero1425.simulator.engine.ModelFactory;
 import org.xero1425.simulator.engine.SimulationEngine;
 
-import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import frc.robot.automodes.SwimmyRobotAutoController;
+import frc.robot.subsystems.toplevel.FieldLocationData;
 import frc.robot.subsystems.toplevel.Swimmy2023RobotSubsystem;
 
 
@@ -26,10 +26,16 @@ import frc.robot.subsystems.toplevel.Swimmy2023RobotSubsystem;
  */
 public class SwimmyRobot2023 extends XeroRobot {
 
+  private FieldLocationData locdata_ ;
+
   public SwimmyRobot2023() {
     super(0.02) ;
 
-    LiveWindow.enableAllTelemetry();
+    locdata_ = new FieldLocationData();
+  }
+
+  public FieldLocationData getFieldData() {
+    return locdata_ ;
   }
   
   public String getName() {
