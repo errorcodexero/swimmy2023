@@ -66,6 +66,8 @@ public class Swimmy2023RobotSubsystem extends RobotSubsystem {
         
         gpm_ = new GPMSubsystem(this);
         addChild(gpm_);     
+
+        db_.setVision(limelight_);
         
         shelf_collect_action_ = new GPMCollectAction(gpm_);
 

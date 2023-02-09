@@ -68,24 +68,55 @@ public class LimeLightSubsystem extends Subsystem implements IVisionLocalization
     private double ts_ ;
     private boolean valid_targets_ ;
 
+    private int max_cycles_ ;
+    private int current_cycles_ ;
+    private boolean if_ever_ ;
+
     private Retro [] retro_ ;
     private Fiducial[] fuds_ ;
     private Detector[] detectors_ ;
     private Classifier[] classifiers_ ;
 
+    private Pose3d botpose_ ;
+    private Pose3d wpired_ ;
+    private Pose3d wpiblue_ ;
+
     public LimeLightSubsystem(Subsystem parent, String name) {
         super(parent, name) ;
+
+        if_ever_ = false ;
+        max_cycles_ = 0 ;
+        current_cycles_ = 0 ;
+    }
+
+    public Pose3d getBotPose() {
+        return botpose_ ;
+    }
+
+    public Pose3d getRedBotPose() {
+        return wpired_;
+    }
+
+    public Pose3d getBlueBotPose() {
+        return wpiblue_;
     }
 
     public LocationData getLocation() {
         LocationData ret = null ;
 
         if (found_ && valid_targets_ && fuds_ != null && fuds_.length > 0) {
-            ret = new LocationData() ;
-            ret.id = fuds_[0].id ;
-            ret.location = fuds_[0].robotToField ;                  // TODO: what coordinate system are these coordinates in?
-            ret.type = LocationType.RobotFieldLocation ;
-            ret.when = ts_ ;                                        // TODO is this right?
+            current_cycles_++ ;
+
+            if (current_cycles_ > max_cycles_) {
+                max_cycles_ = current_cycles_ ;
+            }
+
+            if (current_cycles_ > 4) {
+                if_ever_ = true ;
+                ret = new LocationData() ;
+                ret.location = wpiblue_ ;
+                ret.when = ts_ ;                                        // TODO is this right?
+            }
         }
 
         return ret ;
@@ -172,6 +203,13 @@ public class LimeLightSubsystem extends Subsystem implements IVisionLocalization
                 parseLimelightJsonObject((JSONObject)obj) ;
             }
         }
+
+        int count = 0 ;
+        if (fuds_ != null) {
+            count = fuds_.length ;
+        }
+        putDashboard("AprilTags", DisplayType.Always, count);
+        putDashboard("IfEver", DisplayType.Always, if_ever_) ;
     }
 
     public boolean hasAprilTag(int id) {
@@ -189,90 +227,90 @@ public class LimeLightSubsystem extends Subsystem implements IVisionLocalization
         return ret ;
     }
 
-    // private String getRetroStatus() {
-    //     int count = 0 ;
-    //     if (retro_ != null) {
-    //         count = retro_.length ;
-    //     }
-    //     String st = "<br>Retro Targets, " + count + " detected<hr>" ;
-    //     return st ;
-    // }
+    private String getRetroStatus() {
+        int count = 0 ;
+        if (retro_ != null) {
+            count = retro_.length ;
+        }
+        String st = "<br>Retro Targets, " + count + " detected<hr>" ;
+        return st ;
+    }
 
-    // private String pose3dToString(Pose3d p) {
-    //     String st = p.getTranslation().toString() ;
-    //     st += ", rx " + p.getRotation().getX() ;
-    //     st += ", ry " + p.getRotation().getY() ;
-    //     st += ", rz " + p.getRotation().getZ() ;
-    //     return st ;
-    // }
+    private String pose3dToString(Pose3d p) {
+        String st = p.getTranslation().toString() ;
+        st += ", rx " + p.getRotation().getX() ;
+        st += ", ry " + p.getRotation().getY() ;
+        st += ", rz " + p.getRotation().getZ() ;
+        return st ;
+    }
 
-    // private String getOneFiducialStatus(Fiducial f) {
-    //     String st = "" ;
+    private String getOneFiducialStatus(Fiducial f) {
+        String st = "" ;
 
-    //     st += "<table border=\"1\">" ;
-    //     st += "<tr><th>Item</th><th>Value</th></tr>" ;
-    //     st += "<tr><td>ID</td><td>" + f.id + "</td></tr>" ;
-    //     st += "<tr><td>Family</td><td>" + f.family + "</td></tr>" ;
-    //     st += "<tr><td>ta</td><td>" + f.ta + "</td></tr>" ;
-    //     st += "<tr><td>tx</td><td>" + f.tx + "</td></tr>" ;
-    //     st += "<tr><td>txp</td><td>" + f.txp + "</td></tr>" ;
-    //     st += "<tr><td>ty</td><td>" + f.ty + "</td></tr>" ;
-    //     st += "<tr><td>typ</td><td>" + f.typ + "</td></tr>" ;
-    //     st += "<tr><td>Cam-To-Target</td><td>" + pose3dToString(f.camToTarget) + "</td></tr>" ;
-    //     st += "<tr><td>Robot-To-Field</td><td>" + pose3dToString(f.robotToField) + "</td></tr>" ;
-    //     st += "<tr><td>Robot-To-Target</td><td>" + pose3dToString(f.robotToTarget) + "</td></tr>" ;
-    //     st += "<tr><td>Target-To-Camera</td><td>" + pose3dToString(f.targetToCamera) + "</td></tr>" ;
-    //     st += "<tr><td>Target-To-Robot</td><td>" + pose3dToString(f.targetToRobot) + "</td></tr>" ;
+        st += "<table border=\"1\">" ;
+        st += "<tr><th>Item</th><th>Value</th></tr>" ;
+        st += "<tr><td>ID</td><td>" + f.id + "</td></tr>" ;
+        st += "<tr><td>Family</td><td>" + f.family + "</td></tr>" ;
+        st += "<tr><td>ta</td><td>" + f.ta + "</td></tr>" ;
+        st += "<tr><td>tx</td><td>" + f.tx + "</td></tr>" ;
+        st += "<tr><td>txp</td><td>" + f.txp + "</td></tr>" ;
+        st += "<tr><td>ty</td><td>" + f.ty + "</td></tr>" ;
+        st += "<tr><td>typ</td><td>" + f.typ + "</td></tr>" ;
+        st += "<tr><td>Cam-To-Target</td><td>" + pose3dToString(f.camToTarget) + "</td></tr>" ;
+        st += "<tr><td>Robot-To-Field</td><td>" + pose3dToString(f.robotToField) + "</td></tr>" ;
+        st += "<tr><td>Robot-To-Target</td><td>" + pose3dToString(f.robotToTarget) + "</td></tr>" ;
+        st += "<tr><td>Target-To-Camera</td><td>" + pose3dToString(f.targetToCamera) + "</td></tr>" ;
+        st += "<tr><td>Target-To-Robot</td><td>" + pose3dToString(f.targetToRobot) + "</td></tr>" ;
 
-    //     st += "</table>";
-    //     return st ;
-    // }
+        st += "</table>";
+        return st ;
+    }
 
-    // private String getFiducialStatus() {
-    //     int count ;
+    private String getFiducialStatus() {
+        int count ;
 
-    //     if (fuds_ == null) {
-    //         count = 0 ;
-    //     }
-    //     else {
-    //         count = fuds_.length ;
-    //     }
-    //     String st = "<br>Fiducial Targets, " + count + " detected<hr>" ;
+        if (fuds_ == null) {
+            count = 0 ;
+        }
+        else {
+            count = fuds_.length ;
+        }
+        String st = "<br>Fiducial Targets, " + count + " detected<hr>" ;
 
-    //     if (count > 0) {
-    //         for(int i = 0 ; i < fuds_.length ; i++) {
-    //             st += getOneFiducialStatus(fuds_[i]) ;
-    //         }
-    //     }
-    //     return st ;
-    // }
+        if (count > 0) {
+            for(int i = 0 ; i < fuds_.length ; i++) {
+                st += getOneFiducialStatus(fuds_[i]) ;
+            }
+        }
+        return st ;
+    }
 
-    // private String getClassifierStatus() {
-    //     int count ;
+    private String getClassifierStatus() {
+        int count ;
 
-    //     if (classifiers_ == null) {
-    //         count = 0 ;
-    //     }
-    //     else {
-    //         count = classifiers_.length ;
-    //     }
-    //     String st = "<br>Classifier Targets, " + count + " detected<hr>" ;
-    //     return st ;
+        if (classifiers_ == null) {
+            count = 0 ;
+        }
+        else {
+            count = classifiers_.length ;
+        }
+        String st = "<br>Classifier Targets, " + count + " detected<hr>" ;
+        return st ;
 
-    // }
+    }
 
-    // private String getDetectorStatus() {
-    //     int count ;
+    private String getDetectorStatus() {
+        int count ;
 
-    //     if (detectors_ == null) {
-    //         count = 0 ;
-    //     }
-    //     else {
-    //         count = detectors_.length ;
-    //     }
-    //     String st = "<br>Detector Targets, " + count + " detected<hr>" ;
-    //     return st ;
-    // }
+        if (detectors_ == null) {
+            count = 0 ;
+        }
+        else {
+            count = detectors_.length ;
+        }
+        String st = "<br>Detector Targets, " + count + " detected<hr>" ;
+        return st ;
+    }
 
     private String getStringFromObject(JSONObject obj, String name, String def) {
         String ret = def ;
@@ -504,6 +542,9 @@ public class LimeLightSubsystem extends Subsystem implements IVisionLocalization
         }
 
         JSONObject obj = (JSONObject)temp ;
+        botpose_ = getPose3dFromObject(obj, "botpose", new Pose3d());
+        wpired_ = getPose3dFromObject(obj, "botpose_wpired", new Pose3d());
+        wpiblue_ = getPose3dFromObject(obj, "botpose_wpiblue", new Pose3d());
         id_ = getIntFromObject(obj, "pID", 0) ;
         tl_ = getDoubleFromObject(obj, "tl", 10000.0) ;
         ts_ = getDoubleFromObject(obj, "ts", 0.0) ;

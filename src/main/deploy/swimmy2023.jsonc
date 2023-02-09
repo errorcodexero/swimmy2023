@@ -451,7 +451,7 @@
     }, 
     "testmode": {
         "enabled": true,
-        "which": 4,
+        "which": 99,
         "0": {
             "angle": 0.0,
             "power": 0.2
@@ -471,7 +471,7 @@
             "duration": 3.0
         },
         "4": {
-            "name": "Hard-Loop"
+            "name": "Sample-Path2m2m"
         },
         "5": {
             "angle": 0.0,
@@ -515,6 +515,15 @@
         "29" : {
             "power" : 0.4,
             "duration" : 3.0
+        },
+        "99" : {
+            "initx" : 0.0,
+            "inity" : 0.0,
+            "initangle" : 180.0,
+            "delay" : 2.0,
+            "x" : 1.36195,
+            "y" : 7.609796,
+            "angle" : 180.0
         }
     }
 }

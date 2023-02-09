@@ -11,10 +11,10 @@ public class SwerveDriveToPoseAction extends SwerveDriveAction {
     private Pose2d target_position_ ;
     private double trajectory_start_time_ ;
     
-    public SwerveDriveToPoseAction(SwerveBaseSubsystem subsys, Pose2d target) {
+    public SwerveDriveToPoseAction(SwerveBaseSubsystem subsys, Pose2d pose2d) {
         super(subsys) ;
 
-        target_position_ = target ;
+        target_position_ = pose2d ;
     }
 
     @Override

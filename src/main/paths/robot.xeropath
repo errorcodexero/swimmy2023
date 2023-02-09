@@ -82,6 +82,36 @@
                     "startvelocity": 0
                 }
             ]
+        },
+        {
+            "name": "Sample",
+            "paths": [
+                {
+                    "constraints": [
+                    ],
+                    "endvelocity": 0,
+                    "maxacceleration": 1,
+                    "maxvelocity": 1,
+                    "name": "Path2m2m",
+                    "points": [
+                        {
+                            "heading": 0,
+                            "swrot": 0,
+                            "swrotvel": 0,
+                            "x": 2,
+                            "y": 2
+                        },
+                        {
+                            "heading": 0,
+                            "swrot": 0,
+                            "swrotvel": 0,
+                            "x": 4,
+                            "y": 0
+                        }
+                    ],
+                    "startvelocity": 0
+                }
+            ]
         }
     ],
     "outdir": "C:/cygwin64/home/butch/robottools/robots/swimmy2023/src/main/deploy/paths",

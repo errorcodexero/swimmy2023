@@ -10,10 +10,14 @@ import org.xero1425.base.subsystems.motorsubsystem.MotorEncoderPowerAction;
 import org.xero1425.base.subsystems.motorsubsystem.MotorEncoderSubsystem;
 import org.xero1425.base.subsystems.motorsubsystem.MotorEncoderVelocityAction;
 import org.xero1425.base.subsystems.swerve.common.SwerveBaseSubsystem;
+import org.xero1425.base.subsystems.swerve.common.SwerveDriveSetPoseAction;
+import org.xero1425.base.subsystems.swerve.common.SwerveDriveToPoseAction;
 import org.xero1425.base.subsystems.swerve.common.SwerveHolonomicPathFollower;
 import org.xero1425.base.subsystems.swerve.common.SwervePowerAngleAction;
 import org.xero1425.base.subsystems.swerve.common.SwerveSpeedAngleAction;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.RobotBase;
 import frc.robot.subsystems.arm.ArmSubsystem;
 import frc.robot.subsystems.gpm.GPMCollectAction;
@@ -162,6 +166,17 @@ public class SwimmyTestAutoMode extends TestAutoMode {
 
             case 30:
                 addSubActionPair(gpm, new GPMCollectAction(gpm), true);
+                break ;
+
+            case 99:
+                {
+                    Pose2d init = new Pose2d(getDouble("initx"), getDouble("inity"), Rotation2d.fromDegrees(getDouble("initangle")));
+                    addSubActionPair(swerve, new SwerveDriveSetPoseAction(swerve, init), true);
+                    addAction(new DelayAction(getAutoController().getRobot(), getDouble("delay"))) ;
+                    // Pose2d dest = new Pose2d(getDouble("x"), getDouble("y"), Rotation2d.fromDegrees(getDouble("angle")));
+                    //SwerveDriveToPoseAction act = new SwerveDriveToPoseAction(swerve, dest) ;
+                    //addSubActionPair(swerve, act, true);
+                }
                 break ;
         }
     }
