@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.xero1425.base.IVisionLocalization;
 import org.xero1425.base.IVisionLocalization.LocationData;
-import org.xero1425.base.IVisionLocalization.LocationType;
 import org.xero1425.base.motors.BadMotorRequestException;
 import org.xero1425.base.motors.MotorRequestFailedException;
 import org.xero1425.base.subsystems.DriveBaseSubsystem;
@@ -159,6 +158,8 @@ public abstract class SwerveBaseSubsystem extends DriveBaseSubsystem {
     public void computeMyState() throws Exception {
         super.computeMyState();
 
+        putDashboard("gyro", DisplayType.Always, gyro().getYaw());
+
         SwerveModulePosition [] poss = new SwerveModulePosition[4] ;
         poss[0] = getModulePosition(FL) ;
         poss[1] = getModulePosition(FR) ;
@@ -170,11 +171,9 @@ public abstract class SwerveBaseSubsystem extends DriveBaseSubsystem {
         if (vision_ != null) {
             LocationData lc = vision_.getLocation() ;
             if (lc != null) {
-                if (lc.type == LocationType.RobotFieldLocation) {
-                    Pose2d p2d = lc.location.toPose2d() ;
-                    addVisionMeasurement(p2d, lc.when) ;
-                    added = true ;
-                }
+                Pose2d p2d = lc.location.toPose2d() ;
+                addVisionMeasurement(p2d, lc.when) ;
+                added = true ;
             }
         }
         putDashboard("addvision", DisplayType.Always, added);

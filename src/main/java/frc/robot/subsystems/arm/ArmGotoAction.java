@@ -35,6 +35,8 @@ public class ArmGotoAction extends SequenceAction {
     public ArmGotoAction(ArmSubsystem sub, double[] lower, double [] upper) throws Exception {
         super(sub.getRobot().getMessageLogger()) ;
 
+        arm_ = sub;
+
         int i = 0 ;
         while (i < lower.length && i < upper.length) {
             addNext(lower[i], upper[i]) ;
@@ -43,6 +45,8 @@ public class ArmGotoAction extends SequenceAction {
 
     public ArmGotoAction(ArmSubsystem sub, double lower, double upper) throws Exception {
         super(sub.getRobot().getMessageLogger());
+
+        arm_ = sub;
         addNext(lower, upper) ;
     }
 

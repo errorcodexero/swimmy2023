@@ -68,9 +68,7 @@ public class LimeLightSubsystem extends Subsystem implements IVisionLocalization
     private double ts_ ;
     private boolean valid_targets_ ;
 
-    private int max_cycles_ ;
     private int current_cycles_ ;
-    private boolean if_ever_ ;
 
     private Retro [] retro_ ;
     private Fiducial[] fuds_ ;
@@ -84,8 +82,6 @@ public class LimeLightSubsystem extends Subsystem implements IVisionLocalization
     public LimeLightSubsystem(Subsystem parent, String name) {
         super(parent, name) ;
 
-        if_ever_ = false ;
-        max_cycles_ = 0 ;
         current_cycles_ = 0 ;
     }
 
@@ -107,16 +103,14 @@ public class LimeLightSubsystem extends Subsystem implements IVisionLocalization
         if (found_ && valid_targets_ && fuds_ != null && fuds_.length > 0) {
             current_cycles_++ ;
 
-            if (current_cycles_ > max_cycles_) {
-                max_cycles_ = current_cycles_ ;
-            }
-
             if (current_cycles_ > 4) {
-                if_ever_ = true ;
                 ret = new LocationData() ;
                 ret.location = wpiblue_ ;
                 ret.when = ts_ ;                                        // TODO is this right?
             }
+        }
+        else {
+            current_cycles_ = 0 ;
         }
 
         return ret ;
@@ -162,20 +156,20 @@ public class LimeLightSubsystem extends Subsystem implements IVisionLocalization
     public String getStatus() {
         String st = "" ;
 
-        // if (!found_) {
-        //     st = "<B>Limelight device not found</B>" ;
-        // }
-        // else {
-        //     if (!valid_targets_) {
-        //         st = "<B>No targets detected</B>" ;
-        //     }
-        //     else {
-        //         st += getRetroStatus() ;
-        //         st += getFiducialStatus() ;
-        //         st += getClassifierStatus() ;
-        //         st += getDetectorStatus() ;
-        //     }
-        // }
+        if (!found_) {
+            st = "<B>Limelight device not found</B>" ;
+        }
+        else {
+            if (!valid_targets_) {
+                st = "<B>No targets detected</B>" ;
+            }
+            else {
+                st += getRetroStatus() ;
+                st += getFiducialStatus() ;
+                st += getClassifierStatus() ;
+                st += getDetectorStatus() ;
+            }
+        }
 
         return st ;
     }
@@ -209,7 +203,6 @@ public class LimeLightSubsystem extends Subsystem implements IVisionLocalization
             count = fuds_.length ;
         }
         putDashboard("AprilTags", DisplayType.Always, count);
-        putDashboard("IfEver", DisplayType.Always, if_ever_) ;
     }
 
     public boolean hasAprilTag(int id) {
