@@ -99,19 +99,30 @@ public class SwerveVisionProcessing {
     }
 
     public void processVision() {
+        MessageLogger logger = sub_.getRobot().getMessageLogger();
 
         added_ = false ;
         LocationData lc = vision_.getLocation() ;
         setVisionParams();
         if (lc != null) {
-            vision_pose_ = new Pose2d(lc.location.getX(), lc.location.getZ(), new Rotation2d(lc.location.getRotation().getZ()));
-            if (vision_pose_.getTranslation().getDistance(sub_.getPose().getTranslation()) < vision_reject_threshold_) {
+            vision_pose_ = new Pose2d(lc.location.getX(), lc.location.getZ(), new Rotation2d(lc.location.getRotation().getY()));
+            vision_pose_ = lc.location.toPose2d();
+            double dist = vision_pose_.getTranslation().getDistance(sub_.getPose().getTranslation());
+            if (dist < vision_reject_threshold_) {
                 sub_.getEstimator().addVisionMeasurement(vision_pose_, lc.when) ; 
                 added_ = true ;
             }
+            else {
+                logger.startMessage(MessageType.Warning);
+                logger.add("Ignoring vision sample");
+                logger.add("dbpose", sub_.getPose());
+                logger.add("vision", vision_pose_);
+                logger.add("dist", dist);
+                logger.endMessage(); 
+            }
         }      
         
-        MessageLogger logger = sub_.getRobot().getMessageLogger();
+
         logger.startMessage(MessageType.Debug, logger_id_);
         logger.add("Vision: ");
         logger.add("params", params_type_.toString());

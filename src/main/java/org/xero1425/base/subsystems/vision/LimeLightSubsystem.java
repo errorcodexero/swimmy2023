@@ -117,8 +117,11 @@ public class LimeLightSubsystem extends Subsystem implements IVisionLocalization
                 found_ = true ;
                 valid_targets_ = true;
                 fuds_ = new Fiducial[1];
-                Rotation3d r = new Rotation3d(0.0, Math.toRadians(180.0), 0.0);
-                wpiblue_ = new Pose3d(3.5, 0.0, 6.5, r);
+                double ax = Math.toRadians(0.0);
+                double ay = Math.toRadians(0.0);
+                double az = Math.toRadians(180.0);
+                Rotation3d r = new Rotation3d(ax, ay, az);
+                wpiblue_ = new Pose3d(3.5, 7.0, 0.333, r);
                 tl_ = 0.020;
             }
             else {

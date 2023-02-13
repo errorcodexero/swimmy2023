@@ -281,9 +281,9 @@
                 "multi-threshold" : 4.0,                    // When we see multiple targets, and we are greater than this distance, use the multi-far std devs
                                                             // Otherwise use the multi-near std devs
                 "odometry" : {                              // The std devs for the odometry
-                    "x" : 0.1,
-                    "y" : 0.1,
-                    "heading" : 0.1
+                    "x" : 0.9,
+                    "y" : 0.9,
+                    "heading" : 0.9
                 },
                 //
                 // Jack in the bot - Odometry (0.02, 0.02, 0.02), Vision (0.1, 0.1, 0.01).
@@ -295,9 +295,9 @@
                         "heading" : 0.1
                     },
                     "single-near" : {
-                        "x" : 0.9,
-                        "y" : 0.9,
-                        "heading" : 0.9
+                        "x" : 0.1,
+                        "y" : 0.1,
+                        "heading" : 0.1
                     },
                     "multi-far" : {
                         "x" : 0.1,
