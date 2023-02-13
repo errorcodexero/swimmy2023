@@ -37,7 +37,7 @@ public class LimeLightModel extends SimulationModel {
     public boolean processEvent(String name, SettingsValue value) {
         boolean ret = false;
 
-        if (name.equals("Fiducial")) {
+        if (name.equals("tag")) {
             try {
                 fiducials_ = value.getString() ;
             } catch (BadParameterTypeException e) {

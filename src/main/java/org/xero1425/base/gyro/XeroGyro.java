@@ -27,5 +27,5 @@ public interface XeroGyro {
     public double getAccelY() ;
     public double getAccelZ() ;
 
-    public void reset() ;
+    // public void reset() ;
 }

@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.xero1425.base.IVisionLocalization;
-import org.xero1425.base.IVisionLocalization.LocationData;
 import org.xero1425.base.motors.BadMotorRequestException;
 import org.xero1425.base.motors.MotorRequestFailedException;
 import org.xero1425.base.subsystems.DriveBaseSubsystem;
@@ -13,6 +12,8 @@ import org.xero1425.misc.MessageLogger;
 import org.xero1425.misc.MessageType;
 import org.xero1425.misc.MinMaxData;
 
+import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.Vector;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -21,6 +22,7 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
@@ -28,6 +30,7 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 
 public abstract class SwerveBaseSubsystem extends DriveBaseSubsystem {
+
     private int plotid_ ;
     private double plotstart_ ;
     private Double[] plotdata_ ;
@@ -41,7 +44,7 @@ public abstract class SwerveBaseSubsystem extends DriveBaseSubsystem {
     
     private int index_ ;
 
-    private IVisionLocalization vision_ ;
+    private SwerveVisionProcessing vision_ ;
     private SwerveDriveKinematics kinematics_ ;
     private SwerveDrivePoseEstimator estimator_ ;
 
@@ -54,6 +57,7 @@ public abstract class SwerveBaseSubsystem extends DriveBaseSubsystem {
     private double maxa_ ;
     private double rotate_angle_ ;
     private Pose2d last_pose_ ;
+
 
     private MinMaxData velocity_ ;
     private MinMaxData rotational_velocity_ ;
@@ -99,11 +103,23 @@ public abstract class SwerveBaseSubsystem extends DriveBaseSubsystem {
         shuffleboardTab.addNumber("Pose X", () -> getPose().getX());
         shuffleboardTab.addNumber("Pose Y", () -> getPose().getY());
 
+
         last_pose_ = new Pose2d() ;
     }
 
     public void setVision(IVisionLocalization vision) {
-        vision_ = vision ;
+        try {
+            vision_ = new SwerveVisionProcessing(this, vision) ;
+        }
+        catch(Exception ex) {
+            MessageLogger logger = getRobot().getMessageLogger();
+            logger.startMessage(MessageType.Error);
+            logger.add("cannot start vision system, settings file is invalid ");
+            logger.add(ex.getMessage());
+            logger.endMessage();
+            logger.logStackTrace(ex.getStackTrace());
+            vision_ = null;
+        }
     }
 
     public String getStatus() {
@@ -121,7 +137,16 @@ public abstract class SwerveBaseSubsystem extends DriveBaseSubsystem {
         Rotation2d heading = Rotation2d.fromDegrees(gyro().getYaw()) ;
         
         try {
-            estimator_ = new SwerveDrivePoseEstimator(kinematics_, heading, poss, last_pose_) ;
+
+            Vector<N3> oparams = SwerveVisionProcessing.getParams(this, "odometry");
+
+            //
+            // These std devs are if we have no vision system.  When a vision system gets registered
+            // we replace these placeholders with values read from the settings file.
+            //
+            Vector<N3> vparams = VecBuilder.fill(0.9, 0.9, 0.9);
+            estimator_ = new SwerveDrivePoseEstimator(kinematics_, heading, poss, last_pose_, oparams, vparams) ;
+
         } catch(Exception ex) {
             MessageLogger logger = getRobot().getMessageLogger() ;
             logger.startMessage(MessageType.Error) ;
@@ -150,10 +175,6 @@ public abstract class SwerveBaseSubsystem extends DriveBaseSubsystem {
         setRawTargets(false, powers_, angles_);
     }
 
-    public void addVisionMeasurement(Pose2d vision, double when) {
-        estimator_.addVisionMeasurement(vision, when);
-    }
-
     @Override
     public void computeMyState() throws Exception {
         super.computeMyState();
@@ -167,16 +188,9 @@ public abstract class SwerveBaseSubsystem extends DriveBaseSubsystem {
         poss[3] = getModulePosition(BR) ;
         estimator_.update(Rotation2d.fromDegrees(gyro().getYaw()), poss) ;
 
-        boolean added = false;
         if (vision_ != null) {
-            LocationData lc = vision_.getLocation() ;
-            if (lc != null) {
-                Pose2d p2d = lc.location.toPose2d() ;
-                addVisionMeasurement(p2d, lc.when) ;
-                added = true ;
-            }
+            vision_.processVision();
         }
-        putDashboard("addvision", DisplayType.Always, added);
 
         Pose2d p = getPose() ;
         double dist = p.getTranslation().getDistance(last_pose_.getTranslation()) ;
@@ -198,6 +212,10 @@ public abstract class SwerveBaseSubsystem extends DriveBaseSubsystem {
         return kinematics_ ;
     }
 
+    public SwerveDrivePoseEstimator getEstimator() {
+        return estimator_;
+    }
+
     public Pose2d getPose() {
         return estimator_.getEstimatedPosition() ;
     }
@@ -211,7 +229,6 @@ public abstract class SwerveBaseSubsystem extends DriveBaseSubsystem {
         poss[2] = getModulePosition(BL) ;
         poss[3] = getModulePosition(BR) ;
         estimator_.resetPosition(rot, poss, pose) ;
-        gyro().reset() ;
     }
 
     // This is a hack for this one event.  Need to rethink this after block party

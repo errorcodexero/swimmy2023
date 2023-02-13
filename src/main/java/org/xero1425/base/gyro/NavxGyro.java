@@ -12,8 +12,6 @@ public class NavxGyro implements XeroGyro {
     // The instance of the NavX Gyro
     private AHRS navx_ ;
 
-    private double offset_ ;
-
     /// \brief Create the Gyro class using the default NavX Port on the MXP bus
     public NavxGyro() {
         if (XeroRobot.isSimulation()) {
@@ -35,12 +33,6 @@ public class NavxGyro implements XeroGyro {
         }
     }
 
-    public void reset() {
-        if (navx_ != null) {
-            offset_ = -navx_.getYaw() ;
-        }
-    }
-
     /// \brief Returns true if the NavX is connected
     /// \returns true if the NavX is connected, othewise false
     public boolean isConnected() {
@@ -58,7 +50,7 @@ public class NavxGyro implements XeroGyro {
         double ret = 0.0 ;
 
         if (navx_ != null) {
-            ret = -navx_.getYaw() - offset_ ;
+            ret = -navx_.getYaw() ;
         }
         return ret ;
     }

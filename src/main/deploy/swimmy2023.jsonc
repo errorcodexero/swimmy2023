@@ -12,7 +12,7 @@
             "pathfollowing": false,
 
             // Subsystem related messages
-            "swerve": false,
+            "vision": true,
             "swimmy2023oi" : false,
             "Swimmy2023RobotSubsystem" : false,
             "limelight" : false,
@@ -21,7 +21,8 @@
         },
         "verbose": {
             "swerve" : true,
-            "arm-motor-upper" : true
+            "arm-motor-upper" : true,
+            "grabber-motor-grab" : true
         },
         "plotting": {
             "enabled" : true,
@@ -136,10 +137,10 @@
         },
         "grabber" : {
             "hw" : {
-                "solenoids" : {
-                    "solenoid" : 0
-                },
-                "sensor" : 0
+                "sensor" : {
+                    "top" : 0,
+                    "bottom" : 1
+                }
             },
             "open" : {
                 //
@@ -154,26 +155,7 @@
                 "delay" : 0.2
             }
         },
-        "grabber-motor-left": {
-            "hw": {
-                "motors": {
-                    "1": {
-                        "type": "sparkmax-brushless",
-                        "canid": 3,
-                        "bus" : "",
-                        "inverted" : false,
-                        "neutral_mode": "coast"
-                    }
-                },
-                "encoder": {
-                    "type": "motor",
-                    "m": 1,
-                    "b": 0,
-                    "units" : "ticks"
-                }
-            }
-        },
-        "grabber-motor-right": {
+        "grabber-motor-spin": {
             "hw": {
                 "motors": {
                     "1": {
@@ -189,6 +171,56 @@
                     "m": 1,
                     "b": 0,
                     "units" : "ticks"
+                }
+            }
+        },
+        "grabber-motor-grab": {
+            "hw": {
+                "motors": {
+                    "1": {
+                        "type": "sparkmax-brushless",
+                        "canid": 3,
+                        "bus" : "",
+                        "inverted" : true,
+                        "neutral_mode": "coast"
+                    }
+                },
+                "encoder": {
+                    "type": "motor",
+                    "m": 1,
+                    "b": 0,
+                    "units" : "ticks"
+                }
+            },
+            "hold": {
+                "kp": 0.004,
+                "ki": 0,
+                "kd": 0,
+                "kf": 0,
+                "min": -0.30,
+                "max": 0.30,
+                "imax": 0
+            },
+            "goto": {
+                "threshold": 250,
+                "maxd": 500,
+                "maxa": 500,
+                "maxv": 500
+            },
+            "follower": {
+                "up" : {
+                    "kp": 0.0,
+                    "ka": 0.0,
+                    "ki": 0.0,
+                    "kd": 0.0,
+                    "kv": 0.000135612
+                },
+                "down" : {
+                    "kp": 0.0,
+                    "ka": 0.0,
+                    "ki": 0.0,
+                    "kd": 0.0,
+                    "kv": 0.000135612
                 }
             }
         },
@@ -242,6 +274,43 @@
             }
         },
         "swerve": {
+            "estimator" : {
+                "vision-reject-threshold" : 1.0,            // Reject vision samples that are more than this distance from the current robot pose
+                "single-threshold" : 50.0,                  // When we see a single target, and we are greater than this distance, use the single-far std devs
+                                                            // Otherwise use the single-near std devs
+                "multi-threshold" : 4.0,                    // When we see multiple targets, and we are greater than this distance, use the multi-far std devs
+                                                            // Otherwise use the multi-near std devs
+                "odometry" : {                              // The std devs for the odometry
+                    "x" : 0.1,
+                    "y" : 0.1,
+                    "heading" : 0.1
+                },
+                //
+                // Jack in the bot - Odometry (0.02, 0.02, 0.02), Vision (0.1, 0.1, 0.01).
+                //
+                "vision" : {
+                    "single-far" : {
+                        "x" : 0.1,
+                        "y" : 0.1,
+                        "heading" : 0.1
+                    },
+                    "single-near" : {
+                        "x" : 0.9,
+                        "y" : 0.9,
+                        "heading" : 0.9
+                    },
+                    "multi-far" : {
+                        "x" : 0.1,
+                        "y" : 0.1,
+                        "heading" : 0.1
+                    },
+                    "multi-near" : {
+                        "x" : 0.1,
+                        "y" : 0.1,
+                        "heading" : 0.1                        
+                    }
+                }
+            },
             "pid": {
                 "xctrl": {
                     "kp": 18.0,
@@ -506,20 +575,26 @@
         },
         "20" : {
             "power" : 0.2,
-            "duration" : 3.0            
+            "duration" : 1.0          
         },
         "21" : {
-            "power" : 0.2,
-            "duration" : 3.0            
+            "power" : 0.6,
+            "duration" : 5.0            
+        },
+        "22" : {
+            "position" : 500
+        },
+        "23" : {
+            "position" : 500
         },
         "29" : {
             "power" : 0.4,
             "duration" : 3.0
         },
         "99" : {
-            "initx" : 0.0,
-            "inity" : 0.0,
-            "initangle" : 180.0,
+            "initx" : 3.0,
+            "inity" : 6.5,
+            "initangle" : 160.0,
             "delay" : 2.0,
             "x" : 1.36195,
             "y" : 7.609796,

@@ -18,8 +18,8 @@ public class GrabberCloseAction extends Action {
 
         sub_ = sub ;
 
-        left_ = new MotorPowerAction(sub_.getLeftSubsystem(), 0.0) ;
-        right_ = new MotorPowerAction(sub_.getRightSubsystem(), 0.0) ;
+        // left_ = new MotorPowerAction(sub_.getLeftSubsystem(), 0.0) ;
+        // right_ = new MotorPowerAction(sub_.getRightSubsystem(), 0.0) ;
 
         timer_ = new XeroTimer(sub.getRobot(), "grabber-close-timer", delay);
     }
@@ -31,8 +31,8 @@ public class GrabberCloseAction extends Action {
 
         double delay = sub.getSettingsValue("close:delay").getDouble();
 
-        left_ = new MotorPowerAction(sub_.getLeftSubsystem(), 0.0) ;
-        right_ = new MotorPowerAction(sub_.getRightSubsystem(), 0.0) ;
+        // left_ = new MotorPowerAction(sub_.getLeftSubsystem(), 0.0) ;
+        // right_ = new MotorPowerAction(sub_.getRightSubsystem(), 0.0) ;
 
         timer_ = new XeroTimer(sub.getRobot(), "grabber-close-timer", delay);
     }
@@ -41,7 +41,7 @@ public class GrabberCloseAction extends Action {
     public void start() throws Exception {
         super.start() ;
         
-        sub_.close() ;
+        // sub_.close() ;
         timer_.start() ;
 
         
@@ -53,8 +53,8 @@ public class GrabberCloseAction extends Action {
         super.run() ;
 
         if (timer_.isExpired()) {
-            sub_.getLeftSubsystem().setAction(left_, true) ;
-            sub_.getRightSubsystem().setAction(right_, true) ;
+            // sub_.getLeftSubsystem().setAction(left_, true) ;
+            // sub_.getRightSubsystem().setAction(right_, true) ;
             setDone() ;
         }
     }

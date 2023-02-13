@@ -45,9 +45,6 @@ public abstract class DriveBaseSubsystem extends Subsystem {
             String msg = "cannot connect to the gyro of type '" + gyrotype + "' in the start time" ;
             throw new Exception(msg) ;
         }
-        else {
-            gyro_.reset() ;
-        }
     }
 
     public void computeMyState() throws Exception  {

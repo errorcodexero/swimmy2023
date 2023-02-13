@@ -47,7 +47,7 @@ public class SwimmyRobot2023 extends XeroRobot {
       if (ret != null)
           return ret;
 
-      return "collect";
+      return "automode";
   }
 
   protected void addRobotSimulationModels() {
@@ -56,10 +56,7 @@ public class SwimmyRobot2023 extends XeroRobot {
     factory.registerModel("swimmyoi", "frc.models.SwimmyOIModel");
   }  
   
-  protected void hardwareInit() throws Exception {
-    
-    enablePneumaticsAnalog() ;
-
+  protected void hardwareInit() throws Exception {    
     Swimmy2023RobotSubsystem robot = new Swimmy2023RobotSubsystem(this);
     setRobotSubsystem(robot);
   }

@@ -12,7 +12,6 @@ import org.xero1425.misc.MessageType;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import frc.robot.SwimmyRobot2023;
-import frc.robot.subsystems.arm.ArmGotoAction;
 import frc.robot.subsystems.gpm.GPMCollectAction;
 import frc.robot.subsystems.gpm.GPMSubsystem;
 import frc.robot.subsystems.oi.Swimmy2023OISubsystem;
@@ -70,7 +69,7 @@ public class Swimmy2023RobotSubsystem extends RobotSubsystem {
         gpm_ = new GPMSubsystem(this);
         addChild(gpm_);     
 
-        // db_.setVision(limelight_);
+        db_.setVision(limelight_);
         
         shelf_collect_action_ = new GPMCollectAction(gpm_);
 

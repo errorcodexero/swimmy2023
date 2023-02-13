@@ -8,5 +8,8 @@ public interface IVisionLocalization {
         public double when ;
     }
 
+    int getTagCount();
     LocationData getLocation() ;
+    double getDistance() ;
+    double getMultiTagDistance() ;
 }

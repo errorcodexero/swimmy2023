@@ -15,8 +15,8 @@ public class GrabberOpenAction extends Action {
         super(sub.getRobot().getMessageLogger());
         sub_ = sub ;
 
-        left_ = new MotorPowerAction(sub_.getLeftSubsystem(), power) ;
-        right_ = new MotorPowerAction(sub_.getRightSubsystem(), power) ;
+        // left_ = new MotorPowerAction(sub_.getLeftSubsystem(), power) ;
+        // right_ = new MotorPowerAction(sub_.getRightSubsystem(), power) ;
     }
 
     public GrabberOpenAction(GrabberSubsystem sub) throws BadParameterTypeException, MissingParameterException {
@@ -24,17 +24,17 @@ public class GrabberOpenAction extends Action {
         sub_ = sub ;
 
         double power = sub.getSettingsValue("open:power").getDouble();
-        left_ = new MotorPowerAction(sub_.getLeftSubsystem(), power) ;
-        right_ = new MotorPowerAction(sub_.getRightSubsystem(), power) ;
+        // left_ = new MotorPowerAction(sub_.getLeftSubsystem(), power) ;
+        // right_ = new MotorPowerAction(sub_.getRightSubsystem(), power) ;
     }
 
     @Override
     public void start() throws Exception {
         super.start() ;
 
-        sub_.open() ;
-        sub_.getLeftSubsystem().setAction(left_, true) ;
-        sub_.getRightSubsystem().setAction(right_, true) ;
+        // sub_.open() ;
+        // sub_.getLeftSubsystem().setAction(left_, true) ;
+        // sub_.getRightSubsystem().setAction(right_, true) ;
         
         setDone() ;
     }
