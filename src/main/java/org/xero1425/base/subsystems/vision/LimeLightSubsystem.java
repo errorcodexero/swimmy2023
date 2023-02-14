@@ -132,12 +132,6 @@ public class LimeLightSubsystem extends Subsystem implements IVisionLocalization
         if (found_ && valid_targets_ && fuds_ != null && fuds_.length > 0) {
             ret = new LocationData() ;
             ret.location = wpiblue_ ;
-
-            Rotation3d r3 = wpiblue_.getRotation();
-            double x = r3.getX() ;
-            double y = r3.getY() ;
-            double z = r3.getZ() ;
-
             ret.when = getRobot().getTime() - tl_ / 100.0 - timage_;
         }
 

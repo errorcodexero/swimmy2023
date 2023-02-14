@@ -11,8 +11,6 @@ import org.xero1425.misc.MissingParameterException;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.Vector;
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
@@ -41,6 +39,7 @@ public class SwerveVisionProcessing {
     private Vector<N3> multi_tag_far_params_ ;
 
     private double vision_reject_threshold_;
+    private double single_tag_distance_threshold_;
 
     private boolean added_ ;
     private Pose2d vision_pose_ ;
@@ -52,6 +51,7 @@ public class SwerveVisionProcessing {
         single_tag_threshold_ = sub_.getSettingsValue("estimator:single-threshold").getDouble();
         multi_tag_threshold_ = sub_.getSettingsValue("estimator:single-threshold").getDouble();
         vision_reject_threshold_ = sub_.getSettingsValue("estimator:vision-reject-threshold").getDouble();
+        single_tag_distance_threshold_ = sub_.getSettingsValue("estimator:single-tag-ignore-reject-threshold").getDouble();
 
         single_tag_near_params_ = getParams(sub, "vision:single-near");
         single_tag_far_params_ = getParams(sub, "vision:single-far");
@@ -101,18 +101,48 @@ public class SwerveVisionProcessing {
 
     public void processVision() {
         MessageLogger logger = sub_.getRobot().getMessageLogger();
+        boolean ignore = false;
 
         added_ = false ;
         LocationData lc = vision_.getLocation() ;
         setVisionParams();
         if (lc != null) {
             vision_pose_ = lc.location.toPose2d();
-            Rotation3d r3 = lc.location.getRotation();
-            double x = r3.getX() ;
-            double y = r3.getY() ;
-            double z = r3.getZ() ;
             double dist = vision_pose_.getTranslation().getDistance(sub_.getPose().getTranslation());
-            if (dist < vision_reject_threshold_) {
+            if (dist >= vision_reject_threshold_) {
+                ignore = true ;
+            }
+
+            //
+            // Ok, some special rules about when to apply the vision samples even if they are
+            // more than the threshold away from the current drive pose.  This is usedful if the
+            // drive pose gets way off, or if for instance, the drive team sets up the robot on the
+            // wrong automode.
+            //
+            if (vision_.getTagCount() > 1) {
+                //
+                // If we see multi tags, we take the value from vision
+                //
+                ignore = false;
+
+                logger.startMessage(MessageType.Info) ;
+                logger.add("added back vision sample");
+                logger.add("distance", dist) ;
+                logger.add("tag count", vision_.getTagCount());
+                logger.endMessage();
+
+            } else if (vision_.getTagCount() == 1 && vision_.getDistance() < single_tag_distance_threshold_) {
+                ignore = false ;
+
+                logger.startMessage(MessageType.Info) ;
+                logger.add("added back vision sample");
+                logger.add("distance", dist) ;
+                logger.add("tag count", vision_.getTagCount());
+                logger.endMessage();
+            }
+
+
+            if (!ignore) {
                 sub_.getEstimator().addVisionMeasurement(vision_pose_, lc.when) ; 
                 added_ = true ;
             }
