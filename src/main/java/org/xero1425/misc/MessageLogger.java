@@ -453,11 +453,11 @@ public final class MessageLogger
             per.message_.append(" ") ;
             per.message_.append(name) ;
             per.message_.append(" = ") ;
-            per.message_.append(pose.getX());
+            per.message_.append(String.format(java.util.Locale.US, "%.3f", pose.getX()));
             per.message_.append(" ") ;
-            per.message_.append(pose.getY());
+            per.message_.append(String.format(java.util.Locale.US, "%.3f", pose.getY()));
             per.message_.append(" ") ;
-            per.message_.append(pose.getRotation().getDegrees());
+            per.message_.append(String.format(java.util.Locale.US, "%.1f", pose.getRotation().getDegrees()));
         }
         return this;
     }

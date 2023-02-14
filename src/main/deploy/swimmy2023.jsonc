@@ -12,7 +12,8 @@
             "pathfollowing": false,
 
             // Subsystem related messages
-            "vision": true,
+            "vision": false,
+            "swerve" : true,
             "swimmy2023oi" : false,
             "Swimmy2023RobotSubsystem" : false,
             "limelight" : false,
@@ -466,8 +467,8 @@
                 "width": 0.5715, // meters
                 "length": 0.5842, // meters
                 "path" : {
-                    "maxv" : 2.0,
-                    "maxa" : 2.0
+                    "maxv" : 0.5,
+                    "maxa" : 0.5
                 },
                 "max-angular-speed": 100,
                 "max-angular-accel": 100

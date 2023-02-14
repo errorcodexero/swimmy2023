@@ -280,14 +280,33 @@ public abstract class SwerveBaseSubsystem extends DriveBaseSubsystem {
     public Trajectory createTrajectory(List<Pose2d> waypoints) {
         TrajectoryConfig config = new TrajectoryConfig(maxv_, maxa_) ;
         config.setKinematics(kinematics_) ;
-        return TrajectoryGenerator.generateTrajectory(waypoints, config) ;
+        Trajectory traj = TrajectoryGenerator.generateTrajectory(waypoints, config) ;
+        printTrajectory(traj);
+
+        return traj ;
     }
    
     public Trajectory createTrajectory(Pose2d end) {
         List<Pose2d> waypoints = new ArrayList<Pose2d>() ;
-        waypoints.add(getPose()) ;
+        Pose2d currentPose = getPose() ;
+        waypoints.add(currentPose) ;
         waypoints.add(end) ;
         return createTrajectory(waypoints) ;
+    }
+
+    private void printTrajectory(Trajectory traj) {
+        MessageLogger logger = getRobot().getMessageLogger();
+
+        List<Trajectory.State> states = traj.getStates();
+        for(Trajectory.State st : states) {
+            logger.startMessage(MessageType.Debug, getLoggerID());
+            logger.add("State:");
+            logger.add("time", st.timeSeconds);
+            logger.add("pose", st.poseMeters);
+            logger.add("vel", st.velocityMetersPerSecond);
+            logger.add("accel", st.accelerationMetersPerSecondSq);
+            logger.endMessage();
+        }
     }
 
     protected void newPlotData() {

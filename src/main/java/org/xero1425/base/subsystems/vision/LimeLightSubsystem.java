@@ -113,7 +113,7 @@ public class LimeLightSubsystem extends Subsystem implements IVisionLocalization
             // the tag disappear after a fixed amount of time. 
             //
             double t = Timer.getFPGATimestamp();
-            if (t > 3.0 && t < Double.MAX_VALUE) {
+            if (t > 1.0 && t < Double.MAX_VALUE) {
                 found_ = true ;
                 valid_targets_ = true;
                 fuds_ = new Fiducial[1];
@@ -132,7 +132,13 @@ public class LimeLightSubsystem extends Subsystem implements IVisionLocalization
         if (found_ && valid_targets_ && fuds_ != null && fuds_.length > 0) {
             ret = new LocationData() ;
             ret.location = wpiblue_ ;
-            ret.when = getRobot().getTime() - tl_ - timage_;
+
+            Rotation3d r3 = wpiblue_.getRotation();
+            double x = r3.getX() ;
+            double y = r3.getY() ;
+            double z = r3.getZ() ;
+
+            ret.when = getRobot().getTime() - tl_ / 100.0 - timage_;
         }
 
         return ret ;
@@ -421,7 +427,7 @@ public class LimeLightSubsystem extends Subsystem implements IVisionLocalization
                 if (dataarr.size() == 6) {
                     double [] data = convertToDoubleArray(dataarr) ;
                     Translation3d trans = new Translation3d(data[0], data[1], data[2]) ;
-                    Rotation3d rot = new Rotation3d(data[3], data[4], data[5]) ;
+                    Rotation3d rot = new Rotation3d(Math.toRadians(data[3]), Math.toRadians(data[4]), Math.toRadians(data[5])) ;
                     ret = new Pose3d(trans, rot) ;
                 }
             }       

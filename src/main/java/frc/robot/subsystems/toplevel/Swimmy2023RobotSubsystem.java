@@ -7,8 +7,10 @@ import org.xero1425.base.subsystems.swerve.common.SwerveBaseSubsystem;
 import org.xero1425.base.subsystems.swerve.common.SwerveDriveToPoseAction;
 import org.xero1425.base.subsystems.swerve.sdsswerve.SDSSwerveDriveSubsystem;
 import org.xero1425.base.subsystems.vision.LimeLightSubsystem;
+import org.xero1425.misc.BadParameterTypeException;
 import org.xero1425.misc.MessageLogger;
 import org.xero1425.misc.MessageType;
+import org.xero1425.misc.MissingParameterException;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import frc.robot.SwimmyRobot2023;
@@ -154,7 +156,7 @@ public class Swimmy2023RobotSubsystem extends RobotSubsystem {
         super.run() ;
 
         Gamepad gp = oi_.getGamePad() ;
-        if (gp.isEnabled() == false && gp.isXPressed() && gp.isAPressed()) {
+        if (gp != null && gp.isEnabled() == false && gp.isXPressed() && gp.isAPressed()) {
             abort() ;
             gp.enable();
         }
@@ -225,7 +227,7 @@ public class Swimmy2023RobotSubsystem extends RobotSubsystem {
         }
     }
 
-    private void lookingForTag() {
+    private void lookingForTag() throws BadParameterTypeException, MissingParameterException {
         int tag = getTargetTag() ;
 
         MessageLogger logger = getRobot().getMessageLogger() ;

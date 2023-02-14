@@ -12,6 +12,7 @@ import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.Vector;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
@@ -105,15 +106,18 @@ public class SwerveVisionProcessing {
         LocationData lc = vision_.getLocation() ;
         setVisionParams();
         if (lc != null) {
-            vision_pose_ = new Pose2d(lc.location.getX(), lc.location.getZ(), new Rotation2d(lc.location.getRotation().getY()));
             vision_pose_ = lc.location.toPose2d();
+            Rotation3d r3 = lc.location.getRotation();
+            double x = r3.getX() ;
+            double y = r3.getY() ;
+            double z = r3.getZ() ;
             double dist = vision_pose_.getTranslation().getDistance(sub_.getPose().getTranslation());
             if (dist < vision_reject_threshold_) {
                 sub_.getEstimator().addVisionMeasurement(vision_pose_, lc.when) ; 
                 added_ = true ;
             }
             else {
-                logger.startMessage(MessageType.Warning);
+                logger.startMessage(MessageType.Debug, logger_id_);
                 logger.add("Ignoring vision sample");
                 logger.add("dbpose", sub_.getPose());
                 logger.add("vision", vision_pose_);
@@ -121,7 +125,6 @@ public class SwerveVisionProcessing {
                 logger.endMessage(); 
             }
         }      
-        
 
         logger.startMessage(MessageType.Debug, logger_id_);
         logger.add("Vision: ");
@@ -165,7 +168,6 @@ public class SwerveVisionProcessing {
             params_type_ = vtype;
         }
     }
-    
 
     private void setVisionParams() {
         if (vision_.getTagCount() == 1) {
@@ -176,13 +178,16 @@ public class SwerveVisionProcessing {
                 setVisionParams(VisionParamsType.SingleFar);
             }
         }
-        else {
+        else if (vision_.getTagCount() > 1) {
             if (vision_.getDistance() < multi_tag_threshold_) {
                 setVisionParams(VisionParamsType.MultiNear);
             }
             else {
                 setVisionParams(VisionParamsType.MultiFar);
             }                
+        }
+        else if (vision_.getTagCount() == 0) {
+            setVisionParams(VisionParamsType.SingleNear);
         }
     }
 

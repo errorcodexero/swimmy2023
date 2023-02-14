@@ -76,6 +76,7 @@ public class SwerveHolonomicPathFollower extends SwerveHolonomicControllerAction
         if (index_ < path_.getTrajectoryEntryCount())
         {
             Pose2d target = getPoseFromPath(index_);
+            double velocity = getVelocityFromPath(index_) ;
 
             MessageLogger logger = getSubsystem().getRobot().getMessageLogger() ;
             logger.startMessage(MessageType.Debug, getSubsystem().getLoggerID()) ;
@@ -101,7 +102,6 @@ public class SwerveHolonomicPathFollower extends SwerveHolonomicControllerAction
             plot_data_[i++] = actual.getRotation().getDegrees() ;
             getSubsystem().addPlotData(plot_id_, plot_data_) ;
 
-            double velocity = getVelocityFromPath(index_) ;
             ChassisSpeeds speed = controller().calculate(getSubsystem().getPose(), target, velocity, target.getRotation()) ;
             getSubsystem().drive(speed) ;
             index_++ ;

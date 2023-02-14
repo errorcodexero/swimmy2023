@@ -20,6 +20,7 @@ public class SwerveDriveSetPoseAction extends Action {
     public void start() throws Exception {
         super.start() ;
         sub_.setPose(pose_) ;
+        setDone() ;
     }
 
     @Override
