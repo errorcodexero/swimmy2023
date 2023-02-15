@@ -54,8 +54,6 @@ public class Swimmy2023RobotSubsystem extends RobotSubsystem {
     public Swimmy2023RobotSubsystem(XeroRobot robot) throws Exception {
         super(robot, "Swimmy2023RobotSubsystem") ;
 
-
-
         SwimmyRobot2023 swimmy = (SwimmyRobot2023)robot ;
         locdata_ = swimmy.getFieldData() ;
 
