@@ -23,6 +23,9 @@ import edu.wpi.first.wpilibj.RobotBase;
 import frc.robot.subsystems.arm.ArmSubsystem;
 import frc.robot.subsystems.gpm.GPMCollectAction;
 import frc.robot.subsystems.gpm.GPMSubsystem;
+import frc.robot.subsystems.grabber.GrabberOpenAction;
+import frc.robot.subsystems.grabber.GrabberStartCollectAction;
+import frc.robot.subsystems.grabber.GrabberStopCollectAction;
 import frc.robot.subsystems.grabber.GrabberSubsystem;
 import frc.robot.subsystems.toplevel.Swimmy2023RobotSubsystem;
 
@@ -49,8 +52,8 @@ public class SwimmyTestAutoMode extends TestAutoMode {
         armLower = arm.getLowerSubsystem() ;
         armUpper = arm.getUpperSubsystem() ;
 
-        grabberGrabMotor = grabber.getGrabMotorSubsystem() ;
-        grabberSpinMotor = grabber.getSpinMotorSubsystem() ;
+        grabberGrabMotor = grabber.getGrabSubsystem() ;
+        grabberSpinMotor = grabber.getSpinSubsystem() ;
 
         switch (getTestNumber()) {
             case 0:
@@ -172,7 +175,17 @@ public class SwimmyTestAutoMode extends TestAutoMode {
                 addAction(new DelayAction(getAutoController().getRobot(), 2.0));
                 addSubActionPair(grabberGrabMotor, new MotorEncoderHoldAction(grabberGrabMotor, 0), false);
                 addAction(new DelayAction(getAutoController().getRobot(), 2.0));
-                break;                
+                break;    
+                
+            case 25:
+                addSubActionPair(grabber, new GrabberStartCollectAction(grabber), true) ;
+                break ;
+
+            case 26:
+                addSubActionPair(grabber, new GrabberStartCollectAction(grabber), true) ;
+                addAction(new DelayAction(getAutoController().getRobot(), 2.0));
+                addSubActionPair(grabber, new GrabberStopCollectAction(grabber), true) ;
+                break ;
 
             case 27:
                 break ;

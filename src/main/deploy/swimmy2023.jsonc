@@ -13,7 +13,7 @@
 
             // Subsystem related messages
             "vision": false,
-            "swerve" : true,
+            "swerve" : false,
             "swimmy2023oi" : false,
             "Swimmy2023RobotSubsystem" : false,
             "limelight" : false,
@@ -94,7 +94,7 @@
                         "canid": 2,
                         "bus" : "",
                         "inverted" : false,
-                        "neutral_mode": "brake"
+                        "neutral_mode": "coast"
                     }
                 },
                 "encoder": {
@@ -139,8 +139,8 @@
         "grabber" : {
             "hw" : {
                 "sensor" : {
-                    "top" : 0,
-                    "bottom" : 1
+                    "upper" : 0,
+                    "lower" : 1
                 }
             },
             "open" : {
@@ -173,6 +173,9 @@
                     "b": 0,
                     "units" : "ticks"
                 }
+            },
+            "power" : {
+                "spin" : 0.4
             }
         },
         "grabber-motor-grab": {
@@ -202,27 +205,9 @@
                 "max": 0.30,
                 "imax": 0
             },
-            "goto": {
-                "threshold": 250,
-                "maxd": 500,
-                "maxa": 500,
-                "maxv": 500
-            },
-            "follower": {
-                "up" : {
-                    "kp": 0.0,
-                    "ka": 0.0,
-                    "ki": 0.0,
-                    "kd": 0.0,
-                    "kv": 0.000135612
-                },
-                "down" : {
-                    "kp": 0.0,
-                    "ka": 0.0,
-                    "ki": 0.0,
-                    "kd": 0.0,
-                    "kv": 0.000135612
-                }
+            "positions" : {
+                "open" : 500,
+                "close" : 750
             }
         },
         "swimmy2023oi": {
@@ -276,6 +261,7 @@
         },
         "swerve": {
             "estimator" : {
+                "advanced-rejection" : false,                   // If true, the advanced rejection of vision samples is used, see the code for more details
                 "vision-reject-threshold" : 1.0,                // Reject vision samples that are more than this distance from the current robot pose
                 "single-threshold" : 50.0,                      // When we see a single target, and we are greater than this distance, use the single-far std devs
                                                                 // Otherwise use the single-near std devs
@@ -318,7 +304,7 @@
             },
             "pid": {
                 "xctrl": {
-                    "kp": 18.0,
+                    "kp": 6.0,
                     "ki": 0,
                     "kd": 0
                 },
@@ -328,7 +314,7 @@
                     "kd": 0
                 },
                 "rotation": {
-                    "kp": 13.0,
+                    "kp": 6.0,
                     "ki": 0,
                     "kd": 0
                 }
@@ -525,7 +511,7 @@
     }, 
     "testmode": {
         "enabled": true,
-        "which": 99,
+        "which": 10,
         "0": {
             "angle": 0.0,
             "power": 0.2

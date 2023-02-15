@@ -40,6 +40,7 @@ public class SwerveVisionProcessing {
 
     private double vision_reject_threshold_;
     private double single_tag_distance_threshold_;
+    private boolean advanced_rejection_ ;
 
     private boolean added_ ;
     private Pose2d vision_pose_ ;
@@ -48,6 +49,7 @@ public class SwerveVisionProcessing {
         vision_ = vision ;
         sub_ = sub ;
 
+        advanced_rejection_ = sub_.getSettingsValue("estimator:advanced-rejection").getBoolean();
         single_tag_threshold_ = sub_.getSettingsValue("estimator:single-threshold").getDouble();
         multi_tag_threshold_ = sub_.getSettingsValue("estimator:single-threshold").getDouble();
         vision_reject_threshold_ = sub_.getSettingsValue("estimator:vision-reject-threshold").getDouble();
@@ -108,6 +110,13 @@ public class SwerveVisionProcessing {
         setVisionParams();
         if (lc != null) {
             vision_pose_ = lc.location.toPose2d();
+
+            //
+            // There are two strategies for rejection vision samples if they do not seem to be valid.  The simple
+            // strategy is that if the samples are more than 1 meter from the current pose of the robot, we ignore
+            // them.  The advanced strategy is that if we see more than one april tag, we always trust the vision
+            // sample data.  If we see only one april tag, it must be within a given distance (single_tag_distance_threshold_).
+            //
             double dist = vision_pose_.getTranslation().getDistance(sub_.getPose().getTranslation());
             if (dist >= vision_reject_threshold_) {
                 ignore = true ;
@@ -119,7 +128,7 @@ public class SwerveVisionProcessing {
             // drive pose gets way off, or if for instance, the drive team sets up the robot on the
             // wrong automode.
             //
-            if (vision_.getTagCount() > 1) {
+            if (advanced_rejection_ && vision_.getTagCount() > 1) {
                 //
                 // If we see multi tags, we take the value from vision
                 //
@@ -131,7 +140,7 @@ public class SwerveVisionProcessing {
                 logger.add("tag count", vision_.getTagCount());
                 logger.endMessage();
 
-            } else if (vision_.getTagCount() == 1 && vision_.getDistance() < single_tag_distance_threshold_) {
+            } else if (advanced_rejection_ && vision_.getTagCount() == 1 && vision_.getDistance() < single_tag_distance_threshold_) {
                 ignore = false ;
 
                 logger.startMessage(MessageType.Info) ;

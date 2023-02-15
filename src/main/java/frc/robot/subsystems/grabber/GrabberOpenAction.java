@@ -1,42 +1,29 @@
 package frc.robot.subsystems.grabber;
 
 import org.xero1425.base.actions.Action;
-import org.xero1425.base.subsystems.motorsubsystem.MotorPowerAction;
-import org.xero1425.misc.BadParameterTypeException;
-import org.xero1425.misc.MissingParameterException;
+import org.xero1425.base.subsystems.motorsubsystem.MotorEncoderGotoAction;
 
 public class GrabberOpenAction extends Action {
 
     private GrabberSubsystem sub_ ;
-    private MotorPowerAction left_ ;
-    private MotorPowerAction right_ ;
-    
-    public GrabberOpenAction(GrabberSubsystem sub, double power) {
+
+    public GrabberOpenAction(GrabberSubsystem sub) {
         super(sub.getRobot().getMessageLogger());
         sub_ = sub ;
-
-        // left_ = new MotorPowerAction(sub_.getLeftSubsystem(), power) ;
-        // right_ = new MotorPowerAction(sub_.getRightSubsystem(), power) ;
-    }
-
-    public GrabberOpenAction(GrabberSubsystem sub) throws BadParameterTypeException, MissingParameterException {
-        super(sub.getRobot().getMessageLogger());
-        sub_ = sub ;
-
-        double power = sub.getSettingsValue("open:power").getDouble();
-        // left_ = new MotorPowerAction(sub_.getLeftSubsystem(), power) ;
-        // right_ = new MotorPowerAction(sub_.getRightSubsystem(), power) ;
     }
 
     @Override
     public void start() throws Exception {
-        super.start() ;
+        super.start();
+        sub_.getGrabSubsystem().setAction(new MotorEncoderGotoAction(sub_.getGrabSubsystem(), "open", true), true);
+    }
 
-        // sub_.open() ;
-        // sub_.getLeftSubsystem().setAction(left_, true) ;
-        // sub_.getRightSubsystem().setAction(right_, true) ;
-        
-        setDone() ;
+    @Override
+    public void run() throws Exception {
+        super.run();
+        if (sub_.getGrabSubsystem().getAction().isDone()) {
+            setDone();
+        }
     }
 
     @Override

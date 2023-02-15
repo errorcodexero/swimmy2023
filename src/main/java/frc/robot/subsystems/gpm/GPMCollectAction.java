@@ -1,81 +1,103 @@
 package frc.robot.subsystems.gpm;
 
 import org.xero1425.base.actions.Action;
+import org.xero1425.base.subsystems.motorsubsystem.MotorEncoderPowerAction;
 
 import frc.robot.subsystems.arm.ArmGotoAction;
-import frc.robot.subsystems.grabber.GrabberCloseAction;
-import frc.robot.subsystems.grabber.GrabberOpenAction;
+import frc.robot.subsystems.grabber.GrabberStartCollectAction;
+import frc.robot.subsystems.grabber.GrabberStopCollectAction;
 
 public class GPMCollectAction extends Action {
 
-    private enum State {
-        Deploying,
-        WaitingForSensor,
-        Retracting,
-        Done
-    } ;
+    GPMSubsystem subsystem_;
+    GrabberStartCollectAction grabber_start_collect_action_;
+    GrabberStopCollectAction grabber_stop_collect_action_;
 
-    private State state_ ;
+    ArmGotoAction arm_collect_action_;
+    ArmGotoAction arm_retract_action_;
 
-    private GPMSubsystem sub_ ;
+    public GPMCollectAction(GPMSubsystem subsystem) throws Exception {
+        super(subsystem.getRobot().getMessageLogger());
 
-    private ArmGotoAction extend_arm_ ;
-    private ArmGotoAction retract_arm_ ;
-    private GrabberOpenAction open_grabber_ ;
-    private GrabberCloseAction close_grabber_ ;
+        subsystem_ = subsystem;
 
-    public GPMCollectAction(GPMSubsystem sub) throws Exception {
-        super(sub.getRobot().getMessageLogger());
 
-        sub_ = sub ;
+        //
+        // Over all, instead of doing these kinds of sequences with brute force. I would create an
+        // ArmGotoAction that could read sets of positions from the settings file.  Then you could
+        // do something like arm_collect_action = new ArmGotoAction(subsystem_.getArm(), "collect") or
+        // arm_retract_action_ = new ArmGotoAction(subsystem_.getArm(), "retract").  Then this goto action
+        // would execute the sequence of gotos.  This is useful in other places like the place actions.
+        //
+        // "arm" : {
+        //   "collect" : {
+        //     "1" : {
+        //        "lower" : NUMBER,
+        //        "upper" : NUMBER
+        //     }
+        //   },
+        //   "retract" : {
+        //     "1" : {
+        //        "lower" : NUMBER,
+        //        "upper" : NUMBER
+        //     }
+        //     "2" : {
+        //        "lower" : NUMBER,
+        //        "upper" : NUMBER
+        //     }
+        //     "3" : {
+        //        "lower" : NUMBER,
+        //        "upper" : NUMBER
+        //     }
+        //   }
+        // }        
+        //
 
-        extend_arm_ = new ArmGotoAction(sub_.getArm(), "collect:extend") ;
-        retract_arm_ = new ArmGotoAction(sub_.getArm(), "collect:retract");
+        //
+        // Butch: This is positioning the ARM for collecting.  Names matter, so I would
+        //        name this arm_collect_action_ for instance.
+        //
+        arm_collect_action_ = new ArmGotoAction(subsystem_.getArm(), "collect:extend");
 
-        open_grabber_ = new GrabberOpenAction(sub_.getGrabber());
-        close_grabber_ = new GrabberCloseAction(sub_.getGrabber());
+        //
+        // Butch: This is one of three positions used to retract the arm.  I would name this
+        //        arm_retract1_action_
+        //
+        arm_retract_action_ = new ArmGotoAction(subsystem_.getArm(), "collect:retract");
+
+        //
+        // Butch: Also create GrabberStartCollect() and GrabberStopCollect() actions that
+        //        deal with both opening and closing the grabber as well as controlling the
+        //        spinner motors.  We might also need a GrabberHoldAction() to hold a game piece.
+
+        grabber_stop_collect_action_ = new GrabberStopCollectAction(subsystem.getGrabber());
+        grabber_start_collect_action_ = new GrabberStartCollectAction(subsystem_.getGrabber());
     }
 
     @Override
     public void start() throws Exception {
-        super.start() ;
+        super.start();
 
-        state_ = State.Deploying ;
-        sub_.getArm().setAction(extend_arm_, true) ;
-        sub_.getGrabber().setAction(open_grabber_, true);
+        subsystem_.getGrabber().setAction(grabber_start_collect_action_, true);
+        subsystem_.getArm().setAction(arm_collect_action_, true);
     }
 
     @Override
     public void run() throws Exception {
-        super.run() ;
-        switch(state_) {
-            case Deploying:
-                if (extend_arm_.isDone() && open_grabber_.isDone()) {
-                    state_ = State.WaitingForSensor ;
-                }
-                break; 
+        super.run();
 
-            case WaitingForSensor:
-                if (sub_.getGrabber().isSensorActive()) {
-                    sub_.getGrabber().setAction(close_grabber_, true) ;
-                    sub_.getArm().setAction(retract_arm_, true) ;
-                    state_ = State.Retracting ;
-                }
-                break ;
-
-            case Retracting:
-                if (retract_arm_.isDone() && close_grabber_.isDone()) {
-                    setDone() ;
-                    state_ = State.Done;
-                }
-                break; 
-
-            case Done:
-                break;
+        if (arm_collect_action_.isDone() && grabber_start_collect_action_.isDone()) {
+            if (subsystem_.getGrabber().sensor()) {
+                subsystem_.getGrabber().setAction(grabber_stop_collect_action_, true);
+                subsystem_.getArm().setAction(arm_retract_action_, true);
+                setDone() ;
+            }
         }
     }
 
+    @Override
     public String toString(int indent) {
-        return spaces(indent) + "GPMCollectAction" ;
+        return spaces(indent) + "GPMCollectAction";
     }
+
 }
