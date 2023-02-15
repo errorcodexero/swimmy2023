@@ -1,0 +1,123 @@
+// TODO: update with actual (x,y) field coordinates (as xero path gen would generate coordinates)
+{
+    "red": {
+        "grid": {
+            "1": { //middle of field
+                "grid-id": 3,
+                "left": {
+                    "x": 0,
+                    "y": 0
+                },
+                "middle": {
+                    "x": 0,
+                    "y": 0
+                },
+                "right": {
+                    "x": 0,
+                    "y": 0
+                }
+            },
+            "2": { //coopertition grid of field
+                "grid-id": 2,
+                "left": {
+                    "x": 0,
+                    "y": 0
+                },
+                "middle": {
+                    "x": 0,
+                    "y": 0
+                },
+                "right": {
+                    "x": 0,
+                    "y": 0
+                }
+            },
+            "3": { //edge of field
+                "grid-id": 1,
+                "left": {
+                    "x": 0,
+                    "y": 0
+                },
+                "middle": {
+                    "x": 0,
+                    "y": 0
+                },
+                "right": {
+                    "x": 0,
+                    "y": 0
+                }
+            },
+            "10": { //loading station
+                "grid-id": 5,
+                "edge": { //closer to edge of field
+                    "x": 0,
+                    "y": 0
+                },
+                "non-edge": {
+                    "x": 0,
+                    "y": 0
+                }
+            }
+        }
+    },
+    "blue": {
+        "grid": {
+            "1": { //middle of field
+                "grid-id": 6,
+                "left": {
+                    "x": 0,
+                    "y": 0
+                },
+                "middle": {
+                    "x": 0,
+                    "y": 0
+                },
+                "right": {
+                    "x": 0,
+                    "y": 0
+                }
+            },
+            "2": { //coopertition grid of field
+                "grid-id": 7,
+                "left": {
+                    "x": 0,
+                    "y": 0
+                },
+                "middle": {
+                    "x": 0,
+                    "y": 0
+                },
+                "right": {
+                    "x": 0,
+                    "y": 0
+                }
+            },
+            "3": { //edge of field
+                "grid-id": 8,
+                "left": {
+                    "x": 0,
+                    "y": 0
+                },
+                "middle": {
+                    "x": 0,
+                    "y": 0
+                },
+                "right": {
+                    "x": 0,
+                    "y": 0
+                }
+            },
+            "10": { //loading station
+                "grid-id": 4,
+                "edge": { //closer to edge of field
+                    "x": 0,
+                    "y": 0
+                },
+                "non-edge": {
+                    "x": 0,
+                    "y": 0
+                }
+            }
+        }
+    }
+}

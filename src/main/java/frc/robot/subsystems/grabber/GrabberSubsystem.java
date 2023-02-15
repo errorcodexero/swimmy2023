@@ -1,6 +1,5 @@
 package frc.robot.subsystems.grabber;
 
-import org.xero1425.base.pneumatics.XeroSolenoid;
 import org.xero1425.base.subsystems.Subsystem;
 import org.xero1425.base.subsystems.motorsubsystem.MotorEncoderSubsystem;
 
@@ -8,50 +7,43 @@ import edu.wpi.first.wpilibj.DigitalInput;
 
 public class GrabberSubsystem extends Subsystem {
 
-    private MotorEncoderSubsystem motor_left_ ;
-    private MotorEncoderSubsystem motor_right_ ;
-    private DigitalInput sensor_ ;
-    private XeroSolenoid solenoid_ ;
+    private MotorEncoderSubsystem motor_grab_ ;
+    private MotorEncoderSubsystem motor_spin_ ;
+    private DigitalInput sensor_upper_ ;
+    private DigitalInput sensor_lower_ ;
     private boolean sensor_value_ ;
 
     public GrabberSubsystem(Subsystem parent) throws Exception {
         super(parent, "grabber");
         
-        motor_left_ = new MotorEncoderSubsystem(this, "grabber-motor-left", false);
-        addChild(motor_left_);
+        motor_grab_ = new MotorEncoderSubsystem(this, "grabber-motor-grab", true);
+        addChild(motor_grab_);
         
-        motor_right_ = new MotorEncoderSubsystem(this, "grabber-motor-right", false);
-        addChild(motor_right_);
+        motor_spin_ = new MotorEncoderSubsystem(this, "grabber-motor-spin", false);
+        addChild(motor_spin_);
 
-        int v = getSettingsValue("hw:sensor").getInteger();
-        sensor_ = new DigitalInput(v);
+        int v = getSettingsValue("hw:sensor:lower").getInteger();
+        sensor_lower_ = new DigitalInput(v);
+        v = getSettingsValue("hw:sensor:upper").getInteger();
+        sensor_upper_ = new DigitalInput(v);
 
-        solenoid_ = new XeroSolenoid(this, "solenoid") ;
-    }
-
-    public boolean isSensorActive() {
-        return sensor_value_ ;
-    }
-
-    public void open() {
-        solenoid_.set(true);
-    }
-
-    public void close() {
-        solenoid_.set(false);
     }
 
     @Override
     protected void computeMyState() {
-        sensor_value_ = !sensor_.get() ;
+        sensor_value_ = sensor_lower_.get() || sensor_upper_.get();
         putDashboard("grabber", DisplayType.Always, sensor_value_);
     }
 
-    public MotorEncoderSubsystem getLeftSubsystem() {
-        return motor_left_ ;
+    public boolean sensor() {
+        return sensor_value_;
     }
 
-    public MotorEncoderSubsystem getRightSubsystem() {
-        return motor_right_ ;
+    public MotorEncoderSubsystem getGrabSubsystem() {
+        return motor_grab_ ;
+    }
+
+    public MotorEncoderSubsystem getSpinSubsystem() {
+        return motor_spin_ ;
     }
 }

@@ -1,5 +1,6 @@
 package org.xero1425.base.subsystems.swerve.common;
 
+import org.xero1425.base.misc.XeroTimer;
 import org.xero1425.base.motors.BadMotorRequestException;
 import org.xero1425.base.motors.MotorRequestFailedException;
 import org.xero1425.misc.BadParameterTypeException;
@@ -24,13 +25,16 @@ public class SwerveHolonomicPathFollower extends SwerveHolonomicControllerAction
     private int plot_id_ ;
     private Double[] plot_data_ ;
 
+    private boolean end_phase_;
+    private XeroTimer end_timer_;
+
     private static final String [] columns_ = {
         "time",
         "tx (m)", "ty (m)", "ta (deg)",
         "ax (m)", "ay (m)", "aa (deg)"
     } ;
 
-    public SwerveHolonomicPathFollower(SwerveBaseSubsystem sub, String pathname, boolean setpose) throws BadParameterTypeException, MissingParameterException {
+    public SwerveHolonomicPathFollower(SwerveBaseSubsystem sub, String pathname, boolean setpose, double endtime) throws BadParameterTypeException, MissingParameterException {
         super(sub) ;
 
         pathname_ = pathname ;
@@ -38,6 +42,8 @@ public class SwerveHolonomicPathFollower extends SwerveHolonomicControllerAction
 
         plot_data_ = new Double[columns_.length] ;
         plot_id_ = getSubsystem().initPlot("holonomic" + pathname_) ;
+
+        end_timer_ = new XeroTimer(sub.getRobot(), "holonomicpath", endtime);
     }
 
     @Override
@@ -48,6 +54,8 @@ public class SwerveHolonomicPathFollower extends SwerveHolonomicControllerAction
 
         start_ = getSubsystem().getRobot().getTime() ;
         path_ = getSubsystem().getRobot().getPathManager().getPath(pathname_);
+
+        end_phase_ = false ;
 
         if (setpose_) {
             Pose2d pose = getPoseFromPath(0) ;
@@ -68,6 +76,7 @@ public class SwerveHolonomicPathFollower extends SwerveHolonomicControllerAction
         if (index_ < path_.getTrajectoryEntryCount())
         {
             Pose2d target = getPoseFromPath(index_);
+            double velocity = getVelocityFromPath(index_) ;
 
             MessageLogger logger = getSubsystem().getRobot().getMessageLogger() ;
             logger.startMessage(MessageType.Debug, getSubsystem().getLoggerID()) ;
@@ -93,17 +102,27 @@ public class SwerveHolonomicPathFollower extends SwerveHolonomicControllerAction
             plot_data_[i++] = actual.getRotation().getDegrees() ;
             getSubsystem().addPlotData(plot_id_, plot_data_) ;
 
-            double velocity = getVelocityFromPath(index_) ;
             ChassisSpeeds speed = controller().calculate(getSubsystem().getPose(), target, velocity, target.getRotation()) ;
             getSubsystem().drive(speed) ;
             index_++ ;
         }
+        else if (index_ == path_.getTrajectoryEntryCount()) {
+            //
+            // The idea here is that after the path is done, we may not be at the path
+            // end location, especially if we are running the path very fast.  This gives
+            // time for the robot to use the Holonomic Controller to keep trying to reach
+            // the end destination up to a given timeout.
+            //
+            if (!end_phase_) {
+                end_phase_ = true ;
+                end_timer_.start() ;
+            }
 
-        if (index_ >= path_.getTrajectoryEntryCount())
-        {
-            getSubsystem().endPlot(plot_id_);
-            getSubsystem().drive(new ChassisSpeeds()) ;
-            setDone();
+            if (controller().atReference() || end_timer_.isExpired()) {
+                getSubsystem().endPlot(plot_id_);
+                getSubsystem().drive(new ChassisSpeeds()) ;
+                setDone();                
+            }            
         }
     }
 

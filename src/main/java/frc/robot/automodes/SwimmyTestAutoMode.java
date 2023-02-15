@@ -5,23 +5,29 @@ import org.xero1425.base.actions.InvalidActionRequest;
 import org.xero1425.base.controllers.AutoController;
 import org.xero1425.base.controllers.TestAutoMode;
 import org.xero1425.base.subsystems.motorsubsystem.MotorEncoderGotoAction;
+import org.xero1425.base.subsystems.motorsubsystem.MotorEncoderHoldAction;
 import org.xero1425.base.subsystems.motorsubsystem.MotorEncoderMultiPowerAction;
 import org.xero1425.base.subsystems.motorsubsystem.MotorEncoderPowerAction;
 import org.xero1425.base.subsystems.motorsubsystem.MotorEncoderSubsystem;
 import org.xero1425.base.subsystems.motorsubsystem.MotorEncoderVelocityAction;
 import org.xero1425.base.subsystems.swerve.common.SwerveBaseSubsystem;
+import org.xero1425.base.subsystems.swerve.common.SwerveDriveSetPoseAction;
+import org.xero1425.base.subsystems.swerve.common.SwerveDriveToPoseAction;
 import org.xero1425.base.subsystems.swerve.common.SwerveHolonomicPathFollower;
 import org.xero1425.base.subsystems.swerve.common.SwervePowerAngleAction;
 import org.xero1425.base.subsystems.swerve.common.SwerveSpeedAngleAction;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.RobotBase;
 import frc.robot.subsystems.arm.ArmSubsystem;
 import frc.robot.subsystems.gpm.GPMCollectAction;
 import frc.robot.subsystems.gpm.GPMSubsystem;
-import frc.robot.subsystems.grabber.GrabberCloseAction;
 import frc.robot.subsystems.grabber.GrabberOpenAction;
+import frc.robot.subsystems.grabber.GrabberStartCollectAction;
+import frc.robot.subsystems.grabber.GrabberStopCollectAction;
 import frc.robot.subsystems.grabber.GrabberSubsystem;
-import frc.robot.subsystems.Swimmy2023RobotSubsystem;
+import frc.robot.subsystems.toplevel.Swimmy2023RobotSubsystem;
 
 public class SwimmyTestAutoMode extends TestAutoMode {
 
@@ -33,8 +39,8 @@ public class SwimmyTestAutoMode extends TestAutoMode {
         SwerveBaseSubsystem swerve = (SwerveBaseSubsystem) robotsys.getDB();
         MotorEncoderSubsystem armLower = null ;
         MotorEncoderSubsystem armUpper = null ;
-        MotorEncoderSubsystem grabberLeft = null ;
-        MotorEncoderSubsystem grabberRight = null ;
+        MotorEncoderSubsystem grabberGrabMotor = null ;
+        MotorEncoderSubsystem grabberSpinMotor = null ;
 
         double angles[] = new double[4] ;
         double powers[] = new double[4] ;
@@ -46,8 +52,8 @@ public class SwimmyTestAutoMode extends TestAutoMode {
         armLower = arm.getLowerSubsystem() ;
         armUpper = arm.getUpperSubsystem() ;
 
-        grabberLeft = grabber.getLeftSubsystem() ;
-        grabberRight = grabber.getRightSubsystem() ;
+        grabberGrabMotor = grabber.getGrabSubsystem() ;
+        grabberSpinMotor = grabber.getSpinSubsystem() ;
 
         switch (getTestNumber()) {
             case 0:
@@ -76,7 +82,7 @@ public class SwimmyTestAutoMode extends TestAutoMode {
 
             case 4:
                 // Run the path follower against the path given
-                addSubActionPair(swerve, new SwerveHolonomicPathFollower(swerve, getString("name"), true), true);
+                addSubActionPair(swerve, new SwerveHolonomicPathFollower(swerve, getString("name"), true, 3.0), true);
                 break ;
 
             case 5:
@@ -145,23 +151,61 @@ public class SwimmyTestAutoMode extends TestAutoMode {
                 break ;
 
             case 20:
-                addSubActionPair(grabberLeft, new MotorEncoderPowerAction(grabberLeft, getDouble("power"), getDouble("duration")), true) ;
+                addSubActionPair(grabberGrabMotor, new MotorEncoderPowerAction(grabberGrabMotor, getDouble("power"), getDouble("duration")), true) ;
                 break ;
 
             case 21:
-                addSubActionPair(grabberRight, new MotorEncoderPowerAction(grabberRight, getDouble("power"), getDouble("duration")), true) ;
+                addSubActionPair(grabberSpinMotor, new MotorEncoderPowerAction(grabberSpinMotor, getDouble("power"), getDouble("duration")), true) ;
+                break ;
+
+            case 22:
+                addSubActionPair(grabberGrabMotor, new MotorEncoderGotoAction(grabberGrabMotor, getDouble("position"), true), true);
+                break;
+
+            case 23:
+                addSubActionPair(grabberGrabMotor, new MotorEncoderHoldAction(grabberGrabMotor, getDouble("position")), true);
+                break;
+
+            case 24:
+                addSubActionPair(grabberGrabMotor, new MotorEncoderHoldAction(grabberGrabMotor, 750), false);
+                addAction(new DelayAction(getAutoController().getRobot(), 2.0));
+                addSubActionPair(grabberGrabMotor, new MotorEncoderHoldAction(grabberGrabMotor, 50), false);
+                addAction(new DelayAction(getAutoController().getRobot(), 2.0));
+                addSubActionPair(grabberGrabMotor, new MotorEncoderHoldAction(grabberGrabMotor, 500), false);
+                addAction(new DelayAction(getAutoController().getRobot(), 2.0));
+                addSubActionPair(grabberGrabMotor, new MotorEncoderHoldAction(grabberGrabMotor, 0), false);
+                addAction(new DelayAction(getAutoController().getRobot(), 2.0));
+                break;    
+                
+            case 25:
+                addSubActionPair(grabber, new GrabberStartCollectAction(grabber), true) ;
+                break ;
+
+            case 26:
+                addSubActionPair(grabber, new GrabberStartCollectAction(grabber), true) ;
+                addAction(new DelayAction(getAutoController().getRobot(), 2.0));
+                addSubActionPair(grabber, new GrabberStopCollectAction(grabber), true) ;
                 break ;
 
             case 27:
-                addSubActionPair(grabber, new GrabberCloseAction(grabber, getDouble("double")), true) ;
                 break ;
 
             case 28:
-                addSubActionPair(grabber, new GrabberOpenAction(grabber, getDouble("power")), true) ;
                 break ;
 
             case 30:
                 addSubActionPair(gpm, new GPMCollectAction(gpm), true);
+                break ;
+
+            case 99:
+                {
+                    Pose2d init = new Pose2d(getDouble("initx"), getDouble("inity"), Rotation2d.fromDegrees(getDouble("initangle")));
+                    addSubActionPair(swerve, new SwerveDriveSetPoseAction(swerve, init), true);
+                    addAction(new DelayAction(getAutoController().getRobot(), getDouble("delay"))) ;
+                    Pose2d dest = new Pose2d(getDouble("x"), getDouble("y"), Rotation2d.fromDegrees(getDouble("angle")));
+                    SwerveDriveToPoseAction act = new SwerveDriveToPoseAction(swerve, dest) ;
+                    addSubActionPair(swerve, act, true);
+                }
                 break ;
         }
     }

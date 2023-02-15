@@ -2,6 +2,7 @@ package org.xero1425.simulator.engine;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import org.xero1425.misc.MessageLogger;
 import org.xero1425.misc.MessageType;
@@ -68,6 +69,10 @@ public abstract class SimulationModel {
 
     public SettingsValue getProperty(String name) {
         return props_.get(name) ;
+    }
+
+    public Set<String> getPropertyNames() {
+        return props_.keySet() ;
     }
 
     public double getRobotTime() {

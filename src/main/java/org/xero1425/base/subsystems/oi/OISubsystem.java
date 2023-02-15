@@ -75,6 +75,18 @@ public class OISubsystem extends Subsystem {
         }
     }
 
+    public void disableGamepad() {
+        if (gp_ != null) {
+            gp_.disable();
+        }
+    }
+
+    public void enableGamepad() {
+        if (gp_ != null) {
+            gp_.enable();
+        }
+    }
+
     public String getStatus() {
         String st = "" ;
 
@@ -210,6 +222,9 @@ public class OISubsystem extends Subsystem {
         devices_.add(dev) ;
     }
 
+    protected void gamePadCreated(Gamepad g) {
+    }
+
     private void addTankDriveGamePad() {
         if (db_ != null) {           
             MessageLogger logger = getRobot().getMessageLogger() ;
@@ -238,6 +253,8 @@ public class OISubsystem extends Subsystem {
                         addHIDDevice(gp_) ;
                         logger.startMessage(MessageType.Info) ;
                         logger.add("using historic xero1425 gamepad control").endMessage();
+
+                        gamePadCreated(gp_) ;
                     }
                     catch(Exception ex) {
                         //
@@ -269,6 +286,7 @@ public class OISubsystem extends Subsystem {
                         addHIDDevice(gp_) ;
                         logger.startMessage(MessageType.Info) ;
                         logger.add("using standard gamepad control").endMessage();
+                        gamePadCreated(gp_) ;
                     }
                     catch(Exception ex) {
                         //
@@ -300,7 +318,8 @@ public class OISubsystem extends Subsystem {
                         gp_ = new SwerveDriveGamepad(this, gp_index_, (SwerveBaseSubsystem)db_) ;
                         addHIDDevice(gp_) ;
                         logger.startMessage(MessageType.Info) ;
-                        logger.add("using standard gamepad control").endMessage();
+                        logger.add("using swerve gamepad control").endMessage();
+                        gamePadCreated(gp_) ;
                     }
                     catch(Exception ex) {
                         //

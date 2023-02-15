@@ -220,11 +220,21 @@ public class MotorEncoderSubsystem extends MotorSubsystem
         encoder_.calibrate(pos) ;
     }
 
+    @Override
+    public void postHWInit() throws Exception {
+        super.postHWInit();
+        encoder_.reset() ;
+    }
+
     /// \brief Reset the motor and attacd encoder.  This will reset the encoder value to 
     /// zero and set the motor power to off.
     public void reset() {
         super.reset() ;
-        encoder_.reset() ;
+
+        //
+        // TODO: remove this for now and only reset a motor encoder subsystem during postHWInit()
+        //
+        // encoder_.reset() ;
     }
 
     /// \brief Returns the encoder raw count
@@ -255,5 +265,6 @@ public class MotorEncoderSubsystem extends MotorSubsystem
         logger.endMessage();
 
         putDashboard(getName() + "-position", DisplayType.Verbose, pos);
+        putDashboard("raw", DisplayType.Always, encoder_.getRawCount());
     }
 }

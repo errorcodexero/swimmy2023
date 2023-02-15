@@ -1,6 +1,12 @@
 package org.xero1425.base.subsystems.oi;
 
 import java.util.Map;
+
+import org.xero1425.misc.BadParameterTypeException;
+import org.xero1425.misc.MessageLogger;
+import org.xero1425.misc.MessageType;
+import org.xero1425.misc.MissingParameterException;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -17,7 +23,7 @@ public class OIPanel extends OIDevice
     // The next handle value to use when a map() call is made
     int next_handle_ ;
 
-    // The iame from logical item numbers to panel items
+    // The map from logical item numbers to panel items
     Map<Integer, OIPanelItem> items_ ;
 
     // The set of LEDs
@@ -27,12 +33,28 @@ public class OIPanel extends OIDevice
     /// \param sub the subsystem that owns this OIPanel
     /// \param name the name of the OIPanel device
     /// \param index the index of the OIPanel device, used when access the hardware via the WPILib APIs.
-    public OIPanel(OISubsystem sub, String name, int index) {
+    public OIPanel(OISubsystem sub, String name, int index) throws BadParameterTypeException, MissingParameterException {
         super(sub, name, index) ;
 
         leds_ = new ArrayList<OILed>() ;
         items_ = new HashMap<Integer, OIPanelItem>() ;
         next_handle_ = 1 ;
+
+        initializeGadgets();
+        initializeLEDs();
+        
+        MessageLogger logger = sub.getRobot().getMessageLogger();
+        logger.startMessage(MessageType.Info) ;
+        logger.add("created OI panel with " + getGadgetCount() + " panel gadgets and " + getLEDCount() + " leds") ;
+        logger.endMessage();
+    }
+
+    public int getGadgetCount() {
+        return items_.size() ;
+    }
+
+    public int getLEDCount() {
+        return leds_.size() ;
     }
 
     /// \brief Map a logical button to a physical button and return the handle to the logical button.
@@ -111,4 +133,9 @@ public class OIPanel extends OIDevice
         }
     }
 
+    protected void initializeGadgets() throws BadParameterTypeException, MissingParameterException {
+    }
+
+    protected void initializeLEDs() throws BadParameterTypeException, MissingParameterException {
+    }
 } ;

@@ -20,7 +20,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.xero1425.simulator.engine.SimulationEngine;
-import org.xero1425.websrv.StatusServer;
+// import org.xero1425.websrv.StatusServer;
 import org.xero1425.misc.MessageType;
 import org.xero1425.misc.MissingParameterException;
 import org.xero1425.misc.SettingsValue;
@@ -119,7 +119,7 @@ public abstract class XeroRobot extends TimedRobot {
     private PneumaticsModuleType pneumatics_type_ ;
 
     // Server for dispalying the status of the robot
-    private StatusServer server_ ;
+    // private StatusServer server_ ;
 
     // The april tag layout for this field
     private AprilTagFieldLayout layout_ ;
@@ -220,13 +220,13 @@ public abstract class XeroRobot extends TimedRobot {
 
         automode_ = -1;
 
-        try {
-            server_ = new StatusServer(9001) ;
-            server_.start() ;
-        }
-        catch(IOException ex) {
+        // try {
+        //     server_ = new StatusServer(9001) ;
+        //     server_.start() ;
+        // }
+        // catch(IOException ex) {
 
-        }
+        // }
     }
 
     public RobotPaths getRobotFileSystemPaths() {
@@ -592,9 +592,9 @@ public abstract class XeroRobot extends TimedRobot {
         loop_count_ = 0 ;
     }
 
-    public void publishSubsystemStatus(String subsystem, String status) {
-        server_.setSubsystemStatus(subsystem, status);
-    }
+    // public void publishSubsystemStatus(String subsystem, String status) {
+    //     server_.setSubsystemStatus(subsystem, status);
+    // }
 
     /// \brief Called from the base class each robot loop while in the disabled state
     @Override
@@ -607,8 +607,8 @@ public abstract class XeroRobot extends TimedRobot {
 
         updateAutoMode();
 
-        server_.setRobotStatus("RobotStatus");
-        robot_subsystem_.publishStatus() ;
+        // server_.setRobotStatus("RobotStatus");
+        // robot_subsystem_.publishStatus() ;
 
         try {
             robot_subsystem_.computeState();
@@ -715,21 +715,22 @@ public abstract class XeroRobot extends TimedRobot {
     /// address of the ethernet port on the RoboRio to a specific MAC address provided by the method getParcticeBotMacAddress().
     /// \returns true if the current robot is the practice bot
     protected boolean isPracticeBot() {
-        if (mac_addr_ == null)
-            return false;
+        // if (mac_addr_ == null)
+        //     return false;
 
-        byte[] addr = getPracticeBotMacAddress();
-        if (addr == null)
-            return false;
-        boolean ret = true ;
-        for(int i = 0 ; i  < 6 ; i++)
-        {
-            byte b1 = addr[i] ;
-            byte b2 = mac_addr_[i] ;
-            if (b1 != b2)
-                ret = false ;
-        }
-        return ret ;
+        // byte[] addr = getPracticeBotMacAddress();
+        // if (addr == null)
+        //     return false;
+        // boolean ret = true ;
+        // for(int i = 0 ; i  < 6 ; i++)
+        // {
+        //     byte b1 = addr[i] ;
+        //     byte b2 = mac_addr_[i] ;
+        //     if (b1 != b2)
+        //         ret = false ;
+        // }
+        // return ret ;
+        return true ;
     }
 
     /// \brief Abtract method to create the automode controller, must be overridden by the derived class

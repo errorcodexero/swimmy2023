@@ -1,0 +1,67 @@
+{
+    "stimulus" :
+    [
+        {
+            "time" : 0.0,
+            "events" :
+            [
+                {
+                    "model" : "fms",
+                    "instance" : "1",
+                    "values" : 
+                    {
+                        "start" : 0.2,
+                        "autonomous" : 0.0,
+                        "between" : 0.0,
+                        "teleop" : 6.0,
+                        "fms" : false,
+                        "alliance" : "red1"
+                    }
+                }
+            ]
+        },
+        {
+            "time" : 1.0,
+            "events" : 
+            [
+                {
+                    "model" : "swimmyoi",
+                    "instance" : "1",
+                    "values" : 
+                    {
+                        "collect_v_place" : 1
+                    }
+                }
+            ]
+        },
+        {
+            "time" : 3.0,
+            "events" : 
+            [
+                {
+                    "model" : "swimmyoi",
+                    "instance" : "1",
+                    "values" : 
+                    {
+                        "lock" : 1
+                    }
+                }
+            ]
+        },
+        {
+            "time" : 4.0,
+            "events" : 
+            [
+                {
+                    "model" : "limelight",
+                    "instance" : "1",
+                    "values" :
+                    {
+                        "v" : 1,
+                        "Fiducial" : "[{ \"id\": 5, \"family\" : \"simulated\", \"t6c_ts\" : [0.0, 0.0, 0.0, 0.0, 0.0, 0.0], \"t6r_fs\" : [0.0, 0.0, 0.0, 0.0, 0.0, 0.0], \"t6r_ts\" : [0.0, 0.0, 0.0, 0.0, 0.0, 0.0], \"t6t_cs\" : [0.0, 0.0, 0.0, 0.0, 0.0, 0.0], \"t6t_rs\" : [0.0, 0.0, 0.0, 0.0, 0.0, 0.0], \"ta\" : 0.0, \"tx\" : 0.0, \"txp\" : 0.0, \"ty\": 0.0, \"typ\" : 0.0}]"
+                    }
+                }
+            ]
+        }
+    ]
+}

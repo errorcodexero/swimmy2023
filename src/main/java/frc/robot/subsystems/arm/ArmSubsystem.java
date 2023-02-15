@@ -24,12 +24,5 @@ public class ArmSubsystem extends Subsystem {
     public MotorEncoderSubsystem getUpperSubsystem() {
         return motor_upper_ ;
     }
-
-    @Override
-    public void computeMyState() throws Exception {
-        super.computeMyState();
-
-        putDashboard("UPPER", DisplayType.Always, motor_upper_.getPosition());
-    }
 }
 

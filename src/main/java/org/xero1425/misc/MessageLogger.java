@@ -3,6 +3,9 @@ package org.xero1425.misc;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import edu.wpi.first.math.geometry.Pose2d;
+
 import java.util.List;
 import java.text.DecimalFormat;
 import java.util.ArrayList ;
@@ -443,6 +446,21 @@ public final class MessageLogger
 
         return this;        
     }       
+
+    public MessageLogger add(final String name, final Pose2d pose) {
+        final ThreadData per = getPerThreadData();
+        if (per.enabled_&& per.in_message_) {
+            per.message_.append(" ") ;
+            per.message_.append(name) ;
+            per.message_.append(" = ") ;
+            per.message_.append(String.format(java.util.Locale.US, "%.3f", pose.getX()));
+            per.message_.append(" ") ;
+            per.message_.append(String.format(java.util.Locale.US, "%.3f", pose.getY()));
+            per.message_.append(" ") ;
+            per.message_.append(String.format(java.util.Locale.US, "%.1f", pose.getRotation().getDegrees()));
+        }
+        return this;
+    }
 
     /// \brief add a quoted string to a messages
     /// \param str the string to add

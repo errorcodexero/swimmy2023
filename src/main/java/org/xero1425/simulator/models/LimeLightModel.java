@@ -1,87 +1,77 @@
 package org.xero1425.simulator.models;
 
 import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import org.xero1425.simulator.engine.SimulationModel;
 import org.xero1425.simulator.engine.SimulationEngine;
 import org.xero1425.misc.BadParameterTypeException;
-import org.xero1425.misc.MessageLogger;
-import org.xero1425.misc.MessageType;
 import org.xero1425.misc.SettingsValue;
 
 public class LimeLightModel extends SimulationModel {
+    private NetworkTable table_ ;
+    private String classifier_ ;
+    private String fiducials_ ;
+    private String detector_ ;
+    private String retro_ ;
+    private int pid_ ;
+    private double tl_ ;
+    private double ts_ ;
+    private int v_ ;
+
     public LimeLightModel(SimulationEngine engine, String model, String inst) {
         super(engine, model, inst);
 
         table_ = NetworkTableInstance.getDefault().getTable("limelight");
+        classifier_ = "[]" ;
+        fiducials_ = "[]" ;
+        detector_ = "[]" ;
+        retro_ = "[]" ;
     }
 
     public boolean create() {
-
-        if (!hasProperty("latency")) {
-            latency_ = 0.01 ;
-        }
-        else {
-            SettingsValue prop = getProperty("latency") ;
-            if (!prop.isDouble()) {
-                MessageLogger logger = getEngine().getMessageLogger() ;
-                logger.startMessage(MessageType.Error);
-                logger.add("event: model ").addQuoted(getModelName());
-                logger.add(" instance ").addQuoted(getInstanceName());
-                logger.add(" property ").addQuoted("latency").add(" is not a double") ;
-                logger.endMessage();
-            }
-            else {
-                try {
-                    latency_ = prop.getDouble();
-                } catch (BadParameterTypeException e) {
-                }
-            }
-        }
-
         setCreated();
         return true;
     }
 
-    public void run(double dt) {
-        table_.getEntry("tl").setNumber(latency_) ;
-    }
-
-    public void setTX(double v) {
-        table_.getEntry("tx").setNumber(v) ;        
-    }
-
-    public void setTV(double v) {
-        table_.getEntry("tv").setNumber(v) ;        
-    }
-
-    public void setTY(double v) {
-        table_.getEntry("ty").setNumber(v) ;        
-    }    
-
     public boolean processEvent(String name, SettingsValue value) {
         boolean ret = false;
 
-        if (name.equals("tv") || name.equals("ty") || name.equals("tx")) {
-            ret = true ;
-            
-            if (!value.isDouble()) {
-                MessageLogger logger = getEngine().getMessageLogger();
-                logger.startMessage(MessageType.Error);
-                logger.add("event: model ").addQuoted(getModelName());
-                logger.add(" instance ").addQuoted(getInstanceName());
-                logger.add(" event name ").addQuoted(name);
-                logger.add(" value is not a double").endMessage();
-            }
+        if (name.equals("tag")) {
             try {
-                table_.getEntry(name).setNumber(value.getDouble());
+                fiducials_ = value.getString() ;
             } catch (BadParameterTypeException e) {
+                fiducials_ = "[]" ;
             }
         }
-
+        else if (name.equals("v")) {
+            try {
+                v_ = value.getInteger() ;
+            } catch (BadParameterTypeException e) {
+                v_ = 0 ;
+            }
+        }
         return ret ;
     }
 
-    private NetworkTable table_ ;
-    private double latency_ ;
+    @Override
+    public void run(double dt) {
+        NetworkTableEntry entry = table_.getEntry("json") ;
+        entry.setString(jsonText());
+    }
+
+    private String jsonText() {
+        String str = "{ \"Results\": {" ;
+        str += "\"Fiducial\": " + fiducials_ + "," ;
+        str += "\"Classifier\": " + classifier_ + "," ;
+        str += "\"Detector\" :" + detector_ + "," ;
+        str += "\"Retro\":" + retro_+ "," ;
+        str += "\"pID\" : " + pid_ + "," ;
+        str += "\"tl\" : " + tl_ + "," ;
+        str += "\"ts\" : " + ts_ + "," ;
+        str += "\"v\" : " + v_ ;
+        str +="}}" ; 
+
+        return str ;
+    }
 }

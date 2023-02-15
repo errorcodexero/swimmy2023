@@ -6,6 +6,7 @@ import org.json.simple.JSONValue;
 import org.xero1425.misc.MessageLogger ;
 import org.xero1425.misc.MessageType ;
 import org.xero1425.base.IVisionLocalization;
+import org.xero1425.base.XeroRobot;
 import org.xero1425.base.subsystems.Subsystem;
 
 import edu.wpi.first.math.geometry.Pose3d;
@@ -13,6 +14,7 @@ import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.Timer;
 
 public class LimeLightSubsystem extends Subsystem implements IVisionLocalization {
     public class Retro {
@@ -66,6 +68,7 @@ public class LimeLightSubsystem extends Subsystem implements IVisionLocalization
     private int id_ ;
     private double tl_ ;
     private double ts_ ;
+    private double timage_;
     private boolean valid_targets_ ;
 
     private Retro [] retro_ ;
@@ -73,22 +76,90 @@ public class LimeLightSubsystem extends Subsystem implements IVisionLocalization
     private Detector[] detectors_ ;
     private Classifier[] classifiers_ ;
 
+    private Pose3d botpose_ ;
+    private Pose3d wpired_ ;
+    private Pose3d wpiblue_ ;
+
     public LimeLightSubsystem(Subsystem parent, String name) {
         super(parent, name) ;
+        timage_ = 0.011;
+    }
+
+    public Pose3d getBotPose() {
+        return botpose_ ;
+    }
+
+    public Pose3d getRedBotPose() {
+        return wpired_;
+    }
+
+    public Pose3d getBlueBotPose() {
+        return wpiblue_;
+    }
+
+    public int getTagCount() {
+        if (fuds_ == null)
+            return 0;
+
+        return fuds_.length;
     }
 
     public LocationData getLocation() {
         LocationData ret = null ;
 
+        if (XeroRobot.isSimulation()) {
+            //
+            // When debugging, the Double.MAX_VALUE can be replaced with something smaller to make
+            // the tag disappear after a fixed amount of time. 
+            //
+            double t = Timer.getFPGATimestamp();
+            if (t > 1.0 && t < Double.MAX_VALUE) {
+                found_ = true ;
+                valid_targets_ = true;
+                fuds_ = new Fiducial[1];
+                double ax = Math.toRadians(0.0);
+                double ay = Math.toRadians(0.0);
+                double az = Math.toRadians(180.0);
+                Rotation3d r = new Rotation3d(ax, ay, az);
+                wpiblue_ = new Pose3d(3.5, 7.0, 0.333, r);
+                tl_ = 0.020;
+            }
+            else {
+                fuds_ = null;
+            }
+        }
+
         if (found_ && valid_targets_ && fuds_ != null && fuds_.length > 0) {
             ret = new LocationData() ;
-            ret.id = fuds_[0].id ;
-            ret.location = fuds_[0].robotToField ;
-            ret.type = LocationType.RobotFieldLocation ;
-            ret.when = ts_ ;                                        // TODO is this right?  Only if they are using the new NT4 time syn functions
+            ret.location = wpiblue_ ;
+            ret.when = getRobot().getTime() - tl_ / 100.0 - timage_;
         }
 
         return ret ;
+    }
+
+    public double getDistance() {
+        if (XeroRobot.isSimulation()) {
+            return 1.5;
+        }
+
+        return fuds_[0].robotToTarget.getTranslation().getNorm();
+    }
+
+    public double getMultiTagDistance() {
+        if (XeroRobot.isSimulation()) {
+            return 1.5;
+        }
+
+        double dist = Double.MAX_VALUE ;
+        for(var fud : fuds_) {
+            double zvalue = Math.abs(fud.robotToTarget.getTranslation().getZ()) ;
+            if (zvalue < dist) {
+                dist = zvalue;
+            }
+        }
+
+        return dist ;
     }
 
     public int getId() {
@@ -172,6 +243,12 @@ public class LimeLightSubsystem extends Subsystem implements IVisionLocalization
                 parseLimelightJsonObject((JSONObject)obj) ;
             }
         }
+
+        int count = 0 ;
+        if (fuds_ != null) {
+            count = fuds_.length ;
+        }
+        putDashboard("AprilTags", DisplayType.Always, count);
     }
 
     public boolean hasAprilTag(int id) {
@@ -344,7 +421,7 @@ public class LimeLightSubsystem extends Subsystem implements IVisionLocalization
                 if (dataarr.size() == 6) {
                     double [] data = convertToDoubleArray(dataarr) ;
                     Translation3d trans = new Translation3d(data[0], data[1], data[2]) ;
-                    Rotation3d rot = new Rotation3d(data[3], data[4], data[5]) ;
+                    Rotation3d rot = new Rotation3d(Math.toRadians(data[3]), Math.toRadians(data[4]), Math.toRadians(data[5])) ;
                     ret = new Pose3d(trans, rot) ;
                 }
             }       
@@ -443,7 +520,7 @@ public class LimeLightSubsystem extends Subsystem implements IVisionLocalization
 
                 JSONObject fud = (JSONObject)temp ;
                 Fiducial f = new Fiducial() ;
-                f.id = getIntFromObject(fud, "fID", -1) ;
+                f.id = getIntFromObject(fud, "id", -1) ;
                 f.family = getStringFromObject(fud, "fam", "") ;
                 f.camToTarget = getPose3dFromObject(fud, "t6c_ts", null) ;
                 f.robotToField = getPose3dFromObject(fud, "t6r_fs", null) ;
@@ -504,6 +581,9 @@ public class LimeLightSubsystem extends Subsystem implements IVisionLocalization
         }
 
         JSONObject obj = (JSONObject)temp ;
+        botpose_ = getPose3dFromObject(obj, "botpose", new Pose3d());
+        wpired_ = getPose3dFromObject(obj, "botpose_wpired", new Pose3d());
+        wpiblue_ = getPose3dFromObject(obj, "botpose_wpiblue", new Pose3d());
         id_ = getIntFromObject(obj, "pID", 0) ;
         tl_ = getDoubleFromObject(obj, "tl", 10000.0) ;
         ts_ = getDoubleFromObject(obj, "ts", 0.0) ;
