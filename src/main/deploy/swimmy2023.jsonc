@@ -478,18 +478,18 @@
             "collect" : {
                 "extend" : {
                     "1" : {
-                        "lower" : 100000,
-                        "upper" : 103000
+                        "lower" : 70000,
+                        "upper" : 125000
                     }
                 },
                 "retract" : {
                     "1" : {
-                        "lower" : 100000,
-                        "upper" : 106000
+                        "lower" : 70000,
+                        "upper" : 160000
                     },
                     "2" : {
                         "lower" : 60000,
-                        "upper" : 106000
+                        "upper" : 160000
                     },
                     "3" : {
                         "lower" : 0,
@@ -511,7 +511,7 @@
     }, 
     "testmode": {
         "enabled": true,
-        "which": 10,
+        "which": 30,
         "0": {
             "angle": 0.0,
             "power": 0.2

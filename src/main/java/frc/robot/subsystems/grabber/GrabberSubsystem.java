@@ -11,7 +11,8 @@ public class GrabberSubsystem extends Subsystem {
     private MotorEncoderSubsystem motor_spin_ ;
     private DigitalInput sensor_upper_ ;
     private DigitalInput sensor_lower_ ;
-    private boolean sensor_value_ ;
+    private boolean sensor_upper_value_ ;
+    private boolean sensor_lower_value_ ;
 
     public GrabberSubsystem(Subsystem parent) throws Exception {
         super(parent, "grabber");
@@ -31,12 +32,14 @@ public class GrabberSubsystem extends Subsystem {
 
     @Override
     protected void computeMyState() {
-        sensor_value_ = sensor_lower_.get() || sensor_upper_.get();
-        putDashboard("grabber", DisplayType.Always, sensor_value_);
+        sensor_upper_value_ = !sensor_upper_.get() ;
+        sensor_lower_value_ = !sensor_lower_.get() ;
+        putDashboard("s-upper", DisplayType.Always, sensor_upper_value_);
+        putDashboard("s-lower", DisplayType.Always, sensor_lower_value_);
     }
 
     public boolean sensor() {
-        return sensor_value_;
+        return sensor_upper_value_ || sensor_lower_value_;
     }
 
     public MotorEncoderSubsystem getGrabSubsystem() {
