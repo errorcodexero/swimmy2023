@@ -1,28 +1,45 @@
 package frc.robot.subsystems.grabber;
 
 import org.xero1425.base.actions.Action;
+import org.xero1425.base.misc.XeroTimer;
 import org.xero1425.base.subsystems.motorsubsystem.MotorEncoderPowerAction;
+import org.xero1425.misc.BadParameterTypeException;
+import org.xero1425.misc.MissingParameterException;
 
 public class GrabberStopCollectAction extends Action {
 
     private GrabberSubsystem sub_ ;
+    private XeroTimer spin_timer_ ;
+    private boolean timer_done_ ;
 
-    public GrabberStopCollectAction(GrabberSubsystem sub) {
+    public GrabberStopCollectAction(GrabberSubsystem sub) throws BadParameterTypeException, MissingParameterException {
         super(sub.getRobot().getMessageLogger());
         sub_ = sub ;
+
+        double delay = sub_.getSettingsValue("close:delay").getDouble();
+        spin_timer_ = new XeroTimer(sub.getRobot(),"grabber-top-collect", delay);
+        timer_done_ = false ;
     }
 
     @Override
     public void start() throws Exception {
         super.start();
+
+        timer_done_ = false ;
+        spin_timer_.start() ;
         sub_.getGrabSubsystem().setAction(new MotorEncoderPowerAction(sub_.getGrabSubsystem(), 0.2), true);
-        sub_.getSpinSubsystem().setAction(new MotorEncoderPowerAction(sub_.getSpinSubsystem(), 0), true);
     }
 
     @Override
     public void run() throws Exception {
         super.run();
-        if (sub_.getGrabSubsystem().getAction().isDone()) {
+
+        if (spin_timer_.isExpired()) {
+            sub_.getSpinSubsystem().setAction(new MotorEncoderPowerAction(sub_.getSpinSubsystem(), 0), true);
+            timer_done_ = true ;
+        }
+
+        if (timer_done_ && sub_.getGrabSubsystem().getAction().isDone()) {
             setDone();
         }
     }
