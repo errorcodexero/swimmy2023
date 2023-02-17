@@ -715,22 +715,21 @@ public abstract class XeroRobot extends TimedRobot {
     /// address of the ethernet port on the RoboRio to a specific MAC address provided by the method getParcticeBotMacAddress().
     /// \returns true if the current robot is the practice bot
     protected boolean isPracticeBot() {
-        // if (mac_addr_ == null)
-        //     return false;
+        if (mac_addr_ == null)
+            return false;
 
-        // byte[] addr = getPracticeBotMacAddress();
-        // if (addr == null)
-        //     return false;
-        // boolean ret = true ;
-        // for(int i = 0 ; i  < 6 ; i++)
-        // {
-        //     byte b1 = addr[i] ;
-        //     byte b2 = mac_addr_[i] ;
-        //     if (b1 != b2)
-        //         ret = false ;
-        // }
-        // return ret ;
-        return true ;
+        byte[] addr = getPracticeBotMacAddress();
+        if (addr == null)
+            return false;
+        boolean ret = true ;
+        for(int i = 0 ; i  < 6 ; i++)
+        {
+            byte b1 = addr[i] ;
+            byte b2 = mac_addr_[i] ;
+            if (b1 != b2)
+                ret = false ;
+        }
+        return ret ;
     }
 
     /// \brief Abtract method to create the automode controller, must be overridden by the derived class

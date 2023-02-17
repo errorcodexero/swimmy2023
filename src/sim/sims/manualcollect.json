@@ -1,0 +1,112 @@
+{
+    "stimulus" :
+    [
+        {
+            "time" : 0.0,
+            "events" :
+            [
+                {
+                    "model" : "fms",
+                    "instance" : "1",
+                    "values" : 
+                    {
+                        "comment" : "running teleop based simulation, the OI must trigger the acitons",
+                        "start" : 0.2,
+                        "autonomous" : 0.0,
+                        "between" : 0.0,
+                        "teleop" : 14.0,
+                        "fms" : false
+                    }
+                }
+            ]
+        },
+        {
+            "time" : 1.0,
+            "events" : 
+            [
+                {
+                    "model" : "swimmyoi",
+                    "instance" : "1",
+                    "values" : 
+                    {
+                        "comment" : "setting the collect/place switch to collect and auto/manual to manual",
+                        "collect_v_place" : 1,
+                        "auto_v_manual" : 1
+                    }
+                }
+            ]
+        },
+        {
+            "time" : 1.2,
+            "events" : 
+            [
+                {
+                    "model" : "swimmyoi",
+                    "instance" : "1",
+                    "values" : 
+                    {
+                        "action" : 1
+                    }
+                }
+            ]
+        },
+        {
+            "time" : 1.4,
+            "events" : 
+            [
+                {
+                    "model" : "swimmyoi",
+                    "instance" : "1",
+                    "values" : 
+                    {
+                        "action" : 0
+                    }
+                }
+            ]
+        },
+        {
+            "time" : 7.0,
+            "events" : 
+            [
+                {
+                    "model" : "swimmyoi",
+                    "instance" : "1",
+                    "values" : 
+                    {
+                        "comment" : "setting the collect/place switch to collect and auto/manual to manual",
+                        "collect_v_place" : 0,
+                        "auto_v_manual" : 1
+                    }
+                }
+            ]
+        },
+        {
+            "time" : 7.2,
+            "events" : 
+            [
+                {
+                    "model" : "swimmyoi",
+                    "instance" : "1",
+                    "values" : 
+                    {
+                        "action" : 1
+                    }
+                }
+            ]
+        },
+        {
+            "time" : 7.4,
+            "events" : 
+            [
+                {
+                    "model" : "swimmyoi",
+                    "instance" : "1",
+                    "values" : 
+                    {
+                        "action" : 0
+                    }
+                }
+            ]
+        }
+    ]
+}

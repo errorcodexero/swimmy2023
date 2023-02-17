@@ -1,5 +1,21 @@
 package frc.robot.subsystems.oi;
 
+//
+// Switches, purpose, and types
+//
+// Auto vs Manual       Single Toggle (1 DIO)
+// Collect vs Place     Single Toggle (1 DIO)
+// Cone vs Cube         Single Toggle (1 DIO)
+// Lock                 Button (1 DIO)
+// Abort                Button (1 DIO)
+// April Tag            Three way toggle (2 DIOs)
+// Slot                 Three way toggle (2 DIOs)
+// Height               Three way toggle (2 DIOs)
+// EndGame              Single Toggle (1 DIO)
+// Turtle               Button (1 DIO)
+// Action               Button (1 DIO)
+
+
 import org.xero1425.base.subsystems.oi.OILed;
 import org.xero1425.base.subsystems.oi.OIPanel;
 import org.xero1425.base.subsystems.oi.OIPanelButton;
@@ -12,6 +28,7 @@ import org.xero1425.misc.MissingParameterException;
 
 import frc.robot.subsystems.toplevel.RobotOperation;
 import frc.robot.subsystems.toplevel.Swimmy2023RobotSubsystem;
+import frc.robot.subsystems.toplevel.TurtleAction;
 import frc.robot.subsystems.toplevel.RobotOperation.Action;
 import frc.robot.subsystems.toplevel.RobotOperation.GamePiece;
 import frc.robot.subsystems.toplevel.RobotOperation.Location;
@@ -30,7 +47,6 @@ public class Swimmy2023OIDevice extends OIPanel {
     private int slot_loc2_gadget_ ;
     private int height1_gadget_ ;
     private int height2_gadget_ ;
-    private int endgame_gadget_ ;
     private int turtle_gadget_ ;
     private int action_gadget_ ;
 
@@ -38,6 +54,8 @@ public class Swimmy2023OIDevice extends OIPanel {
     private OILed state_output2_ ;
 
     private RobotOperation oper_ ;
+
+    private TurtleAction turtle_action_ ;
 
 
     public Swimmy2023OIDevice(OISubsystem parent, String name, int index) throws BadParameterTypeException, MissingParameterException {
@@ -50,96 +68,161 @@ public class Swimmy2023OIDevice extends OIPanel {
     }
 
     @Override
-    public void createStaticActions() {
+    public void createStaticActions() throws Exception {
+        Swimmy2023RobotSubsystem robot = (Swimmy2023RobotSubsystem)getSubsystem().getRobot().getRobotSubsystem() ;
+
+        turtle_action_ = new TurtleAction(robot) ;
     }
 
-    @Override
-    public void generateActions() {
+    private RobotOperation extractRobotOperation() {
+        RobotOperation oper = new RobotOperation() ; 
 
-        RobotOperation oper = new RobotOperation(oper_) ;
-
+        if (getValue(auto_v_manual_gadget_) == 1) {
+            oper.setManual(true);
+        }
+        
         if (getValue(collect_v_place_gadget_) == 1) {
-            oper_.setAction(Action.Collect) ;
+            oper.setAction(Action.Collect) ;
         }
         else {
-            oper_.setAction(Action.Place) ;
+            oper.setAction(Action.Place) ;
         }
 
         switch(getValue(cone_v_cube1_gadget_) | (getValue(cone_v_cube2_gadget_) << 1)) 
         {
             case 0:
-                oper_.setGamePiece(GamePiece.Cone) ;
+                oper.setGamePiece(GamePiece.Cone) ;
                 break ;
 
             case 1:
-                oper_.setGamePiece(GamePiece.None) ;
+                oper.setGamePiece(GamePiece.None) ;
                 break ;
 
             case 2:
-                oper_.setGamePiece(GamePiece.Cube) ;
+                oper.setGamePiece(GamePiece.Cube) ;
                 break ;
         }
 
         switch(getValue(april_tag1_gadget_) | (getValue(april_tag2_gadget_) << 1)) 
         {
             case 0:
-                oper_.setAprilTag(0) ;
+                oper.setAprilTag(0) ;
                 break ;
 
             case 1:
-                oper_.setAprilTag(1) ;
+                oper.setAprilTag(1) ;
                 break ;
 
             case 2:
-                oper_.setAprilTag(2) ;
+                oper.setAprilTag(2) ;
                 break ;
         }
 
         switch(getValue(slot_loc1_gadget_) | (getValue(slot_loc2_gadget_) << 1)) 
         {
             case 0:
-                oper_.setSlot(Slot.Left) ;
+                oper.setSlot(Slot.Left) ;
                 break ;
 
             case 1:
-                oper_.setSlot(Slot.Middle) ;
+                oper.setSlot(Slot.Middle) ;
                 break ;
 
             case 2:
-                oper_.setSlot(Slot.Right) ;
+                oper.setSlot(Slot.Right) ;
                 break ;
         }
 
         switch(getValue(height1_gadget_) | (getValue(height2_gadget_) << 1)) 
         {
             case 0:
-                oper_.setLocation(Location.Bottom);
+                oper.setLocation(Location.Bottom);
                 break ;
 
             case 1:
-            oper_.setLocation(Location.Middle);
+                oper.setLocation(Location.Middle);
                 break ;
 
             case 2:
-            oper_.setLocation(Location.Top);
+                oper.setLocation(Location.Top);
                 break ;
         }
 
-        if (getValue(abort_gadget_) == 1) {
+        return oper ;
+    }
+
+    @Override
+    public void generateActions() {
+        boolean errDetected = false ;
+        MessageLogger logger = getSubsystem().getRobot().getMessageLogger();
+
+        if (getValue(turtle_gadget_) == 1) {
+            //
+            // First priority is the turtle action.  This moves everything back into the robot to the best of our
+            // ability.  It will cancel any running actions with the arm and grabber.
+            //
+            Swimmy2023RobotSubsystem sub = (Swimmy2023RobotSubsystem)getSubsystem().getRobot().getRobotSubsystem();
+            sub.setAction(turtle_action_);
+
+            setLeds(true) ;
+        }
+        else if (getValue(abort_gadget_) == 1) {
+            //
+            // Abort any action going in the robot subsystem
+            //
             Swimmy2023RobotSubsystem sub = (Swimmy2023RobotSubsystem)getSubsystem().getRobot().getRobotSubsystem();
             sub.abort() ;
+            setLeds(true) ;
         }
-        else if (getValue(lock_gadget_) == 1) {
-            Swimmy2023RobotSubsystem sub = (Swimmy2023RobotSubsystem)getSubsystem().getRobot().getRobotSubsystem();
-            sub.setOperation(oper_) ;
-            oper_ = new RobotOperation() ;
-        }
+        else {
+            RobotOperation oper = extractRobotOperation() ;
+            if (!oper.equals(oper_)) {
+                logger.startMessage(MessageType.Debug, getSubsystem().getLoggerID());
+                logger.add("OI operation changed: ");
+                logger.add(oper_.toString());
+                logger.add(" -> ");
+                logger.add(oper.toString());
+                logger.endMessage();
+            }
 
-        if (!oper.equals(oper_)) {
-            MessageLogger logger = getSubsystem().getRobot().getMessageLogger() ;
-            logger.startMessage(MessageType.Debug, getSubsystem().getLoggerID());
-            logger.add("Operation Changes: " + oper.toString() + " -> " + oper_.toString());
-            logger.endMessage();
+            oper_ = oper;
+            if (oper_.getManual() == false && getValue(lock_gadget_) == 1) {
+                Swimmy2023RobotSubsystem sub = (Swimmy2023RobotSubsystem)getSubsystem().getRobot().getRobotSubsystem();
+                errDetected = sub.setOperation(oper_);
+
+                logger.startMessage(MessageType.Debug, getSubsystem().getLoggerID());
+                logger.add("OI assigned op (lock): " + oper_.toString());
+                logger.endMessage();
+            }
+            else if (oper_.getManual() == true && getValue(action_gadget_) == 1) {
+                Swimmy2023RobotSubsystem sub = (Swimmy2023RobotSubsystem)getSubsystem().getRobot().getRobotSubsystem();
+                errDetected = sub.setOperation(oper_);
+
+                logger.startMessage(MessageType.Debug, getSubsystem().getLoggerID());
+                logger.add("OI assigned op (action): " + oper_.toString());
+                logger.endMessage();
+            }
+
+            setLeds(errDetected) ;
+        }
+    }
+
+    private void setLeds(boolean err) {
+        if (err) {
+            state_output1_.setState(State.ON);
+            state_output2_.setState(State.ON);
+        }
+        else if (oper_.getGamePiece() == GamePiece.Cone) {
+            state_output1_.setState(State.ON);
+            state_output2_.setState(State.OFF);
+        }
+        else if (oper_.getGamePiece() == GamePiece.Cube) {
+            state_output1_.setState(State.OFF);
+            state_output2_.setState(State.ON);
+        }
+        else {
+            state_output1_.setState(State.OFF);
+            state_output2_.setState(State.OFF);
         }
     }
 
@@ -192,13 +275,10 @@ public class Swimmy2023OIDevice extends OIPanel {
         num = getSubsystem().getSettingsValue("panel:gadgets:height:2").getInteger();
         height2_gadget_ = mapButton(num, OIPanelButton.ButtonType.Level) ;  
 
-        num = getSubsystem().getSettingsValue("panel:gadgets:endgame").getInteger();
-        endgame_gadget_ = mapButton(num, OIPanelButton.ButtonType.Level) ;
-
         num = getSubsystem().getSettingsValue("panel:gadgets:turtle").getInteger();
         turtle_gadget_ = mapButton(num, OIPanelButton.ButtonType.Level) ; 
 
         num = getSubsystem().getSettingsValue("panel:gadgets:action").getInteger();
-        action_gadget_ = mapButton(num, OIPanelButton.ButtonType.Level) ;
+        action_gadget_ = mapButton(num, OIPanelButton.ButtonType.LowToHigh) ;
     }
 }

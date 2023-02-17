@@ -14,16 +14,16 @@
             // Subsystem related messages
             "vision": false,
             "swerve" : false,
-            "swimmy2023oi" : false,
-            "Swimmy2023RobotSubsystem" : false,
+            "swimmy2023oi" : true,
+            "Swimmy2023RobotSubsystem" : true,
             "limelight" : false,
             "arm-motor-lower" : false,
             "arm-motor-upper" : false
         },
         "verbose": {
-            "swerve" : true,
-            "arm-motor-upper" : true,
-            "grabber-motor-grab" : true
+            "swerve" : false,
+            "arm-motor-upper" : false,
+            "grabber-motor-grab" : false
         },
         "plotting": {
             "enabled" : true,
@@ -94,7 +94,7 @@
                         "canid": 2,
                         "bus" : "",
                         "inverted" : false,
-                        "neutral_mode": "coast"
+                        "neutral_mode": "brake"
                     }
                 },
                 "encoder": {
@@ -105,7 +105,7 @@
                 }
             },
             "hold": {
-                "kp": 0.00015,
+                "kp": 0.00025,
                 "ki": 0,
                 "kd": 0,
                 "kf": 0,
@@ -147,13 +147,13 @@
                 //
                 // The motor power to run the grabber motors while collecting a game piece
                 //
-                "power" : 0.4
+                "power" : 2.0
             },
             "close" : {
                 //
                 // The delay between closing the grabber and stopping the motors when grabbing
                 // a game piece
-                "delay" : 0.2
+                "delay" : 2.0
             }
         },
         "grabber-motor-spin": {
@@ -164,7 +164,7 @@
                         "canid": 4,
                         "bus" : "",
                         "inverted" : true,
-                        "neutral_mode": "coast"
+                        "neutral_mode": "brake"
                     }
                 },
                 "encoder": {
@@ -233,29 +233,28 @@
                     "state2" : 1
                 },
                 "gadgets" : {
-                    "collect_v_place" : 1,
+                    "collect_v_place" : 6,
                     "cone_v_cube" : {
-                        "1" : 2,
-                        "2" : 3
+                        "1" : 9,
+                        "2" : 10
                     },
-                    "auto_v_manual" : 4,
-                    "lock" : 5,
-                    "abort" : 6,
+                    "auto_v_manual" : 5,
+                    "lock" : 4,
+                    "abort" : 1,
                     "apriltag" : {
                         "1" : 7,
                         "2" : 8
                     },
                     "slot" : {
-                        "1" : 9,
-                        "2" : 10
+                        "1" : 13,
+                        "2" : 14
                     },
                     "height" : {
                         "1" : 11,
                         "2" : 12
                     },
-                    "endgame" : 13,
-                    "turtle" : 14,
-                    "action" : 15
+                    "turtle" : 2,
+                    "action" : 3
                 }
             }
         },
@@ -395,7 +394,7 @@
                 "fl": {
                     "kp":  {
                         "PRACTICE" : 0.0,
-                        "COMPETITION" : 0.6 //0.3            // 0.06 - tenative, see comment above
+                        "COMPETITION" : 0.0
                     },
                     "ki": 0.0,
                     "kd": 0.0,
@@ -410,7 +409,7 @@
                 "fr": {
                     "kp":  {
                         "PRACTICE" : 0.0,
-                        "COMPETITION" : 1//1.5               // 1.0 - tenative, see comment above
+                        "COMPETITION" : 0.0
                     },
                     "ki": 0.0,
                     "kd": 0.0,
@@ -425,7 +424,7 @@
                 "bl": {
                     "kp":  {
                         "PRACTICE" : 0.0,
-                        "COMPETITION" : 1//0.45                   // 1.0 - tenative, see comment above
+                        "COMPETITION" : 0.0
                     },
                     "ki": 0.0,
                     "kd": 0.0,
@@ -440,7 +439,7 @@
                 "br": {
                     "kp":  {
                         "PRACTICE" : 0.0,
-                        "COMPETITION" : 1//0.45                    // 1.0 - tenative, see comment above
+                        "COMPETITION" : 0.0
                     },
                     "ki": 0.0,
                     "kd": 0.0,
@@ -478,8 +477,12 @@
             "collect" : {
                 "extend" : {
                     "1" : {
+                        "lower" : 0,
+                        "upper" : 55000
+                    },
+                    "2" : {
                         "lower" : 70000,
-                        "upper" : 125000
+                        "upper" : 130000
                     }
                 },
                 "retract" : {
@@ -498,15 +501,148 @@
                 }
             },
             "place" : {
-                "extend" : {
-
+                "top" : {
+                    "cone" : {
+                        "extend" : {
+                            "1" : {
+                                "lower" : 70000,
+                                "upper" : 130000
+                            }
+                        },
+                        "retract" : {
+                            "1" : {
+                                "lower" : 70000,
+                                "upper" : 160000
+                            },
+                            "2" : {
+                                "lower" : 60000,
+                                "upper" : 160000
+                            },
+                            "3" : {
+                                "lower" : 0,
+                                "upper" : 0                        
+                            }
+                        }
+                    },
+                    "cube" : {
+                        "extend" : {
+                            "1" : {
+                                "lower" : 70000,
+                                "upper" : 130000
+                            }
+                        },
+                        "retract" : {
+                            "1" : {
+                                "lower" : 70000,
+                                "upper" : 160000
+                            },
+                            "2" : {
+                                "lower" : 60000,
+                                "upper" : 160000
+                            },
+                            "3" : {
+                                "lower" : 0,
+                                "upper" : 0                        
+                            }                            
+                        }
+                    }
                 },
-                "retract" : {
-
-                }
+                "middle" : {
+                    "cone" : {
+                        "extend" : {
+                            "1" : {
+                                "lower" : 70000,
+                                "upper" : 130000
+                            }
+                        },
+                        "retract" : {
+                            "1" : {
+                                "lower" : 70000,
+                                "upper" : 160000
+                            },
+                            "2" : {
+                                "lower" : 60000,
+                                "upper" : 160000
+                            },
+                            "3" : {
+                                "lower" : 0,
+                                "upper" : 0                        
+                            }
+                        }
+                    },
+                    "cube" : {
+                        "extend" : {
+                            "1" : {
+                                "lower" : 70000,
+                                "upper" : 130000
+                            }
+                        },
+                        "retract" : {
+                            "1" : {
+                                "lower" : 70000,
+                                "upper" : 160000
+                            },
+                            "2" : {
+                                "lower" : 60000,
+                                "upper" : 160000
+                            },
+                            "3" : {
+                                "lower" : 0,
+                                "upper" : 0                        
+                            }                            
+                        }
+                    }
+                },
+                "bottom" : {
+                    "cone" : {
+                        "extend" : {
+                            "1" : {
+                                "lower" : 70000,
+                                "upper" : 130000
+                            }
+                        },
+                        "retract" : {
+                            "1" : {
+                                "lower" : 70000,
+                                "upper" : 160000
+                            },
+                            "2" : {
+                                "lower" : 60000,
+                                "upper" : 160000
+                            },
+                            "3" : {
+                                "lower" : 0,
+                                "upper" : 0                        
+                            }
+                        }
+                    },
+                    "cube" : {
+                        "extend" : {
+                            "1" : {
+                                "lower" : 70000,
+                                "upper" : 130000
+                            }
+                        },
+                        "retract" : {
+                            "1" : {
+                                "lower" : 70000,
+                                "upper" : 160000
+                            },
+                            "2" : {
+                                "lower" : 60000,
+                                "upper" : 160000
+                            },
+                            "3" : {
+                                "lower" : 0,
+                                "upper" : 0                        
+                            }                            
+                        }
+                    }
+                },
             }
         },
         "gpm" : {
+            "place-delay" : 1.0
         }
     }, 
     "testmode": {
@@ -518,8 +654,8 @@
         },
         "1": {
             "angle": 0.0,
-            "power": 0.9,
-            "duration": 2.25
+            "power": 0.2,
+            "duration": 1
         },
         "2": {
             "angle": 0.0,

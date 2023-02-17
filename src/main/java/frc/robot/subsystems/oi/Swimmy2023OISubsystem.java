@@ -43,7 +43,6 @@ public class Swimmy2023OISubsystem extends OISubsystem {
             index = -1 ;            
         }
 
-        index = -1 ;
         if (index != -1) {
             try {
                 oipanel_ = new Swimmy2023OIDevice(this, "OI", index) ;

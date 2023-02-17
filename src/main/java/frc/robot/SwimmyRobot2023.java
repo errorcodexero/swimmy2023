@@ -47,7 +47,7 @@ public class SwimmyRobot2023 extends XeroRobot {
       if (ret != null)
           return ret;
 
-      return "automode";
+      return "manualcollect";
   }
 
   protected void addRobotSimulationModels() {

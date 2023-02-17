@@ -38,6 +38,7 @@ public class RobotOperation {
     private int tag_ ;
     private Slot slot_ ;
     private Location loc_ ;
+    private boolean manual_ ;
 
     public RobotOperation() {
         action_ = Action.Collect ;
@@ -45,6 +46,7 @@ public class RobotOperation {
         tag_ = 0 ;
         slot_ = Slot.Right;
         loc_ = Location.Middle ;
+        manual_ = false ;
     }
 
     public RobotOperation(RobotOperation oper) {
@@ -53,14 +55,24 @@ public class RobotOperation {
         tag_ = oper.getAprilTag();
         slot_ = oper.getSlot();
         loc_ = oper.getLocation() ;
+        manual_ = oper.getManual() ;
     }
 
-    public RobotOperation(Action a, GamePiece gp, int t, Slot s, Location l) {
+    public RobotOperation(Action a, GamePiece gp, int t, Slot s, Location l, boolean m) {
         action_ = a ;
         gp_ = gp;
         tag_ = t ;
         slot_ = s ;
         loc_ = l ;
+        manual_ = m ;
+    }
+
+    public boolean getManual() {
+        return manual_ ;
+    }
+
+    public void setManual(boolean v) {
+        manual_ = v ;
     }
 
     public Action getAction() {
@@ -105,7 +117,13 @@ public class RobotOperation {
 
     public String toString() {
         String ret = "[" ;
-        ret += action_.toString() ;
+        if (manual_) {
+            ret += "manual";
+        }
+        else {
+            ret += "auto" ;
+        }
+        ret += ", " + action_.toString() ;
         ret += ", " + gp_.toString();
         ret += ", Tag " + tag_ ;
         ret += ", Slot " + slot_.toString();

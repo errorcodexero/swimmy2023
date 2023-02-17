@@ -15,6 +15,8 @@ import org.xero1425.misc.MissingParameterException;
 import edu.wpi.first.math.geometry.Pose2d;
 import frc.robot.SwimmyRobot2023;
 import frc.robot.subsystems.gpm.GPMCollectAction;
+import frc.robot.subsystems.gpm.GPMPlaceAction;
+import frc.robot.subsystems.gpm.GPMStowAction;
 import frc.robot.subsystems.gpm.GPMSubsystem;
 import frc.robot.subsystems.oi.Swimmy2023OISubsystem;
 import frc.robot.subsystems.toplevel.RobotOperation.Action;
@@ -25,8 +27,22 @@ public class Swimmy2023RobotSubsystem extends RobotSubsystem {
 
     enum State {
         Idle,
+
+        //
+        // Common to all automatic operations
+        //
         LookingForTag,
-        DrivingToLocation
+        DrivingToLocation,
+
+        //
+        // Manual collect operation
+        //
+        ManualWaitForCollectDone,
+
+        //
+        // Manual place operation
+        //
+        ManualWaitForPlaceDone
     } ;
 
     //
@@ -41,7 +57,9 @@ public class Swimmy2023RobotSubsystem extends RobotSubsystem {
     // Actions we assign to the various subsystems
     //
     private SwerveDriveToPoseAction drive_to_;
-    private GPMCollectAction shelf_collect_action_ ;
+    private GPMCollectAction gpm_shelf_collect_action_ ;
+    private GPMPlaceAction gpm_place_action_ ;
+    private GPMStowAction gpm_stow_action_ ;
 
     //
     // The current operation
@@ -71,7 +89,8 @@ public class Swimmy2023RobotSubsystem extends RobotSubsystem {
 
         db_.setVision(limelight_);
         
-        shelf_collect_action_ = new GPMCollectAction(gpm_);
+        gpm_shelf_collect_action_ = new GPMCollectAction(gpm_);
+        gpm_stow_action_ = new GPMStowAction(gpm_);
 
         operation_ = null;
         state_ = State.Idle;
@@ -93,6 +112,30 @@ public class Swimmy2023RobotSubsystem extends RobotSubsystem {
         return limelight_ ;
     }
 
+    private boolean isOperationValid(RobotOperation oper) {
+        MessageLogger logger = getRobot().getMessageLogger();
+        boolean ret = true ;
+
+        if (oper.getAction() == Action.Collect) {
+            //
+            // Rules for collect
+            //
+            if (oper.getSlot() == Slot.Middle) {
+                logger.startMessage(MessageType.Error);
+                logger.add("Swimmy2023RobotSubsystem: invalid operation assigned - collect operation must be slot Left or Right");
+                logger.endMessage();
+                ret = false ;
+            }
+        }
+        else {
+            //
+            // Rules for placement
+            // 
+        }
+
+        return ret ;
+    }
+
     public boolean setOperation(RobotOperation oper) {
         if (operation_ != null) {
             //
@@ -102,28 +145,13 @@ public class Swimmy2023RobotSubsystem extends RobotSubsystem {
             return false ;
         }
 
-        if (oper.getAction() == Action.Collect) {
-            //
-            // These are collect rules for the OI
-            //
-            if (oper.getSlot() == Slot.Middle) {
-                //
-                // For collecting, only the left and right slot are valid.
-                //
-                return false ;
-            }
-        }
-        else {
-            //
-            // These are place rules for the OI
-            //
-            // TODO: add rules about having a cone/cube and not selecting the right location
-            //
+        if (!isOperationValid(oper)) {
+            return false ;
         }
 
         MessageLogger logger = getRobot().getMessageLogger() ;
         logger.startMessage(MessageType.Debug, getLoggerID()) ;
-        logger.add("Starting operation: " + oper.toString()) ;
+        logger.add("Swimmy2023RobotSubsystem: starting: " + oper.toString()) ;
         logger.endMessage();
 
         operation_ = oper ;
@@ -143,6 +171,14 @@ public class Swimmy2023RobotSubsystem extends RobotSubsystem {
                 oi_.getGamePad().rumble(1.0, 2.0);
                 drive_to_.cancel() ;
                 break ;
+                
+            case ManualWaitForCollectDone:
+                getGPM().setAction(gpm_stow_action_);
+                break ;
+
+            case ManualWaitForPlaceDone:
+                getGPM().setAction(gpm_stow_action_);
+                break;
         }
 
         state_ = State.Idle;
@@ -169,16 +205,24 @@ public class Swimmy2023RobotSubsystem extends RobotSubsystem {
         State orig = state_ ;
         switch(state_) {
             case Idle:
-                state_ = State.LookingForTag ;
+                stateIdle() ;
                 break;
 
             case LookingForTag:
-                lookingForTag() ;
+                stateLookingForTag() ;
                 break;
 
             case DrivingToLocation:
-                driveToLocation();
+                stateDriveToLocation();
                 break ;
+
+            case ManualWaitForCollectDone:
+                stateManualWaitForCollectDone();
+                break;
+
+            case ManualWaitForPlaceDone:
+                stateManualWaitForPlaceDone();
+                break;
         }
 
         if (state_ != orig) {
@@ -202,7 +246,24 @@ public class Swimmy2023RobotSubsystem extends RobotSubsystem {
         return tag ;
     }
 
-    private void driveToLocation() {
+    private void stateIdle() throws MissingParameterException, BadParameterTypeException {
+        if (operation_.getManual()) {
+            if (operation_.getAction() == RobotOperation.Action.Collect) {
+                getGPM().setAction(gpm_shelf_collect_action_, true) ;
+            }
+            else {
+                gpm_place_action_ = new GPMPlaceAction(gpm_, operation_.getLocation(), operation_.getGamePiece());
+                getGPM().setAction(gpm_place_action_, true);
+            }
+
+            state_ = State.ManualWaitForCollectDone;
+        }
+        else {
+            state_ = State.LookingForTag ;
+        }
+    }
+
+    private void stateDriveToLocation() {
         if (operation_.getAction() == Action.Collect) {
             //
             // We are collecting, the drive to location and the shelf collect action
@@ -210,7 +271,7 @@ public class Swimmy2023RobotSubsystem extends RobotSubsystem {
             // drives to the game piece, we should detect it and finish the collect.  This
             // finishes the collect operation
             //
-            if (shelf_collect_action_.isDone()) {
+            if (gpm_shelf_collect_action_.isDone()) {
                 oi_.enableGamepad() ;
                 oi_.getGamePad().rumble(1.0, 2.0);
                 state_ = State.Idle;
@@ -225,7 +286,7 @@ public class Swimmy2023RobotSubsystem extends RobotSubsystem {
         }
     }
 
-    private void lookingForTag() throws BadParameterTypeException, MissingParameterException {
+    private void stateLookingForTag() throws BadParameterTypeException, MissingParameterException {
         int tag = getTargetTag() ;
 
         MessageLogger logger = getRobot().getMessageLogger() ;
@@ -245,9 +306,24 @@ public class Swimmy2023RobotSubsystem extends RobotSubsystem {
 
             drive_to_ = new SwerveDriveToPoseAction(db_, target_pose_);
             db_.setAction(drive_to_);
-            gpm_.setAction(shelf_collect_action_, true);
+            gpm_.setAction(gpm_shelf_collect_action_, true);
 
             state_ = State.DrivingToLocation;
+        }
+    }
+
+    private void stateManualWaitForCollectDone() {
+        if (gpm_stow_action_.isDone()) {
+            operation_ = null;
+            state_ = State.Idle ;
+        }
+    }
+
+    private void stateManualWaitForPlaceDone() {
+        if (gpm_place_action_.isDone()) {
+            operation_ = null;
+            gpm_place_action_ = null;
+            state_ = State.Idle ;
         }
     }
 }

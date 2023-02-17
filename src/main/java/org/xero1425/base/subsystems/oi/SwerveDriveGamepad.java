@@ -146,7 +146,7 @@ public class SwerveDriveGamepad extends Gamepad {
         rxscaled *= 2.0 / Math.hypot(db_.getLength(), db_.getWidth()) / 39.37;  // 39.27 to convert meters -> inches. Original equation from SDS assumes inches.
         ChassisSpeeds speeds = ChassisSpeeds.fromFieldRelativeSpeeds(-lyscaled, -lxscaled, rxscaled, db_.getHeading()) ;
         action_.update(speeds) ;
-        
+
         if (db_.getAction() != action_)
             db_.setAction(action_) ;
     }

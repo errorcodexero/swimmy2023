@@ -125,7 +125,7 @@ public class MotorEncoderHoldAction extends MotorAction {
     /// \returns a human readable string that describes the action
     @Override
     public String toString(int indent) {
-        String ret = prefix(indent) + "MotorEncoderHoldAction" ;
+        String ret = prefix(indent) + "MotorEncoderHoldAction (" + getSubsystem().getName() + ")";
         if (has_explicit_target_)
             ret += ", explicit" ;
         else
