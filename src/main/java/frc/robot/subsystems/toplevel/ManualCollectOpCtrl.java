@@ -18,7 +18,7 @@ public class ManualCollectOpCtrl extends OperationCtrl {
     public ManualCollectOpCtrl(Swimmy2023RobotSubsystem sub, RobotOperation oper) throws Exception {
         super(sub, oper) ;
 
-        collect_action_ = new GPMCollectAction(sub.getGPM());
+        collect_action_ = new GPMCollectAction(sub.getGPM(), oper.getGround());
     }
 
     @Override

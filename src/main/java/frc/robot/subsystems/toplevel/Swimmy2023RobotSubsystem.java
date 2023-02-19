@@ -101,6 +101,11 @@ public class Swimmy2023RobotSubsystem extends RobotSubsystem {
         MessageLogger logger = getRobot().getMessageLogger();
         boolean ret = true ;
 
+        if (oper.getGround()) {
+            if (oper.getAction() != Action.Collect)
+                return false;
+        }
+
         if (oper.getAction() == Action.Collect) {
             //
             // Rules for collect
@@ -148,7 +153,10 @@ public class Swimmy2023RobotSubsystem extends RobotSubsystem {
         logger.endMessage();
 
         try {
-            if (oper.getManual()) {
+            if (oper.getGround()) {
+                ctrl_ = new AutoCollectGroundOpCtrl(this, oper);
+            }
+            else if (oper.getManual()) {
                 if (oper.getAction() == Action.Place) {
                     ctrl_ = new ManualPlaceOpCtrl(this, oper);
                 }

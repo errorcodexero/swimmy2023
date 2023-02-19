@@ -9,23 +9,28 @@ import frc.robot.subsystems.grabber.GrabberStopCollectAction;
 
 public class GPMCollectAction extends Action {
 
-    GPMSubsystem subsystem_;
-    GrabberStartCollectAction grabber_start_collect_action_;
-    GrabberStopCollectAction grabber_stop_collect_action_;
+    private GPMSubsystem subsystem_;
+    private GrabberStartCollectAction grabber_start_collect_action_;
+    private GrabberStopCollectAction grabber_stop_collect_action_;
 
-    XeroTimer timer_ ;
-    boolean running_ ;
+    private XeroTimer timer_ ;
+    private boolean running_ ;
 
-    ArmGotoAction arm_collect_action_;
-    ArmGotoAction arm_retract_action_;
+    private ArmGotoAction arm_collect_action_;
+    private ArmGotoAction arm_retract_action_;
 
-    public GPMCollectAction(GPMSubsystem subsystem) throws Exception {
+    public GPMCollectAction(GPMSubsystem subsystem, boolean ground) throws Exception {
         super(subsystem.getRobot().getMessageLogger());
 
-        subsystem_ = subsystem;
+        if (ground) {
+            arm_collect_action_ = new ArmGotoAction(subsystem_.getArm(), "collect:extend-ground");
+            arm_retract_action_ = new ArmGotoAction(subsystem_.getArm(), "collect:retract-ground");
+        }
+        else {
+            arm_collect_action_ = new ArmGotoAction(subsystem_.getArm(), "collect:extend-shelf");
+            arm_retract_action_ = new ArmGotoAction(subsystem_.getArm(), "collect:retract-shelf");
+        }       
 
-        arm_collect_action_ = new ArmGotoAction(subsystem_.getArm(), "collect:extend");
-        arm_retract_action_ = new ArmGotoAction(subsystem_.getArm(), "collect:retract");
         grabber_stop_collect_action_ = new GrabberStopCollectAction(subsystem.getGrabber());
         grabber_start_collect_action_ = new GrabberStartCollectAction(subsystem_.getGrabber());
 

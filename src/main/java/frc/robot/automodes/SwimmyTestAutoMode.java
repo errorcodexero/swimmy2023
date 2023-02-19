@@ -203,8 +203,12 @@ public class SwimmyTestAutoMode extends TestAutoMode {
                 break ;
 
             case 30:
-                addSubActionPair(gpm, new GPMCollectAction(gpm), true);
+                addSubActionPair(gpm, new GPMCollectAction(gpm, false), true);
                 break ;
+
+            case 31:
+                addSubActionPair(gpm, new GPMCollectAction(gpm, true), true);
+                break ;                
 
             case 98:
                 {
@@ -234,7 +238,7 @@ public class SwimmyTestAutoMode extends TestAutoMode {
                     addSubActionPair(swerve, new SwerveDriveSetPoseAction(swerve, initial_pose_), true);
                     addAction(new DelayAction(getAutoController().getRobot(), getDouble("delay"))) ;
 
-                    GPMCollectAction coll = new GPMCollectAction(gpm);
+                    GPMCollectAction coll = new GPMCollectAction(gpm, false);
                     addSubActionPair(gpm, coll, false) ;
 
                     SwerveEnableDisableVision vact = new SwerveEnableDisableVision(swerve, false) ;

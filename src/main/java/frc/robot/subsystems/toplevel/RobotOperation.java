@@ -45,6 +45,7 @@ public class RobotOperation {
     private Slot slot_ ;
     private Location loc_ ;
     private boolean manual_ ;
+    private boolean ground_ ;
 
     public RobotOperation() {
         action_ = Action.Collect ;
@@ -53,6 +54,7 @@ public class RobotOperation {
         slot_ = Slot.Right;
         loc_ = Location.Middle ;
         manual_ = false ;
+        ground_ = false ;
     }
 
     public RobotOperation(RobotOperation oper) {
@@ -62,15 +64,17 @@ public class RobotOperation {
         slot_ = oper.getSlot();
         loc_ = oper.getLocation() ;
         manual_ = oper.getManual() ;
+        ground_ = oper.getGround();
     }
 
-    public RobotOperation(Action a, GamePiece gp, GridTagPosition t, Slot s, Location l, boolean m) {
+    public RobotOperation(Action a, GamePiece gp, GridTagPosition t, Slot s, Location l, boolean m, boolean g) {
         action_ = a ;
         gp_ = gp;
         tag_ = t ;
         slot_ = s ;
         loc_ = l ;
         manual_ = m ;
+        ground_ = g ;
     }
 
     public boolean getManual() {
@@ -79,6 +83,14 @@ public class RobotOperation {
 
     public void setManual(boolean v) {
         manual_ = v ;
+    }
+
+    public boolean getGround() {
+        return ground_ ;
+    }
+
+    public void setGround(boolean v) {
+        ground_ = v ;
     }
 
     public Action getAction() {
@@ -134,6 +146,7 @@ public class RobotOperation {
         ret += ", Tag " + tag_ ;
         ret += ", Slot " + slot_.toString();
         ret += ", Loc " + loc_.toString();
+        ret += ", " + (ground_ ? "ground" : "shelf");
         ret += "]" ;
         return ret ;
     }
@@ -152,6 +165,12 @@ public class RobotOperation {
             return false ;
 
         if (loc_ != oper.getLocation())
+            return false ;
+
+        if (manual_ != oper.getManual())
+            return false ;
+
+        if (ground_ != oper.getGround())
             return false ;
 
         return true ;

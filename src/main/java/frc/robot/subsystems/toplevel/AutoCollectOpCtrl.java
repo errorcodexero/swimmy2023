@@ -26,11 +26,13 @@ public class AutoCollectOpCtrl extends OperationCtrl {
 
     private Pose2d target_pose_ ;
     
-    public AutoCollectOpCtrl(Swimmy2023RobotSubsystem sub, RobotOperation oper) throws BadParameterTypeException, MissingParameterException {
+    public AutoCollectOpCtrl(Swimmy2023RobotSubsystem sub, RobotOperation oper) throws Exception {
         super(sub, oper) ;
 
         april_tag_action_threshold_ = sub.getSettingsValue("april-tag-action-threshold").getDouble() ;
         state_ = State.Idle;
+
+        collect_action_ = new GPMCollectAction(sub.getGPM(), oper.getGround());
     }
 
     @Override
