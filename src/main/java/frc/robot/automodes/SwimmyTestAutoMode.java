@@ -10,6 +10,7 @@ import org.xero1425.base.subsystems.motorsubsystem.MotorEncoderMultiPowerAction;
 import org.xero1425.base.subsystems.motorsubsystem.MotorEncoderPowerAction;
 import org.xero1425.base.subsystems.motorsubsystem.MotorEncoderSubsystem;
 import org.xero1425.base.subsystems.motorsubsystem.MotorEncoderVelocityAction;
+import org.xero1425.base.subsystems.swerve.common.SwerveAlignDriveBaseAction;
 import org.xero1425.base.subsystems.swerve.common.SwerveBaseSubsystem;
 import org.xero1425.base.subsystems.swerve.common.SwerveDriveSetPoseAction;
 import org.xero1425.base.subsystems.swerve.common.SwerveDriveToPoseAction;
@@ -17,6 +18,8 @@ import org.xero1425.base.subsystems.swerve.common.SwerveEnableDisableVision;
 import org.xero1425.base.subsystems.swerve.common.SwerveHolonomicPathFollower;
 import org.xero1425.base.subsystems.swerve.common.SwervePowerAngleAction;
 import org.xero1425.base.subsystems.swerve.common.SwerveSpeedAngleAction;
+import org.xero1425.base.subsystems.vision.LimeLightSubsystem;
+import org.xero1425.simulator.models.LimeLightModel;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -36,6 +39,7 @@ public class SwimmyTestAutoMode extends TestAutoMode {
         super(ctrl, "Swimmy-Test-Mode");
 
         Swimmy2023RobotSubsystem robotsys = (Swimmy2023RobotSubsystem) ctrl.getRobot().getRobotSubsystem();
+        LimeLightSubsystem limelight = robotsys.getLimeLight();
         SwerveBaseSubsystem swerve = (SwerveBaseSubsystem) robotsys.getDB();
         MotorEncoderSubsystem armLower = null ;
         MotorEncoderSubsystem armUpper = null ;
@@ -97,6 +101,10 @@ public class SwimmyTestAutoMode extends TestAutoMode {
                 powers[3] = getDouble("power");
                 addSubActionPair(swerve, new SwervePowerAngleAction(swerve, angles, powers, getDouble("duration")), true) ;
                 break ;
+
+            case 6:
+                addSubActionPair(swerve, new SwerveAlignDriveBaseAction(swerve, limelight, 3.0), true);
+                break;
                 
             case 10:
                 addSubActionPair(armUpper, new MotorEncoderGotoAction(armUpper, getDouble("height"), true), true) ;

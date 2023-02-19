@@ -20,7 +20,7 @@ public class SwerveAlignDriveBaseAction extends SwerveDriveAction {
 
         threshold_ = threshold;
 
-        String name = "subsystems:" + sub.getName() + "align-pid" ;
+        String name = "subsystems:" + sub.getName() + ":align-pid" ;
         pid_ = new PIDCtrl(sub.getRobot().getSettingsSupplier(), name, true);
     }
 
@@ -33,7 +33,7 @@ public class SwerveAlignDriveBaseAction extends SwerveDriveAction {
     public void run() throws Exception {
         super.run();
 
-        if (Math.abs(vision_.getTX()) < threshold_) {
+        if (vision_.isTargetDetected() &&  Math.abs(vision_.getTX()) < threshold_) {
             getSubsystem().drive(new ChassisSpeeds());
             setDone();
         }

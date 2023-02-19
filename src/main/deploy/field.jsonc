@@ -91,7 +91,7 @@
                     "heading" : 180
                 }
             },
-            "center": { //coopertition grid of field
+            "middle": { //coopertition grid of field
                 "grid-id": 7,
                 "left": {
                     "x": 1.873,
