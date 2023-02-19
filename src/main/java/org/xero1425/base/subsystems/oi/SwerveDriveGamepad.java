@@ -4,6 +4,7 @@ import org.xero1425.base.LoopType;
 import org.xero1425.base.subsystems.RobotSubsystem;
 import org.xero1425.base.subsystems.swerve.common.SwerveBaseSubsystem;
 import org.xero1425.base.subsystems.swerve.common.SwerveDriveChassisSpeedAction;
+import org.xero1425.base.subsystems.swerve.common.SwerveDriveXPatternAction;
 import org.xero1425.misc.BadParameterTypeException;
 import org.xero1425.misc.MissingParameterException;
 
@@ -12,7 +13,7 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.DriverStation;
 
 public class SwerveDriveGamepad extends Gamepad {
-    public enum SwerveResetButton {
+    public enum SwerveButton {
         A,
         B,
         X,
@@ -33,7 +34,9 @@ public class SwerveDriveGamepad extends Gamepad {
     private double deadband_rotate_ ;
     private double power_ ;
     private SwerveDriveChassisSpeedAction action_;
-    private SwerveResetButton[] reset_buttons_ ;
+    private SwerveDriveXPatternAction x_action_;
+    private SwerveButton[] reset_buttons_ ;
+    private SwerveButton[] drivebase_x_buttons_;
 
     public SwerveDriveGamepad(OISubsystem oi, int index, SwerveBaseSubsystem drive_) throws Exception {
         super(oi, "swerve_gamepad", index);
@@ -50,8 +53,12 @@ public class SwerveDriveGamepad extends Gamepad {
         reset_buttons_ = null ;
     }
 
-    public void setSwerveResetButtons(SwerveResetButton[] buttons) {
+    public void setSwerveResetButtons(SwerveButton[] buttons) {
         reset_buttons_ = buttons ;
+    }
+
+    public void setSwerveXButtons(SwerveButton[] buttons) {
+        drivebase_x_buttons_ = buttons ;
     }
 
     @Override
@@ -68,18 +75,14 @@ public class SwerveDriveGamepad extends Gamepad {
         power_ = getSubsystem().getSettingsValue("swerve_gamepad:power").getDouble();
 
         action_ = new SwerveDriveChassisSpeedAction(db_) ;
+        x_action_ = new SwerveDriveXPatternAction(db_);
     }
 
-    @Override
-    public void computeState() {
-        super.computeState();
+    private boolean isButtonSequencePressed(SwerveButton[] buttons) {
+        boolean ret = true ;
 
-        boolean reset = false ;
-
-        if (reset_buttons_ != null && reset_buttons_.length > 0) {
-            reset = true ;
-
-            for(SwerveResetButton button : reset_buttons_) {
+        if (buttons != null && buttons.length > 0) {
+            for(SwerveButton button : reset_buttons_) {
                 boolean bstate = false ;
 
                 switch(button) {
@@ -96,17 +99,34 @@ public class SwerveDriveGamepad extends Gamepad {
                 } ;
 
                 if (!bstate) {
-                    reset = false ;
+                    ret = false ;
                     break ;
                 }
             }
         }
 
-        if (reset) {
+        return ret;
+    }
+
+    @Override
+    public void computeState() {
+        super.computeState();
+
+        if (isButtonSequencePressed(reset_buttons_)) {
             RobotSubsystem robotSubsystem = getSubsystem().getRobot().getRobotSubsystem();
             SwerveBaseSubsystem db = (SwerveBaseSubsystem)robotSubsystem.getDB() ;
             if (db != null) {
                 db.setPose(new Pose2d()) ;
+            }
+        }
+
+        if (isButtonSequencePressed(drivebase_x_buttons_)) {
+            RobotSubsystem robotSubsystem = getSubsystem().getRobot().getRobotSubsystem();
+            SwerveBaseSubsystem db = (SwerveBaseSubsystem)robotSubsystem.getDB() ;
+            if (db.getAction() == x_action_) {
+                db.setAction(null);
+            } else {
+                robotSubsystem.setAction(x_action_);
             }
         }
     }
