@@ -14,6 +14,7 @@ public class GPMPlaceAction extends Action {
     private enum State {
         Idle,
         ExtendingArm,
+        WaitingToDrop,
         DroppingGamepiece,
         RetractingArm,
     }
@@ -23,6 +24,8 @@ public class GPMPlaceAction extends Action {
     private ArmGotoAction arm_extend_action_ ;
     private ArmGotoAction arm_retract_action_ ;
     private GrabberStowAction grabber_drop_item_ ;
+    private boolean ready_to_drop_ ;
+    private boolean drop_game_piece_ ;
     private XeroTimer timer_ ;
 
     public GPMPlaceAction(GPMSubsystem sub, RobotOperation.Location loc, RobotOperation.GamePiece gp) throws MissingParameterException, BadParameterTypeException {
@@ -59,12 +62,23 @@ public class GPMPlaceAction extends Action {
         arm_retract_action_ = new ArmGotoAction(sub_.getArm(), armpos + ":extend");
 
         double duration = sub.getSettingsValue("place-delay").getDouble();
-        timer_ = new XeroTimer(sub.getRobot(), "placeaction", duration) ;
+        timer_ = new XeroTimer(sub.getRobot(), "place", duration);
+    }
+
+    public boolean isReadyToDrop() {
+        return ready_to_drop_ ;
+    }
+
+    public void dropGamePiece() {
+        drop_game_piece_ = true ;
     }
 
     @Override
     public void start() throws Exception {
         super.start() ;
+
+        ready_to_drop_ = false ;
+        drop_game_piece_ = false ;
 
         sub_.getArm().setAction(arm_extend_action_, true) ;
         state_ = State.ExtendingArm ;
@@ -79,10 +93,17 @@ public class GPMPlaceAction extends Action {
                 break;
 
             case ExtendingArm:
-                if (arm_extend_action_.isDone()) {
+                if (arm_extend_action_.isDone() && drop_game_piece_) {
+                    state_ = State.WaitingToDrop;
+                    ready_to_drop_ = true ;
+                }
+                break;
+
+            case WaitingToDrop:
+                if (drop_game_piece_) {
                     sub_.getGrabber().setAction(grabber_drop_item_, true);
-                    state_ = State.DroppingGamepiece;
                     timer_.start();
+                    state_ = State.DroppingGamepiece;
                 }
                 break;
 
@@ -98,6 +119,7 @@ public class GPMPlaceAction extends Action {
                     state_ = State.Idle ;
                     setDone() ;
                 }
+                break;
         }
     }
 

@@ -25,6 +25,12 @@ public class RobotOperation {
         Cube,
         Cone,
         None
+    } ;
+
+    public enum GridTagPosition {
+        Left,
+        Middle,
+        Right
     }
 
     private Action action_ ;
@@ -35,7 +41,7 @@ public class RobotOperation {
     // Tag 0 is always closest to the middle of the field.  Tag 1 is always the
     // cooperation grid.  Tag 2 is the grid closest to the edge of the field.
     // 
-    private int tag_ ;
+    private GridTagPosition tag_ ;
     private Slot slot_ ;
     private Location loc_ ;
     private boolean manual_ ;
@@ -43,7 +49,7 @@ public class RobotOperation {
     public RobotOperation() {
         action_ = Action.Collect ;
         gp_ = GamePiece.None ;
-        tag_ = 0 ;
+        tag_ = GridTagPosition.Middle;
         slot_ = Slot.Right;
         loc_ = Location.Middle ;
         manual_ = false ;
@@ -58,7 +64,7 @@ public class RobotOperation {
         manual_ = oper.getManual() ;
     }
 
-    public RobotOperation(Action a, GamePiece gp, int t, Slot s, Location l, boolean m) {
+    public RobotOperation(Action a, GamePiece gp, GridTagPosition t, Slot s, Location l, boolean m) {
         action_ = a ;
         gp_ = gp;
         tag_ = t ;
@@ -91,11 +97,11 @@ public class RobotOperation {
         gp_ = gp ;
     }
 
-    public int getAprilTag() {
+    public GridTagPosition getAprilTag() {
         return tag_ ;
     }
 
-    public void setAprilTag(int t) {
+    public void setAprilTag(GridTagPosition t) {
         tag_ = t ;
     }
 

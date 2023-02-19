@@ -31,6 +31,7 @@ import frc.robot.subsystems.toplevel.Swimmy2023RobotSubsystem;
 import frc.robot.subsystems.toplevel.TurtleAction;
 import frc.robot.subsystems.toplevel.RobotOperation.Action;
 import frc.robot.subsystems.toplevel.RobotOperation.GamePiece;
+import frc.robot.subsystems.toplevel.RobotOperation.GridTagPosition;
 import frc.robot.subsystems.toplevel.RobotOperation.Location;
 import frc.robot.subsystems.toplevel.RobotOperation.Slot;
 
@@ -49,7 +50,7 @@ public class Swimmy2023OIDevice extends OIPanel {
     private int height2_gadget_ ;
     private int turtle_gadget_ ;
     private int action_gadget_ ;
-    private int man_action_gadget_;
+    private int drop_gadget_;
 
     private OILed state_output1_ ;
     private OILed state_output2_ ;
@@ -65,6 +66,14 @@ public class Swimmy2023OIDevice extends OIPanel {
         state_output2_.setState(State.OFF) ;
 
         oper_ = new RobotOperation() ;
+    }
+
+    public boolean isActionButtonPressed() {
+        return getValue(action_gadget_) == 1 ;
+    }
+
+    public boolean isDropButtonPressed() {
+        return getValue(drop_gadget_) == 1;
     }
 
     @Override
@@ -106,15 +115,15 @@ public class Swimmy2023OIDevice extends OIPanel {
         switch(getValue(april_tag1_gadget_) | (getValue(april_tag2_gadget_) << 1)) 
         {
             case 0:
-                oper.setAprilTag(1) ;
+                oper.setAprilTag(GridTagPosition.Left) ;
                 break ;
 
             case 1:
-                oper.setAprilTag(0) ;
+                oper.setAprilTag(GridTagPosition.Middle) ;
                 break ;
 
             case 2:
-                oper.setAprilTag(2) ;
+                oper.setAprilTag(GridTagPosition.Right) ;
                 break ;
         }
 
@@ -286,7 +295,10 @@ public class Swimmy2023OIDevice extends OIPanel {
         num = getSubsystem().getSettingsValue("panel:gadgets:action").getInteger();
         action_gadget_ = mapButton(num, OIPanelButton.ButtonType.LowToHigh) ;
 
-        num = getSubsystem().getSettingsValue("panel:gadgets:manact").getInteger();
-        man_action_gadget_ = mapButton(num, OIPanelButton.ButtonType.LowToHigh) ;
+        num = getSubsystem().getSettingsValue("panel:gadgets:action").getInteger();
+        action_gadget_ = mapButton(num, OIPanelButton.ButtonType.LowToHigh) ;
+
+        num = getSubsystem().getSettingsValue("panel:gadgets:drop").getInteger();
+        drop_gadget_ = mapButton(num, OIPanelButton.ButtonType.LowToHigh) ;
     }
 }

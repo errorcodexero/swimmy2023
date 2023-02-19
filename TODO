@@ -1,0 +1,15 @@
+Subsystems
+- Speed up the ARM
+- Look at running DriveToPose faster
+
+Teleop
+- Test Manual Collect in Teleop
+- Test Manual Place in Teleop
+- Test Auto Collect in Teleop
+- Test Auto Place in Teleop
+  o Deal with heading issues
+
+AutoModes
+- Left
+- Right
+- Center

@@ -44,6 +44,9 @@
     // 46812
     //
     "subsystems": {
+        "Swimmy2023RobotSubsystem" : {
+            "april-tag-action-threshold" : 2.0
+        },
         "arm-motor-lower": {
             "hw": {
                 "motors": {
@@ -247,8 +250,8 @@
                     "lock" : 4,
                     "abort" : 1,
                     "turtle" : 2,
-                    "action" : 1,
-                    "manact" : 3,
+                    "action" : 3,
+                    "drop" : 15,
                     "cone_v_cube" : {
                         "1" : 9,
                         "2" : 10
@@ -650,7 +653,7 @@
                             }                            
                         }
                     }
-                },
+                }
             }
         },
         "gpm" : {

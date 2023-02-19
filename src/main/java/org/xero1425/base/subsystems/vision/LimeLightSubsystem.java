@@ -251,6 +251,20 @@ public class LimeLightSubsystem extends Subsystem implements IVisionLocalization
         putDashboard("AprilTags", DisplayType.Always, count);
     }
 
+    public double distantToTag(int id) {
+        double ret = Double.MAX_VALUE ;
+
+        if (fuds_ != null) {
+            for(int i = 0 ; i < fuds_.length ; i++) {
+                if (fuds_[i].id == id) {
+                    ret = fuds_[i].targetToRobot.getTranslation().getNorm();
+                }
+            }
+        }
+
+        return ret;
+    }
+
     public boolean hasAprilTag(int id) {
         boolean ret = false ;
 
