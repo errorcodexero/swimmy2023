@@ -23,6 +23,7 @@ public class AutoCollectOpCtrl extends OperationCtrl {
     private GPMCollectAction collect_action_ ;
     private SwerveDriveToPoseAction drive_to_action_ ;
 
+
     private Pose2d target_pose_ ;
     
     public AutoCollectOpCtrl(Swimmy2023RobotSubsystem sub, RobotOperation oper) throws BadParameterTypeException, MissingParameterException {
@@ -78,8 +79,11 @@ public class AutoCollectOpCtrl extends OperationCtrl {
                 getRobotSubsystem().getOI().enableGamepad() ;
                 getRobotSubsystem().getOI().getGamePad().rumble(1.0, 2.0);
                 drive_to_action_.cancel() ;
+                getRobotSubsystem().getSwerve().enableVision(true);
                 break ;                
         }
+
+
 
         setDone();
         state_ = State.Idle;
@@ -96,6 +100,8 @@ public class AutoCollectOpCtrl extends OperationCtrl {
             getRobotSubsystem().getOI().disableGamepad();
             getRobotSubsystem().getOI().getGamePad().rumble(1.0, 2.0);
 
+            getRobotSubsystem().getSwerve().enableVision(false);
+
             target_pose_ = getRobotSubsystem().getFieldData().getLoadingStationPose(getOper().getSlot());
 
             drive_to_action_ = new SwerveDriveToPoseAction(getRobotSubsystem().getSwerve(), target_pose_);
@@ -107,6 +113,7 @@ public class AutoCollectOpCtrl extends OperationCtrl {
 
     private void stateDrivingToLocation() {
         if (collect_action_.isDone()) {
+            getRobotSubsystem().getSwerve().enableVision(true);
             state_ = State.Idle ;
             setDone() ;
         }
