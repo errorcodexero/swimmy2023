@@ -57,7 +57,7 @@ public abstract class SwerveBaseSubsystem extends DriveBaseSubsystem {
     private double maxa_ ;
     private double rotate_angle_ ;
     private Pose2d last_pose_ ;
-
+    private boolean vision_enabled_ ;
 
     private MinMaxData velocity_ ;
     private MinMaxData rotational_velocity_ ;
@@ -107,9 +107,14 @@ public abstract class SwerveBaseSubsystem extends DriveBaseSubsystem {
         last_pose_ = new Pose2d() ;
     }
 
+    public void enableVision(boolean enable) {
+        vision_enabled_ = enable ;
+    }
+
     public void setVision(IVisionLocalization vision) {
         try {
             vision_ = new SwerveVisionProcessing(this, vision) ;
+            vision_enabled_ = true ;
         }
         catch(Exception ex) {
             MessageLogger logger = getRobot().getMessageLogger();
@@ -188,7 +193,7 @@ public abstract class SwerveBaseSubsystem extends DriveBaseSubsystem {
         poss[3] = getModulePosition(BR) ;
         estimator_.update(Rotation2d.fromDegrees(gyro().getYaw()), poss) ;
 
-        if (vision_ != null) {
+        if (vision_ != null && vision_enabled_) {
             vision_.processVision();
         }
 

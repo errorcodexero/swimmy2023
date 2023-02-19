@@ -7,6 +7,7 @@
             "xerorobot": false,
             "simulator": false,
             "limelight-edgar" : false,
+            "oibuttons" : false,
 
             // Special settings
             "pathfollowing": false,
@@ -23,7 +24,7 @@
         "verbose": {
             "swerve" : false,
             "arm-motor-upper" : false,
-            "grabber-motor-grab" : false
+            "grabber-motor-grab" : true
         },
         "plotting": {
             "enabled" : true,
@@ -34,7 +35,14 @@
             "min-pressure" : 100.0,
             "max-pressure" : 120.0
         }
-    },  
+    },
+    //  
+    // 215356
+    // 108149
+    // --------------------------
+    // 104873
+    // 46812
+    //
     "subsystems": {
         "arm-motor-lower": {
             "hw": {
@@ -196,6 +204,7 @@
                     "units" : "ticks"
                 }
             },
+
             "hold": {
                 "kp": 0.004,
                 "ki": 0,
@@ -234,27 +243,30 @@
                 },
                 "gadgets" : {
                     "collect_v_place" : 6,
+                    "auto_v_manual" : 5,
+                    "lock" : 4,
+                    "abort" : 1,
+                    "turtle" : 2,
+                    "action" : 1,
+                    "manact" : 3,
                     "cone_v_cube" : {
                         "1" : 9,
                         "2" : 10
                     },
-                    "auto_v_manual" : 5,
-                    "lock" : 4,
-                    "abort" : 1,
+
                     "apriltag" : {
                         "1" : 7,
                         "2" : 8
                     },
                     "slot" : {
-                        "1" : 13,
-                        "2" : 14
-                    },
-                    "height" : {
                         "1" : 11,
                         "2" : 12
                     },
-                    "turtle" : 2,
-                    "action" : 3
+                    "height" : {
+                        "1" : 13,
+                        "2" : 14
+                    }
+
                 }
             }
         },
@@ -273,7 +285,7 @@
                 "odometry" : {                                  // The std devs for the odometry
                     "x" : 0.9,
                     "y" : 0.9,
-                    "heading" : 0.1
+                    "heading" : 0.9
                 },
                 //
                 // Jack in the bot - Odometry (0.02, 0.02, 0.02), Vision (0.1, 0.1, 0.01).
@@ -282,22 +294,22 @@
                     "single-far" : {
                         "x" : 0.9,
                         "y" : 0.9,
-                        "heading" : 0.9
+                        "heading" : 0.1
                     },
                     "single-near" : {
                         "x" : 0.1,
                         "y" : 0.1,
-                        "heading" : 0.9
+                        "heading" : 0.1
                     },
                     "multi-far" : {
                         "x" : 0.1,
                         "y" : 0.1,
-                        "heading" : 0.9
+                        "heading" : 0.1
                     },
                     "multi-near" : {
                         "x" : 0.1,
                         "y" : 0.1,
-                        "heading" : 0.9
+                        "heading" : 0.1
                     }
                 }
             },
@@ -313,7 +325,7 @@
                     "kd": 0
                 },
                 "rotation": {
-                    "kp": 6.0,
+                    "kp": 11.0,
                     "ki": 0,
                     "kd": 0
                 }
@@ -456,8 +468,8 @@
                 "width": 0.5715, // meters
                 "length": 0.5842, // meters
                 "path" : {
-                    "maxv" : 0.5,
-                    "maxa" : 0.5
+                    "maxv" : 1.0,
+                    "maxa" : 1.0
                 },
                 "max-angular-speed": 100,
                 "max-angular-accel": 100
@@ -482,7 +494,7 @@
                     },
                     "2" : {
                         "lower" : 70000,
-                        "upper" : 130000
+                        "upper" : 135000
                     }
                 },
                 "retract" : {
@@ -647,7 +659,7 @@
     }, 
     "testmode": {
         "enabled": true,
-        "which": 30,
+        "which": 99,
         "0": {
             "angle": 0.0,
             "power": 0.2
@@ -690,8 +702,8 @@
             "velocity" : 5000
         },
         "14" : {
-            "height" : 30000,
-            "target" : 50000
+            "lower" : 100000,
+            "upper" : 150000
         },
         "15" : {
             "target" : 36000
@@ -701,7 +713,7 @@
             "lower" : 100000
         },
         "20" : {
-            "power" : 0.2,
+            "power" : 0.1,
             "duration" : 1.0          
         },
         "21" : {
@@ -718,12 +730,21 @@
             "power" : 0.4,
             "duration" : 3.0
         },
+        "98" : {
+            "initx" : 3.2,
+            "inity" : 4.3,
+            "initangle" : 180.0,
+            "delay" : 0.4,
+            "x" : 1.873,
+            "y" : 5.05,
+            "angle" : 180.0
+        },
         "99" : {
             "initx" : 3.0,
             "inity" : 6.5,
             "initangle" : 160.0,
-            "delay" : 2.0,
-            "x" : 1.36195,
+            "delay" : 5.0,
+            "x" : 1.66195,
             "y" : 7.609796,
             "angle" : 180.0
         }

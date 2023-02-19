@@ -21,13 +21,19 @@ import edu.wpi.first.wpilibj.DriverStation;
 public class OIPanel extends OIDevice
 {
     // The next handle value to use when a map() call is made
-    int next_handle_ ;
+    private int next_handle_ ;
 
     // The map from logical item numbers to panel items
-    Map<Integer, OIPanelItem> items_ ;
+    private Map<Integer, OIPanelItem> items_ ;
 
     // The set of LEDs
-    List<OILed> leds_ ;
+    private List<OILed> leds_ ;
+
+    // The message logger id for dumping buttons
+    private int button_dump_id_ ;
+    
+    // Previous button state
+    private int prev_state_ ;
 
     /// \brief Create a new OI panel assocaited with a HID device
     /// \param sub the subsystem that owns this OIPanel
@@ -39,14 +45,27 @@ public class OIPanel extends OIDevice
         leds_ = new ArrayList<OILed>() ;
         items_ = new HashMap<Integer, OIPanelItem>() ;
         next_handle_ = 1 ;
+        prev_state_ = 0 ;
 
         initializeGadgets();
         initializeLEDs();
+
+        button_dump_id_ = sub.getRobot().getMessageLogger().registerSubsystem("oibuttons");
         
         MessageLogger logger = sub.getRobot().getMessageLogger();
         logger.startMessage(MessageType.Info) ;
         logger.add("created OI panel with " + getGadgetCount() + " panel gadgets and " + getLEDCount() + " leds") ;
         logger.endMessage();
+    }
+
+    @Override
+    public void generateActions() {
+        try {
+            dumpButtons();
+        }
+        catch(Exception ex) {
+
+        }
     }
 
     public int getGadgetCount() {
@@ -137,5 +156,39 @@ public class OIPanel extends OIDevice
     }
 
     protected void initializeLEDs() throws BadParameterTypeException, MissingParameterException {
+    }
+
+    private boolean getBit(int value, int bit) {
+        return ((value >> bit) & 1) == 1 ;
+    }
+
+    private void dumpButtons() throws Exception {
+        String result = "";
+
+        int state = 0 ;
+        for(int i = 1 ; i < 16 ; i++) {
+            boolean b = DriverStation.getStickButton(getIndex(), i);
+            
+            if (b) {
+                state |= (1 << i) ;
+
+                MessageLogger logger = getSubsystem().getRobot().getMessageLogger();
+                logger.startMessage(MessageType.Debug, button_dump_id_);
+                logger.add("button pressed", i) ;
+                logger.endMessage();
+            }
+
+            if (getBit(state, i) != getBit(prev_state_, i)) {
+                if (result.length() > 0) {
+                    result += ", " ;
+                }
+                result += i + ": " + getBit(prev_state_, i) + " -> " + getBit(state,i) ;
+            }
+        }
+
+        MessageLogger logger = getSubsystem().getRobot().getMessageLogger();
+        logger.startMessage(MessageType.Debug, button_dump_id_);
+        logger.add("buttons: " + result);
+        logger.endMessage();
     }
 } ;

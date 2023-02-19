@@ -13,6 +13,7 @@ import org.xero1425.base.subsystems.motorsubsystem.MotorEncoderVelocityAction;
 import org.xero1425.base.subsystems.swerve.common.SwerveBaseSubsystem;
 import org.xero1425.base.subsystems.swerve.common.SwerveDriveSetPoseAction;
 import org.xero1425.base.subsystems.swerve.common.SwerveDriveToPoseAction;
+import org.xero1425.base.subsystems.swerve.common.SwerveEnableDisableVision;
 import org.xero1425.base.subsystems.swerve.common.SwerveHolonomicPathFollower;
 import org.xero1425.base.subsystems.swerve.common.SwervePowerAngleAction;
 import org.xero1425.base.subsystems.swerve.common.SwerveSpeedAngleAction;
@@ -115,8 +116,8 @@ public class SwimmyTestAutoMode extends TestAutoMode {
                 break ;
 
             case 14:
-                addSubActionPair(armUpper, new MotorEncoderGotoAction(armUpper, getDouble("height"), true), true) ;
-                addSubActionPair(armLower, new MotorEncoderGotoAction(armLower, getDouble("target"), true), true) ;
+                addSubActionPair(armUpper, new MotorEncoderGotoAction(armUpper, getDouble("upper"), true), true) ;
+                addSubActionPair(armLower, new MotorEncoderGotoAction(armLower, getDouble("lower"), true), true) ;
                 break ;                
 
             case 15:
@@ -196,17 +197,51 @@ public class SwimmyTestAutoMode extends TestAutoMode {
                 addSubActionPair(gpm, new GPMCollectAction(gpm), true);
                 break ;
 
+            case 98:
+                {
+                    Pose2d init = new Pose2d(getDouble("initx"), getDouble("inity"), Rotation2d.fromDegrees(getDouble("initangle")));
+                    addSubActionPair(swerve, new SwerveDriveSetPoseAction(swerve, init), true);
+                    addAction(new DelayAction(getAutoController().getRobot(), getDouble("delay"))) ;
+
+                    // GPMCollectAction coll = new GPMCollectAction(gpm);
+                    // addSubActionPair(gpm, coll, false) ;
+
+                    SwerveEnableDisableVision vact = new SwerveEnableDisableVision(swerve, false) ;
+                    addSubActionPair(swerve, vact, true);
+
+                    Pose2d dest = new Pose2d(getDouble("x"), getDouble("y"), Rotation2d.fromDegrees(getDouble("angle")));
+                    SwerveDriveToPoseAction act = new SwerveDriveToPoseAction(swerve, dest) ;
+                    addSubActionPair(swerve, act, true);
+
+                    addAction(new DelayAction(getAutoController().getRobot(), 3.0));
+                }
+                break ;
+
             case 99:
                 {
                     Pose2d init = new Pose2d(getDouble("initx"), getDouble("inity"), Rotation2d.fromDegrees(getDouble("initangle")));
                     addSubActionPair(swerve, new SwerveDriveSetPoseAction(swerve, init), true);
                     addAction(new DelayAction(getAutoController().getRobot(), getDouble("delay"))) ;
+
+                    GPMCollectAction coll = new GPMCollectAction(gpm);
+                    addSubActionPair(gpm, coll, false) ;
+
+                    SwerveEnableDisableVision vact = new SwerveEnableDisableVision(swerve, false) ;
+                    addSubActionPair(swerve, vact, true);
+
                     Pose2d dest = new Pose2d(getDouble("x"), getDouble("y"), Rotation2d.fromDegrees(getDouble("angle")));
                     SwerveDriveToPoseAction act = new SwerveDriveToPoseAction(swerve, dest) ;
                     addSubActionPair(swerve, act, true);
+
+                    addAction(new DelayAction(getAutoController().getRobot(), 10.0));
                 }
                 break ;
         }
+    }
+
+    @Override
+    public Pose2d getInitialPose() {
+        return new Pose2d(3.6, 4.0, Rotation2d.fromDegrees(180)) ;
     }
     
 }

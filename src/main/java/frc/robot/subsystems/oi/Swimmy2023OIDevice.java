@@ -49,6 +49,7 @@ public class Swimmy2023OIDevice extends OIPanel {
     private int height2_gadget_ ;
     private int turtle_gadget_ ;
     private int action_gadget_ ;
+    private int man_action_gadget_;
 
     private OILed state_output1_ ;
     private OILed state_output2_ ;
@@ -56,7 +57,6 @@ public class Swimmy2023OIDevice extends OIPanel {
     private RobotOperation oper_ ;
 
     private TurtleAction turtle_action_ ;
-
 
     public Swimmy2023OIDevice(OISubsystem parent, String name, int index) throws BadParameterTypeException, MissingParameterException {
         super(parent, name, index);
@@ -77,11 +77,11 @@ public class Swimmy2023OIDevice extends OIPanel {
     private RobotOperation extractRobotOperation() {
         RobotOperation oper = new RobotOperation() ; 
 
-        if (getValue(auto_v_manual_gadget_) == 1) {
+        if (getValue(auto_v_manual_gadget_) == 0) {
             oper.setManual(true);
         }
         
-        if (getValue(collect_v_place_gadget_) == 1) {
+        if (getValue(collect_v_place_gadget_) == 0) {
             oper.setAction(Action.Collect) ;
         }
         else {
@@ -91,26 +91,26 @@ public class Swimmy2023OIDevice extends OIPanel {
         switch(getValue(cone_v_cube1_gadget_) | (getValue(cone_v_cube2_gadget_) << 1)) 
         {
             case 0:
-                oper.setGamePiece(GamePiece.Cone) ;
-                break ;
-
-            case 1:
                 oper.setGamePiece(GamePiece.None) ;
                 break ;
 
-            case 2:
+            case 1:
                 oper.setGamePiece(GamePiece.Cube) ;
+                break ;
+
+            case 2:
+                oper.setGamePiece(GamePiece.Cone) ;
                 break ;
         }
 
         switch(getValue(april_tag1_gadget_) | (getValue(april_tag2_gadget_) << 1)) 
         {
             case 0:
-                oper.setAprilTag(0) ;
+                oper.setAprilTag(1) ;
                 break ;
 
             case 1:
-                oper.setAprilTag(1) ;
+                oper.setAprilTag(0) ;
                 break ;
 
             case 2:
@@ -121,11 +121,11 @@ public class Swimmy2023OIDevice extends OIPanel {
         switch(getValue(slot_loc1_gadget_) | (getValue(slot_loc2_gadget_) << 1)) 
         {
             case 0:
-                oper.setSlot(Slot.Left) ;
+                oper.setSlot(Slot.Middle) ;
                 break ;
 
             case 1:
-                oper.setSlot(Slot.Middle) ;
+                oper.setSlot(Slot.Left) ;
                 break ;
 
             case 2:
@@ -151,8 +151,12 @@ public class Swimmy2023OIDevice extends OIPanel {
         return oper ;
     }
 
+
     @Override
     public void generateActions() {
+
+        super.generateActions();
+
         boolean errDetected = false ;
         MessageLogger logger = getSubsystem().getRobot().getMessageLogger();
 
@@ -186,21 +190,22 @@ public class Swimmy2023OIDevice extends OIPanel {
             }
 
             oper_ = oper;
-            if (oper_.getManual() == false && getValue(lock_gadget_) == 1) {
-                Swimmy2023RobotSubsystem sub = (Swimmy2023RobotSubsystem)getSubsystem().getRobot().getRobotSubsystem();
-                errDetected = sub.setOperation(oper_);
+            if (getValue(lock_gadget_) == 1) {
+                if (oper_.getManual() == false) {
+                    Swimmy2023RobotSubsystem sub = (Swimmy2023RobotSubsystem)getSubsystem().getRobot().getRobotSubsystem();
+                    errDetected = sub.setOperation(oper_);
 
-                logger.startMessage(MessageType.Debug, getSubsystem().getLoggerID());
-                logger.add("OI assigned op (lock): " + oper_.toString());
-                logger.endMessage();
-            }
-            else if (oper_.getManual() == true && getValue(action_gadget_) == 1) {
-                Swimmy2023RobotSubsystem sub = (Swimmy2023RobotSubsystem)getSubsystem().getRobot().getRobotSubsystem();
-                errDetected = sub.setOperation(oper_);
+                    logger.startMessage(MessageType.Debug, getSubsystem().getLoggerID());
+                    logger.add("OI assigned op (auto): " + oper_.toString());
+                    logger.endMessage();
+                } else {
+                    Swimmy2023RobotSubsystem sub = (Swimmy2023RobotSubsystem)getSubsystem().getRobot().getRobotSubsystem();
+                    errDetected = sub.setOperation(oper_);
 
-                logger.startMessage(MessageType.Debug, getSubsystem().getLoggerID());
-                logger.add("OI assigned op (action): " + oper_.toString());
-                logger.endMessage();
+                    logger.startMessage(MessageType.Debug, getSubsystem().getLoggerID());
+                    logger.add("OI assigned op (manual): " + oper_.toString());
+                    logger.endMessage();
+                }
             }
 
             setLeds(errDetected) ;
@@ -280,5 +285,8 @@ public class Swimmy2023OIDevice extends OIPanel {
 
         num = getSubsystem().getSettingsValue("panel:gadgets:action").getInteger();
         action_gadget_ = mapButton(num, OIPanelButton.ButtonType.LowToHigh) ;
+
+        num = getSubsystem().getSettingsValue("panel:gadgets:manact").getInteger();
+        man_action_gadget_ = mapButton(num, OIPanelButton.ButtonType.LowToHigh) ;
     }
 }
