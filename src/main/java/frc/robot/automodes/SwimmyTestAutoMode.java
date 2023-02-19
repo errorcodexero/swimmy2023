@@ -33,6 +33,8 @@ import frc.robot.subsystems.toplevel.Swimmy2023RobotSubsystem;
 
 public class SwimmyTestAutoMode extends TestAutoMode {
 
+    private Pose2d initial_pose_ = new Pose2d();
+
     public SwimmyTestAutoMode(AutoController ctrl)
             throws InvalidActionRequest, Exception {
         super(ctrl, "Swimmy-Test-Mode");
@@ -206,8 +208,8 @@ public class SwimmyTestAutoMode extends TestAutoMode {
 
             case 98:
                 {
-                    Pose2d init = new Pose2d(getDouble("initx"), getDouble("inity"), Rotation2d.fromDegrees(getDouble("initangle")));
-                    addSubActionPair(swerve, new SwerveDriveSetPoseAction(swerve, init), true);
+                    initial_pose_ = new Pose2d(getDouble("initx"), getDouble("inity"), Rotation2d.fromDegrees(getDouble("initangle")));
+                    addSubActionPair(swerve, new SwerveDriveSetPoseAction(swerve, initial_pose_), true);
                     addAction(new DelayAction(getAutoController().getRobot(), getDouble("delay"))) ;
 
                     // GPMCollectAction coll = new GPMCollectAction(gpm);
@@ -221,13 +223,15 @@ public class SwimmyTestAutoMode extends TestAutoMode {
                     addSubActionPair(swerve, act, true);
 
                     addAction(new DelayAction(getAutoController().getRobot(), 3.0));
+
+                    initial_pose_ = new Pose2d(3.6, 4.0, Rotation2d.fromDegrees(180.0));
                 }
                 break ;
 
             case 99:
                 {
-                    Pose2d init = new Pose2d(getDouble("initx"), getDouble("inity"), Rotation2d.fromDegrees(getDouble("initangle")));
-                    addSubActionPair(swerve, new SwerveDriveSetPoseAction(swerve, init), true);
+                    initial_pose_ = new Pose2d(getDouble("initx"), getDouble("inity"), Rotation2d.fromDegrees(getDouble("initangle")));
+                    addSubActionPair(swerve, new SwerveDriveSetPoseAction(swerve, initial_pose_), true);
                     addAction(new DelayAction(getAutoController().getRobot(), getDouble("delay"))) ;
 
                     GPMCollectAction coll = new GPMCollectAction(gpm);
@@ -248,7 +252,7 @@ public class SwimmyTestAutoMode extends TestAutoMode {
 
     @Override
     public Pose2d getInitialPose() {
-        return new Pose2d(3.6, 4.0, Rotation2d.fromDegrees(180)) ;
+        return initial_pose_ ;
     }
     
 }

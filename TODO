@@ -1,15 +1,23 @@
+Functionality Needed
+- Ground Pickup
+
 Subsystems
 - Speed up the ARM
-- Look at running DriveToPose faster
 
-Teleop
-- Test Manual Collect in Teleop
-- Test Manual Place in Teleop
-- Test Auto Collect in Teleop
-- Test Auto Place in Teleop
-  o Deal with heading issues
+Testing
+- X pattern with drive base - R Back button
+- Reset Swerve Pose - Y and B buttons
+- Teleop Manual Collect
+- Teleop Manual Place
+- Teleop Auto Collect
+- Teleop Auto Place
+- Auto Place Action (auto mode)
+- Auto Balance on Platform
 
 AutoModes
-- Left
-- Right
-- Center
+- Write Center
+- Test/Tune Center
+- Write Left
+- Test/Tune Left
+- Write Right
+- Test/Tune Right
