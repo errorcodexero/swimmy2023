@@ -101,9 +101,8 @@ public final class Falcon500SteerControllerFactoryBuilder {
                 if (hasVoltageCompensation()) {
                     motorConfiguration.slot0.kF = (1023.0 * sensorVelocityCoefficient / nominalVoltage) * velocityConstant;
                 }
-                // TODO: What should be done if no nominal voltage is configured? Use a default voltage?
-
-                // TODO: Make motion magic max voltages configurable or dynamically determine optimal values
+                // -: What should be done if no nominal voltage is configured? Use a default voltage?
+                // -: Make motion magic max voltages configurable or dynamically determine optimal values
                 motorConfiguration.motionCruiseVelocity = 2.0 / velocityConstant / sensorVelocityCoefficient;
                 motorConfiguration.motionAcceleration = (8.0 - 2.0) / accelerationConstant / sensorVelocityCoefficient;
             }

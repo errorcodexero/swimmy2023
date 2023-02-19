@@ -276,65 +276,9 @@
             }
         },
         "swerve": {
-            "estimator" : {
-                "advanced-rejection" : false,                   // If true, the advanced rejection of vision samples is used, see the code for more details
-                "vision-reject-threshold" : 1.0,                // Reject vision samples that are more than this distance from the current robot pose
-                "single-threshold" : 50.0,                      // When we see a single target, and we are greater than this distance, use the single-far std devs
-                                                                // Otherwise use the single-near std devs
-                "multi-threshold" : 4.0,                        // When we see multiple targets, and we are greater than this distance, use the multi-far std devs
-                                                                // Otherwise use the multi-near std devs
-                "single-tag-ignore-reject-threshold" : 2.0,     // If we see a single tag and the pose from the tag is greater than the vision-reject-threshold from the
-                                                                // current robot pose, we normally reject the vision sample.  However, if the distance to the tag is
-                                                                // within this distance, we apply it anyway assuming that the odometry is just way off.
-
-                "odometry" : {                                  // The std devs for the odometry
-                    "x" : 0.9,
-                    "y" : 0.9,
-                    "heading" : 0.9
-                },
-                //
-                // Jack in the bot - Odometry (0.02, 0.02, 0.02), Vision (0.1, 0.1, 0.01).
-                //
-                "vision" : {
-                    "single-far" : {
-                        "x" : 0.9,
-                        "y" : 0.9,
-                        "heading" : 0.1
-                    },
-                    "single-near" : {
-                        "x" : 0.1,
-                        "y" : 0.1,
-                        "heading" : 0.1
-                    },
-                    "multi-far" : {
-                        "x" : 0.1,
-                        "y" : 0.1,
-                        "heading" : 0.1
-                    },
-                    "multi-near" : {
-                        "x" : 0.1,
-                        "y" : 0.1,
-                        "heading" : 0.1
-                    }
-                }
-            },
-            "pid": {
-                "xctrl": {
-                    "kp": 6.0,
-                    "ki": 0,
-                    "kd": 0
-                },
-                "yctrl": {
-                    "kp": 6.0,
-                    "ki": 0,
-                    "kd": 0
-                },
-                "rotation": {
-                    "kp": 11.0,
-                    "ki": 0,
-                    "kd": 0
-                }
-            },
+            //
+            // This section describes the hardware that implements the swerve drive
+            //
             "hw": {
                 "bus" : "DriveBase",
                 "gyro": {
@@ -402,10 +346,84 @@
                     }
                 }
             },
+            
             //
-            // I saw some strange results with the PIDs that I wanted to check out.  Basically, as I changed
-            // the PIDs I did not see a change in behavior of the robot.  The numbers I was using are in comments
-            // below.
+            // This section describes how the vision integration with the drive base behaves
+            //
+            "estimator" : {
+                "advanced-rejection" : false,                   // If true, the advanced rejection of vision samples is used, see the code for more details
+                "vision-reject-threshold" : 1.0,                // Reject vision samples that are more than this distance from the current robot pose
+                "single-threshold" : 50.0,                      // When we see a single target, and we are greater than this distance, use the single-far std devs
+                                                                // Otherwise use the single-near std devs
+                "multi-threshold" : 4.0,                        // When we see multiple targets, and we are greater than this distance, use the multi-far std devs
+                                                                // Otherwise use the multi-near std devs
+                "single-tag-ignore-reject-threshold" : 2.0,     // If we see a single tag and the pose from the tag is greater than the vision-reject-threshold from the
+                                                                // current robot pose, we normally reject the vision sample.  However, if the distance to the tag is
+                                                                // within this distance, we apply it anyway assuming that the odometry is just way off.
+
+                "odometry" : {                                  // The std devs for the odometry
+                    "x" : 0.9,
+                    "y" : 0.9,
+                    "heading" : 0.9
+                },
+                //
+                // Jack in the bot - Odometry (0.02, 0.02, 0.02), Vision (0.1, 0.1, 0.01).
+                //
+                "vision" : {
+                    "single-far" : {
+                        "x" : 0.9,
+                        "y" : 0.9,
+                        "heading" : 0.1
+                    },
+                    "single-near" : {
+                        "x" : 0.1,
+                        "y" : 0.1,
+                        "heading" : 0.1
+                    },
+                    "multi-far" : {
+                        "x" : 0.1,
+                        "y" : 0.1,
+                        "heading" : 0.1
+                    },
+                    "multi-near" : {
+                        "x" : 0.1,
+                        "y" : 0.1,
+                        "heading" : 0.1
+                    }
+                }
+            },
+            //
+            // This section is the PID controllers for the holonomic drive controller (path following)
+            //
+            "pid": {                        
+                "xctrl": {
+                    "kp": 6.0,
+                    "ki": 0,
+                    "kd": 0
+                },
+                "yctrl": {
+                    "kp": 6.0,
+                    "ki": 0,
+                    "kd": 0
+                },
+                "rotation": {
+                    "kp": 11.0,
+                    "ki": 0,
+                    "kd": 0
+                }
+            },
+
+            //
+            // This section sets the tolerances for path following
+            //
+            "holonomic-path-following": {
+                "xy-tolerance": 0.05,
+                "angle-tolerance": 2.0
+            },
+
+            //
+            // This section is the pid controller for the low level modules, specifically the module velocity since the
+            // angle is managed in the motor controller and initialize by the low level code.
             //
             "pids": {
                 "fl": {
@@ -469,6 +487,23 @@
                     "imax": 0.0
                 }
             },
+
+            //
+            // This section is a PID controller for rotationally aligning the robot with a vision target
+            //
+            "align-pid" : {
+                "kp" : 0.0,
+                "ki" : 0.0,
+                "kd" : 0.0,
+                "kf" : 0.0,
+                "max" : 1.5707963268,          // Radians per second (90)
+                "min" : 1.5707963268,          // Radians per second (90)
+                "imax" : 0.0
+            },
+
+            //
+            // This section descrdibes the physical characteristics of the robot
+            //
             "physical": {
                 "width": 0.5715, // meters
                 "length": 0.5842, // meters
@@ -479,15 +514,15 @@
                 "max-angular-speed": 100,
                 "max-angular-accel": 100
             },
+
+            //
+            // This section describes electrical characteristics of the robot
+            //
             "electrical": {
                 "max-voltage": 12.0,
                 "nominal-voltage": 11.0,
                 "steer-current-limit": 10.0,
                 "drive-current-limit": 30.0
-            },
-            "holonomic-path-following": {
-                "xy-tolerance": 0.05,
-                "angle-tolerance": 2.0
             }
         },
         "arm" : {
