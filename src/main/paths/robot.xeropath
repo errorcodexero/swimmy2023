@@ -3,110 +3,79 @@
     "generator": "errorcodexeroswerve",
     "groups": [
         {
-            "name": "TestStraight",
+            "name": "CenterMode",
             "paths": [
                 {
                     "constraints": [
                     ],
                     "endvelocity": 0,
-                    "maxacceleration": 2,
-                    "maxvelocity": 2,
-                    "name": "Test2m",
+                    "maxacceleration": 4,
+                    "maxvelocity": 4,
+                    "name": "Path1",
                     "points": [
                         {
-                            "heading": 0,
+                            "heading": 180,
                             "swrot": 0,
                             "swrotvel": 0,
-                            "x": 2,
-                            "y": 2
+                            "x": 14.192755481084733,
+                            "y": 3.3207747568453962
                         },
                         {
-                            "heading": 0,
-                            "swrot": 0,
+                            "heading": 180,
+                            "swrot": 180,
                             "swrotvel": 0,
-                            "x": 4,
-                            "y": 2
+                            "x": 10.430733803084516,
+                            "y": 3.3655607292025422
                         }
                     ],
                     "startvelocity": 0
-                }
-            ]
-        },
-        {
-            "name": "Hard",
-            "paths": [
+                },
                 {
                     "constraints": [
                     ],
                     "endvelocity": 0,
-                    "maxacceleration": 2,
-                    "maxvelocity": 2,
-                    "name": "Loop",
+                    "maxacceleration": 4,
+                    "maxvelocity": 4,
+                    "name": "Path2",
                     "points": [
                         {
                             "heading": 0,
-                            "swrot": 0,
+                            "swrot": 180,
                             "swrotvel": 0,
-                            "x": 2,
-                            "y": 2
+                            "x": 10.4307,
+                            "y": 3.36556
                         },
                         {
                             "heading": 0,
                             "swrot": 0,
                             "swrotvel": 0,
-                            "x": 3,
-                            "y": 3
-                        },
+                            "x": 14.1928,
+                            "y": 3.32077
+                        }
+                    ],
+                    "startvelocity": 0
+                },
+                {
+                    "constraints": [
+                    ],
+                    "endvelocity": 0,
+                    "maxacceleration": 4,
+                    "maxvelocity": 4,
+                    "name": "Path3",
+                    "points": [
                         {
-                            "heading": -90,
+                            "heading": 180,
                             "swrot": 0,
                             "swrotvel": 0,
-                            "x": 5,
-                            "y": 2
+                            "x": 14.1928,
+                            "y": 3.32077
                         },
                         {
                             "heading": 180,
                             "swrot": 0,
                             "swrotvel": 0,
-                            "x": 3,
-                            "y": 1
-                        },
-                        {
-                            "heading": 180,
-                            "swrot": 0,
-                            "swrotvel": 0,
-                            "x": 2,
-                            "y": 2
-                        }
-                    ],
-                    "startvelocity": 0
-                }
-            ]
-        },
-        {
-            "name": "Sample",
-            "paths": [
-                {
-                    "constraints": [
-                    ],
-                    "endvelocity": 0,
-                    "maxacceleration": 1,
-                    "maxvelocity": 1,
-                    "name": "Path2m2m",
-                    "points": [
-                        {
-                            "heading": 0,
-                            "swrot": 0,
-                            "swrotvel": 0,
-                            "x": 2,
-                            "y": 2
-                        },
-                        {
-                            "heading": 0,
-                            "swrot": 0,
-                            "swrotvel": 0,
-                            "x": 4,
-                            "y": 0
+                            "x": 12.670032420941789,
+                            "y": 2.9848799641668053
                         }
                     ],
                     "startvelocity": 0

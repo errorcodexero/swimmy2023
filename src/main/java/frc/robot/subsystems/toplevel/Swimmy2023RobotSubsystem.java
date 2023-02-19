@@ -121,6 +121,10 @@ public class Swimmy2023RobotSubsystem extends RobotSubsystem {
         return ret ;
     }
 
+    public boolean isOperationComplete() {
+        return ctrl_ == null ;
+    }
+
     public boolean setOperation(RobotOperation oper) {
         if (ctrl_ != null) {
             //
