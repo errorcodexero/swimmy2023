@@ -33,15 +33,14 @@ public class Swimmy2023OIDevice_V2 extends OIPanel {
     }
 
     @Override
-    public void generateActions() throws InvalidActionRequest {
+    public void generateActions() {
         super.generateActions();
         
         if (getValue(lock_gadget_) == 1) {
             var operation = new RobotOperation();
 
-            operation.setAction(getValue(collect_v_place_gadget_) == 1 ? RobotOperation.Action.PLACE
-                    : RobotOperation.Action.COLLECT);
-            operation.setAuto(getValue(auto_v_manual_gadget_) == 1);
+            operation.setAction(getValue(collect_v_place_gadget_) == 1 ? RobotOperation.Action.Place
+                    : RobotOperation.Action.Collect);
         }
         if (getValue(turtle_gadget_) == 1) {
             // do turtle

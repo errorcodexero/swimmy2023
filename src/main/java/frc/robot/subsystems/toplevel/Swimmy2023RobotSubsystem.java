@@ -10,17 +10,33 @@ import org.xero1425.misc.MessageLogger;
 import org.xero1425.misc.MessageType;
 
 import frc.robot.SwimmyRobot2023;
-<<<<<<< HEAD
-import frc.robot.subsystems.gpm.GPMCollectAction;
-import frc.robot.subsystems.gpm.GPMStowAction;
-=======
->>>>>>> main
 import frc.robot.subsystems.gpm.GPMSubsystem;
 import frc.robot.subsystems.oi.Swimmy2023OISubsystem;
+import frc.robot.subsystems.toplevel.RobotOperation.Action;
+import frc.robot.subsystems.toplevel.RobotOperation.Slot;
 
 
 public class Swimmy2023RobotSubsystem extends RobotSubsystem {
 
+    enum State {
+        Idle,
+
+        //
+        // Common to all automatic operations
+        //
+        LookingForTag,
+        DrivingToLocation,
+
+        //
+        // Manual collect operation
+        //
+        ManualWaitForCollectDone,
+
+        //
+        // Manual place operation
+        //
+        ManualWaitForPlaceDone
+    } ;
 
     //
     // The subsystems
@@ -31,18 +47,6 @@ public class Swimmy2023RobotSubsystem extends RobotSubsystem {
     private LimeLightSubsystem limelight_;
 
     //
-<<<<<<< HEAD
-    // Actions we assign to the various subsystems
-    //
-    private SwerveDriveToPoseAction drive_to_;
-    private GPMCollectAction gpm_shelf_collect_action_ ;
-    private GPMStowAction gpm_stow_action_ ;
-
-    //
-    // The current operation
-    //
-    
-=======
     // The field related data
     //
     private FieldLocationData locdata_ ;
@@ -52,11 +56,11 @@ public class Swimmy2023RobotSubsystem extends RobotSubsystem {
     //
     private OperationCtrl ctrl_ ;
 
->>>>>>> main
     public Swimmy2023RobotSubsystem(XeroRobot robot) throws Exception {
         super(robot, "Swimmy2023RobotSubsystem") ;
 
         SwimmyRobot2023 swimmy = (SwimmyRobot2023)robot ;
+        locdata_ = swimmy.getFieldData() ;
 
         db_ = new SDSSwerveDriveSubsystem(this, "swerve" );
         addChild(db_);
@@ -71,13 +75,6 @@ public class Swimmy2023RobotSubsystem extends RobotSubsystem {
         addChild(gpm_);     
 
         db_.setVision(limelight_);
-<<<<<<< HEAD
-        
-        gpm_shelf_collect_action_ = new GPMCollectAction(gpm_);
-        gpm_stow_action_ = new GPMStowAction(gpm_);
-
-=======
->>>>>>> main
     }
 
     public GPMSubsystem getGPM() {
@@ -96,9 +93,6 @@ public class Swimmy2023RobotSubsystem extends RobotSubsystem {
         return limelight_ ;
     }
 
-<<<<<<< HEAD
-    
-=======
     public FieldLocationData getFieldData() {
         return locdata_;
     }
@@ -229,5 +223,4 @@ public class Swimmy2023RobotSubsystem extends RobotSubsystem {
             }
         }
     }
->>>>>>> main
 }
