@@ -80,7 +80,7 @@ public abstract class MotorController
 
     /// \brief Set the neutral mode for the motor
     /// \param mode the neutral mode for the motor
-    public abstract void setNeutralMode(NeutralMode mode) throws BadMotorRequestException, MotorRequestFailedException ;
+    public abstract void setNeutralMode(NeutralMode coast) throws BadMotorRequestException, MotorRequestFailedException ;
 
     /// \brief Set the current motor to follow another motor.  Note the motors must be compatible with each other for following.
     /// \param ctrl the other motor to follow

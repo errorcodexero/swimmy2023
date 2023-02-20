@@ -144,6 +144,16 @@ public class RomiGyro implements Gyro, XeroGyro {
     return XeroMath.normalizeAngleDegrees(-getAngleZ()) ;
   }
 
+  @Override
+  public double getPitch() {
+    return XeroMath.normalizeAngleDegrees(-getAngleX()) ;
+  }
+
+  @Override
+  public double getRoll() {
+    return XeroMath.normalizeAngleDegrees(-getAngleY()) ;
+  }
+
   /// \brief Return true if the Romi GYRO is connected
   @Override
   public boolean isConnected() {

@@ -7,6 +7,7 @@
             "xerorobot": false,
             "simulator": false,
             "limelight-edgar" : false,
+            "oibuttons" : false,
 
             // Special settings
             "pathfollowing": false,
@@ -23,7 +24,7 @@
         "verbose": {
             "swerve" : false,
             "arm-motor-upper" : false,
-            "grabber-motor-grab" : false
+            "grabber-motor-grab" : true
         },
         "plotting": {
             "enabled" : true,
@@ -34,8 +35,20 @@
             "min-pressure" : 100.0,
             "max-pressure" : 120.0
         }
-    },  
+    },
+    //  
+    // 215356
+    // 108149
+    // --------------------------
+    // 104873
+    // 46812
+    //
     "subsystems": {
+        "Swimmy2023RobotSubsystem" : {
+            "april-tag-action-threshold" : 2.0,
+            "tape-align-margin" : 0.1016,
+            "drive-forward-distance" : 0.1524
+        },
         "arm-motor-lower": {
             "hw": {
                 "motors": {
@@ -196,6 +209,7 @@
                     "units" : "ticks"
                 }
             },
+
             "hold": {
                 "kp": 0.004,
                 "ki": 0,
@@ -234,90 +248,37 @@
                 },
                 "gadgets" : {
                     "collect_v_place" : 6,
+                    "auto_v_manual" : 5,
+                    "lock" : 4,
+                    "abort" : 1,
+                    "turtle" : 2,
+                    "action" : 3,
+                    "drop" : 15,
                     "cone_v_cube" : {
                         "1" : 9,
                         "2" : 10
                     },
-                    "auto_v_manual" : 5,
-                    "lock" : 4,
-                    "abort" : 1,
+
                     "apriltag" : {
                         "1" : 7,
                         "2" : 8
                     },
                     "slot" : {
-                        "1" : 13,
-                        "2" : 14
-                    },
-                    "height" : {
                         "1" : 11,
                         "2" : 12
                     },
-                    "turtle" : 2,
-                    "action" : 3
+                    "height" : {
+                        "1" : 13,
+                        "2" : 14
+                    }
+
                 }
             }
         },
         "swerve": {
-            "estimator" : {
-                "advanced-rejection" : false,                   // If true, the advanced rejection of vision samples is used, see the code for more details
-                "vision-reject-threshold" : 1.0,                // Reject vision samples that are more than this distance from the current robot pose
-                "single-threshold" : 50.0,                      // When we see a single target, and we are greater than this distance, use the single-far std devs
-                                                                // Otherwise use the single-near std devs
-                "multi-threshold" : 4.0,                        // When we see multiple targets, and we are greater than this distance, use the multi-far std devs
-                                                                // Otherwise use the multi-near std devs
-                "single-tag-ignore-reject-threshold" : 2.0,     // If we see a single tag and the pose from the tag is greater than the vision-reject-threshold from the
-                                                                // current robot pose, we normally reject the vision sample.  However, if the distance to the tag is
-                                                                // within this distance, we apply it anyway assuming that the odometry is just way off.
-
-                "odometry" : {                                  // The std devs for the odometry
-                    "x" : 0.9,
-                    "y" : 0.9,
-                    "heading" : 0.1
-                },
-                //
-                // Jack in the bot - Odometry (0.02, 0.02, 0.02), Vision (0.1, 0.1, 0.01).
-                //
-                "vision" : {
-                    "single-far" : {
-                        "x" : 0.9,
-                        "y" : 0.9,
-                        "heading" : 0.9
-                    },
-                    "single-near" : {
-                        "x" : 0.1,
-                        "y" : 0.1,
-                        "heading" : 0.9
-                    },
-                    "multi-far" : {
-                        "x" : 0.1,
-                        "y" : 0.1,
-                        "heading" : 0.9
-                    },
-                    "multi-near" : {
-                        "x" : 0.1,
-                        "y" : 0.1,
-                        "heading" : 0.9
-                    }
-                }
-            },
-            "pid": {
-                "xctrl": {
-                    "kp": 6.0,
-                    "ki": 0,
-                    "kd": 0
-                },
-                "yctrl": {
-                    "kp": 6.0,
-                    "ki": 0,
-                    "kd": 0
-                },
-                "rotation": {
-                    "kp": 6.0,
-                    "ki": 0,
-                    "kd": 0
-                }
-            },
+            //
+            // This section describes the hardware that implements the swerve drive
+            //
             "hw": {
                 "bus" : "DriveBase",
                 "gyro": {
@@ -385,10 +346,84 @@
                     }
                 }
             },
+            
             //
-            // I saw some strange results with the PIDs that I wanted to check out.  Basically, as I changed
-            // the PIDs I did not see a change in behavior of the robot.  The numbers I was using are in comments
-            // below.
+            // This section describes how the vision integration with the drive base behaves
+            //
+            "estimator" : {
+                "advanced-rejection" : false,                   // If true, the advanced rejection of vision samples is used, see the code for more details
+                "vision-reject-threshold" : 1.0,                // Reject vision samples that are more than this distance from the current robot pose
+                "single-threshold" : 50.0,                      // When we see a single target, and we are greater than this distance, use the single-far std devs
+                                                                // Otherwise use the single-near std devs
+                "multi-threshold" : 4.0,                        // When we see multiple targets, and we are greater than this distance, use the multi-far std devs
+                                                                // Otherwise use the multi-near std devs
+                "single-tag-ignore-reject-threshold" : 2.0,     // If we see a single tag and the pose from the tag is greater than the vision-reject-threshold from the
+                                                                // current robot pose, we normally reject the vision sample.  However, if the distance to the tag is
+                                                                // within this distance, we apply it anyway assuming that the odometry is just way off.
+
+                "odometry" : {                                  // The std devs for the odometry
+                    "x" : 0.9,
+                    "y" : 0.9,
+                    "heading" : 0.9
+                },
+                //
+                // Jack in the bot - Odometry (0.02, 0.02, 0.02), Vision (0.1, 0.1, 0.01).
+                //
+                "vision" : {
+                    "single-far" : {
+                        "x" : 0.9,
+                        "y" : 0.9,
+                        "heading" : 0.1
+                    },
+                    "single-near" : {
+                        "x" : 0.1,
+                        "y" : 0.1,
+                        "heading" : 0.1
+                    },
+                    "multi-far" : {
+                        "x" : 0.1,
+                        "y" : 0.1,
+                        "heading" : 0.1
+                    },
+                    "multi-near" : {
+                        "x" : 0.1,
+                        "y" : 0.1,
+                        "heading" : 0.1
+                    }
+                }
+            },
+            //
+            // This section is the PID controllers for the holonomic drive controller (path following)
+            //
+            "pid": {                        
+                "xctrl": {
+                    "kp": 6.0,
+                    "ki": 0,
+                    "kd": 0
+                },
+                "yctrl": {
+                    "kp": 6.0,
+                    "ki": 0,
+                    "kd": 0
+                },
+                "rotation": {
+                    "kp": 11.0,
+                    "ki": 0,
+                    "kd": 0
+                }
+            },
+
+            //
+            // This section sets the tolerances for path following
+            //
+            "holonomic-path-following": {
+                "xy-tolerance": 0.05,
+                "angle-tolerance": 2.0
+            },
+
+            //
+            // This section is the pid controller for the low level modules, specifically the module velocity since the
+            // angle is managed in the motor controller and initialize by the low level code.
             //
             "pids": {
                 "fl": {
@@ -452,40 +487,94 @@
                     "imax": 0.0
                 }
             },
+
+            //
+            // This section is a PID controller for rotationally aligning the robot with a vision target
+            //
+            "align-pid" : {
+                "kp" : 0.0,
+                "ki" : 0.0,
+                "kd" : 0.0,
+                "kf" : 0.0,
+                "max" : 1.5707963268,          // Radians per second (90)
+                "min" : 1.5707963268,          // Radians per second (90)
+                "imax" : 0.0
+            },
+
+                        //
+            // This section is a PID controller for rotationally aligning the robot with a vision target
+            //
+            "balance-pid" : {
+                "kp" : 0.0,
+                "ki" : 0.0,
+                "kd" : 0.0,
+                "kf" : 0.0,
+                "max" : 0.5,          // Meters Per Second
+                "min" : 0.5,          // Meters Per Second
+                "imax" : 0.0
+            },
+
+            //
+            // This section descrdibes the physical characteristics of the robot
+            //
             "physical": {
                 "width": 0.5715, // meters
                 "length": 0.5842, // meters
                 "path" : {
-                    "maxv" : 0.5,
-                    "maxa" : 0.5
+                    "maxv" : 1.0,
+                    "maxa" : 1.0
                 },
                 "max-angular-speed": 100,
                 "max-angular-accel": 100
             },
+
+            //
+            // This section describes electrical characteristics of the robot
+            //
             "electrical": {
                 "max-voltage": 12.0,
                 "nominal-voltage": 11.0,
                 "steer-current-limit": 10.0,
                 "drive-current-limit": 30.0
-            },
-            "holonomic-path-following": {
-                "xy-tolerance": 0.05,
-                "angle-tolerance": 2.0
             }
         },
         "arm" : {
             "collect" : {
-                "extend" : {
+                "extend-shelf" : {
                     "1" : {
                         "lower" : 0,
                         "upper" : 55000
                     },
                     "2" : {
                         "lower" : 70000,
-                        "upper" : 130000
+                        "upper" : 135000
                     }
                 },
-                "retract" : {
+                "extend-ground" : {
+                    "1" : {
+                        "lower" : 0,
+                        "upper" : 55000
+                    },
+                    "2" : {
+                        "lower" : 70000,
+                        "upper" : 135000
+                    }
+                },
+                "retract-shelf" : {
+                    "1" : {
+                        "lower" : 70000,
+                        "upper" : 160000
+                    },
+                    "2" : {
+                        "lower" : 60000,
+                        "upper" : 160000
+                    },
+                    "3" : {
+                        "lower" : 0,
+                        "upper" : 0                        
+                    }
+                },
+                "retract-ground" : {
                     "1" : {
                         "lower" : 70000,
                         "upper" : 160000
@@ -638,7 +727,7 @@
                             }                            
                         }
                     }
-                },
+                }
             }
         },
         "gpm" : {
@@ -647,7 +736,7 @@
     }, 
     "testmode": {
         "enabled": true,
-        "which": 30,
+        "which": 6,
         "0": {
             "angle": 0.0,
             "power": 0.2
@@ -690,8 +779,8 @@
             "velocity" : 5000
         },
         "14" : {
-            "height" : 30000,
-            "target" : 50000
+            "lower" : 100000,
+            "upper" : 150000
         },
         "15" : {
             "target" : 36000
@@ -701,7 +790,7 @@
             "lower" : 100000
         },
         "20" : {
-            "power" : 0.2,
+            "power" : 0.1,
             "duration" : 1.0          
         },
         "21" : {
@@ -718,12 +807,21 @@
             "power" : 0.4,
             "duration" : 3.0
         },
+        "98" : {
+            "initx" : 3.2,
+            "inity" : 4.3,
+            "initangle" : 180.0,
+            "delay" : 0.4,
+            "x" : 1.873,
+            "y" : 5.05,
+            "angle" : 180.0
+        },
         "99" : {
             "initx" : 3.0,
             "inity" : 6.5,
             "initangle" : 160.0,
-            "delay" : 2.0,
-            "x" : 1.36195,
+            "delay" : 5.0,
+            "x" : 1.66195,
             "y" : 7.609796,
             "angle" : 180.0
         }

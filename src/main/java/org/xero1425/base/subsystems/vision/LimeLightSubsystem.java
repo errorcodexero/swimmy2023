@@ -5,6 +5,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 import org.xero1425.misc.MessageLogger ;
 import org.xero1425.misc.MessageType ;
+import org.xero1425.base.IVisionAlignmentData;
 import org.xero1425.base.IVisionLocalization;
 import org.xero1425.base.XeroRobot;
 import org.xero1425.base.subsystems.Subsystem;
@@ -13,10 +14,17 @@ import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
+import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.Timer;
 
-public class LimeLightSubsystem extends Subsystem implements IVisionLocalization {
+public class LimeLightSubsystem extends Subsystem implements IVisionLocalization, IVisionAlignmentData {
+    public final static String LimeLightTableName = "limelight";
+    public final static String CamModeKeyName = "camMode" ;
+    public final static String LedModeKeyName = "ledMode" ;
+    public final static String PipelineKeyName = "pipeline" ;
+
+
     public class Retro {
         public Translation2d pts[] ;
         public Pose3d camToTarget ;
@@ -80,23 +88,97 @@ public class LimeLightSubsystem extends Subsystem implements IVisionLocalization
     private Pose3d wpired_ ;
     private Pose3d wpiblue_ ;
 
+    // The network tables entry for the limelight
+    private NetworkTable nt_ ;
+    private int pipeline_ ;
+
+    private double tx_;
+    private double ty_;
+    private boolean tv_;
+
+    private CamMode cam_mode_ ;
+    private LedMode led_mode_;
+
     public LimeLightSubsystem(Subsystem parent, String name) {
         super(parent, name) ;
         timage_ = 0.011;
+
+        cam_mode_ = CamMode.Invalid ;
+
+        nt_ = NetworkTableInstance.getDefault().getTable(LimeLightTableName) ;
+
+        setPipeline(0);
+        setCamMode(CamMode.VisionProcessing);
     }
 
-    public Pose3d getBotPose() {
-        return botpose_ ;
+    ///////////////////////////////////////////////////////
+    //
+    // The IVisionAlignmentData interface
+    //
+    ///////////////////////////////////////////////////////
+
+    public double getTX() {
+        return tx_ ;
     }
 
-    public Pose3d getRedBotPose() {
-        return wpired_;
+    public double getTY() {
+        return ty_ ;
     }
 
-    public Pose3d getBlueBotPose() {
-        return wpiblue_;
+    public boolean isTargetDetected() {
+        return tv_ ;
     }
 
+    public void setCamMode(CamMode mode) {
+        if (cam_mode_ != mode)
+        {
+            switch(mode) {
+                case VisionProcessing:
+                    nt_.getEntry(CamModeKeyName).setNumber(0) ;
+                    break ;
+                case DriverCamera:
+                    nt_.getEntry(CamModeKeyName).setNumber(1) ;
+                    break ;
+                case Invalid:
+                    break ;
+            }
+
+            cam_mode_ = mode ;
+        }
+    }
+
+    public void setLedMode(LedMode mode) {
+        if (led_mode_ != mode)
+        {
+            switch(mode)
+            {
+                case UseLED:
+                    nt_.getEntry(LedModeKeyName).setNumber(0) ;
+                    break ;
+                case ForceOff:
+                    nt_.getEntry(LedModeKeyName).setNumber(1) ;
+                    break ;
+                case ForceBlink:
+                    nt_.getEntry(LedModeKeyName).setNumber(2) ;
+                    break ;
+                case ForceOn:
+                    nt_.getEntry(LedModeKeyName).setNumber(3) ;
+                    break ;
+                case Invalid:
+                    break ;                                                                                
+            }
+
+            led_mode_ = mode ;
+        }
+    }    
+
+    ///////////////////////////////////////////////////////
+    //
+    // The IVisionAlignmentData interface
+    //
+    ///////////////////////////////////////////////////////
+
+    
     public int getTagCount() {
         if (fuds_ == null)
             return 0;
@@ -162,6 +244,33 @@ public class LimeLightSubsystem extends Subsystem implements IVisionLocalization
         return dist ;
     }
 
+    ///////////////////////////////////////////////////////
+    //
+    // Other public functions that might be of interest
+    //
+    ///////////////////////////////////////////////////////
+
+
+    public void setPipeline(int which) {
+        if (which != pipeline_)
+        {
+            nt_.getEntry(PipelineKeyName).setNumber(which) ;
+            pipeline_ = which ;
+        }
+    }
+
+    public Pose3d getBotPose() {
+        return botpose_ ;
+    }
+
+    public Pose3d getRedBotPose() {
+        return wpired_;
+    }
+
+    public Pose3d getBlueBotPose() {
+        return wpiblue_;
+    }
+
     public int getId() {
         return id_ ;
     }
@@ -220,6 +329,39 @@ public class LimeLightSubsystem extends Subsystem implements IVisionLocalization
         return st ;
     }
 
+    public void retroComputeMyState() {
+        if (cam_mode_ == CamMode.VisionProcessing)
+        {
+            if (nt_.containsKey("tv"))
+            {
+                double value = nt_.getEntry("tv").getNumber(0.0).doubleValue() ;
+                if (value < 0.01)
+                {
+                    tv_ = false ;
+                    tx_ = Double.MAX_VALUE;
+                }
+                else
+                {
+                    tv_ = true ;
+                    tx_ = nt_.getEntry("tx").getNumber(0.0).doubleValue() ;
+                    ty_ = nt_.getEntry("ty").getNumber(0.0).doubleValue() ;
+                }
+            }
+            else {
+                tv_ = false ;
+                tx_ = Double.MAX_VALUE;
+            }
+        }
+        else
+        {
+            tv_ = false ;
+            tx_ = Double.MAX_VALUE;
+        }
+
+        putDashboard("ll-valid", DisplayType.Verbose, tv_);
+        putDashboard("ll-yaw", DisplayType.Verbose, tx_) ;
+    }
+
     @Override
     public void computeState() {
         MessageLogger logger = getRobot().getMessageLogger() ;
@@ -249,6 +391,22 @@ public class LimeLightSubsystem extends Subsystem implements IVisionLocalization
             count = fuds_.length ;
         }
         putDashboard("AprilTags", DisplayType.Always, count);
+
+        retroComputeMyState();
+    }
+
+    public double distantToTag(int id) {
+        double ret = Double.MAX_VALUE ;
+
+        if (fuds_ != null) {
+            for(int i = 0 ; i < fuds_.length ; i++) {
+                if (fuds_[i].id == id) {
+                    ret = fuds_[i].targetToRobot.getTranslation().getNorm();
+                }
+            }
+        }
+
+        return ret;
     }
 
     public boolean hasAprilTag(int id) {

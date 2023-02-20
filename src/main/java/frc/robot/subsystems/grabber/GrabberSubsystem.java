@@ -1,5 +1,9 @@
 package frc.robot.subsystems.grabber;
 
+import org.xero1425.base.LoopType;
+import org.xero1425.base.motors.BadMotorRequestException;
+import org.xero1425.base.motors.MotorRequestFailedException;
+import org.xero1425.base.motors.MotorController.NeutralMode;
 import org.xero1425.base.subsystems.Subsystem;
 import org.xero1425.base.subsystems.motorsubsystem.MotorEncoderSubsystem;
 
@@ -17,7 +21,7 @@ public class GrabberSubsystem extends Subsystem {
     public GrabberSubsystem(Subsystem parent) throws Exception {
         super(parent, "grabber");
         
-        motor_grab_ = new MotorEncoderSubsystem(this, "grabber-motor-grab", true);
+        motor_grab_ = new MotorEncoderSubsystem(this, "grabber-motor-grab", false);
         addChild(motor_grab_);
         
         motor_spin_ = new MotorEncoderSubsystem(this, "grabber-motor-spin", false);
@@ -27,7 +31,21 @@ public class GrabberSubsystem extends Subsystem {
         sensor_lower_ = new DigitalInput(v);
         v = getSettingsValue("hw:sensor:upper").getInteger();
         sensor_upper_ = new DigitalInput(v);
+    }
 
+    @Override
+    public void init(LoopType lt) {
+        if (lt == LoopType.Disabled) {
+            try {
+                motor_grab_.getMotorController().setNeutralMode(NeutralMode.Coast);
+            } catch (BadMotorRequestException | MotorRequestFailedException e) {
+            }
+        } else {
+            try {
+                motor_grab_.getMotorController().setNeutralMode(NeutralMode.Brake);
+            } catch (BadMotorRequestException | MotorRequestFailedException e) {
+            }            
+        }
     }
 
     @Override

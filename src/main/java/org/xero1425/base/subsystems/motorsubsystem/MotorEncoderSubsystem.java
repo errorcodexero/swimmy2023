@@ -230,11 +230,6 @@ public class MotorEncoderSubsystem extends MotorSubsystem
     /// zero and set the motor power to off.
     public void reset() {
         super.reset() ;
-
-        //
-        // TODO: remove this for now and only reset a motor encoder subsystem during postHWInit()
-        //
-        // encoder_.reset() ;
     }
 
     /// \brief Returns the encoder raw count

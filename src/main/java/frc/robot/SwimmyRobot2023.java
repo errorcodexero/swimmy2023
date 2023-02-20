@@ -41,7 +41,7 @@ public class SwimmyRobot2023 extends XeroRobot {
       if (ret != null)
           return ret;
 
-      return "manualcollect";
+      return "automode";
   }
 
   protected void addRobotSimulationModels() {
@@ -51,6 +51,9 @@ public class SwimmyRobot2023 extends XeroRobot {
   }  
   
   protected void hardwareInit() throws Exception {    
+    String filename = getRobotFileSystemPaths().deployDirectory() + "field.jsonc" ;
+    locdata_ = new FieldLocationData(getMessageLogger(), filename);
+
     Swimmy2023RobotSubsystem robot = new Swimmy2023RobotSubsystem(this);
     setRobotSubsystem(robot);
   }

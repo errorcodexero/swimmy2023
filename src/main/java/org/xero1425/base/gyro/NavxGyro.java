@@ -55,6 +55,24 @@ public class NavxGyro implements XeroGyro {
         return ret ;
     }
 
+    public double getPitch() {
+        double ret = 0.0 ;
+
+        if (navx_ != null) {
+            ret = navx_.getPitch();
+        }
+        return ret ;
+    }
+
+    public double getRoll() {
+        double ret = 0.0 ;
+
+        if (navx_ != null) {
+            ret = navx_.getRoll();
+        }
+        return ret ;
+    }
+
     /// \brief Returns the total angle for the NavX
     /// \returns the total angle for the NavX    
     public double getAngle() {

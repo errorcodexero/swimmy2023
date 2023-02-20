@@ -14,6 +14,8 @@ public interface XeroGyro {
     /// -180 degrees and 180 degrees.
     /// \returns the current effective YAW angle for the NavX    
     public double getYaw() ;
+    public double getPitch() ;
+    public double getRoll();
 
     /// \brief Returns the total angle for the NavX
     /// \returns the total angle for the NavX     

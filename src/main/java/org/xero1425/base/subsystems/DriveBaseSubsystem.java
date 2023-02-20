@@ -51,6 +51,18 @@ public abstract class DriveBaseSubsystem extends Subsystem {
         putDashboard("heading", DisplayType.Always, gyro_.getYaw());
     }
 
+    public double getYaw() {
+        return gyro_.getYaw() ;
+    }
+
+    public double getPitch() {
+        return gyro_.getPitch() ;
+    }
+    
+    public double getRoll() {
+        return gyro_.getRoll() ;
+    }    
+
     public Rotation2d getHeading() {
         return Rotation2d.fromDegrees(gyro_.getYaw()) ;
     }

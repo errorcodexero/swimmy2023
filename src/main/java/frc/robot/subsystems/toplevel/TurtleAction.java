@@ -27,6 +27,10 @@ public class TurtleAction extends Action {
     @Override
     public void run() throws Exception {
         super.run() ;
+
+        if (stow_action_.isDone()) {
+            setDone();
+        }
     }
 
     @Override

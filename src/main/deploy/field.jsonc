@@ -2,121 +2,143 @@
 {
     "red": {
         "grid": {
-            "1": { //middle of field
+            "right": {                          // center of field
                 "grid-id": 3,
                 "left": {
-                    "x": 0,
-                    "y": 0
+                    "x" : 14.667988,
+                    "y" : 5.05,
+                    "heading" : 0
                 },
                 "middle": {
-                    "x": 0,
-                    "y": 0
+                    "x": 14.66798,
+                    "y": 4.424426,
+                    "heading" : 0
                 },
                 "right": {
-                    "x": 0,
-                    "y": 0
+                    "x": 14.66798,
+                    "y": 3.798852,
+                    "heading" : 0
                 }
             },
-            "2": { //coopertition grid of field
+            "middle": {                           //coopertition grid of field
                 "grid-id": 2,
                 "left": {
-                    "x": 0,
-                    "y": 0
+                    "x": 14.66798,
+                    "y": 3.3736,
+                    "heading" : 0
                 },
                 "middle": {
-                    "x": 0,
-                    "y": 0
+                    "x": 14.66798,
+                    "y": 2.748026,
+                    "heading" : 0
                 },
                 "right": {
-                    "x": 0,
-                    "y": 0
+                    "x": 14.66798,
+                    "y": 2.122452,
+                    "heading" : 0
                 }
             },
-            "3": { //edge of field
+            "left": {                               //edge of field
                 "grid-id": 1,
                 "left": {
-                    "x": 0,
-                    "y": 0
+                    "x": 14.66798,
+                    "y": 1.6972,
+                    "heading" : 0
                 },
                 "middle": {
-                    "x": 0,
-                    "y": 0
+                    "x": 14.66798,
+                    "y": 1.071626,
+                    "heading" : 0
                 },
                 "right": {
-                    "x": 0,
-                    "y": 0
+                    "x": 14.66798,
+                    "y": 0.446052,
+                    "heading" : 0
                 }
+            }
+        },
+        "loading-station": {                                 //loading station
+            "grid-id": 5,
+            "left": {                           //closer to edge of field
+                "x": 1.66195,
+                "y": 7.60976,
+                "heading" : 180
             },
-            "10": { //loading station
-                "grid-id": 5,
-                "edge": { //closer to edge of field
-                    "x": 0,
-                    "y": 0
-                },
-                "non-edge": {
-                    "x": 0,
-                    "y": 0
-                }
+            "right": {
+                "x": 1.66195,
+                "y": 5.889832,
+                "heading" : 180
             }
         }
     },
     "blue": {
         "grid": {
-            "1": { //middle of field
+            "left": { //middle of field
                 "grid-id": 6,
                 "left": {
-                    "x": 0,
-                    "y": 0
+                    "x": 1.873,
+                    "y": 3.798852,
+                    "heading" : 180
                 },
                 "middle": {
-                    "x": 0,
-                    "y": 0
+                    "x": 1.873,
+                    "y": 4.424426,
+                    "heading" : 180
                 },
                 "right": {
-                    "x": 0,
-                    "y": 0
+                    "x": 1.873,
+                    "y": 5.05,
+                    "heading" : 180
                 }
             },
-            "2": { //coopertition grid of field
+            "middle": { //coopertition grid of field
                 "grid-id": 7,
                 "left": {
-                    "x": 0,
-                    "y": 0
+                    "x": 1.873,
+                    "y": 2.122452,
+                    "heading" : 180
                 },
                 "middle": {
-                    "x": 0,
-                    "y": 0
+                    "x": 1.873,
+                    "y": 2.748026,
+                    "heading" : 180
                 },
                 "right": {
-                    "x": 0,
-                    "y": 0
+                    "x": 1.873,
+                    "y": 3.3736,
+                    "heading" : 180
                 }
             },
-            "3": { //edge of field
+            "right": { //edge of field
                 "grid-id": 8,
                 "left": {
-                    "x": 0,
-                    "y": 0
+                    "x": 1.873,
+                    "y": 0.446052,
+                    "heading" : 180
                 },
                 "middle": {
-                    "x": 0,
-                    "y": 0
+                    "x": 1.873,
+                    "y": 1.071626,
+                    "heading" : 180
                 },
                 "right": {
-                    "x": 0,
-                    "y": 0
+                    "x": 1.873,
+                    "y": 1.6972,
+                    "heading" : 180
                 }
+            }
+        },
+        "loading-station": { //loading station
+            "grid-id": 4,
+            "left": { //closer to edge of field
+                "x": 14.878784,
+                "y": 7.60976,
+                "heading" : 0
             },
-            "10": { //loading station
-                "grid-id": 4,
-                "edge": { //closer to edge of field
-                    "x": 0,
-                    "y": 0
-                },
-                "non-edge": {
-                    "x": 0,
-                    "y": 0
-                }
+            "right": {
+                "x": 14.878784,
+                "y": 5.889832,
+                "heading" : 0
             }
         }
     }
