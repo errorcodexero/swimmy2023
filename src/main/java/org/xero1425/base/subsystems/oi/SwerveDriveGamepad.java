@@ -51,6 +51,7 @@ public class SwerveDriveGamepad extends Gamepad {
 
         db_ = drive_;
         reset_buttons_ = null ;
+        drivebase_x_buttons_ = null;
     }
 
     public void setSwerveResetButtons(SwerveButton[] buttons) {
@@ -82,7 +83,7 @@ public class SwerveDriveGamepad extends Gamepad {
         boolean ret = true ;
 
         if (buttons != null && buttons.length > 0) {
-            for(SwerveButton button : reset_buttons_) {
+            for(SwerveButton button : buttons) {
                 boolean bstate = false ;
 
                 switch(button) {
@@ -116,7 +117,7 @@ public class SwerveDriveGamepad extends Gamepad {
             RobotSubsystem robotSubsystem = getSubsystem().getRobot().getRobotSubsystem();
             SwerveBaseSubsystem db = (SwerveBaseSubsystem)robotSubsystem.getDB() ;
             if (db != null) {
-                db.setPose(new Pose2d()) ;
+                db.resetPose();
             }
         }
 

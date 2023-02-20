@@ -163,9 +163,9 @@ public class Swimmy2023OIDevice extends OIPanel {
 
     @Override
     public void generateActions() {
-
         super.generateActions();
 
+        Swimmy2023RobotSubsystem sub = (Swimmy2023RobotSubsystem)getSubsystem().getRobot().getRobotSubsystem();
         boolean errDetected = false ;
         MessageLogger logger = getSubsystem().getRobot().getMessageLogger();
 
@@ -174,18 +174,15 @@ public class Swimmy2023OIDevice extends OIPanel {
             // First priority is the turtle action.  This moves everything back into the robot to the best of our
             // ability.  It will cancel any running actions with the arm and grabber.
             //
-            Swimmy2023RobotSubsystem sub = (Swimmy2023RobotSubsystem)getSubsystem().getRobot().getRobotSubsystem();
             sub.setAction(turtle_action_);
-
-            setLeds(true) ;
+            setLeds(false) ;
         }
         else if (getValue(abort_gadget_) == 1) {
             //
             // Abort any action going in the robot subsystem
             //
-            Swimmy2023RobotSubsystem sub = (Swimmy2023RobotSubsystem)getSubsystem().getRobot().getRobotSubsystem();
             sub.abort() ;
-            setLeds(true) ;
+            setLeds(false) ;
         }
         else {
             RobotOperation oper = extractRobotOperation() ;
@@ -199,16 +196,27 @@ public class Swimmy2023OIDevice extends OIPanel {
             }
 
             oper_ = oper;
-            if (getValue(lock_gadget_) == 1) {
+            if (getValue(action_gadget_) == 1&& !oper_.getManual()) {
+                //
+                // We are in automatic mode and the action button has been
+                // pressed.  For now, this is an override for ground pickup
+                //
+                oper_.setGround(true);
+                errDetected = sub.setOperation(oper_);
+            }
+            else if (getValue(lock_gadget_) == 1) {
+                //
+                // The lock button has been pressed, lock in the gunners request
+                //
                 if (oper_.getManual() == false) {
-                    Swimmy2023RobotSubsystem sub = (Swimmy2023RobotSubsystem)getSubsystem().getRobot().getRobotSubsystem();
+
                     errDetected = sub.setOperation(oper_);
 
                     logger.startMessage(MessageType.Debug, getSubsystem().getLoggerID());
                     logger.add("OI assigned op (auto): " + oper_.toString());
                     logger.endMessage();
+                    
                 } else {
-                    Swimmy2023RobotSubsystem sub = (Swimmy2023RobotSubsystem)getSubsystem().getRobot().getRobotSubsystem();
                     errDetected = sub.setOperation(oper_);
 
                     logger.startMessage(MessageType.Debug, getSubsystem().getLoggerID());

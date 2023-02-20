@@ -77,6 +77,10 @@ public class SwerveVisionProcessing {
         logger_id_ = sub.getRobot().getMessageLogger().registerSubsystem("vision");
     }
 
+    public Pose2d getCurrentPose() {
+        return vision_pose_;
+    }
+
     private double getVisionDegrees() {
         if (vision_pose_ == null) {
             return Double.NaN;
