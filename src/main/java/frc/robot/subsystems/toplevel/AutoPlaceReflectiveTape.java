@@ -90,7 +90,7 @@ public class AutoPlaceReflectiveTape extends OperationCtrl {
         if (state_ != orig) {
             MessageLogger logger = getRobotSubsystem().getRobot().getMessageLogger() ;
             logger.startMessage(MessageType.Debug, getRobotSubsystem().getLoggerID());
-            logger.add("AutoCollectOpCtrl State Changes: " + orig.toString() + " -> " + state_.toString());
+            logger.add("AutoPlaceReflectiveTape State Changes: " + orig.toString() + " -> " + state_.toString());
             logger.endMessage();
         }
     }
@@ -178,6 +178,7 @@ public class AutoPlaceReflectiveTape extends OperationCtrl {
             getRobotSubsystem().getLimeLight().setLedMode(LedMode.ForceOff);
             forward_action_ = new SwerveDriveToPoseAction(getRobotSubsystem().getSwerve(), getForwardPose());
             getRobotSubsystem().getSwerve().setAction(forward_action_);
+            state_ = State.ForwardDriveBase ;
         }
     }
 
@@ -191,6 +192,8 @@ public class AutoPlaceReflectiveTape extends OperationCtrl {
     private void stateDroppingPiece() {
         if (place_action_.isDone()) {
             state_ = State.Idle ;
+            getRobotSubsystem().getOI().enableGamepad();
+            getRobotSubsystem().getOI().getGamePad().rumble(1.0, 2.0);
             setDone();
         }
     }

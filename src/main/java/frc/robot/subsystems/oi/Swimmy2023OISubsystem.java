@@ -21,7 +21,7 @@ public class Swimmy2023OISubsystem extends OISubsystem {
     Swimmy2023OIDevice oipanel_ ;
 
     public Swimmy2023OISubsystem(Subsystem parent, DriveBaseSubsystem db) {
-        super(parent, "swimmy2023oi", GamePadType.Swerve, db, true);
+        super(parent, "swimmy2023oi", GamePadType.Swerve, db, true, true);
 
         int index ;
         MessageLogger logger = getRobot().getMessageLogger() ;

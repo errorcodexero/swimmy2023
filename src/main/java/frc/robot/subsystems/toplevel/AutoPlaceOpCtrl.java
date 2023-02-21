@@ -65,7 +65,7 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
         if (state_ != orig) {
             MessageLogger logger = getRobotSubsystem().getRobot().getMessageLogger() ;
             logger.startMessage(MessageType.Debug, getRobotSubsystem().getLoggerID());
-            logger.add("AutoCollectOpCtrl State Changes: " + orig.toString() + " -> " + state_.toString());
+            logger.add("AutoPlaceOpCtrl State Changes: " + orig.toString() + " -> " + state_.toString());
             logger.endMessage();
         }
     }
@@ -131,6 +131,8 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
     private void stateDroppingPiece() {
         if (place_action_.isDone()) {
             state_ = State.Idle ;
+            getRobotSubsystem().getOI().enableGamepad();
+            getRobotSubsystem().getOI().getGamePad().rumble(1.0, 2.0);
             setDone();
         }
     }

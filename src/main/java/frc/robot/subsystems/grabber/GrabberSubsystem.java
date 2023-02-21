@@ -1,9 +1,6 @@
 package frc.robot.subsystems.grabber;
 
 import org.xero1425.base.LoopType;
-import org.xero1425.base.motors.BadMotorRequestException;
-import org.xero1425.base.motors.MotorRequestFailedException;
-import org.xero1425.base.motors.MotorController.NeutralMode;
 import org.xero1425.base.subsystems.Subsystem;
 import org.xero1425.base.subsystems.motorsubsystem.MotorEncoderSubsystem;
 

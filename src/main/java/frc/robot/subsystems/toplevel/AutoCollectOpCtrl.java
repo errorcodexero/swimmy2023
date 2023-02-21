@@ -117,6 +117,8 @@ public class AutoCollectOpCtrl extends OperationCtrl {
         if (collect_action_.isDone()) {
             getRobotSubsystem().getSwerve().enableVision(true);
             state_ = State.Idle ;
+            getRobotSubsystem().getOI().enableGamepad();
+            getRobotSubsystem().getOI().getGamePad().rumble(1.0, 2.0);
             setDone() ;
         }
     }

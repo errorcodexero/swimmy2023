@@ -26,6 +26,7 @@ public class SwerveDriveGamepad extends Gamepad {
     }
 
     private SwerveBaseSubsystem db_;
+    private boolean invert_ ;
     private double angle_maximum_;
     private double pos_maximum_;
     private double deadband_pos_x_ ;
@@ -54,6 +55,10 @@ public class SwerveDriveGamepad extends Gamepad {
         reset_buttons_ = null ;
         drivebase_x_on_buttons_ = null;
         holding_x_ = false ;
+    }
+
+    public void invert(boolean inv) {
+        invert_ = inv;
     }
 
     public void setSwerveResetButtons(SwerveButton[] buttons) {
@@ -155,6 +160,11 @@ public class SwerveDriveGamepad extends Gamepad {
         }
         catch(Exception ex) {
             return ;
+        }
+
+        if (invert_) {
+            ly = -ly ;
+            lx = -lx ;
         }
 
         double lyscaled = mapJoyStick(ly, pos_maximum_, deadband_pos_y_, power_) ;
