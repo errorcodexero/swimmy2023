@@ -35,17 +35,6 @@ public class GrabberSubsystem extends Subsystem {
 
     @Override
     public void init(LoopType lt) {
-        if (lt == LoopType.Disabled) {
-            try {
-                motor_grab_.getMotorController().setNeutralMode(NeutralMode.Coast);
-            } catch (BadMotorRequestException | MotorRequestFailedException e) {
-            }
-        } else {
-            try {
-                motor_grab_.getMotorController().setNeutralMode(NeutralMode.Brake);
-            } catch (BadMotorRequestException | MotorRequestFailedException e) {
-            }            
-        }
     }
 
     @Override

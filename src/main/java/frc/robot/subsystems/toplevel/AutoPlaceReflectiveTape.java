@@ -48,7 +48,7 @@ public class AutoPlaceReflectiveTape extends OperationCtrl {
 
         state_ = State.Idle ;
 
-        place_action_ = new GPMPlaceAction(sub.getGPM(), oper.getLocation(), oper.getGamePiece());
+        place_action_ = new GPMPlaceAction(sub.getGPM(), oper.getLocation(), oper.getGamePiece(), false);
         align_action_ = new SwerveAlignDriveBaseAction(sub.getSwerve(), sub.getLimeLight(), 3.0);
     }
 

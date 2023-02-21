@@ -109,7 +109,7 @@ public abstract class SwerveBaseSubsystem extends DriveBaseSubsystem {
 
     public void resetPose() {
         boolean reset = false ;
-        if (vision_ != null) {
+        if (vision_ != null && vision_.hasTargets()) {
             Pose2d vpose = vision_.getCurrentPose();
             if (vpose != null) {
                 setPose(vpose) ;

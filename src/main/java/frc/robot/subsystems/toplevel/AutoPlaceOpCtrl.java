@@ -31,7 +31,7 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
         april_tag_action_threshold_ = sub.getSettingsValue("april-tag-action-threshold").getDouble() ;
         state_ = State.Idle ;
 
-        place_action_ = new GPMPlaceAction(sub.getGPM(), oper.getLocation(), oper.getGamePiece());
+        place_action_ = new GPMPlaceAction(sub.getGPM(), oper.getLocation(), oper.getGamePiece(), false);
     }
 
     @Override
@@ -110,7 +110,7 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
 
             getRobotSubsystem().getSwerve().enableVision(false);
 
-            target_pose_ = getRobotSubsystem().getFieldData().getLoadingStationPose(getOper().getSlot());
+            target_pose_ = getRobotSubsystem().getFieldData().getGridPose(getOper().getAprilTag(), getOper().getSlot());
 
             drive_to_action_ = new SwerveDriveToPoseAction(getRobotSubsystem().getSwerve(), target_pose_);
             getRobotSubsystem().getSwerve().setAction(drive_to_action_);

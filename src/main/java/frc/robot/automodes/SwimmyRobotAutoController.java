@@ -18,6 +18,10 @@ public class SwimmyRobotAutoController extends AutoController {
     
             try {
                 test_mode_ = new SwimmyTestAutoMode(this) ;
+
+                // addAutoMode(new SwimmyAutoModeLeft(this));
+                // addAutoMode(new SwimmyAutoModeMiddle(this, Location.Top, GamePiece.Cone));
+                // addAutoMode(new SwimmyAutoModeRight(this));
             }
             catch(Exception ex) {
                 MessageLogger logger = robot.getMessageLogger() ;
@@ -25,10 +29,6 @@ public class SwimmyRobotAutoController extends AutoController {
                 logger.add(ex.getMessage()).endMessage();
                 robot.logStackTrace(ex.getStackTrace());
             }
-
-            addAutoMode(new SwimmyAutoModeLeft(this));
-            addAutoMode(new SwimmyAutoModeMiddle(this));
-            addAutoMode(new SwimmyAutoModeRight(this));
         }
     
         public void updateAutoMode(int mode, String gamedata) {

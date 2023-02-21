@@ -1,12 +1,9 @@
-Development
------------
-Use gamepad X + A to reset using AprilTag
-
 In order
 ------------------------------------------------------
-- Test X pattern with drive base
+X ARM Speed
+X Test X pattern with drive base
 - Get ground collect working
-- Get teleop/auto cone place to high location working
+- Get teleop/auto cone place to high location working, possible add in retro tape alignment
 - Get teleop/auto cone place to mid location working
 - Get teleop/auto cone place to low location working
 - Get teleop/auto cube place to high location working
@@ -28,12 +25,7 @@ Positions
   o Middle
   o Bottom
 
-Subsystems
-- Speed up the ARM
-
 Testing
-- X pattern with drive base - R Back button
-- Reset Swerve Pose - Y and B buttons
 - Teleop Manual Collect
 - Teleop Manual Place
 - Teleop Auto Collect

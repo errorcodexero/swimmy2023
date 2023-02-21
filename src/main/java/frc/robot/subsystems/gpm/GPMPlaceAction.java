@@ -2,7 +2,10 @@ package frc.robot.subsystems.gpm;
 
 import org.xero1425.base.actions.Action;
 import org.xero1425.base.misc.XeroTimer;
+import org.xero1425.base.subsystems.motorsubsystem.MotorEncoderPowerAction;
 import org.xero1425.misc.BadParameterTypeException;
+import org.xero1425.misc.MessageLogger;
+import org.xero1425.misc.MessageType;
 import org.xero1425.misc.MissingParameterException;
 
 import frc.robot.subsystems.arm.ArmGotoAction;
@@ -24,15 +27,18 @@ public class GPMPlaceAction extends Action {
     private ArmGotoAction arm_extend_action_ ;
     private ArmGotoAction arm_retract_action_ ;
     private GrabberStowAction grabber_drop_item_ ;
+    private MotorEncoderPowerAction grabber_hold_action_ ;
     private boolean ready_to_drop_ ;
     private boolean drop_game_piece_ ;
+    private boolean force_drop_ ;
     private XeroTimer timer_ ;
 
-    public GPMPlaceAction(GPMSubsystem sub, RobotOperation.Location loc, RobotOperation.GamePiece gp) throws MissingParameterException, BadParameterTypeException {
+    public GPMPlaceAction(GPMSubsystem sub, RobotOperation.Location loc, RobotOperation.GamePiece gp, boolean force) throws MissingParameterException, BadParameterTypeException {
         super(sub.getRobot().getMessageLogger());
 
         state_ = State.Idle ;
         sub_ = sub ;
+        force_drop_ = force;
 
         String armpos = "place:" ;
 
@@ -56,13 +62,15 @@ public class GPMPlaceAction extends Action {
         else {
             armpos += ":cube" ;
         }
-        armpos += ":extend";
 
         arm_extend_action_ = new ArmGotoAction(sub_.getArm(), armpos + ":extend");
-        arm_retract_action_ = new ArmGotoAction(sub_.getArm(), armpos + ":extend");
+        arm_retract_action_ = new ArmGotoAction(sub_.getArm(), armpos + ":retract");
 
         double duration = sub.getSettingsValue("place-delay").getDouble();
         timer_ = new XeroTimer(sub.getRobot(), "place", duration);
+
+        grabber_hold_action_ = new MotorEncoderPowerAction(sub_.getGrabber().getGrabSubsystem(), 0.2) ;
+        grabber_drop_item_ = new GrabberStowAction(sub.getGrabber());
     }
 
     public boolean isReadyToDrop() {
@@ -81,6 +89,7 @@ public class GPMPlaceAction extends Action {
         drop_game_piece_ = false ;
 
         sub_.getArm().setAction(arm_extend_action_, true) ;
+        sub_.getGrabber().getGrabSubsystem().setAction(grabber_hold_action_, true);
         state_ = State.ExtendingArm ;
     }
 
@@ -88,19 +97,21 @@ public class GPMPlaceAction extends Action {
     public void run() throws Exception {
         super.run() ;
 
+        State orig = state_ ;
+
         switch(state_) {
             case Idle:
                 break;
 
             case ExtendingArm:
-                if (arm_extend_action_.isDone() && drop_game_piece_) {
+                if (arm_extend_action_.isDone()) {
                     state_ = State.WaitingToDrop;
                     ready_to_drop_ = true ;
                 }
                 break;
 
             case WaitingToDrop:
-                if (drop_game_piece_) {
+                if (drop_game_piece_ || force_drop_) {
                     sub_.getGrabber().setAction(grabber_drop_item_, true);
                     timer_.start();
                     state_ = State.DroppingGamepiece;
@@ -109,7 +120,7 @@ public class GPMPlaceAction extends Action {
 
             case DroppingGamepiece:
                 if (timer_.isExpired()) {
-                    sub_.getArm().setAction(arm_retract_action_);
+                    sub_.getArm().setAction(arm_retract_action_, true);
                     state_ = State.RetractingArm ;
                 }
                 break ;
@@ -121,10 +132,18 @@ public class GPMPlaceAction extends Action {
                 }
                 break;
         }
+
+        if (orig != state_) {
+            MessageLogger logger = sub_.getRobot().getMessageLogger();
+            logger.startMessage(MessageType.Debug, sub_.getLoggerID());
+            logger.add("GPM - ");
+            logger.add(orig.toString() + " -> " + state_.toString());
+            logger.endMessage();
+        }
     }
 
     @Override
     public String toString(int indent) {
-        return spaces(indent) + "GPMStowAction";
+        return spaces(indent) + "GPMPlaceAction";
     }
 }

@@ -11,6 +11,7 @@ public class GrabberStopCollectAction extends Action {
     private GrabberSubsystem sub_ ;
     private XeroTimer spin_timer_ ;
     private boolean timer_done_ ;
+    private double hold_power_ ;
 
     public GrabberStopCollectAction(GrabberSubsystem sub) throws BadParameterTypeException, MissingParameterException {
         super(sub.getRobot().getMessageLogger());
@@ -19,6 +20,8 @@ public class GrabberStopCollectAction extends Action {
         double delay = sub_.getSettingsValue("close:delay").getDouble();
         spin_timer_ = new XeroTimer(sub.getRobot(),"grabber-top-collect", delay);
         timer_done_ = false ;
+
+        hold_power_ = sub.getSettingsValue("close:hold-power").getDouble();
     }
 
     @Override
@@ -27,7 +30,7 @@ public class GrabberStopCollectAction extends Action {
 
         timer_done_ = false ;
         spin_timer_.start() ;
-        sub_.getGrabSubsystem().setAction(new MotorEncoderPowerAction(sub_.getGrabSubsystem(), 0.2), true);
+        sub_.getGrabSubsystem().setAction(new MotorEncoderPowerAction(sub_.getGrabSubsystem(), hold_power_), true);
     }
 
     @Override

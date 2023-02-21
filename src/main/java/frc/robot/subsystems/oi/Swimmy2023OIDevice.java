@@ -1,5 +1,7 @@
 package frc.robot.subsystems.oi;
 
+import org.xero1425.base.misc.XeroTimer;
+
 //
 // Switches, purpose, and types
 //
@@ -26,6 +28,7 @@ import org.xero1425.misc.MessageLogger;
 import org.xero1425.misc.MessageType;
 import org.xero1425.misc.MissingParameterException;
 
+import frc.robot.subsystems.gpm.GPMStartWithGPAction;
 import frc.robot.subsystems.toplevel.RobotOperation;
 import frc.robot.subsystems.toplevel.Swimmy2023RobotSubsystem;
 import frc.robot.subsystems.toplevel.TurtleAction;
@@ -52,12 +55,15 @@ public class Swimmy2023OIDevice extends OIPanel {
     private int action_gadget_ ;
     private int drop_gadget_;
 
+    private boolean led_transient_ ;
+    private boolean led_error_;
+    private XeroTimer led_timer_ ;
     private OILed state_output1_ ;
     private OILed state_output2_ ;
 
     private RobotOperation oper_ ;
 
-    private TurtleAction turtle_action_ ;
+    private GPMStartWithGPAction turtle_action_ ;
 
     public Swimmy2023OIDevice(OISubsystem parent, String name, int index) throws BadParameterTypeException, MissingParameterException {
         super(parent, name, index);
@@ -66,6 +72,7 @@ public class Swimmy2023OIDevice extends OIPanel {
         state_output2_.setState(State.OFF) ;
 
         oper_ = new RobotOperation() ;
+        led_timer_ = new XeroTimer(parent.getRobot(), "oiled", 2.0);
     }
 
     public boolean isActionButtonPressed() {
@@ -80,7 +87,7 @@ public class Swimmy2023OIDevice extends OIPanel {
     public void createStaticActions() throws Exception {
         Swimmy2023RobotSubsystem robot = (Swimmy2023RobotSubsystem)getSubsystem().getRobot().getRobotSubsystem() ;
 
-        turtle_action_ = new TurtleAction(robot) ;
+        turtle_action_ = new GPMStartWithGPAction(robot.getGPM()) ;
     }
 
     private RobotOperation extractRobotOperation() {
@@ -160,7 +167,6 @@ public class Swimmy2023OIDevice extends OIPanel {
         return oper ;
     }
 
-
     @Override
     public void generateActions() {
         super.generateActions();
@@ -174,15 +180,16 @@ public class Swimmy2023OIDevice extends OIPanel {
             // First priority is the turtle action.  This moves everything back into the robot to the best of our
             // ability.  It will cancel any running actions with the arm and grabber.
             //
-            sub.setAction(turtle_action_);
-            setLeds(false) ;
+            if (sub.getGPM().getAction() != turtle_action_) {
+                sub.getGPM().setAction(turtle_action_);
+            }
         }
         else if (getValue(abort_gadget_) == 1) {
             //
             // Abort any action going in the robot subsystem
             //
             sub.abort() ;
-            setLeds(false) ;
+            setLeds(true);
         }
         else {
             RobotOperation oper = extractRobotOperation() ;
@@ -203,6 +210,7 @@ public class Swimmy2023OIDevice extends OIPanel {
                 //
                 oper_.setGround(true);
                 errDetected = sub.setOperation(oper_);
+                setLeds(errDetected);
             }
             else if (getValue(lock_gadget_) == 1) {
                 //
@@ -227,25 +235,40 @@ public class Swimmy2023OIDevice extends OIPanel {
 
             setLeds(errDetected) ;
         }
+
+        processLeds();
+    }
+
+    private void processLeds() {
+        if (led_transient_) {
+            if (led_error_) {
+                state_output1_.setState(State.ON);
+                state_output2_.setState(State.ON);
+            }
+            else {
+                state_output1_.setState(State.OFF);
+                state_output2_.setState(State.OFF);
+            }
+            if (led_timer_.isExpired()) {
+                led_transient_ = false ;
+            }
+        }
+        else {
+            if (oper_.getGamePiece() == GamePiece.Cone) {
+                state_output1_.setState(State.ON);
+                state_output2_.setState(State.OFF);
+            }
+            else if (oper_.getGamePiece() == GamePiece.Cube) {
+                state_output1_.setState(State.OFF);
+                state_output2_.setState(State.ON);
+            }
+        }
     }
 
     private void setLeds(boolean err) {
-        if (err) {
-            state_output1_.setState(State.ON);
-            state_output2_.setState(State.ON);
-        }
-        else if (oper_.getGamePiece() == GamePiece.Cone) {
-            state_output1_.setState(State.ON);
-            state_output2_.setState(State.OFF);
-        }
-        else if (oper_.getGamePiece() == GamePiece.Cube) {
-            state_output1_.setState(State.OFF);
-            state_output2_.setState(State.ON);
-        }
-        else {
-            state_output1_.setState(State.OFF);
-            state_output2_.setState(State.OFF);
-        }
+        led_error_ = err ;
+        led_transient_ = true ;
+        // led_timer_.start();
     }
 
     @Override
@@ -299,9 +322,6 @@ public class Swimmy2023OIDevice extends OIPanel {
 
         num = getSubsystem().getSettingsValue("panel:gadgets:turtle").getInteger();
         turtle_gadget_ = mapButton(num, OIPanelButton.ButtonType.Level) ; 
-
-        num = getSubsystem().getSettingsValue("panel:gadgets:action").getInteger();
-        action_gadget_ = mapButton(num, OIPanelButton.ButtonType.LowToHigh) ;
 
         num = getSubsystem().getSettingsValue("panel:gadgets:action").getInteger();
         action_gadget_ = mapButton(num, OIPanelButton.ButtonType.LowToHigh) ;

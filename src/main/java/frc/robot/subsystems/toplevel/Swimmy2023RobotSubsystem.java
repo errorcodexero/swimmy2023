@@ -6,8 +6,10 @@ import org.xero1425.base.subsystems.oi.Gamepad;
 import org.xero1425.base.subsystems.swerve.common.SwerveBaseSubsystem;
 import org.xero1425.base.subsystems.swerve.sdsswerve.SDSSwerveDriveSubsystem;
 import org.xero1425.base.subsystems.vision.LimeLightSubsystem;
+import org.xero1425.misc.BadParameterTypeException;
 import org.xero1425.misc.MessageLogger;
 import org.xero1425.misc.MessageType;
+import org.xero1425.misc.MissingParameterException;
 
 import frc.robot.SwimmyRobot2023;
 import frc.robot.subsystems.gpm.GPMSubsystem;
@@ -176,6 +178,18 @@ public class Swimmy2023RobotSubsystem extends RobotSubsystem {
         catch(Exception ex) {
             logger.startMessage(MessageType.Error) ;
             logger.add("expection caught while creating operation controller in Swimmy2023RobotSubsystem");
+            logger.logStackTrace(ex.getStackTrace());
+            logger.endMessage();
+            ctrl_ = null;
+
+            return false;
+        }
+
+        try {
+            ctrl_.start() ;
+        } catch (BadParameterTypeException | MissingParameterException ex) {
+            logger.startMessage(MessageType.Error) ;
+            logger.add("expection caught while starting operation controller in Swimmy2023RobotSubsystem");
             logger.logStackTrace(ex.getStackTrace());
             logger.endMessage();
             ctrl_ = null;

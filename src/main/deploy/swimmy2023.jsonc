@@ -15,11 +15,12 @@
             // Subsystem related messages
             "vision": false,
             "swerve" : false,
-            "swimmy2023oi" : true,
+            "swimmy2023oi" : false,
             "Swimmy2023RobotSubsystem" : true,
             "limelight" : false,
             "arm-motor-lower" : false,
-            "arm-motor-upper" : false
+            "arm-motor-upper" : false,
+            "gpm" : true
         },
         "verbose": {
             "swerve" : false,
@@ -36,18 +37,180 @@
             "max-pressure" : 120.0
         }
     },
-    //  
-    // 215356
-    // 108149
-    // --------------------------
-    // 104873
-    // 46812
-    //
     "subsystems": {
         "Swimmy2023RobotSubsystem" : {
-            "april-tag-action-threshold" : 2.0,
+            "april-tag-action-threshold" : 1.5,
             "tape-align-margin" : 0.1016,
             "drive-forward-distance" : 0.1524
+        },
+        "arm" : {
+            "collect" : {
+                "extend-shelf" : {
+                    "1" : {
+                        "lower" : 0,
+                        "upper" : 55000
+                    },
+                    "2" : {
+                        "lower" : 70000,
+                        "upper" : 135000
+                    }
+                },
+                "retract-shelf" : {
+                    "1" : {
+                        "lower" : 70000,
+                        "upper" : 160000
+                    },
+                    "2" : {
+                        "lower" : 60000,
+                        "upper" : 160000
+                    },
+                    "3" : {
+                        "lower" : 0,
+                        "upper" : 0                        
+                    }
+                },
+                "extend-ground" : {
+                    "1" : {
+                        "lower" : 0,
+                        "upper" : 44890
+                    },
+                    "2" : {
+                        "lower" : 104083,
+                        "upper" : 44890
+                    }
+                },
+                "retract-ground" : {
+                    "1" : {
+                        "lower" : 0,
+                        "upper" : 44890
+                    },
+                    "2" : {
+                        "lower" : 0,
+                        "upper" : 20000
+
+                    }
+                }
+            },
+            "place" : {
+                "top" : {
+                    "cone" : {
+                        "extend" : {
+                            "1" : {
+                                "lower" : 98642,
+                                "upper" : 211215
+                            }
+                        },
+                        "retract" : {
+                            "1" : {
+                                "lower" : 40000,
+                                "upper" : 190000                       
+                            },
+                            "2" : {
+                                "lower" : 0,
+                                "upper" : 0                        
+                            }
+                        }
+                    },
+                    "cube" : {
+                        "extend" : {
+                            "1" : {
+                                "lower" : 70000,
+                                "upper" : 130000
+                            }
+                        },
+                        "retract" : {
+                            "1" : {
+                                "lower" : 70000,
+                                "upper" : 160000
+                            },
+                            "2" : {
+                                "lower" : 60000,
+                                "upper" : 160000
+                            },
+                            "3" : {
+                                "lower" : 0,
+                                "upper" : 0                        
+                            }                            
+                        }
+                    }
+                },
+                "middle" : {
+                    "cone" : {
+                        "extend" : {
+                            "1" : {
+                                "lower" : 52155,
+                                "upper" : 108000
+                            }
+                        },
+                        "retract" : {
+                            "1" : {
+                                "lower" : 0,
+                                "upper" : 0                        
+                            }
+                        }
+                    },
+                    "cube" : {
+                        "extend" : {
+                            "1" : {
+                                "lower" : 70000,
+                                "upper" : 130000
+                            }
+                        },
+                        "retract" : {
+                            "1" : {
+                                "lower" : 70000,
+                                "upper" : 160000
+                            },
+                            "2" : {
+                                "lower" : 60000,
+                                "upper" : 160000
+                            },
+                            "3" : {
+                                "lower" : 0,
+                                "upper" : 0                        
+                            }                            
+                        }
+                    }
+                },
+                "bottom" : {
+                    "cone" : {
+                        "extend" : {
+                            "1" : {
+                                "lower" : 58492,
+                                "upper" : 20353
+                            }
+                        },
+                        "retract" : {
+                            "1" : {
+                                "lower" : 0,
+                                "upper" : 0                        
+                            }
+                        }
+                    },
+                    "cube" : {
+                        "extend" : {
+                            "1" : {
+                                "lower" : 70000,
+                                "upper" : 130000
+                            }
+                        },
+                        "retract" : {
+                            "1" : {
+                                "lower" : 70000,
+                                "upper" : 160000
+                            },
+                            "2" : {
+                                "lower" : 60000,
+                                "upper" : 160000
+                            },
+                            "3" : {
+                                "lower" : 0,
+                                "upper" : 0                        
+                            }                            
+                        }
+                    }
+                }
+            }
         },
         "arm-motor-lower": {
             "hw": {
@@ -118,7 +281,7 @@
                 }
             },
             "hold": {
-                "kp": 0.00025,
+                "kp": 0.0001,
                 "ki": 0,
                 "kd": 0,
                 "kf": 0,
@@ -128,9 +291,9 @@
             },
             "goto": {
                 "threshold": 100,
-                "maxd": -100000,
-                "maxa": 100000,
-                "maxv": 100000
+                "maxd": -300000,
+                "maxa": 300000,
+                "maxv": 300000
             },
             "follower": {
                 "up" : {
@@ -166,7 +329,9 @@
                 //
                 // The delay between closing the grabber and stopping the motors when grabbing
                 // a game piece
-                "delay" : 2.0
+                "delay" : 2.0,
+                "hold-power" : 0.2,
+                "startup-delay" : 0.4
             }
         },
         "grabber-motor-spin": {
@@ -215,8 +380,8 @@
                 "ki": 0,
                 "kd": 0,
                 "kf": 0,
-                "min": -0.30,
-                "max": 0.30,
+                "min": -1.0,
+                "max": 1.0,
                 "imax": 0
             },
             "positions" : {
@@ -538,205 +703,19 @@
                 "drive-current-limit": 30.0
             }
         },
-        "arm" : {
-            "collect" : {
-                "extend-shelf" : {
-                    "1" : {
-                        "lower" : 0,
-                        "upper" : 55000
-                    },
-                    "2" : {
-                        "lower" : 70000,
-                        "upper" : 135000
-                    }
-                },
-                "extend-ground" : {
-                    "1" : {
-                        "lower" : 0,
-                        "upper" : 55000
-                    },
-                    "2" : {
-                        "lower" : 70000,
-                        "upper" : 135000
-                    }
-                },
-                "retract-shelf" : {
-                    "1" : {
-                        "lower" : 70000,
-                        "upper" : 160000
-                    },
-                    "2" : {
-                        "lower" : 60000,
-                        "upper" : 160000
-                    },
-                    "3" : {
-                        "lower" : 0,
-                        "upper" : 0                        
-                    }
-                },
-                "retract-ground" : {
-                    "1" : {
-                        "lower" : 70000,
-                        "upper" : 160000
-                    },
-                    "2" : {
-                        "lower" : 60000,
-                        "upper" : 160000
-                    },
-                    "3" : {
-                        "lower" : 0,
-                        "upper" : 0                        
-                    }
-                }
-            },
-            "place" : {
-                "top" : {
-                    "cone" : {
-                        "extend" : {
-                            "1" : {
-                                "lower" : 70000,
-                                "upper" : 130000
-                            }
-                        },
-                        "retract" : {
-                            "1" : {
-                                "lower" : 70000,
-                                "upper" : 160000
-                            },
-                            "2" : {
-                                "lower" : 60000,
-                                "upper" : 160000
-                            },
-                            "3" : {
-                                "lower" : 0,
-                                "upper" : 0                        
-                            }
-                        }
-                    },
-                    "cube" : {
-                        "extend" : {
-                            "1" : {
-                                "lower" : 70000,
-                                "upper" : 130000
-                            }
-                        },
-                        "retract" : {
-                            "1" : {
-                                "lower" : 70000,
-                                "upper" : 160000
-                            },
-                            "2" : {
-                                "lower" : 60000,
-                                "upper" : 160000
-                            },
-                            "3" : {
-                                "lower" : 0,
-                                "upper" : 0                        
-                            }                            
-                        }
-                    }
-                },
-                "middle" : {
-                    "cone" : {
-                        "extend" : {
-                            "1" : {
-                                "lower" : 70000,
-                                "upper" : 130000
-                            }
-                        },
-                        "retract" : {
-                            "1" : {
-                                "lower" : 70000,
-                                "upper" : 160000
-                            },
-                            "2" : {
-                                "lower" : 60000,
-                                "upper" : 160000
-                            },
-                            "3" : {
-                                "lower" : 0,
-                                "upper" : 0                        
-                            }
-                        }
-                    },
-                    "cube" : {
-                        "extend" : {
-                            "1" : {
-                                "lower" : 70000,
-                                "upper" : 130000
-                            }
-                        },
-                        "retract" : {
-                            "1" : {
-                                "lower" : 70000,
-                                "upper" : 160000
-                            },
-                            "2" : {
-                                "lower" : 60000,
-                                "upper" : 160000
-                            },
-                            "3" : {
-                                "lower" : 0,
-                                "upper" : 0                        
-                            }                            
-                        }
-                    }
-                },
-                "bottom" : {
-                    "cone" : {
-                        "extend" : {
-                            "1" : {
-                                "lower" : 70000,
-                                "upper" : 130000
-                            }
-                        },
-                        "retract" : {
-                            "1" : {
-                                "lower" : 70000,
-                                "upper" : 160000
-                            },
-                            "2" : {
-                                "lower" : 60000,
-                                "upper" : 160000
-                            },
-                            "3" : {
-                                "lower" : 0,
-                                "upper" : 0                        
-                            }
-                        }
-                    },
-                    "cube" : {
-                        "extend" : {
-                            "1" : {
-                                "lower" : 70000,
-                                "upper" : 130000
-                            }
-                        },
-                        "retract" : {
-                            "1" : {
-                                "lower" : 70000,
-                                "upper" : 160000
-                            },
-                            "2" : {
-                                "lower" : 60000,
-                                "upper" : 160000
-                            },
-                            "3" : {
-                                "lower" : 0,
-                                "upper" : 0                        
-                            }                            
-                        }
-                    }
-                }
-            }
-        },
         "gpm" : {
             "place-delay" : 1.0
         }
-    }, 
+    },
+    "automodes" : {
+        "center" : {
+            "before-collect-delay" : 3.0,
+            "collect-delay" : 1.0
+        }
+    },
     "testmode": {
         "enabled": true,
-        "which": 6,
+        "which": 97,
         "0": {
             "angle": 0.0,
             "power": 0.2
@@ -785,6 +764,12 @@
         "15" : {
             "target" : 36000
         },
+        "16" : {
+            "lower1" : 50000,
+            "upper1" : 100000,
+            "lower2" : 108149,
+            "upper2" : 215356
+        },
         "18" : {
             "upper" : 90000,
             "lower" : 100000
@@ -806,6 +791,9 @@
         "29" : {
             "power" : 0.4,
             "duration" : 3.0
+        },
+        "97" : {
+            "delay" : 1.0
         },
         "98" : {
             "initx" : 3.2,

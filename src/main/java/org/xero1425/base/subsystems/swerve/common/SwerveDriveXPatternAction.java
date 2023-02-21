@@ -2,7 +2,7 @@ package org.xero1425.base.subsystems.swerve.common;
 
 public class SwerveDriveXPatternAction extends SwerveDriveAction {
 
-    static final double[] angles_ = { -45.0, 45.0, 45.0, -45.0 } ;
+    static final double[] angles_ = { 45.0, -45.0, -45.0, 45.0 } ;
     static final double[] powers_ = { 0.0, 0.0, 0.0, 0.0 };
 
     public SwerveDriveXPatternAction(SwerveBaseSubsystem sub) {
