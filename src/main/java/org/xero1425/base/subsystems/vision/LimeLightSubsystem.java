@@ -75,8 +75,8 @@ public class LimeLightSubsystem extends Subsystem implements IVisionLocalization
     private boolean found_ ;
     private int id_ ;
     private double tl_ ;
+    private double cl_ ;
     private double ts_ ;
-    private double timage_;
     private boolean valid_targets_ ;
 
     private Retro [] retro_ ;
@@ -101,7 +101,6 @@ public class LimeLightSubsystem extends Subsystem implements IVisionLocalization
 
     public LimeLightSubsystem(Subsystem parent, String name) {
         super(parent, name) ;
-        timage_ = 0.011;
 
         cam_mode_ = CamMode.Invalid ;
 
@@ -205,6 +204,7 @@ public class LimeLightSubsystem extends Subsystem implements IVisionLocalization
                 Rotation3d r = new Rotation3d(ax, ay, az);
                 wpiblue_ = new Pose3d(3.5, 7.0, 0.333, r);
                 tl_ = 0.020;
+                cl_ = 0.011;
             }
             else {
                 fuds_ = null;
@@ -214,7 +214,7 @@ public class LimeLightSubsystem extends Subsystem implements IVisionLocalization
         if (found_ && valid_targets_ && fuds_ != null && fuds_.length > 0) {
             ret = new LocationData() ;
             ret.location = wpiblue_ ;
-            ret.when = getRobot().getTime() - tl_ / 1000.0 - timage_;
+            ret.when = getRobot().getTime() - (tl_ + cl_) / 1000.0;
         }
 
         return ret ;
@@ -277,6 +277,10 @@ public class LimeLightSubsystem extends Subsystem implements IVisionLocalization
 
     public double getTL() {
         return tl_ ;
+    }
+
+    public double getCL() {
+        return cl_ ;
     }
 
     public double getTS() {
@@ -744,7 +748,8 @@ public class LimeLightSubsystem extends Subsystem implements IVisionLocalization
         wpired_ = getPose3dFromObject(obj, "botpose_wpired", new Pose3d());
         wpiblue_ = getPose3dFromObject(obj, "botpose_wpiblue", new Pose3d());
         id_ = getIntFromObject(obj, "pID", 0) ;
-        tl_ = getDoubleFromObject(obj, "tl", 10000.0) ;
+        tl_ = getDoubleFromObject(obj, "tl", 0.0) ;
+        cl_ = getDoubleFromObject(obj, "cl", 0.0) ;
         ts_ = getDoubleFromObject(obj, "ts", 0.0) ;
         int v = getIntFromObject(obj, "v", -1) ;
         if (v == 0) {
