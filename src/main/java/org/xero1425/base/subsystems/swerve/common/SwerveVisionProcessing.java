@@ -78,7 +78,14 @@ public class SwerveVisionProcessing {
     }
 
     public Pose2d getCurrentPose() {
-        return vision_pose_;
+        Pose2d ret = null ;
+
+        LocationData lc = vision_.getLocation();
+        if (lc != null) { 
+            ret = lc.location.toPose2d();
+        }
+
+        return ret;
     }
 
     public boolean hasTargets() {
@@ -157,7 +164,6 @@ public class SwerveVisionProcessing {
                 logger.add("tag count", vision_.getTagCount());
                 logger.endMessage();
             }
-
 
             if (!ignore) {
                 sub_.getEstimator().addVisionMeasurement(vision_pose_, lc.when) ; 

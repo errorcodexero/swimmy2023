@@ -214,7 +214,7 @@ public class LimeLightSubsystem extends Subsystem implements IVisionLocalization
         if (found_ && valid_targets_ && fuds_ != null && fuds_.length > 0) {
             ret = new LocationData() ;
             ret.location = wpiblue_ ;
-            ret.when = getRobot().getTime() - tl_ / 100.0 - timage_;
+            ret.when = getRobot().getTime() - tl_ / 1000.0 - timage_;
         }
 
         return ret ;
@@ -397,6 +397,7 @@ public class LimeLightSubsystem extends Subsystem implements IVisionLocalization
 
     public double distantToTag(int id) {
         double ret = Double.MAX_VALUE ;
+
 
         if (fuds_ != null) {
             for(int i = 0 ; i < fuds_.length ; i++) {
@@ -678,7 +679,7 @@ public class LimeLightSubsystem extends Subsystem implements IVisionLocalization
 
                 JSONObject fud = (JSONObject)temp ;
                 Fiducial f = new Fiducial() ;
-                f.id = getIntFromObject(fud, "id", -1) ;
+                f.id = getIntFromObject(fud, "fID", -1) ;
                 f.family = getStringFromObject(fud, "fam", "") ;
                 f.camToTarget = getPose3dFromObject(fud, "t6c_ts", null) ;
                 f.robotToField = getPose3dFromObject(fud, "t6r_fs", null) ;

@@ -1,5 +1,6 @@
 package org.xero1425.base.subsystems.swerve.common;
 
+import org.xero1425.base.misc.XeroTimer;
 import org.xero1425.misc.BadParameterTypeException;
 import org.xero1425.misc.MessageLogger;
 import org.xero1425.misc.MessageType;
@@ -11,8 +12,11 @@ import edu.wpi.first.math.trajectory.Trajectory;
 
 public class SwerveDriveToPoseAction extends SwerveHolonomicControllerAction {
     private Trajectory trajectory_ ;
+    private Pose2d start_position_ ;
     private Pose2d target_position_ ;
     private double trajectory_start_time_ ;
+    private XeroTimer timer_ ;
+    private Pose2d last_vision_pose_ ;
 
     private int plot_id_ ;
     private Double[] plot_data_ ;
@@ -20,15 +24,32 @@ public class SwerveDriveToPoseAction extends SwerveHolonomicControllerAction {
     private static final String [] columns_ = {
         "time",
         "tx (m)", "ty (m)", "ta (deg)",
-        "ax (m)", "ay (m)", "aa (deg)"
+        "ax (m)", "ay (m)", "aa (deg)",
+        "vx (m)", "vy (m)", "va (deg)"
     } ;
     
     public SwerveDriveToPoseAction(SwerveBaseSubsystem subsys, Pose2d pose2d) throws BadParameterTypeException, MissingParameterException {
         super(subsys) ;
 
+        start_position_ = subsys.getPose();
         target_position_ = pose2d ;
         plot_data_ = new Double[columns_.length] ;
         plot_id_ = getSubsystem().initPlot("DriveToPose") ;
+
+        timer_ = new XeroTimer(subsys.getRobot(), "drivetimer", 1.0);
+
+        getSubsystem().startPlot(plot_id_, columns_);
+    }
+
+    public SwerveDriveToPoseAction(SwerveBaseSubsystem subsys, Pose2d[] endpoints) throws BadParameterTypeException, MissingParameterException {
+        super(subsys) ;
+
+        start_position_ = endpoints[0];
+        target_position_ = endpoints[1];
+        plot_data_ = new Double[columns_.length] ;
+        plot_id_ = getSubsystem().initPlot("DriveToPose") ;
+
+        timer_ = new XeroTimer(subsys.getRobot(), "drivetimer", 1.0);
 
         getSubsystem().startPlot(plot_id_, columns_);
     }
@@ -36,7 +57,7 @@ public class SwerveDriveToPoseAction extends SwerveHolonomicControllerAction {
     @Override
     public void start() throws Exception {
         super.start();
-        trajectory_ = getSubsystem().createTrajectory(target_position_) ;
+        trajectory_ = getSubsystem().createTrajectory(start_position_, target_position_) ;
         trajectory_start_time_ = getSubsystem().getRobot().getTime() ;
     }
 
@@ -50,6 +71,8 @@ public class SwerveDriveToPoseAction extends SwerveHolonomicControllerAction {
         ChassisSpeeds speed = controller().calculate(getSubsystem().getPose(), st, target_position_.getRotation()) ;
         getSubsystem().drive(speed) ;
 
+        Pose2d vpose = getSubsystem().getVisionPose() ;
+
         Pose2d actual = getSubsystem().getPose() ;
         int i = 0 ;
         plot_data_[i++] = getSubsystem().getRobot().getTime() - trajectory_start_time_;
@@ -59,6 +82,24 @@ public class SwerveDriveToPoseAction extends SwerveHolonomicControllerAction {
         plot_data_[i++] = actual.getX() ;
         plot_data_[i++] = actual.getY() ;
         plot_data_[i++] = actual.getRotation().getDegrees() ;
+
+        if (vpose != null) {
+            plot_data_[i++] = vpose.getX() ;
+            plot_data_[i++] = vpose.getY() ;
+            plot_data_[i++] = vpose.getRotation().getDegrees() ;
+            last_vision_pose_ = vpose ;
+        }
+        else if (last_vision_pose_ != null) {
+            plot_data_[i++] = last_vision_pose_.getX() ;
+            plot_data_[i++] = last_vision_pose_.getY() ;
+            plot_data_[i++] = last_vision_pose_.getRotation().getDegrees() ;
+        }
+        else {
+            plot_data_[i++] = 0.0 ;
+            plot_data_[i++] = 0.0 ;
+            plot_data_[i++] = 0.0 ;
+        }
+
         getSubsystem().addPlotData(plot_id_, plot_data_) ;
 
         MessageLogger logger = getSubsystem().getRobot().getMessageLogger();
@@ -68,7 +109,16 @@ public class SwerveDriveToPoseAction extends SwerveHolonomicControllerAction {
         logger.add("actual", getSubsystem().getPose());
         logger.endMessage();
 
+        if (deltat >= trajectory_.getTotalTimeSeconds() && !timer_.isRunning()) {
+            timer_.start();
+        }
+
         if (deltat >= trajectory_.getTotalTimeSeconds() && controller().atReference()) {
+            getSubsystem().endPlot(plot_id_);
+            setDone() ;
+            getSubsystem().drive(new ChassisSpeeds());
+        }
+        else if (deltat >= trajectory_.getTotalTimeSeconds() && timer_.isExpired()) {
             getSubsystem().endPlot(plot_id_);
             setDone() ;
             getSubsystem().drive(new ChassisSpeeds());

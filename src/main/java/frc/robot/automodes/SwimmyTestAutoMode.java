@@ -227,7 +227,7 @@ public class SwimmyTestAutoMode extends TestAutoMode {
                 
             case 97:
                 {
-                    addSubActionPair(grabber, new MotorEncoderPowerAction(grabberGrabMotor, 0.2), false);
+                    addSubActionPair(grabber, new MotorEncoderPowerAction(grabberGrabMotor, 0.1), false);
                     addAction(new DelayAction(getAutoController().getRobot(), getDouble("delay"))) ;
                     addSubActionPair(gpm, new GPMPlaceAction(gpm, Location.Top, GamePiece.Cone, true), true);
                 }

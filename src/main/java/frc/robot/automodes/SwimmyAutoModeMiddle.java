@@ -28,7 +28,7 @@ public class SwimmyAutoModeMiddle extends SwimmyAutoMode  {
         //
         // Close the grabber around the game piece
         // 
-        addSubActionPair(robot.getGPM(), new GrabberGrabGampieceAction(robot.getGPM().getGrabber()), true);
+        addSubActionPair(robot.getGPM(), new GrabberGrabGampieceAction(robot.getGPM().getGrabber(), RobotOperation.GamePiece.Cone), true);
 
         //
         // Place the game piece onto the placement location

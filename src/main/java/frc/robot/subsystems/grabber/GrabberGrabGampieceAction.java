@@ -2,40 +2,47 @@ package frc.robot.subsystems.grabber;
 
 import org.xero1425.base.actions.Action;
 import org.xero1425.base.misc.XeroTimer;
-import org.xero1425.base.subsystems.motorsubsystem.MotorEncoderPowerAction;
+import org.xero1425.base.subsystems.motorsubsystem.MotorEncoderHoldAction;
 import org.xero1425.misc.BadParameterTypeException;
 import org.xero1425.misc.MissingParameterException;
 
+import frc.robot.subsystems.toplevel.RobotOperation;
+
 public class GrabberGrabGampieceAction extends Action {
     private GrabberSubsystem sub_ ;
-    private double hold_power_ ;
     private XeroTimer timer_;
-    private MotorEncoderPowerAction motor_action_ ;
+    private MotorEncoderHoldAction hold_action_ ;
 
-    public GrabberGrabGampieceAction(GrabberSubsystem sub) throws BadParameterTypeException, MissingParameterException {
+    public GrabberGrabGampieceAction(GrabberSubsystem sub, RobotOperation.GamePiece gp) throws BadParameterTypeException, MissingParameterException {
         super(sub.getRobot().getMessageLogger());
 
         sub_ = sub ;
-        hold_power_ = sub.getSettingsValue("close:hold-power").getDouble();
 
-        double delay = sub.getSettingsValue("close:startup-delay").getDouble();
-        timer_ = new XeroTimer(sub.getRobot(), "grabgamepiece", delay);
+        double v = 0 ;
+        
+        if (gp == RobotOperation.GamePiece.Cone)
+            v = sub.getSettingsValue("close:cone-position").getDouble() ;
+        else
+            v = sub.getSettingsValue("close:cube-position").getDouble() ;
 
-        motor_action_ = new MotorEncoderPowerAction(sub.getGrabSubsystem(), hold_power_);
+        hold_action_ = new MotorEncoderHoldAction(sub.getGrabSubsystem(), v);
+
+        v = sub.getSettingsValue("close:delay").getDouble() ;
+        timer_ = new XeroTimer(sub.getRobot(), "grabbergp", v) ;
     }
 
     @Override
     public void start() throws Exception {
         super.start();
         
-        sub_.getGrabSubsystem().setAction(motor_action_, true);
+        sub_.getGrabSubsystem().setDefaultAction(hold_action_);
         timer_.start() ;
     }
 
     @Override
     public void run() throws Exception { 
         super.run();
-
+        
         if (timer_.isExpired()) {
             setDone();
         }

@@ -7,6 +7,7 @@ import org.xero1425.misc.MessageType;
 import org.xero1425.misc.MissingParameterException;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import frc.robot.subsystems.gpm.GPMPlaceAction;
 
 public class AutoPlaceOpCtrl extends OperationCtrl {
@@ -15,6 +16,7 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
         Idle,
         LookingForTag,
         DrivingToLocation,
+        WaitingOnArm,
         DroppingPiece
     }
 
@@ -57,6 +59,10 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
                 stateDrivingToLocation() ;
                 break;
 
+            case WaitingOnArm:
+                stateWaitingOnArm() ;
+                break;
+
             case DroppingPiece:
                 stateDroppingPiece() ;
                 break;
@@ -81,14 +87,17 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
 
             case DrivingToLocation:
                 getRobotSubsystem().getOI().enableGamepad() ;
-                getRobotSubsystem().getOI().getGamePad().rumble(1.0, 2.0);
+                // getRobotSubsystem().getOI().getGamePad().rumble(1.0, 2.0);
                 drive_to_action_.cancel() ;
                 getRobotSubsystem().getSwerve().enableVision(true);
                 break ;
 
+            case WaitingOnArm:
+                break;
+
             case DroppingPiece:
                 getRobotSubsystem().getOI().enableGamepad() ;
-                getRobotSubsystem().getOI().getGamePad().rumble(1.0, 2.0);
+                // getRobotSubsystem().getOI().getGamePad().rumble(1.0, 2.0);
                 place_action_.cancel();
                 break;
         }
@@ -101,30 +110,51 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
         state_ = State.LookingForTag ;
     }
 
+    private Pose2d[] computeDrivePathEndPoints(Pose2d robotpos, Pose2d destpos) {
+        Pose2d [] ret = new Pose2d[2];
+
+        double dy = destpos.getY() - robotpos.getY() ;
+        double dx = destpos.getX() - robotpos.getX() ;
+        double angle = Math.atan2(dy, dx);
+
+        ret[0] = new Pose2d(robotpos.getX(), robotpos.getY(), Rotation2d.fromRadians(angle));
+        ret[1] = new Pose2d(destpos.getX(), destpos.getY(), Rotation2d.fromRadians(angle));
+
+        return ret;
+    }
+
     private void stateLookingForTag() throws BadParameterTypeException, MissingParameterException {
         int tag = getRobotSubsystem().getFieldData().getGridTag(getOper().getAprilTag());
+        double dist = getRobotSubsystem().getLimeLight().distantToTag(tag) ;
 
-        if (getRobotSubsystem().getLimeLight().distantToTag(tag) < april_tag_action_threshold_) {
+        if (dist < april_tag_action_threshold_) {
             getRobotSubsystem().getOI().disableGamepad();
-            getRobotSubsystem().getOI().getGamePad().rumble(1.0, 2.0);
+            // getRobotSubsystem().getOI().getGamePad().rumble(1.0, 2.0);
 
             getRobotSubsystem().getSwerve().enableVision(false);
 
             target_pose_ = getRobotSubsystem().getFieldData().getGridPose(getOper().getAprilTag(), getOper().getSlot());
 
-            drive_to_action_ = new SwerveDriveToPoseAction(getRobotSubsystem().getSwerve(), target_pose_);
+            Pose2d [] pts = computeDrivePathEndPoints(getRobotSubsystem().getSwerve().getPose(), target_pose_);
+            drive_to_action_ = new SwerveDriveToPoseAction(getRobotSubsystem().getSwerve(), pts);
             getRobotSubsystem().getSwerve().setAction(drive_to_action_);
-            getRobotSubsystem().getGPM().setAction(place_action_);
+            // getRobotSubsystem().getGPM().setAction(place_action_);
             state_ = State.DrivingToLocation ;
         }
-
     }
 
     private void stateDrivingToLocation() {
-        if (drive_to_action_.isDone() && place_action_.isReadyToDrop()) {
+        if (drive_to_action_.isDone()) {
             getRobotSubsystem().getSwerve().enableVision(true);
+            getRobotSubsystem().getGPM().setAction(place_action_);
+            state_ = State.WaitingOnArm ;
+        }
+    }
+
+    private void stateWaitingOnArm() {
+        if (place_action_.isReadyToDrop()) {
             place_action_.dropGamePiece();
-            state_ = State.DroppingPiece;
+            state_ = State.DroppingPiece ;
         }
     }
 
@@ -132,7 +162,7 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
         if (place_action_.isDone()) {
             state_ = State.Idle ;
             getRobotSubsystem().getOI().enableGamepad();
-            getRobotSubsystem().getOI().getGamePad().rumble(1.0, 2.0);
+            // getRobotSubsystem().getOI().getGamePad().rumble(1.0, 2.0);
             setDone();
         }
     }

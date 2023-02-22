@@ -8,6 +8,7 @@ import org.xero1425.misc.MissingParameterException;
 
 import frc.robot.subsystems.arm.ArmGotoAction;
 import frc.robot.subsystems.grabber.GrabberGrabGampieceAction;
+import frc.robot.subsystems.toplevel.RobotOperation;
 
 public class GPMStartWithGPAction extends Action {
     private GPMSubsystem sub_ ;
@@ -15,13 +16,13 @@ public class GPMStartWithGPAction extends Action {
     private ArmGotoAction arm_action_ ;
     private SwerveDriveResetPoseAction reset_db_action_ ;
 
-    public GPMStartWithGPAction(GPMSubsystem sub) throws BadParameterTypeException, MissingParameterException {
+    public GPMStartWithGPAction(GPMSubsystem sub, RobotOperation.GamePiece gp) throws BadParameterTypeException, MissingParameterException {
         super(sub.getRobot().getMessageLogger());
         sub_ = sub ;
 
         SwerveBaseSubsystem swerve = (SwerveBaseSubsystem)sub.getRobot().getRobotSubsystem().getDB();
 
-        grabber_action_ = new GrabberGrabGampieceAction(sub_.getGrabber());
+        grabber_action_ = new GrabberGrabGampieceAction(sub_.getGrabber(), gp);
         arm_action_ = new ArmGotoAction(sub_.getArm(), 0.0, 20000);
         reset_db_action_ = new SwerveDriveResetPoseAction(swerve);
     }

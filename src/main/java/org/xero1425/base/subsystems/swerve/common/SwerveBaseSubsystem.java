@@ -102,9 +102,11 @@ public abstract class SwerveBaseSubsystem extends DriveBaseSubsystem {
         shuffleboardTab.addNumber("Heading", () -> getHeading().getDegrees());
         shuffleboardTab.addNumber("Pose X", () -> getPose().getX());
         shuffleboardTab.addNumber("Pose Y", () -> getPose().getY());
-
-
         last_pose_ = new Pose2d() ;
+    }
+
+    public Pose2d getVisionPose() {
+        return vision_.getCurrentPose() ;
     }
 
     public void resetPose() {
@@ -306,10 +308,9 @@ public abstract class SwerveBaseSubsystem extends DriveBaseSubsystem {
         return traj ;
     }
    
-    public Trajectory createTrajectory(Pose2d end) {
+    public Trajectory createTrajectory(Pose2d start, Pose2d end) {
         List<Pose2d> waypoints = new ArrayList<Pose2d>() ;
-        Pose2d currentPose = getPose() ;
-        waypoints.add(currentPose) ;
+        waypoints.add(start) ;
         waypoints.add(end) ;
         return createTrajectory(waypoints) ;
     }

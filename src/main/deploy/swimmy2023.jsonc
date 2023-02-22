@@ -23,7 +23,7 @@
             "gpm" : true
         },
         "verbose": {
-            "swerve" : false,
+            "swerve" : true,
             "arm-motor-upper" : false,
             "grabber-motor-grab" : true
         },
@@ -39,7 +39,7 @@
     },
     "subsystems": {
         "Swimmy2023RobotSubsystem" : {
-            "april-tag-action-threshold" : 1.5,
+            "april-tag-action-threshold" : 2.0,
             "tape-align-margin" : 0.1016,
             "drive-forward-distance" : 0.1524
         },
@@ -270,7 +270,7 @@
                         "canid": 2,
                         "bus" : "",
                         "inverted" : false,
-                        "neutral_mode": "brake"
+                        "neutral_mode": "coast"
                     }
                 },
                 "encoder": {
@@ -329,9 +329,12 @@
                 //
                 // The delay between closing the grabber and stopping the motors when grabbing
                 // a game piece
+                //
                 "delay" : 2.0,
-                "hold-power" : 0.2,
-                "startup-delay" : 0.4
+
+                "cone-position" : 990,
+                
+                "cube-position" : 1100
             }
         },
         "grabber-motor-spin": {
@@ -381,12 +384,11 @@
                 "kd": 0,
                 "kf": 0,
                 "min": -1.0,
-                "max": 1.0,
+                "max": 0.5,
                 "imax": 0
             },
             "positions" : {
-                "open" : 500,
-                "close" : 750
+                "open" : 500
             }
         },
         "swimmy2023oi": {
@@ -686,8 +688,8 @@
                 "width": 0.5715, // meters
                 "length": 0.5842, // meters
                 "path" : {
-                    "maxv" : 1.0,
-                    "maxa" : 1.0
+                    "maxv" : 0.5,
+                    "maxa" : 0.5
                 },
                 "max-angular-speed": 100,
                 "max-angular-accel": 100
@@ -793,7 +795,7 @@
             "duration" : 3.0
         },
         "97" : {
-            "delay" : 1.0
+            "delay" : 2.0
         },
         "98" : {
             "initx" : 3.2,

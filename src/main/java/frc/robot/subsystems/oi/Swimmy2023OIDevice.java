@@ -86,7 +86,7 @@ public class Swimmy2023OIDevice extends OIPanel {
     public void createStaticActions() throws Exception {
         Swimmy2023RobotSubsystem robot = (Swimmy2023RobotSubsystem)getSubsystem().getRobot().getRobotSubsystem() ;
 
-        turtle_action_ = new GPMStartWithGPAction(robot.getGPM()) ;
+        turtle_action_ = new GPMStartWithGPAction(robot.getGPM(), RobotOperation.GamePiece.Cone) ;
     }
 
     private RobotOperation extractRobotOperation() {
@@ -121,11 +121,11 @@ public class Swimmy2023OIDevice extends OIPanel {
         switch(getValue(april_tag1_gadget_) | (getValue(april_tag2_gadget_) << 1)) 
         {
             case 0:
-                oper.setAprilTag(GridTagPosition.Left) ;
+                oper.setAprilTag(GridTagPosition.Middle) ;
                 break ;
 
             case 1:
-                oper.setAprilTag(GridTagPosition.Middle) ;
+                oper.setAprilTag(GridTagPosition.Left) ;
                 break ;
 
             case 2:
@@ -151,15 +151,15 @@ public class Swimmy2023OIDevice extends OIPanel {
         switch(getValue(height1_gadget_) | (getValue(height2_gadget_) << 1)) 
         {
             case 0:
-                oper.setLocation(Location.Bottom);
-                break ;
-
-            case 1:
                 oper.setLocation(Location.Middle);
                 break ;
 
-            case 2:
+            case 1:
                 oper.setLocation(Location.Top);
+                break ;
+
+            case 2:
+                oper.setLocation(Location.Bottom);
                 break ;
         }
 
