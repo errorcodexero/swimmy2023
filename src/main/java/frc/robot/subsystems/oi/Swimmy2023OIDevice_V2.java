@@ -2,6 +2,7 @@ package frc.robot.subsystems.oi;
 
 import org.xero1425.base.actions.InvalidActionRequest;
 import org.xero1425.base.subsystems.oi.OIDevice;
+import org.xero1425.base.subsystems.oi.OILed;
 import org.xero1425.base.subsystems.oi.OIPanel;
 import org.xero1425.base.subsystems.oi.OISubsystem;
 import org.xero1425.base.subsystems.oi.OIPanelButton.ButtonType;
@@ -24,6 +25,7 @@ public class Swimmy2023OIDevice_V2 extends OIPanel {
     private int abort_gadget_;
     private int turtle_gadget_;
     private int action_gadget_;
+    private int drop_gadget_;
 
     private int cone_v_cube_1_gadget_;
     private int cone_v_cube_2_gadget_;
@@ -37,6 +39,9 @@ public class Swimmy2023OIDevice_V2 extends OIPanel {
     private int height_1_gadget_; 
     private int height_2_gadget_;
 
+    private OILed state_output1_ ;
+    private OILed state_output2_ ;
+
 
     private org.xero1425.base.actions.Action turtleAction;
 
@@ -49,7 +54,15 @@ public class Swimmy2023OIDevice_V2 extends OIPanel {
     public void computeState() throws Exception {
         super.computeState();
     }
+    
+    
+    public boolean isActionButtonPressed() {
+        return getValue(action_gadget_) == 1 ;
+    }
 
+    public boolean isDropButtonPressed() {
+        return getValue(drop_gadget_) == 1;
+    }
     public void generateStaticActions() throws MissingParameterException, BadParameterTypeException {
         SwimmyRobot2023 robot = (SwimmyRobot2023)getSubsystem().getRobot();
         Swimmy2023RobotSubsystem subsystem = (Swimmy2023RobotSubsystem)robot.getRobotSubsystem();
@@ -130,7 +143,23 @@ public class Swimmy2023OIDevice_V2 extends OIPanel {
 
     }
 
+    @Override
+    protected void initializeLEDs() throws BadParameterTypeException, MissingParameterException {
+        super.initializeLEDs();
+        int num ; 
+
+        num = getSubsystem().getSettingsValue("panel:outputs:state1").getInteger();
+        state_output1_ = createLED(num);
+
+        num = getSubsystem().getSettingsValue("panel:outputs:state2").getInteger();
+        state_output2_ = createLED(num);
+
+
+    }
+
+    @Override
     protected void initializeGadgets() throws BadParameterTypeException, MissingParameterException {
+        super.initializeGadgets();
         int num;
 
         num = getSubsystem().getSettingsValue("panel:gadgets:collect_v_place").getInteger();
@@ -147,6 +176,9 @@ public class Swimmy2023OIDevice_V2 extends OIPanel {
 
         num = getSubsystem().getSettingsValue("panel:gadgets:action").getInteger();
         action_gadget_ = mapButton(num, ButtonType.Level);
+        
+        num = getSubsystem().getSettingsValue("panel:gadgets:drop").getInteger();
+        drop_gadget_ = mapButton(num, ButtonType.Level);
 
         num = getSubsystem().getSettingsValue("panel:gadgets:turtle").getInteger();
         turtle_gadget_ = mapButton(num, ButtonType.Level);
