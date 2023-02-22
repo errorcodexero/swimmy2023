@@ -26,16 +26,19 @@ public class SwerveDriveGamepad extends Gamepad {
     }
 
     private SwerveBaseSubsystem db_;
+    private boolean invert_ ;
     private double angle_maximum_;
     private double pos_maximum_;
     private double deadband_pos_x_ ;
     private double deadband_pos_y_ ;
     private double deadband_rotate_ ;
     private double power_ ;
+    private boolean holding_x_ ;
     private SwerveDriveChassisSpeedAction action_;
     private SwerveDriveXPatternAction x_action_;
     private SwerveButton[] reset_buttons_ ;
-    private SwerveButton[] drivebase_x_buttons_;
+    private SwerveButton[] drivebase_x_on_buttons_;
+    private SwerveButton[] drivebase_x_off_buttons_;
 
     public SwerveDriveGamepad(OISubsystem oi, int index, SwerveBaseSubsystem drive_) throws Exception {
         super(oi, "swerve_gamepad", index);
@@ -50,15 +53,24 @@ public class SwerveDriveGamepad extends Gamepad {
 
         db_ = drive_;
         reset_buttons_ = null ;
-        drivebase_x_buttons_ = null;
+        drivebase_x_on_buttons_ = null;
+        holding_x_ = false ;
+    }
+
+    public void invert(boolean inv) {
+        invert_ = inv;
     }
 
     public void setSwerveResetButtons(SwerveButton[] buttons) {
         reset_buttons_ = buttons ;
     }
 
-    public void setSwerveXButtons(SwerveButton[] buttons) {
-        drivebase_x_buttons_ = buttons ;
+    public void setSwerveXOnButtons(SwerveButton[] buttons) {
+        drivebase_x_on_buttons_ = buttons ;
+    }
+
+    public void setSwerveXOffButtons(SwerveButton[] buttons) {
+        drivebase_x_off_buttons_ = buttons ;
     }
 
     @Override
@@ -87,15 +99,15 @@ public class SwerveDriveGamepad extends Gamepad {
 
                 switch(button) {
                     case A: bstate = isAPressed() ; break ;
-                    case B: bstate = isAPressed() ; break ;
-                    case X: bstate = isAPressed() ; break ;
-                    case Y: bstate = isAPressed() ; break ;
-                    case LBack: bstate = isAPressed() ; break ;
-                    case RBack: bstate = isAPressed() ; break ;
-                    case LJoy: bstate = isAPressed() ; break ;
-                    case RJoy: bstate = isAPressed() ; break ;
-                    case LTrigger: bstate = isAPressed() ; break ;
-                    case RTrigger: bstate = isAPressed() ; break ;
+                    case B: bstate = isBPressed() ; break ;
+                    case X: bstate = isXPressed() ; break ;
+                    case Y: bstate = isYPressed() ; break ;
+                    case LBack: bstate = isLBackButtonPressed() ; break ;
+                    case RBack: bstate = isRBackButtonPressed() ; break ;
+                    case LJoy: bstate = isLJoyButtonPressed() ; break ;
+                    case RJoy: bstate = isRJoyButtonPressed() ; break ;
+                    case LTrigger: bstate = isLTriggerPressed() ; break ;
+                    case RTrigger: bstate = isRTriggerPressed() ; break ;
                 } ;
 
                 if (!bstate) {
@@ -120,14 +132,14 @@ public class SwerveDriveGamepad extends Gamepad {
             }
         }
 
-        if (isButtonSequencePressed(drivebase_x_buttons_)) {
-            RobotSubsystem robotSubsystem = getSubsystem().getRobot().getRobotSubsystem();
-            SwerveBaseSubsystem db = (SwerveBaseSubsystem)robotSubsystem.getDB() ;
-            if (db.getAction() == x_action_) {
-                db.setAction(null);
-            } else {
-                robotSubsystem.setAction(x_action_);
-            }
+        if (isButtonSequencePressed(drivebase_x_on_buttons_) && !holding_x_) {
+            db_.setAction(x_action_);
+            holding_x_ = true ;
+        }
+
+        if (isButtonSequencePressed(drivebase_x_off_buttons_) && holding_x_) {
+            db_.setAction(action_);
+            holding_x_ = false ;
         }
     }
 
@@ -135,7 +147,7 @@ public class SwerveDriveGamepad extends Gamepad {
     public void generateActions() {
         double ly, lx, rx ;
 
-        if (db_ == null || !isEnabled())
+        if (db_ == null || !isEnabled() || holding_x_)
             return ;
 
         // For X axis, left is -1, right is +1
@@ -148,6 +160,11 @@ public class SwerveDriveGamepad extends Gamepad {
         }
         catch(Exception ex) {
             return ;
+        }
+
+        if (invert_) {
+            ly = -ly ;
+            lx = -lx ;
         }
 
         double lyscaled = mapJoyStick(ly, pos_maximum_, deadband_pos_y_, power_) ;

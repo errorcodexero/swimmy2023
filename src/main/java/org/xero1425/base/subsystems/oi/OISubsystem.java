@@ -13,6 +13,9 @@ import org.xero1425.misc.MessageLogger;
 import org.xero1425.misc.MessageType;
 import org.xero1425.misc.MissingParameterException;
 
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
+
 /// \file
 
 /// \brief This class controls the various OI devices that are used to control the robot.
@@ -53,13 +56,15 @@ public class OISubsystem extends Subsystem {
     private final String DriverGamepadXero1425 = "xero1425_gamepad:index" ;
     private final String DriverGamepadStandard = "standard_gamepad:index" ;
     private final String DriverGamepadSwerve = "swerve_gamepad:index" ;
+
+    private boolean invertred_ ;
     
     /// \brief Create a new OI subsystem
     /// \param parent the subsystem that manages this one
     /// \param name the name of the subsystem
     /// \param type the type of gamepad to attach
     /// \param db the drivebase to control via the gamepad
-    public OISubsystem(Subsystem parent, String name, GamePadType type, DriveBaseSubsystem db, boolean addshuffleboard) {
+    public OISubsystem(Subsystem parent, String name, GamePadType type, DriveBaseSubsystem db, boolean addshuffleboard, boolean invertred) {
         super(parent, name);
 
         devices_ = new ArrayList<OIDevice>();
@@ -67,7 +72,8 @@ public class OISubsystem extends Subsystem {
         gp_index_ = -1 ;
 
         gamepad_type_ = type ;
-        addTankDriveGamePad();
+        invertred_ = invertred;
+        addGamePad();
 
         if (addshuffleboard) {
             OIShuffleBoardDevice shdev = new OIShuffleBoardDevice(this) ;
@@ -157,7 +163,7 @@ public class OISubsystem extends Subsystem {
         // time.  This can occur if the driver station is not connected when the robot code initializes.
         // This method keeps checking each robot loop and tries to create a gamepad until one can be created.
         if (gp_ == null) {
-            addTankDriveGamePad() ;
+            addGamePad() ;
 
             if (gp_ != null) {
                 gp_.createStaticActions();
@@ -225,7 +231,7 @@ public class OISubsystem extends Subsystem {
     protected void gamePadCreated(Gamepad g) {
     }
 
-    private void addTankDriveGamePad() {
+    private void addGamePad() {
         if (db_ != null) {           
             MessageLogger logger = getRobot().getMessageLogger() ;
 
@@ -315,8 +321,15 @@ public class OISubsystem extends Subsystem {
                     }      
                     
                     try { 
-                        gp_ = new SwerveDriveGamepad(this, gp_index_, (SwerveBaseSubsystem)db_) ;
+                        SwerveDriveGamepad gp = new SwerveDriveGamepad(this, gp_index_, (SwerveBaseSubsystem)db_) ;
+                        gp_ = gp ;
                         addHIDDevice(gp_) ;
+                        if (invertred_) {
+                            if (DriverStation.getAlliance() == Alliance.Red) {
+                                gp.invert(true);
+                            }
+                        }
+
                         logger.startMessage(MessageType.Info) ;
                         logger.add("using swerve gamepad control").endMessage();
                         gamePadCreated(gp_) ;

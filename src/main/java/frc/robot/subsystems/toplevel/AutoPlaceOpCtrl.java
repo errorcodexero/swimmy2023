@@ -31,7 +31,7 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
         april_tag_action_threshold_ = sub.getSettingsValue("april-tag-action-threshold").getDouble() ;
         state_ = State.Idle ;
 
-        place_action_ = new GPMPlaceAction(sub.getGPM(), oper.getLocation(), oper.getGamePiece());
+        place_action_ = new GPMPlaceAction(sub.getGPM(), oper.getLocation(), oper.getGamePiece(), false);
     }
 
     @Override
@@ -65,7 +65,7 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
         if (state_ != orig) {
             MessageLogger logger = getRobotSubsystem().getRobot().getMessageLogger() ;
             logger.startMessage(MessageType.Debug, getRobotSubsystem().getLoggerID());
-            logger.add("AutoCollectOpCtrl State Changes: " + orig.toString() + " -> " + state_.toString());
+            logger.add("AutoPlaceOpCtrl State Changes: " + orig.toString() + " -> " + state_.toString());
             logger.endMessage();
         }
     }
@@ -110,7 +110,7 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
 
             getRobotSubsystem().getSwerve().enableVision(false);
 
-            target_pose_ = getRobotSubsystem().getFieldData().getLoadingStationPose(getOper().getSlot());
+            target_pose_ = getRobotSubsystem().getFieldData().getGridPose(getOper().getAprilTag(), getOper().getSlot());
 
             drive_to_action_ = new SwerveDriveToPoseAction(getRobotSubsystem().getSwerve(), target_pose_);
             getRobotSubsystem().getSwerve().setAction(drive_to_action_);
@@ -131,6 +131,8 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
     private void stateDroppingPiece() {
         if (place_action_.isDone()) {
             state_ = State.Idle ;
+            getRobotSubsystem().getOI().enableGamepad();
+            getRobotSubsystem().getOI().getGamePad().rumble(1.0, 2.0);
             setDone();
         }
     }

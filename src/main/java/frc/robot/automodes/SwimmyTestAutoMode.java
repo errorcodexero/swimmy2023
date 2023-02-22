@@ -23,13 +23,17 @@ import org.xero1425.base.subsystems.vision.LimeLightSubsystem;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.RobotBase;
+import frc.robot.subsystems.arm.ArmGotoAction;
 import frc.robot.subsystems.arm.ArmSubsystem;
 import frc.robot.subsystems.gpm.GPMCollectAction;
+import frc.robot.subsystems.gpm.GPMPlaceAction;
 import frc.robot.subsystems.gpm.GPMSubsystem;
 import frc.robot.subsystems.grabber.GrabberStartCollectAction;
 import frc.robot.subsystems.grabber.GrabberStopCollectAction;
 import frc.robot.subsystems.grabber.GrabberSubsystem;
 import frc.robot.subsystems.toplevel.Swimmy2023RobotSubsystem;
+import frc.robot.subsystems.toplevel.RobotOperation.GamePiece;
+import frc.robot.subsystems.toplevel.RobotOperation.Location;
 
 public class SwimmyTestAutoMode extends TestAutoMode {
 
@@ -107,6 +111,9 @@ public class SwimmyTestAutoMode extends TestAutoMode {
                 addSubActionPair(swerve, new SwerveAlignDriveBaseAction(swerve, limelight, 3.0), true);
                 break;
                 
+            //
+            // ARM test modes
+            //
             case 10:
                 addSubActionPair(armUpper, new MotorEncoderGotoAction(armUpper, getDouble("height"), true), true) ;
                 addSubActionPair(armLower, new MotorEncoderPowerAction(armLower, getDouble("power"), getDouble("duration")), true) ;
@@ -131,6 +138,14 @@ public class SwimmyTestAutoMode extends TestAutoMode {
 
             case 15:
                 addSubActionPair(armUpper, new MotorEncoderGotoAction(armUpper, getDouble("target"), true), true) ;
+                break ;
+
+            case 16:
+                addSubActionPair(arm, new ArmGotoAction(arm, getDouble("lower1"), getDouble("upper1")), true);
+                addSubActionPair(arm, new ArmGotoAction(arm, getDouble("lower2"), getDouble("upper2")), true);
+
+                addAction(new DelayAction(getAutoController().getRobot(), 4.0)) ;
+                addSubActionPair(arm, new ArmGotoAction(arm, 0.0, 0.0), true);
                 break ;
 
             case 17:
@@ -208,7 +223,15 @@ public class SwimmyTestAutoMode extends TestAutoMode {
 
             case 31:
                 addSubActionPair(gpm, new GPMCollectAction(gpm, true), true);
-                break ;                
+                break ;     
+                
+            case 97:
+                {
+                    addSubActionPair(grabber, new MotorEncoderPowerAction(grabberGrabMotor, 0.2), false);
+                    addAction(new DelayAction(getAutoController().getRobot(), getDouble("delay"))) ;
+                    addSubActionPair(gpm, new GPMPlaceAction(gpm, Location.Top, GamePiece.Cone, true), true);
+                }
+                break;
 
             case 98:
                 {

@@ -81,6 +81,10 @@ public class SwerveVisionProcessing {
         return vision_pose_;
     }
 
+    public boolean hasTargets() {
+        return vision_.getTagCount() > 0 ;
+    }
+
     private double getVisionDegrees() {
         if (vision_pose_ == null) {
             return Double.NaN;

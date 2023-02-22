@@ -77,6 +77,16 @@ public class RobotOperation {
         ground_ = g ;
     }
 
+    public RobotOperation(Action a, GamePiece gp, GridTagPosition t, Slot s, Location l) {
+        action_ = a ;
+        gp_ = gp;
+        tag_ = t ;
+        slot_ = s ;
+        loc_ = l ;
+        manual_ = false ;
+        ground_ = false;
+    }
+
     public boolean getManual() {
         return manual_ ;
     }

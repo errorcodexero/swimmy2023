@@ -6,21 +6,27 @@ import org.xero1425.base.misc.XeroTimer;
 import frc.robot.subsystems.arm.ArmGotoAction;
 import frc.robot.subsystems.grabber.GrabberStartCollectAction;
 import frc.robot.subsystems.grabber.GrabberStopCollectAction;
+import frc.robot.subsystems.grabber.GrabberStowAction;
 
 public class GPMCollectAction extends Action {
 
     private GPMSubsystem subsystem_;
     private GrabberStartCollectAction grabber_start_collect_action_;
     private GrabberStopCollectAction grabber_stop_collect_action_;
+    private GrabberStowAction grabber_stow_action_ ;
 
     private XeroTimer timer_ ;
     private boolean running_ ;
+
+    private XeroTimer overall_ ;
 
     private ArmGotoAction arm_collect_action_;
     private ArmGotoAction arm_retract_action_;
 
     public GPMCollectAction(GPMSubsystem subsystem, boolean ground) throws Exception {
         super(subsystem.getRobot().getMessageLogger());
+
+        subsystem_ = subsystem;
 
         if (ground) {
             arm_collect_action_ = new ArmGotoAction(subsystem_.getArm(), "collect:extend-ground");
@@ -33,8 +39,15 @@ public class GPMCollectAction extends Action {
 
         grabber_stop_collect_action_ = new GrabberStopCollectAction(subsystem.getGrabber());
         grabber_start_collect_action_ = new GrabberStartCollectAction(subsystem_.getGrabber());
+        grabber_stow_action_ = new GrabberStowAction(subsystem_.getGrabber());
 
         timer_ = new XeroTimer(subsystem.getRobot(), "collect", 0.5);
+    }
+
+    public GPMCollectAction(GPMSubsystem subsystem, boolean ground, double overall) throws Exception {
+        this(subsystem, ground) ;
+
+        overall_ = new XeroTimer(subsystem.getRobot(), "collect-overall", overall);
     }
 
     @Override
@@ -44,6 +57,10 @@ public class GPMCollectAction extends Action {
         running_ = false ;
         subsystem_.getGrabber().setAction(grabber_start_collect_action_, true);
         subsystem_.getArm().setAction(arm_collect_action_, true);
+
+        if (overall_ != null) {
+            overall_.start();
+        }
     }
 
     @Override
@@ -62,6 +79,12 @@ public class GPMCollectAction extends Action {
                 timer_.start() ;
                 running_ = true ;
             }
+        }
+
+        if (overall_ != null && overall_.isExpired()) {
+            subsystem_.getGrabber().setAction(grabber_stow_action_, true);
+            subsystem_.getArm().setAction(arm_retract_action_, true);
+            setDone() ;
         }
     }
 

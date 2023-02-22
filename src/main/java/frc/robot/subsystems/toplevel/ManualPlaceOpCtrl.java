@@ -19,7 +19,7 @@ public class ManualPlaceOpCtrl extends OperationCtrl {
     public ManualPlaceOpCtrl(Swimmy2023RobotSubsystem sub, RobotOperation oper) throws MissingParameterException, BadParameterTypeException {
         super(sub, oper) ;
 
-        place_action_ = new GPMPlaceAction(sub.getGPM(), oper.getLocation(), oper.getGamePiece());
+        place_action_ = new GPMPlaceAction(sub.getGPM(), oper.getLocation(), oper.getGamePiece(), false);
     }
 
     @Override

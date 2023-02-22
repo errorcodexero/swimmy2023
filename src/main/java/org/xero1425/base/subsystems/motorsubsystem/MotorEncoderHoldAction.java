@@ -1,8 +1,6 @@
 package org.xero1425.base.subsystems.motorsubsystem;
 
 import org.xero1425.misc.BadParameterTypeException;
-import org.xero1425.misc.MessageLogger;
-import org.xero1425.misc.MessageType;
 import org.xero1425.misc.MissingParameterException;
 import org.xero1425.misc.PIDCtrl;
 
@@ -112,20 +110,7 @@ public class MotorEncoderHoldAction extends MotorAction {
     @Override
     public void run() {
         MotorEncoderSubsystem me = (MotorEncoderSubsystem)getSubsystem();
-        MessageLogger logger = getSubsystem().getRobot().getMessageLogger();
         double out = pid_.getOutput(target_, me.getPosition(), me.getRobot().getDeltaTime()) ;
-
-        logger.startMessage(MessageType.Debug);
-        logger.add("hold");
-        logger.add("target", target_);
-        logger.add("position", me.getPosition());
-        logger.add("out", out) ;
-        logger.add("dout", pid_.getDComponent());
-        logger.add("iout", pid_.getIComponent());
-        logger.add("pout", pid_.getPComponent());
-        logger.add("fout", pid_.getFComponent());
-        logger.endMessage();
-
         me.setPower(out) ;
     }
 
