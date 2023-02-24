@@ -6,6 +6,8 @@ import org.xero1425.misc.IMotionProfile;
 import org.xero1425.misc.ISettingsSupplier;
 import org.xero1425.misc.MissingParameterException;
 import org.xero1425.misc.PIDACtrl;
+import org.xero1425.misc.SCurveConfig;
+import org.xero1425.misc.SCurveProfile;
 import org.xero1425.misc.TrapezoidalProfile;
 import org.xero1425.misc.TrapezoidalProfileConfig;
 import org.xero1425.misc.XeroMath;
@@ -169,6 +171,42 @@ public class MotorEncoderGotoAction extends MotorAction {
         profile_ = new TrapezoidalProfile(c) ;
         plot_id_ = sub.initPlot(sub.getName() + "-" + toString(0)) ;        
     }    
+
+        /// \brief Create the action
+    /// \param sub the MotorEncoderSubsystem subsystem for the action    
+    /// \param target the target position
+    /// \param addhold if true, add a hold action when the goto action is complete
+    public MotorEncoderGotoAction(MotorEncoderSubsystem sub, double target, SCurveConfig c, boolean addhold)
+            throws Exception {
+        super(sub) ;
+
+        if (!(sub instanceof MotorEncoderSubsystem))
+            throw new Exception("This subsystem is not a MotorEncoderSubsystem") ;
+                    
+        target_ = target ;
+        addhold_ = addhold ;
+
+        profile_ = new SCurveProfile(c) ;
+        plot_id_ = sub.initPlot(sub.getName() + "-" + toString(plot_id_++)) ;
+    }
+
+    /// \brief Create the action
+    /// \param sub the MotorEncoderSubsystem subsystem for the action
+    /// \param target a string that names the settings value in the settings file that contains the target value 
+    /// \param addhold if true, add a hold action when the goto action is complete    
+    public MotorEncoderGotoAction(MotorEncoderSubsystem sub, String target, SCurveConfig c, boolean addhold)
+            throws Exception {
+        super(sub) ;
+
+        if (!(sub instanceof MotorEncoderSubsystem))
+            throw new Exception("This subsystem is not a MotorEncoderSubsystem") ;
+
+        target_ = getSubsystem().getSettingsValue(target).getDouble() ;
+        addhold_ = addhold ;
+        
+        profile_ = new SCurveProfile(c) ;
+        plot_id_ = sub.initPlot(sub.getName() + "-" + toString(0)) ;        
+    }   
 
     public void setTarget(double target) throws BadParameterTypeException, MissingParameterException {
         target_ = target ;

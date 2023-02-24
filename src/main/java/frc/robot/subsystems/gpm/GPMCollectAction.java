@@ -30,12 +30,12 @@ public class GPMCollectAction extends Action {
         subsystem_ = subsystem;
 
         if (ground) {
-            arm_collect_action_ = new ArmStaggeredGotoAction(subsystem_.getArm(), "collect:extend-ground");
-            arm_retract_action_ = new ArmStaggeredGotoAction(subsystem_.getArm(), "collect:retract-ground");
+            arm_collect_action_ = new ArmStaggeredGotoAction(subsystem_.getArm(), "collect:extend-ground", true);
+            arm_retract_action_ = new ArmStaggeredGotoAction(subsystem_.getArm(), "collect:retract-ground", true);
         }
         else {
-            arm_collect_action_ = new ArmStaggeredGotoAction(subsystem_.getArm(), "collect:extend-shelf");
-            arm_retract_action_ = new ArmStaggeredGotoAction(subsystem_.getArm(), "collect:retract-shelf");
+            arm_collect_action_ = new ArmStaggeredGotoAction(subsystem_.getArm(), "collect:extend-shelf", true);
+            arm_retract_action_ = new ArmStaggeredGotoAction(subsystem_.getArm(), "collect:retract-shelf", true);
         }       
 
         grabber_stop_collect_action_ = new GrabberGrabGampieceAction(subsystem.getGrabber(), gp);

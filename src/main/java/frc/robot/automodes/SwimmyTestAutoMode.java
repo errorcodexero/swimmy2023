@@ -18,6 +18,7 @@ import org.xero1425.base.subsystems.swerve.common.SwerveHolonomicPathFollower;
 import org.xero1425.base.subsystems.swerve.common.SwervePowerAngleAction;
 import org.xero1425.base.subsystems.swerve.common.SwerveSpeedAngleAction;
 import org.xero1425.base.subsystems.vision.LimeLightSubsystem;
+import org.xero1425.misc.SCurveConfig;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -138,7 +139,10 @@ public class SwimmyTestAutoMode extends TestAutoMode {
                 break ;                
 
             case 15:
-                addSubActionPair(armUpper, new MotorEncoderGotoAction(armUpper, getDouble("target"), true), true) ;
+                {
+                    SCurveConfig cfg = new SCurveConfig(1000000, 100000, 100000);
+                    addSubActionPair(armUpper, new MotorEncoderGotoAction(armUpper, getDouble("target"), cfg, true), true) ;
+                }
                 break ;
 
             case 16:
@@ -168,7 +172,7 @@ public class SwimmyTestAutoMode extends TestAutoMode {
                 break ;
 
             case 19:
-                addSubActionPair(arm, new ArmStaggeredGotoAction(arm, "place:top:cone:extend"), true) ;
+                addSubActionPair(arm, new ArmStaggeredGotoAction(arm, "place:top:cone:extend", true), true) ;
                 break ;
 
             case 20:
