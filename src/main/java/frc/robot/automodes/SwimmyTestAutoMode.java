@@ -6,7 +6,6 @@ import org.xero1425.base.controllers.AutoController;
 import org.xero1425.base.controllers.TestAutoMode;
 import org.xero1425.base.subsystems.motorsubsystem.MotorEncoderGotoAction;
 import org.xero1425.base.subsystems.motorsubsystem.MotorEncoderHoldAction;
-import org.xero1425.base.subsystems.motorsubsystem.MotorEncoderMultiPowerAction;
 import org.xero1425.base.subsystems.motorsubsystem.MotorEncoderPowerAction;
 import org.xero1425.base.subsystems.motorsubsystem.MotorEncoderSubsystem;
 import org.xero1425.base.subsystems.motorsubsystem.MotorEncoderVelocityAction;
@@ -22,15 +21,17 @@ import org.xero1425.base.subsystems.vision.LimeLightSubsystem;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.wpilibj.RobotBase;
 import frc.robot.subsystems.arm.ArmGotoAction;
+import frc.robot.subsystems.arm.ArmStaggeredGotoAction;
 import frc.robot.subsystems.arm.ArmSubsystem;
 import frc.robot.subsystems.gpm.GPMCollectAction;
 import frc.robot.subsystems.gpm.GPMPlaceAction;
+import frc.robot.subsystems.gpm.GPMStartWithGPAction;
 import frc.robot.subsystems.gpm.GPMSubsystem;
 import frc.robot.subsystems.grabber.GrabberStartCollectAction;
 import frc.robot.subsystems.grabber.GrabberStopCollectAction;
 import frc.robot.subsystems.grabber.GrabberSubsystem;
+import frc.robot.subsystems.toplevel.RobotOperation;
 import frc.robot.subsystems.toplevel.Swimmy2023RobotSubsystem;
 import frc.robot.subsystems.toplevel.RobotOperation.GamePiece;
 import frc.robot.subsystems.toplevel.RobotOperation.Location;
@@ -167,11 +168,7 @@ public class SwimmyTestAutoMode extends TestAutoMode {
                 break ;
 
             case 19:
-                if (RobotBase.isSimulation()) {
-                    double [] mtimes = { 4.0, 4.0, 4.0, 4.0, 4.0 } ;
-                    double [] mpowers = { 0.1, 0.3, 0.5, 0.7, 0.9 } ;
-                    addSubActionPair(armLower, new MotorEncoderMultiPowerAction(armLower, mtimes, mpowers), true) ; ;
-                }
+                addSubActionPair(arm, new ArmStaggeredGotoAction(arm, "place:top:cone:extend"), true) ;
                 break ;
 
             case 20:
@@ -218,12 +215,28 @@ public class SwimmyTestAutoMode extends TestAutoMode {
                 break ;
 
             case 30:
-                addSubActionPair(gpm, new GPMCollectAction(gpm, false), true);
+                addSubActionPair(gpm, new GPMCollectAction(gpm, RobotOperation.GamePiece.Cone, false), true);
                 break ;
 
             case 31:
-                addSubActionPair(gpm, new GPMCollectAction(gpm, true), true);
+                addSubActionPair(gpm, new GPMCollectAction(gpm, RobotOperation.GamePiece.Cube, false), true);
                 break ;     
+
+            case 32:
+                addSubActionPair(gpm, new GPMCollectAction(gpm, RobotOperation.GamePiece.Cone, true), true);
+                break ;
+
+            case 33:
+                addSubActionPair(gpm, new GPMCollectAction(gpm, RobotOperation.GamePiece.Cube, true), true);
+                break ;   
+                
+            case 95:
+                addSubActionPair(gpm, new GPMCollectAction(gpm, GamePiece.Cone, true), true);
+                break;
+                
+            case 96:
+                addSubActionPair(gpm, new GPMStartWithGPAction(gpm, GamePiece.Cone), true);
+                break ;
                 
             case 97:
                 {
@@ -261,7 +274,7 @@ public class SwimmyTestAutoMode extends TestAutoMode {
                     addSubActionPair(swerve, new SwerveDriveSetPoseAction(swerve, initial_pose_), true);
                     addAction(new DelayAction(getAutoController().getRobot(), getDouble("delay"))) ;
 
-                    GPMCollectAction coll = new GPMCollectAction(gpm, false);
+                    GPMCollectAction coll = new GPMCollectAction(gpm, RobotOperation.GamePiece.Cone, false);
                     addSubActionPair(gpm, coll, false) ;
 
                     SwerveEnableDisableVision vact = new SwerveEnableDisableVision(swerve, false) ;

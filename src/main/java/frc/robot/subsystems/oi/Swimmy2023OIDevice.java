@@ -87,6 +87,7 @@ public class Swimmy2023OIDevice extends OIPanel {
         Swimmy2023RobotSubsystem robot = (Swimmy2023RobotSubsystem)getSubsystem().getRobot().getRobotSubsystem() ;
 
         turtle_action_ = new GPMStartWithGPAction(robot.getGPM(), RobotOperation.GamePiece.Cone) ;
+
     }
 
     private RobotOperation extractRobotOperation() {

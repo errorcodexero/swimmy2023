@@ -3,16 +3,17 @@ package frc.robot.subsystems.gpm;
 import org.xero1425.base.actions.Action;
 import org.xero1425.base.misc.XeroTimer;
 
-import frc.robot.subsystems.arm.ArmGotoAction;
 import frc.robot.subsystems.grabber.GrabberStartCollectAction;
-import frc.robot.subsystems.grabber.GrabberStopCollectAction;
+import frc.robot.subsystems.arm.ArmStaggeredGotoAction;
+import frc.robot.subsystems.grabber.GrabberGrabGampieceAction;
 import frc.robot.subsystems.grabber.GrabberStowAction;
+import frc.robot.subsystems.toplevel.RobotOperation;
 
 public class GPMCollectAction extends Action {
 
     private GPMSubsystem subsystem_;
     private GrabberStartCollectAction grabber_start_collect_action_;
-    private GrabberStopCollectAction grabber_stop_collect_action_;
+    private GrabberGrabGampieceAction grabber_stop_collect_action_;
     private GrabberStowAction grabber_stow_action_ ;
 
     private XeroTimer timer_ ;
@@ -20,33 +21,32 @@ public class GPMCollectAction extends Action {
 
     private XeroTimer overall_ ;
 
-    private ArmGotoAction arm_collect_action_;
-    private ArmGotoAction arm_retract_action_;
+    private ArmStaggeredGotoAction arm_collect_action_ ;
+    private ArmStaggeredGotoAction arm_retract_action_;
 
-    public GPMCollectAction(GPMSubsystem subsystem, boolean ground) throws Exception {
+    public GPMCollectAction(GPMSubsystem subsystem, RobotOperation.GamePiece gp, boolean ground) throws Exception {
         super(subsystem.getRobot().getMessageLogger());
 
         subsystem_ = subsystem;
 
         if (ground) {
-            arm_collect_action_ = new ArmGotoAction(subsystem_.getArm(), "collect:extend-ground");
-            arm_retract_action_ = new ArmGotoAction(subsystem_.getArm(), "collect:retract-ground");
+            arm_collect_action_ = new ArmStaggeredGotoAction(subsystem_.getArm(), "collect:extend-ground");
+            arm_retract_action_ = new ArmStaggeredGotoAction(subsystem_.getArm(), "collect:retract-ground");
         }
         else {
-            arm_collect_action_ = new ArmGotoAction(subsystem_.getArm(), "collect:extend-shelf");
-            arm_retract_action_ = new ArmGotoAction(subsystem_.getArm(), "collect:retract-shelf");
+            arm_collect_action_ = new ArmStaggeredGotoAction(subsystem_.getArm(), "collect:extend-shelf");
+            arm_retract_action_ = new ArmStaggeredGotoAction(subsystem_.getArm(), "collect:retract-shelf");
         }       
 
-        grabber_stop_collect_action_ = new GrabberStopCollectAction(subsystem.getGrabber());
+        grabber_stop_collect_action_ = new GrabberGrabGampieceAction(subsystem.getGrabber(), gp);
         grabber_start_collect_action_ = new GrabberStartCollectAction(subsystem_.getGrabber());
         grabber_stow_action_ = new GrabberStowAction(subsystem_.getGrabber());
 
         timer_ = new XeroTimer(subsystem.getRobot(), "collect", 0.5);
     }
 
-    public GPMCollectAction(GPMSubsystem subsystem, boolean ground, double overall) throws Exception {
-        this(subsystem, ground) ;
-
+    public GPMCollectAction(GPMSubsystem subsystem, RobotOperation.GamePiece gp, boolean ground, double overall) throws Exception {
+        this(subsystem, gp, ground) ;
         overall_ = new XeroTimer(subsystem.getRobot(), "collect-overall", overall);
     }
 

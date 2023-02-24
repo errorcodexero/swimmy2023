@@ -10,11 +10,11 @@ import org.xero1425.simulator.models.SimMotorController;
 
 public class ArmModel extends SimulationModel {
     private SimMotorController first_ ;
-    private double first_degrees_per_second_per_volt_ ;
+    private double first_ticks_per_second_per_volt_ ;
     private double first_angle_ ;
 
     private SimMotorController second_ ;
-    private double second_degrees_per_second_per_volt_ ;
+    private double second_ticks_per_second_per_volt_ ;
     private double second_angle_ ;
 
     public ArmModel(SimulationEngine engine, String model, String inst) {
@@ -29,12 +29,12 @@ public class ArmModel extends SimulationModel {
         }
 
         try {
-            first_degrees_per_second_per_volt_ = getProperty("first:degrees_per_second_per_volt").getDouble();
+            first_ticks_per_second_per_volt_ = getProperty("first:ticks_per_second_per_volt").getDouble();
         } catch (BadParameterTypeException e) {
             MessageLogger logger = getEngine().getMessageLogger() ;
             logger.startMessage(MessageType.Error) ;
             logger.add("cannot create model ").addQuoted(getModelName()).add(" instance ").addQuoted(getInstanceName()) ;
-            logger.add(" - missing parameter ").addQuoted("first:degrees_per_second_per_volt").endMessage();
+            logger.add(" - missing parameter ").addQuoted("first:ticks_per_second_per_volt").endMessage();
             return false ;
         }
 
@@ -43,12 +43,12 @@ public class ArmModel extends SimulationModel {
             return false ;
 
         try {
-            second_degrees_per_second_per_volt_ = getProperty("second:degrees_per_second_per_volt").getDouble();
+            second_ticks_per_second_per_volt_ = getProperty("second:ticks_per_second_per_volt").getDouble();
         } catch (BadParameterTypeException e) {
             MessageLogger logger = getEngine().getMessageLogger() ;
             logger.startMessage(MessageType.Error) ;
             logger.add("cannot create model ").addQuoted(getModelName()).add(" instance ").addQuoted(getInstanceName()) ;
-            logger.add(" - missing parameter ").addQuoted("second:degrees_per_second_per_volt").endMessage();
+            logger.add(" - missing parameter ").addQuoted("second:ticks_per_second_per_volt").endMessage();
             return false ;
         }
 
@@ -63,20 +63,16 @@ public class ArmModel extends SimulationModel {
 
     @Override
     public void run(double dt) {
-        double power, encoder, delta, factor ;
+        double power, delta;
 
         power = first_.getPower() ;
-        delta = power * first_degrees_per_second_per_volt_ * dt;
+        delta = power * first_ticks_per_second_per_volt_ * dt;
         first_angle_ += delta ;
-        factor = Math.random() * 0.4 - 0.2 ;
-        encoder = (first_angle_ + (factor * delta))/ 360.0 * 42.0 ;
-        first_.setEncoder(encoder);
+        first_.setEncoder(first_angle_);
 
         power = second_.getPower() ;
-        delta = power * second_degrees_per_second_per_volt_ * dt;
+        delta = power * second_ticks_per_second_per_volt_ * dt;
         second_angle_ += delta ;
-        factor = Math.random() * 0.4 - 0.2 ;
-        encoder = (second_angle_ + (factor * delta))/ 360.0 * 42.0 ;
-        second_.setEncoder(encoder);
+        second_.setEncoder(second_angle_);
     }
 }

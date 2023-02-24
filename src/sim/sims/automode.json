@@ -10,9 +10,9 @@
                     "instance" : "1",
                     "values" : 
                     {
-                        "comment" : "automode must be set to the correct testmode in settomgs file",
+                        "comment" : "automode must be set to the correct testmode in settings file",
                         "start" : 0.2,
-                        "autonomous" : 10.0,
+                        "autonomous" : 7.0,
                         "between" : 0.0,
                         "teleop" : 0.0,
                         "fms" : false

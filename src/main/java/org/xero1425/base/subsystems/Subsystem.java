@@ -464,7 +464,7 @@ public class Subsystem {
             return false ;
         }
 
-        if (!parent_busy_ok && parent_.isAnyParentBusy())
+        if (!parent_busy_ok && parent_ != null && parent_.isAnyParentBusy())
         {
             MessageLogger logger = getRobot().getMessageLogger() ;
             logger.startMessage(MessageType.Error) ;

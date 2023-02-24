@@ -254,7 +254,7 @@ public class TankDriveModel extends SimulationModel {
         NetworkTable table_ = NetworkTableInstance.getDefault().getTable(SimulationEngine.NetworkTableName).getSubTable(SubTableName) ;
         table_.getEntry(TankDriveXPos).setNumber(xpos_) ;
         table_.getEntry(TankDriveYPos).setNumber(ypos_) ;
-        table_.getEntry(TankDriveAngle).setNumber(XeroMath.rad2deg(angle_)) ;
+        table_.getEntry(TankDriveAngle).setNumber(Math.toDegrees(angle_)) ;
         if (text_provider_ != null)
             table_.getEntry(TankDriveText).setString(text_provider_.statusString()) ;
     }
@@ -518,7 +518,7 @@ public class TankDriveModel extends SimulationModel {
     /// \brief return the robot angle
     /// \returns the robot angle        
     public double getAngle() {
-        return XeroMath.rad2deg(angle_) ;
+        return Math.toDegrees(angle_) ;
     }
 
     /// \brief return the speed of the robot
@@ -618,10 +618,10 @@ public class TankDriveModel extends SimulationModel {
         //
         // Set the navx angle based on the robot angle.
         //
-        double deg = XeroMath.normalizeAngleDegrees(-XeroMath.rad2deg(angle_)) ;
+        double deg = XeroMath.normalizeAngleDegrees(-Math.toDegrees(angle_)) ;
         if (navx_ != null) {
             navx_.setYaw(deg);
-            navx_.setTotalAngle(XeroMath.rad2deg(total_angle_));
+            navx_.setTotalAngle(Math.toDegrees(total_angle_));
         }
 
         MessageLogger logger = getEngine().getRobot().getMessageLogger() ;
@@ -694,7 +694,7 @@ public class TankDriveModel extends SimulationModel {
             }
 
             try {
-                angle_ = XeroMath.deg2rad(value.getDouble()) ;
+                angle_ = Math.toDegrees(value.getDouble()) ;
             } catch (BadParameterTypeException e) {
             }
         }               

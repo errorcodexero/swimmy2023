@@ -2,10 +2,12 @@ package org.xero1425.base.subsystems.motorsubsystem;
 
 import org.xero1425.base.XeroRobot;
 import org.xero1425.misc.BadParameterTypeException;
+import org.xero1425.misc.IMotionProfile;
 import org.xero1425.misc.ISettingsSupplier;
 import org.xero1425.misc.MissingParameterException;
 import org.xero1425.misc.PIDACtrl;
 import org.xero1425.misc.TrapezoidalProfile;
+import org.xero1425.misc.TrapezoidalProfileConfig;
 import org.xero1425.misc.XeroMath;
 
 /// \file
@@ -55,6 +57,7 @@ import org.xero1425.misc.XeroMath;
 ///
 /// 
 public class MotorEncoderGotoAction extends MotorAction {
+
     
     /// The difference between the current position and the target position below which we consider
     /// the goal being met.
@@ -73,7 +76,7 @@ public class MotorEncoderGotoAction extends MotorAction {
     PIDACtrl ctrl_ ;
 
     // The TrapezoidalProfile that is the plan to follow
-    TrapezoidalProfile profile_ ;
+    IMotionProfile profile_ ;
 
     // If true, add a hold action at the end of the goto action to hold the
     // subsystem in place.
@@ -85,7 +88,13 @@ public class MotorEncoderGotoAction extends MotorAction {
     static int name_id_ = 0 ;
 
     // The columns to plot
-    private String [] plot_columns_ = { "time (sec)", "tpos (%%units%%)", "apos (%%units%%)", "tvel (%%units%%/s)", "avel (%%units%%/s)", "out (volts)" } ;
+    private String [] plot_columns_ = 
+    { 
+        "time (sec)", 
+        "tpos (%%units%%)", "apos (%%units%%)", 
+        "tvel (%%units%%/s)", "avel (%%units%%/s)", 
+        "tacc (%%units%%/s/s)", "aacc (%%units%%/s/s)",
+        "out (volts)" } ;
 
     /// \brief Create the action
     /// \param sub the MotorEncoderSubsystem subsystem for the action    
@@ -124,6 +133,42 @@ public class MotorEncoderGotoAction extends MotorAction {
         profile_ = new TrapezoidalProfile(settings, "subsystems:" + sub.getName() + ":goto") ;
         plot_id_ = sub.initPlot(sub.getName() + "-" + toString(0)) ;        
     }
+
+    /// \brief Create the action
+    /// \param sub the MotorEncoderSubsystem subsystem for the action    
+    /// \param target the target position
+    /// \param addhold if true, add a hold action when the goto action is complete
+    public MotorEncoderGotoAction(MotorEncoderSubsystem sub, double target, TrapezoidalProfileConfig c, boolean addhold)
+            throws Exception {
+        super(sub) ;
+
+        if (!(sub instanceof MotorEncoderSubsystem))
+            throw new Exception("This subsystem is not a MotorEncoderSubsystem") ;
+                    
+        target_ = target ;
+        addhold_ = addhold ;
+
+        profile_ = new TrapezoidalProfile(c) ;
+        plot_id_ = sub.initPlot(sub.getName() + "-" + toString(plot_id_++)) ;
+    }
+
+    /// \brief Create the action
+    /// \param sub the MotorEncoderSubsystem subsystem for the action
+    /// \param target a string that names the settings value in the settings file that contains the target value 
+    /// \param addhold if true, add a hold action when the goto action is complete    
+    public MotorEncoderGotoAction(MotorEncoderSubsystem sub, String target, TrapezoidalProfileConfig c, boolean addhold)
+            throws Exception {
+        super(sub) ;
+
+        if (!(sub instanceof MotorEncoderSubsystem))
+            throw new Exception("This subsystem is not a MotorEncoderSubsystem") ;
+
+        target_ = getSubsystem().getSettingsValue(target).getDouble() ;
+        addhold_ = addhold ;
+        
+        profile_ = new TrapezoidalProfile(c) ;
+        plot_id_ = sub.initPlot(sub.getName() + "-" + toString(0)) ;        
+    }    
 
     public void setTarget(double target) throws BadParameterTypeException, MissingParameterException {
         target_ = target ;
@@ -172,7 +217,9 @@ public class MotorEncoderGotoAction extends MotorAction {
             data[2] = position ;
             data[3] = targetVel ;
             data[4] = sub.getVelocity() ;
-            data[5] = out ;
+            data[5] = targetAcc;
+            data[6] = sub.getAcceleration();
+            data[7] = out ;
             sub.addPlotData(plot_id_, data);
         }
     }

@@ -32,7 +32,7 @@ public class AutoCollectOpCtrl extends OperationCtrl {
         april_tag_action_threshold_ = sub.getSettingsValue("april-tag-action-threshold").getDouble() ;
         state_ = State.Idle;
 
-        collect_action_ = new GPMCollectAction(sub.getGPM(), oper.getGround());
+        collect_action_ = new GPMCollectAction(sub.getGPM(), oper.getGamePiece(), oper.getGround());
     }
 
     @Override

@@ -3,21 +3,9 @@ package org.xero1425.misc ;
 /// \file
 
 /// \brief this class is a solver for the trapezoidal speed profile required to travel a distance
-public class TrapezoidalProfile {
-    //
-    // The maximum acceleration
-    //
-    private double maxa_ ;
+public class TrapezoidalProfile implements IMotionProfile {
 
-    //
-    // The maximum deceleration
-    //
-    private double maxd_ ;
-
-    //
-    // The maximum velocity
-    //
-    private double maxv_ ;
+    private TrapezoidalProfileConfig config_ ;
 
     //
     // The time spend accelerating
@@ -68,10 +56,8 @@ public class TrapezoidalProfile {
     /// \param accel the maximum acceleration
     /// \param decel the maximum deceleration
     /// \param maxv the maximum velocity
-    public TrapezoidalProfile(double accel, double decel, double maxv) {
-        maxa_ = accel ;
-        maxd_ = decel ;
-        maxv_ = maxv ;
+    public TrapezoidalProfile(TrapezoidalProfileConfig c) {
+        config_ = c ;
     }
 
     /// \brief create the object reading the performance characteristics from the settings file
@@ -81,9 +67,11 @@ public class TrapezoidalProfile {
     /// \param settings the settings file parser
     /// \param name the basename used to look up parameters.
     public TrapezoidalProfile(ISettingsSupplier settings, String name) throws BadParameterTypeException, MissingParameterException {
-        maxa_ = settings.get(name + ":maxa").getDouble() ;
-        maxd_ = settings.get(name + ":maxd").getDouble() ;
-        maxv_ = settings.get(name + ":maxv").getDouble() ;
+        double maxa = settings.get(name + ":maxa").getDouble() ;
+        double maxd = settings.get(name + ":maxd").getDouble() ;
+        double maxv = settings.get(name + ":maxv").getDouble() ;
+
+        config_ = new TrapezoidalProfileConfig(maxa, maxd, maxv);
     }
 
     /// \brief create a speed profile that covers the distance given, with the start and end velocities as conditions
@@ -91,30 +79,30 @@ public class TrapezoidalProfile {
     /// \param dist the distance the speed profile should cover
     /// \param start_velocity the start velocity of the object
     /// \param end_velocity the end velocity of the object
-    public void update(double dist, double start_velocity, double end_velocity) {
+    public boolean update(double dist, double start_velocity, double end_velocity) {
         start_velocity_ = Math.abs(start_velocity) ;
         end_velocity_ = Math.abs(end_velocity) ;
 
         isneg_ = (dist < 0) ;
         distance_ = Math.abs(dist) ;
 
-        ta_ = (maxv_ - start_velocity_) / maxa_ ;
+        ta_ = (config_.velocity - start_velocity_) / config_.accel ;
 
-        td_ = (end_velocity_ - maxv_) / maxd_ ;
+        td_ = (end_velocity_ - config_.velocity) / config_.decel ;
 
         //distance accelerating
-        double da = start_velocity * ta_ + 0.5 * maxa_ * ta_ * ta_ ;
+        double da = start_velocity * ta_ + 0.5 * config_.accel * ta_ * ta_ ;
         //distance decelerating
-        double dd = maxv_ * td_ + 0.5 * maxd_ * td_ * td_ ;
+        double dd = config_.velocity * td_ + 0.5 * config_.decel * td_ * td_ ;
         
-        tc_ = (distance_ - da - dd) / maxv_ ;
+        tc_ = (distance_ - da - dd) / config_.velocity ;
         type_ = "trapezoid" ;
 
         if (td_ < 0.0 || da + dd > distance_) {
             //
             // We don't have time to get to the cruising velocity
             //
-            double num = (2.0 * distance_ * maxa_ * maxd_ + maxd_ * start_velocity_ * start_velocity_ - maxa_ * end_velocity_ * end_velocity_) / (maxd_ - maxa_) ;
+            double num = (2.0 * distance_ * config_.accel * config_.decel + config_.decel * start_velocity_ * start_velocity_ - config_.accel * end_velocity_ * end_velocity_) / (config_.decel - config_.accel) ;
             boolean decel_only = false ;
             if (num < 0)
                 decel_only = true ;
@@ -128,7 +116,7 @@ public class TrapezoidalProfile {
                 //
                 ta_ = 0 ;
                 tc_ = 0 ;
-                td_ = (end_velocity - start_velocity_) / maxd_ ;
+                td_ = (end_velocity - start_velocity_) / config_.decel ;
                 actual_max_velocity_ = start_velocity_ ;
                 type_ = "line" ;
             }
@@ -138,8 +126,8 @@ public class TrapezoidalProfile {
                 // before decelerating
                 //
                 actual_max_velocity_ = Math.sqrt(num) ;
-                ta_ = (actual_max_velocity_ -start_velocity_)/ maxa_ ;
-                td_ = (end_velocity_ - actual_max_velocity_) / maxd_ ;
+                ta_ = (actual_max_velocity_ -start_velocity_)/ config_.accel ;
+                td_ = (end_velocity_ - actual_max_velocity_) / config_.decel ;
                 tc_ = 0 ;
                 type_ = "pyramid" ;
             }
@@ -148,9 +136,11 @@ public class TrapezoidalProfile {
             //
             // Okay, now figure out the crusing time
             //
-            actual_max_velocity_ = maxv_ ;                
-            tc_ = (distance_ - da - dd) / maxv_ ;
+            actual_max_velocity_ = config_.velocity ;                
+            tc_ = (distance_ - da - dd) / config_.velocity ;
         }
+
+        return true ;
     }
 
     /// \brief return the planned acceleration for the time given relative to the time when update() was called
@@ -162,11 +152,11 @@ public class TrapezoidalProfile {
         if (t < 0)
             ret = 0 ;
         else if (t < ta_)
-            ret = maxa_ ;
+            ret = config_.accel ;
         else if (t < ta_ + tc_)
             ret = 0.0 ;
         else if (t < ta_ + tc_ + td_)
-            ret = maxd_ ;
+            ret = config_.decel ;
         else
             ret = 0.0 ;
 
@@ -183,14 +173,14 @@ public class TrapezoidalProfile {
             ret = start_velocity_ ;
         }
         else if (t < ta_) {
-            ret = start_velocity_ + t * maxa_ ;
+            ret = start_velocity_ + t * config_.accel ;
         }   
         else if (t < ta_ + tc_) {
             ret = actual_max_velocity_ ;
         }   
         else if (t < ta_ + tc_ + td_) {
             double dt = (t - ta_ - tc_) ;
-            ret = actual_max_velocity_ + dt * maxd_ ;
+            ret = actual_max_velocity_ + dt * config_.decel ;
         }
         else {
             ret = end_velocity_ ;
@@ -209,17 +199,17 @@ public class TrapezoidalProfile {
             ret = 0.0 ;
         }
         else if (t < ta_) {
-            ret = start_velocity_ * t + 0.5 * t * t * maxa_ ;
+            ret = start_velocity_ * t + 0.5 * t * t * config_.accel ;
         }   
         else if (t < ta_ + tc_) {
-            ret = start_velocity_ * ta_ + 0.5 * ta_ * ta_ * maxa_ ;
+            ret = start_velocity_ * ta_ + 0.5 * ta_ * ta_ * config_.accel ;
             ret += (t - ta_) * actual_max_velocity_ ;
         }   
         else if (t < ta_ + tc_ + td_) {
             double dt = t - ta_ - tc_ ;
-            ret = start_velocity_ * ta_ + 0.5 * ta_ * ta_ * maxa_ ;
+            ret = start_velocity_ * ta_ + 0.5 * ta_ * ta_ * config_.accel ;
             ret += tc_ * actual_max_velocity_ ;
-            ret += actual_max_velocity_ * dt + 0.5 * dt * dt * maxd_ ;
+            ret += actual_max_velocity_ * dt + 0.5 * dt * dt * config_.decel ;
         }
         else {
             ret = distance_ ;
@@ -284,14 +274,14 @@ public class TrapezoidalProfile {
     public double getTimeForDistance(double dist) throws Exception {
         double ret ;
         double sign = isneg_ ? -1.0 : 1.0 ;
-        Double [] roots ;
+        double [] roots ;
 
         if (isneg_)
             dist = -dist ;
 
         if (dist < sign * getDistance(ta_)) {
-            roots = XeroMath.quadratic(0.5 * maxa_, start_velocity_, -dist) ;
-            ret = pickRoot(roots) ;
+            roots = XeroMath.quadratic(0.5 * config_.accel, start_velocity_, -dist) ;
+            ret = XeroMath.pickRoot(roots) ;
         }
         else if (dist < sign * getDistance(ta_ + tc_)) {
             dist -= sign * getDistance(ta_) ;
@@ -299,8 +289,8 @@ public class TrapezoidalProfile {
         }
         else if (dist < sign * getDistance(ta_ + tc_ + td_)) {
             dist -= sign * getDistance(ta_ + tc_) ;
-            roots = XeroMath.quadratic(0.5 * maxd_, actual_max_velocity_, -dist) ;
-            ret = pickRoot(roots) + ta_ + tc_ ;
+            roots = XeroMath.quadratic(0.5 * config_.decel, actual_max_velocity_, -dist) ;
+            ret = XeroMath.pickRoot(roots) + ta_ + tc_ ;
         }
         else {
             ret = ta_ + tc_ + td_ ;
@@ -321,35 +311,5 @@ public class TrapezoidalProfile {
         return end_velocity_ ;
     }
 
-    private double pickRoot(Double [] roots) throws Exception {
-        double ret = 0.0 ;
-
-        if (roots.length == 0)
-            throw new Exception("no real roots for equation") ;
-
-        if (roots.length == 1)
-        {
-            if (roots[0] < 0.0)
-                throw new Exception("all real roots are negative") ;
-
-            ret = roots[0] ;
-        }
-        else 
-        {
-            if (roots[0] < 0.0 && roots[1] < 0.0)
-                throw new Exception("all real roots are negative") ;
-
-            if (roots[0] < 0.0)
-                ret = roots[1] ;
-            else if (roots[1] < 0.0)
-                ret = roots[0] ;
-            else if (roots[0] < roots[1])
-                ret =  roots[0] ;
-            else
-                ret = roots[1] ;
-        }
-
-        return ret ;
-    }
 
 }

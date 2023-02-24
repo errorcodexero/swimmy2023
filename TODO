@@ -1,9 +1,28 @@
+
+Thu 2/23
+--------
+- Tune new ARM approach
+  o Cone Collect
+  o Cube Collect
+  o Cone Place Top
+  o Cone Place Middle
+  o Cone Place Bottom
+  o Cube Place Top
+  o Cube Place Middle
+  o Cube Place Bottom
+
+- Test new trajectory generation when placing
+  o Place on high location
+  o Target april tag straight on
+  o Target april tag to the right
+  o Target april tag to the left
+
+- Experiment with vision on while placing look at graphs
+
 In order
 ------------------------------------------------------
-X ARM Speed
-X Test X pattern with drive base
 - Get ground collect working
-- Get teleop/auto cone place to high location working, possible add in retro tape alignment
+
 - Get teleop/auto cone place to mid location working
 - Get teleop/auto cone place to low location working
 - Get teleop/auto cube place to high location working

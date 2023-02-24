@@ -46,7 +46,7 @@ public class SwimmyAutoModeMiddle extends SwimmyAutoMode  {
         delaycollect.addAction(new DelayAction(getAutoController().getRobot(), "automodes:center:before-collect-delay"));
 
         double grabdelay = robot.getRobot().getSettingsSupplier().get("automodes:center:collect-delay").getDouble();
-        delaycollect.addSubActionPair(robot.getGPM(), new GPMCollectAction(robot.getGPM(), true, grabdelay), true);
+        delaycollect.addSubActionPair(robot.getGPM(), new GPMCollectAction(robot.getGPM(), RobotOperation.GamePiece.Cone, true, grabdelay), true);
 
         action.addAction(delaycollect);
         addAction(action);

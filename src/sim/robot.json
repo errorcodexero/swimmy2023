@@ -63,10 +63,10 @@
             "props" : {
                 "first:motor:type" : "talon-fx",
                 "first:motor:index" : 1,
-                "first:degrees_per_second_per_volt" : 180,
+                "first:ticks_per_second_per_volt" : 176960,
                 "second:motor:type" : "talon-fx",
                 "second:motor:index" : 2,
-                "second:degrees_per_second_per_volt" : 180
+                "second:ticks_per_second_per_volt" :  176083
             }
         }
     ]

@@ -106,6 +106,8 @@ public class Swimmy2023RobotSubsystem extends RobotSubsystem {
         if (oper.getGround()) {
             if (oper.getAction() != Action.Collect)
                 return false;
+
+            return true ;
         }
 
         if (oper.getAction() == Action.Collect) {
