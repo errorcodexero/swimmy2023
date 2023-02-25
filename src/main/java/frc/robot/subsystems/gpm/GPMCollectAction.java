@@ -56,7 +56,7 @@ public class GPMCollectAction extends Action {
         }       
 
         grabber_stop_collect_action_ = new GrabberGrabGampieceAction(subsystem.getGrabber(), gp);
-        grabber_start_collect_action_ = new GrabberStartCollectAction(subsystem_.getGrabber());
+        grabber_start_collect_action_ = new GrabberStartCollectAction(subsystem_.getGrabber(), gp);
         grabber_stow_action_ = new GrabberStowAction(subsystem_.getGrabber());
 
         timer_ = null ;
@@ -117,7 +117,7 @@ public class GPMCollectAction extends Action {
 
             case LiftArm:
                 if (arm_lift_action_.isDone()) {
-                    subsystem_.getArm().setAction(arm_retract_action_);
+                    subsystem_.getArm().setAction(arm_retract_action_, true);
                     state_ = State.RetractArm ;
                 }
                 break ;

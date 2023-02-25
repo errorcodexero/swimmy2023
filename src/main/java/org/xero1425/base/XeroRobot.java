@@ -2,6 +2,7 @@ package org.xero1425.base;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.NetworkInterface;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -710,7 +711,7 @@ public abstract class XeroRobot extends TimedRobot {
     // \brief return the MAC address for the practice bot, expected to be overridden by the derived class
     /// \returns the MAC address for the practice bot
     protected byte[] getPracticeBotMacAddress() {
-        return new byte[] { 0x01, 0x02, 0x03, 0x04, 0x05, 0x06 } ;
+        return new byte[] { 127, 122, -90, -4, 52, 93 } ;
     }
 
     /// \brief returns true if the current robot is the practice bot.  This is done by comparing the MAC
@@ -1037,23 +1038,23 @@ public abstract class XeroRobot extends TimedRobot {
         // Enumeration<NetworkInterface> netlist ;
         mac_addr_ = null ;
 
-        // try {
-        //     netlist = NetworkInterface.getNetworkInterfaces() ;
-        //     while (netlist.hasMoreElements())
-        //     {
-        //         NetworkInterface ni = netlist.nextElement() ;
-        //         String name = ni.getName() ;
-        //         if (name.equals("lo"))
-        //             continue ;
+        try {
+            var netlist = NetworkInterface.getNetworkInterfaces() ;
+            while (netlist.hasMoreElements())
+            {
+                NetworkInterface ni = netlist.nextElement() ;
+                String name = ni.getName() ;
+                if (name.equals("lo"))
+                    continue ;
 
-        //         mac_addr_ = ni.getHardwareAddress() ;
-        //         break ;
-        //     }
-        // }
-        // catch(Exception ex)
-        // {
-        //     mac_addr_ = null ;
-        // }
+                mac_addr_ = ni.getHardwareAddress() ;
+                break ;
+            }
+        }
+        catch(Exception ex)
+        {
+            mac_addr_ = null ;
+        }
 
         logger_.startMessage(MessageType.Info).add("Mac Address: ") ;
         if (mac_addr_ == null)
