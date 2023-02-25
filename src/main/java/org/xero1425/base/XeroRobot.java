@@ -7,6 +7,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -1035,20 +1036,19 @@ public abstract class XeroRobot extends TimedRobot {
     }
 
     private void getMacAddress() {
-        // Enumeration<NetworkInterface> netlist ;
+        Enumeration<NetworkInterface> netlist ;
         mac_addr_ = null ;
 
         try {
-            var netlist = NetworkInterface.getNetworkInterfaces() ;
+            netlist = NetworkInterface.getNetworkInterfaces() ;
             while (netlist.hasMoreElements())
             {
                 NetworkInterface ni = netlist.nextElement() ;
                 String name = ni.getName() ;
-                if (name.equals("lo"))
-                    continue ;
-
-                mac_addr_ = ni.getHardwareAddress() ;
-                break ;
+                if (name.equals("eth0")) {
+                    mac_addr_ = ni.getHardwareAddress() ;
+                    break ;
+                }
             }
         }
         catch(Exception ex)

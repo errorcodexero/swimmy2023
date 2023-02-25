@@ -206,12 +206,12 @@ public class MotorGroupController extends MotorController
 
     /// \brief Set the current limit for the current supplied to the motor
     /// \param limit the amount of current, in amps,  to the value given   
-    public void setCurrentLimit(double limit) throws BadMotorRequestException {
+    public void setCurrentLimit(double free, double stall) throws BadMotorRequestException {
         if (motors_.size() == 0)
             throw new BadMotorRequestException(this, "request made to empty MotorGroupController") ;
                     
         for(MotorController ctrl : motors_)
-            ctrl.setCurrentLimit(limit);
+            ctrl.setCurrentLimit(free, stall);
     }      
 
     /// \brief Set the open loop ramp rate for the motor

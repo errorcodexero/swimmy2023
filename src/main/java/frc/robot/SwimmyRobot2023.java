@@ -76,6 +76,11 @@ public class SwimmyRobot2023 extends XeroRobot {
     return ctrl;
   }
 
+  protected byte[] getPracticeBotMacAddress() {
+    // 00:80:2F:32:FD:75
+    return new byte[] { 0, -128, 47, 50, -3, 117 } ;
+}
+
   protected XeroPathType getPathType() {
     return XeroPathType.SwerveHolonomic ;
   }

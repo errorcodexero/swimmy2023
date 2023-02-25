@@ -141,3 +141,5 @@ Sat 2/24 (as much as possible)
 - Update AutoPlaceOp to spit out cube in lower                    Done
   level using motorencoderpoweraction
 - External display on robot for cone/cube
+- Update Falcons to apply stall current limit
+- Hold down button, drive half speed

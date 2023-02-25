@@ -87,7 +87,7 @@
                         },
                         "delay" : 0.0,                      // Delay until we start upper arm
                         "target" : 138000                    // Upper arm target position
-                    },
+                    }
                 },          
                 "retract-shelf" : {
                     "lower" : {
@@ -580,14 +580,13 @@
                     "units" : "ticks"
                 }
             },
-
             "hold": {
                 "kp": 0.004,
                 "ki": 0,
                 "kd": 0,
                 "kf": 0,
                 "min": -1.0,
-                "max": 0.5,
+                "max": 1.0,
                 "imax": 0
             },
             "positions" : {
@@ -631,7 +630,6 @@
                         "1" : 9,
                         "2" : 10
                     },
-
                     "apriltag" : {
                         "1" : 7,
                         "2" : 8
@@ -725,7 +723,7 @@
             //
             "estimator" : {
                 "advanced-rejection" : false,                   // If true, the advanced rejection of vision samples is used, see the code for more details
-                "vision-reject-threshold" : 1.0,                // Reject vision samples that are more than this distance from the current robot pose
+                "vision-reject-threshold" : 100.0,              // Reject vision samples that are more than this distance from the current robot pose
                 "single-threshold" : 50.0,                      // When we see a single target, and we are greater than this distance, use the single-far std devs
                                                                 // Otherwise use the single-near std devs
                 "multi-threshold" : 4.0,                        // When we see multiple targets, and we are greater than this distance, use the multi-far std devs
@@ -770,7 +768,7 @@
             //
             "pid": {                        
                 "xctrl": {
-                    "kp": 6.0,
+                    "kp": 8.0,
                     "ki": 0,
                     "kd": 0
                 },

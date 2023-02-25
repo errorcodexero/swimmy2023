@@ -230,7 +230,15 @@ public abstract class SwerveBaseSubsystem extends DriveBaseSubsystem {
         super.run() ;
     }
 
-    protected SwerveDriveKinematics getKinematics() {
+    public double getMaxAccel() {
+        return maxa_ ;
+    }
+
+    public double getMaxVelocity() {
+        return maxv_ ;
+    }
+
+    public SwerveDriveKinematics getKinematics() {
         return kinematics_ ;
     }
 

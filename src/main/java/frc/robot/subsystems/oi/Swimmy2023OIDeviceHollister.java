@@ -9,9 +9,10 @@ import org.xero1425.misc.BadParameterTypeException;
 import org.xero1425.misc.MissingParameterException;
 
 import frc.robot.SwimmyRobot2023;
+import frc.robot.subsystems.gpm.GPMStartWithGPAction;
 import frc.robot.subsystems.toplevel.RobotOperation;
 import frc.robot.subsystems.toplevel.Swimmy2023RobotSubsystem;
-import frc.robot.subsystems.toplevel.TurtleAction;
+// import frc.robot.subsystems.toplevel.TurtleAction;
 import frc.robot.subsystems.toplevel.RobotOperation.GamePiece;
 import frc.robot.subsystems.toplevel.RobotOperation.GridTagPosition;
 import frc.robot.subsystems.toplevel.RobotOperation.Slot;
@@ -81,10 +82,11 @@ public class Swimmy2023OIDeviceHollister extends OIPanel {
     public void createStaticActions() throws MissingParameterException, BadParameterTypeException {
         SwimmyRobot2023 robot = (SwimmyRobot2023)getSubsystem().getRobot();
         Swimmy2023RobotSubsystem subsystem = (Swimmy2023RobotSubsystem)robot.getRobotSubsystem();
-        turtleAction = new TurtleAction(subsystem);
+        turtleAction = new GPMStartWithGPAction(subsystem.getGPM(), RobotOperation.GamePiece.Cone) ;
     }
 
     private GamePiece getGamePiece() {
+
         if (getValue(cone_v_cube_1_gadget_) == 0 && getValue(cone_v_cube_2_gadget_) == 1) {
             return GamePiece.Cone;
         } else if (getValue(cone_v_cube_1_gadget_) == 1 && getValue(cone_v_cube_2_gadget_) == 0) {
@@ -135,7 +137,7 @@ public class Swimmy2023OIDeviceHollister extends OIPanel {
         state_output2_.setState(State.OFF);
 
         if (getValue(turtle_gadget_) == 1) {
-            robotSubsystem.setAction(turtleAction);
+            robotSubsystem.getGPM().setAction(turtleAction);
             
         }
         else if (getValue(abort_gadget_) == 1) {
@@ -147,7 +149,7 @@ public class Swimmy2023OIDeviceHollister extends OIPanel {
             operation.setAction(getValue(collect_v_place_gadget_) == 1 ? RobotOperation.Action.Place : RobotOperation.Action.Collect);
             operation.setGamePiece(getGamePiece());
             operation.setAprilTag(getTag());
-            operation.setManual(getValue(auto_v_manual_gadget_) == 1);
+            operation.setManual(getValue(auto_v_manual_gadget_) == 0);
             operation.setSlot(getSlot());
             operation.setLocation(getHeight());
 

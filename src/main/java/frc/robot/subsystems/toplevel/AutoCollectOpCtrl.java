@@ -79,13 +79,11 @@ public class AutoCollectOpCtrl extends OperationCtrl {
 
             case DrivingToLocation:
                 getRobotSubsystem().getOI().enableGamepad() ;
-                getRobotSubsystem().getOI().getGamePad().rumble(1.0, 2.0);
+                // getRobotSubsystem().getOI().getGamePad().rumble(1.0, 2.0);
                 drive_to_action_.cancel() ;
                 getRobotSubsystem().getSwerve().enableVision(true);
                 break ;                
         }
-
-
 
         setDone();
         state_ = State.Idle;
@@ -100,7 +98,7 @@ public class AutoCollectOpCtrl extends OperationCtrl {
 
         if (getRobotSubsystem().getLimeLight().distantToTag(tag) < april_tag_action_threshold_) {
             getRobotSubsystem().getOI().disableGamepad();
-            getRobotSubsystem().getOI().getGamePad().rumble(1.0, 2.0);
+            // getRobotSubsystem().getOI().getGamePad().rumble(1.0, 2.0);
 
             getRobotSubsystem().getSwerve().enableVision(false);
 
@@ -118,7 +116,7 @@ public class AutoCollectOpCtrl extends OperationCtrl {
             getRobotSubsystem().getSwerve().enableVision(true);
             state_ = State.Idle ;
             getRobotSubsystem().getOI().enableGamepad();
-            getRobotSubsystem().getOI().getGamePad().rumble(1.0, 2.0);
+            // getRobotSubsystem().getOI().getGamePad().rumble(1.0, 2.0);
             setDone() ;
         }
     }

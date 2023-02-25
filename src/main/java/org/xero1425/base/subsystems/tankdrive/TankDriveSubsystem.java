@@ -397,8 +397,8 @@ public class TankDriveSubsystem extends DriveBaseSubsystem {
 
         if (isSettingDefined(CurrentLimitName)) {
             double limit = getSettingsValue(CurrentLimitName).getDouble() ;
-            left_motors_.setCurrentLimit(limit) ;
-            right_motors_.setCurrentLimit(limit);
+            left_motors_.setCurrentLimit(limit, limit) ;
+            right_motors_.setCurrentLimit(limit, limit);
 
             logger.startMessage(MessageType.Info) ;
             logger.add("TankDrive: motors current limited to " + limit + " Amps") ;

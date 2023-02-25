@@ -1,24 +1,25 @@
 package org.xero1425.base.subsystems.swerve.common;
 
+import java.util.List;
+
 import org.xero1425.base.misc.XeroTimer;
 import org.xero1425.misc.BadParameterTypeException;
-import org.xero1425.misc.MessageLogger;
-import org.xero1425.misc.MessageType;
 import org.xero1425.misc.MissingParameterException;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.trajectory.Trajectory;
+import edu.wpi.first.math.trajectory.TrajectoryConfig;
+import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 
-public class SwerveDriveToPoseAction extends SwerveHolonomicControllerAction {
-    private Trajectory trajectory_ ;
-    private Pose2d start_position_ ;
-    private Pose2d target_position_ ;
+public class SwerveDrivePathAction extends SwerveHolonomicControllerAction {
     private double trajectory_start_time_ ;
-    private XeroTimer timer_ ;
-    private Pose2d last_vision_pose_ ;
+    private Trajectory trajectory_ ;
     private Rotation2d facing_ ;
+    private Pose2d last_vision_pose_ ;
+    private XeroTimer timer_ ;
 
     private int plot_id_ ;
     private Double[] plot_data_ ;
@@ -29,47 +30,34 @@ public class SwerveDriveToPoseAction extends SwerveHolonomicControllerAction {
         "ax (m)", "ay (m)", "aa (deg)",
         "vx (m)", "vy (m)", "va (deg)"
     } ;
-    
-    public SwerveDriveToPoseAction(SwerveBaseSubsystem subsys, Pose2d pose2d) throws BadParameterTypeException, MissingParameterException {
-        super(subsys) ;
 
-        start_position_ = subsys.getPose();
-        target_position_ = pose2d ;
+    public SwerveDrivePathAction(SwerveBaseSubsystem sub, Pose2d start, List<Translation2d> interior, Pose2d end, Rotation2d facing) throws BadParameterTypeException, MissingParameterException {
+        super(sub) ;
+
+        TrajectoryConfig config = new TrajectoryConfig(getSubsystem().getMaxVelocity(), getSubsystem().getMaxAccel()) ;
+        config.setKinematics(getSubsystem().getKinematics());
+        trajectory_ = TrajectoryGenerator.generateTrajectory(start, interior, end, config) ;
+
+        facing_ = facing;
+        timer_ = new XeroTimer(sub.getRobot(), "drivetimer", 1.0);
+
         plot_data_ = new Double[columns_.length] ;
-        plot_id_ = getSubsystem().initPlot("DriveToPose") ;
-
-        timer_ = new XeroTimer(subsys.getRobot(), "drivetimer", 1.0);
-    }
-
-    public SwerveDriveToPoseAction(SwerveBaseSubsystem subsys, Pose2d[] endpoints, Rotation2d facing) throws BadParameterTypeException, MissingParameterException {
-        super(subsys) ;
-
-        start_position_ = endpoints[0];
-        target_position_ = endpoints[1];
-        facing_ = facing ;
-        plot_data_ = new Double[columns_.length] ;
-        plot_id_ = getSubsystem().initPlot("DriveToPose") ;
-
-        timer_ = new XeroTimer(subsys.getRobot(), "drivetimer", 1.0);
+        plot_id_ = getSubsystem().initPlot("SwerveDrivePathAction") ;
     }
 
     @Override
     public void start() throws Exception {
-        super.start();
-        getSubsystem().startPlot(plot_id_, columns_);
-        trajectory_ = getSubsystem().createTrajectory(start_position_, target_position_) ;
+        super.start() ;
         trajectory_start_time_ = getSubsystem().getRobot().getTime() ;
+        getSubsystem().startPlot(plot_id_, columns_);
     }
 
     @Override
-    public void run() throws Exception {
-        super.run();
-
+    public void run()  throws Exception {
         double deltat = getSubsystem().getRobot().getTime() - trajectory_start_time_ ;
-
+        
         Trajectory.State st = trajectory_.sample(getSubsystem().getRobot().getTime() - trajectory_start_time_) ;
-        Rotation2d face = (facing_ == null) ? target_position_.getRotation() : facing_ ;
-        ChassisSpeeds speed = controller().calculate(getSubsystem().getPose(), st, face) ;
+        ChassisSpeeds speed = controller().calculate(getSubsystem().getPose(), st, facing_) ;
         getSubsystem().drive(speed) ;
 
         Pose2d vpose = getSubsystem().getVisionPose() ;
@@ -103,13 +91,6 @@ public class SwerveDriveToPoseAction extends SwerveHolonomicControllerAction {
 
         getSubsystem().addPlotData(plot_id_, plot_data_) ;
 
-        MessageLogger logger = getSubsystem().getRobot().getMessageLogger();
-        logger.startMessage(MessageType.Debug, getSubsystem().getLoggerID());
-        logger.add("DriveToPose:");
-        logger.add("target", st.poseMeters);
-        logger.add("actual", getSubsystem().getPose());
-        logger.endMessage();
-
         if (deltat >= trajectory_.getTotalTimeSeconds() && !timer_.isRunning()) {
             timer_.start();
         }
@@ -126,9 +107,7 @@ public class SwerveDriveToPoseAction extends SwerveHolonomicControllerAction {
         }
     }
 
-    @Override
     public String toString(int indent) {
-        return spaces(indent) + "SwerveDriveToPoseAction " + target_position_.getTranslation().toString() + ", " + 
-                target_position_.getRotation().getDegrees() + " deg" ;
+        return spaces(indent) + "SwerveDrivePathAction" ;
     }
 }

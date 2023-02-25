@@ -323,7 +323,7 @@ public class TalonFXMotorController extends MotorController
 
     /// \brief Set the current limit for the current supplied to the motor
     /// \param limit the amount of current, in amps,  to the value given
-    public void setCurrentLimit(double limit) throws BadMotorRequestException {
+    public void setCurrentLimit(double limit, double free) throws BadMotorRequestException {
         if (sim_ == null) {
             TalonFX fx = (TalonFX)controller_ ;
             SupplyCurrentLimitConfiguration cfg = new SupplyCurrentLimitConfiguration(true, limit, limit, 1) ;

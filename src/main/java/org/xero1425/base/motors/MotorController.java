@@ -151,7 +151,7 @@ public abstract class MotorController
 
     /// \brief Set the current limit for the current supplied to the motor
     /// \param limit the amount of current, in amps,  to the value given
-    public void setCurrentLimit(double limit) throws BadMotorRequestException {
+    public void setCurrentLimit(double free, double stall) throws BadMotorRequestException {
         throw new BadMotorRequestException(this, "motor does not support setCurrentLimit()") ;        
     }
 
