@@ -3,7 +3,6 @@ package frc.robot.subsystems.grabber;
 import org.xero1425.base.actions.Action;
 import org.xero1425.base.subsystems.motorsubsystem.MotorEncoderHoldAction;
 import org.xero1425.base.subsystems.motorsubsystem.MotorEncoderPowerAction;
-import org.xero1425.base.subsystems.oi.OISubsystem.GamePadType;
 import org.xero1425.misc.BadParameterTypeException;
 import org.xero1425.misc.MissingParameterException;
 

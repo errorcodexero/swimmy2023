@@ -1,5 +1,6 @@
 package frc.robot.subsystems.toplevel;
 
+import org.xero1425.base.subsystems.motorsubsystem.MotorEncoderPowerAction;
 import org.xero1425.base.subsystems.swerve.common.SwerveDriveToPoseAction;
 import org.xero1425.misc.BadParameterTypeException;
 import org.xero1425.misc.MessageLogger;
@@ -9,6 +10,9 @@ import org.xero1425.misc.MissingParameterException;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import frc.robot.subsystems.gpm.GPMPlaceAction;
+import frc.robot.subsystems.toplevel.RobotOperation.Action;
+import frc.robot.subsystems.toplevel.RobotOperation.GamePiece;
+import frc.robot.subsystems.toplevel.RobotOperation.Location;
 
 public class AutoPlaceOpCtrl extends OperationCtrl {
 
@@ -26,6 +30,7 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
 
     private SwerveDriveToPoseAction drive_to_action_ ;
     private GPMPlaceAction place_action_ ;
+    private MotorEncoderPowerAction spit_cube_action_ ;
     
     public AutoPlaceOpCtrl(Swimmy2023RobotSubsystem sub, RobotOperation oper) throws BadParameterTypeException, MissingParameterException {
         super(sub, oper) ;
@@ -33,7 +38,14 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
         april_tag_action_threshold_ = sub.getSettingsValue("april-tag-action-threshold").getDouble() ;
         state_ = State.Idle ;
 
-        place_action_ = new GPMPlaceAction(sub.getGPM(), oper.getLocation(), oper.getGamePiece(), false);
+        if (oper.getAction() == Action.Place && oper.getGamePiece() == GamePiece.Cube && oper.getLocation() == Location.Bottom) {
+            double power = getRobotSubsystem().getSettingsValue("spit-cube:power").getDouble();
+            double duration = getRobotSubsystem().getSettingsValue("spit-cube:duration").getDouble();
+            spit_cube_action_ = new MotorEncoderPowerAction(getRobotSubsystem().getGPM().getGrabber().getSpinSubsystem(), power, duration);
+        }
+        else {
+            place_action_ = new GPMPlaceAction(sub.getGPM(), oper.getLocation(), oper.getGamePiece(), false);
+        }
     }
 
     @Override
@@ -98,7 +110,9 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
             case DroppingPiece:
                 getRobotSubsystem().getOI().enableGamepad() ;
                 // getRobotSubsystem().getOI().getGamePad().rumble(1.0, 2.0);
-                place_action_.cancel();
+                if (place_action_ != null) {
+                    place_action_.cancel();
+                }
                 break;
         }
 
@@ -138,7 +152,9 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
             Pose2d [] pts = computeDrivePathEndPoints(getRobotSubsystem().getSwerve().getPose(), target_pose_);
             drive_to_action_ = new SwerveDriveToPoseAction(getRobotSubsystem().getSwerve(), pts);
             getRobotSubsystem().getSwerve().setAction(drive_to_action_);
-            // getRobotSubsystem().getGPM().setAction(place_action_);
+            if (place_action_ != null) {
+                getRobotSubsystem().getGPM().setAction(place_action_);
+            }
             state_ = State.DrivingToLocation ;
         }
     }
@@ -146,20 +162,28 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
     private void stateDrivingToLocation() {
         if (drive_to_action_.isDone()) {
             getRobotSubsystem().getSwerve().enableVision(true);
-            getRobotSubsystem().getGPM().setAction(place_action_);
             state_ = State.WaitingOnArm ;
         }
     }
 
     private void stateWaitingOnArm() {
-        if (place_action_.isReadyToDrop()) {
+        if (place_action_ != null && place_action_.isReadyToDrop()) {
             place_action_.dropGamePiece();
             state_ = State.DroppingPiece ;
+        }
+        else if (spit_cube_action_ != null) {
+            getRobotSubsystem().getGPM().getGrabber().getSpinSubsystem().setAction(spit_cube_action_);
         }
     }
 
     private void stateDroppingPiece() {
-        if (place_action_.isDone()) {
+        if (place_action_ != null && place_action_.isDone()) {
+            state_ = State.Idle ;
+            getRobotSubsystem().getOI().enableGamepad();
+            // getRobotSubsystem().getOI().getGamePad().rumble(1.0, 2.0);
+            setDone();
+        }
+        else if (spit_cube_action_ != null && spit_cube_action_.isDone()) {
             state_ = State.Idle ;
             getRobotSubsystem().getOI().enableGamepad();
             // getRobotSubsystem().getOI().getGamePad().rumble(1.0, 2.0);

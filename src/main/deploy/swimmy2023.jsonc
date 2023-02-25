@@ -41,7 +41,11 @@
         "Swimmy2023RobotSubsystem" : {
             "april-tag-action-threshold" : 2.0,
             "tape-align-margin" : 0.1016,
-            "drive-forward-distance" : 0.1524
+            "drive-forward-distance" : 0.1524,
+            "spit-cube" : {
+                "power" : -0.1,
+                "duration" : 0.5
+            }
         },
         "arm" : {
             "collect" : {

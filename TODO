@@ -1,28 +1,32 @@
+------------------------- Testing -----------------------------
 
 Fri 2/23
 --------
 - Tune ARM
   o Upper
     - Get MaxV/MaxA/MaxJ (MotorEncoderPowerAction TestMode 10)      Done
-  o Lower
+  o Lower                                                           Done
     - Get MaxV/MaxA/MaxJ (MotorEncoderPowerAction TestMode 11)      Done
   o Test ArmStaggeredGotoAction (TestMode 19)                       Done
-  o Tune cone placement sequences/positions (TestMode 80)
+  o Tune cone placement sequences/positions (TestMode 80)           Done
     o Cone Place Top                                                Done
     o Cone Place Middle                                             Done
     o Cone Place Bottom                                             Done
-  o Tune cube placement sequences/positions (TestMode 81)
+  o Tune cube placement sequences/positions (TestMode 81)           Done
     o Cube Place Top                                                Done
     o Cube Place Middle                                             Done
     o Cube Place Bottom                                             Done
-  p Tune collect sequences/positions
-    o Cone Collect Shelf (TestMode 82)
-    o Cube Collect Shelf (TestMode 83)
-    o Cone Collect Ground (TestMode 84)
-    o Cube Collect Ground (TestMode 85)
+  p Tune collect sequences/positions                                Done
+    o Cone Collect Shelf (TestMode 82)                              Done
+    o Cube Collect Shelf (TestMode 83)                              Done
+    o Cone Collect Ground (TestMode 84)                             Done
+    o Cube Collect Ground (TestMode 85)                             Done
 
-Sat 2/24
---------
+Sat 2/24 (as much as possible)
+------------------------------
+
+- Test new OI code (low -> high buttons especially)
+
 - Test new trajectory generation when placing
   o Place on high location
   o Target april tag straight on
@@ -31,10 +35,10 @@ Sat 2/24
 
 - Experiment with vision on while placing look at graphs
 
-Sun 2/25
---------
-- Test/Tune each of the drivebase locations for place
+- Test/Tune each of the drivebase locations for telop auto place
   o Red Place Cone/Tag 1/Right/Top
+  o Red Place Cube/Tag 1/Middle/Bottom
+
   o Red Place Cone/Tag 1/Right/Middle
   o Red Place Cone/Tag 1/Right/Bottom
   o Red Place Cube/Tag 1/Right/Bottom
@@ -107,13 +111,33 @@ Sun 2/25
   o Blue (Tag 4) Left
   o Blue (Tag 4) Right
 
-Mon 2/26
---------
-- Test/Tune the auto balance code for platform  
+- Test manual collect
+- Test manual place
+  o Cube (low/middle/high)
+  o Cone (low/middle/high)
 
-Code To Write
--------------
+- Check out abort functionality at different phases of place
+- Check out abort functionality at different phases of collect
+- Check out OI display
+
+- Test/Tune the auto balance code for platform
+
+- Test center-1 automode
+- Test center-2 automode
+- Test left-1 automode
+- Test right-1 automode
+
+------------------------- Bugs -------------------------------
+- Vibrate gamepad is not working as expected
+
+------------------------- To Integrate -----------------------
+- Hollister's OI Code
+
+------------------------- To Write ---------------------------
 - Center - 1 auto mode - place one then balance
 - Left auto mode - place two
 - Right auto mode - place two
 - Center - 2 auto mode - place two then balance
+- Update AutoPlaceOp to spit out cube in lower                    Done
+  level using motorencoderpoweraction
+- External display on robot for cone/cube

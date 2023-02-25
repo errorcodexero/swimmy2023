@@ -1,7 +1,5 @@
 package frc.robot.subsystems.oi;
 
-import org.xero1425.base.misc.XeroTimer;
-
 //
 // Switches, purpose, and types
 //
@@ -16,7 +14,7 @@ import org.xero1425.base.misc.XeroTimer;
 // EndGame              Single Toggle (1 DIO)
 // Turtle               Button (1 DIO)
 // Action               Button (1 DIO)
-
+//
 
 import org.xero1425.base.subsystems.oi.OILed;
 import org.xero1425.base.subsystems.oi.OIPanel;
@@ -54,9 +52,6 @@ public class Swimmy2023OIDevice extends OIPanel {
     private int action_gadget_ ;
     private int drop_gadget_;
 
-    private boolean led_transient_ ;
-    private boolean led_error_;
-    private XeroTimer led_timer_ ;
     private OILed state_output1_ ;
     private OILed state_output2_ ;
 
@@ -71,7 +66,6 @@ public class Swimmy2023OIDevice extends OIPanel {
         state_output2_.setState(State.OFF) ;
 
         oper_ = new RobotOperation() ;
-        led_timer_ = new XeroTimer(parent.getRobot(), "oiled", 2.0);
     }
 
     public boolean isActionButtonPressed() {
@@ -87,7 +81,6 @@ public class Swimmy2023OIDevice extends OIPanel {
         Swimmy2023RobotSubsystem robot = (Swimmy2023RobotSubsystem)getSubsystem().getRobot().getRobotSubsystem() ;
 
         turtle_action_ = new GPMStartWithGPAction(robot.getGPM(), RobotOperation.GamePiece.Cone) ;
-
     }
 
     private RobotOperation extractRobotOperation() {
@@ -172,7 +165,6 @@ public class Swimmy2023OIDevice extends OIPanel {
         super.generateActions();
 
         Swimmy2023RobotSubsystem sub = (Swimmy2023RobotSubsystem)getSubsystem().getRobot().getRobotSubsystem();
-        boolean errDetected = false ;
         MessageLogger logger = getSubsystem().getRobot().getMessageLogger();
 
         if (getValue(turtle_gadget_) == 1) {
@@ -189,7 +181,6 @@ public class Swimmy2023OIDevice extends OIPanel {
             // Abort any action going in the robot subsystem
             //
             sub.abort() ;
-            setLeds(true);
         }
         else {
             RobotOperation oper = extractRobotOperation() ;
@@ -209,66 +200,15 @@ public class Swimmy2023OIDevice extends OIPanel {
                 // pressed.  For now, this is an override for ground pickup
                 //
                 oper_.setGround(true);
-                errDetected = sub.setOperation(oper_);
-                setLeds(errDetected);
+                sub.setOperation(oper_);
             }
             else if (getValue(lock_gadget_) == 1) {
                 //
                 // The lock button has been pressed, lock in the gunners request
                 //
-                if (oper_.getManual() == false) {
-
-                    errDetected = sub.setOperation(oper_);
-
-                    logger.startMessage(MessageType.Debug, getSubsystem().getLoggerID());
-                    logger.add("OI assigned op (auto): " + oper_.toString());
-                    logger.endMessage();
-                    
-                } else {
-                    errDetected = sub.setOperation(oper_);
-
-                    logger.startMessage(MessageType.Debug, getSubsystem().getLoggerID());
-                    logger.add("OI assigned op (manual): " + oper_.toString());
-                    logger.endMessage();
-                }
-            }
-
-            setLeds(errDetected) ;
-        }
-
-        processLeds();
-    }
-
-    private void processLeds() {
-        if (led_transient_) {
-            if (led_error_) {
-                state_output1_.setState(State.ON);
-                state_output2_.setState(State.ON);
-            }
-            else {
-                state_output1_.setState(State.OFF);
-                state_output2_.setState(State.OFF);
-            }
-            if (led_timer_.isExpired()) {
-                led_transient_ = false ;
+                sub.setOperation(oper_);
             }
         }
-        else {
-            if (oper_.getGamePiece() == GamePiece.Cone) {
-                state_output1_.setState(State.ON);
-                state_output2_.setState(State.OFF);
-            }
-            else if (oper_.getGamePiece() == GamePiece.Cube) {
-                state_output1_.setState(State.OFF);
-                state_output2_.setState(State.ON);
-            }
-        }
-    }
-
-    private void setLeds(boolean err) {
-        led_error_ = err ;
-        led_transient_ = true ;
-        // led_timer_.start();
     }
 
     @Override

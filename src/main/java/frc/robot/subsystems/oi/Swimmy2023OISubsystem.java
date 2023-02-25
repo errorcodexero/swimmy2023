@@ -18,7 +18,7 @@ public class Swimmy2023OISubsystem extends OISubsystem {
     private final static SwerveDriveGamepad.SwerveButton[] xActionOnButtons = { SwerveDriveGamepad.SwerveButton.RBack} ;
     private final static SwerveDriveGamepad.SwerveButton[] xActionOffButtons = { SwerveDriveGamepad.SwerveButton.LBack} ;
 
-    Swimmy2023OIDevice oipanel_ ;
+    private Swimmy2023OIDeviceHollister oipanel_ ;
 
     public Swimmy2023OISubsystem(Subsystem parent, DriveBaseSubsystem db) {
         super(parent, "swimmy2023oi", GamePadType.Swerve, db, true, true);
@@ -45,7 +45,7 @@ public class Swimmy2023OISubsystem extends OISubsystem {
 
         if (index != -1) {
             try {
-                oipanel_ = new Swimmy2023OIDevice(this, "OI", index) ;
+                oipanel_ = new Swimmy2023OIDeviceHollister(this, "OI", index) ;
                 addHIDDevice(oipanel_) ;
             }
             catch(Exception ex) {
