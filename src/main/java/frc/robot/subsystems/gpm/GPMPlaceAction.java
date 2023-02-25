@@ -7,7 +7,7 @@ import org.xero1425.misc.MessageLogger;
 import org.xero1425.misc.MessageType;
 import org.xero1425.misc.MissingParameterException;
 
-import frc.robot.subsystems.arm.ArmGotoAction;
+import frc.robot.subsystems.arm.ArmStaggeredGotoAction;
 import frc.robot.subsystems.grabber.GrabberGrabGampieceAction;
 import frc.robot.subsystems.grabber.GrabberStowAction;
 import frc.robot.subsystems.toplevel.RobotOperation;
@@ -24,8 +24,8 @@ public class GPMPlaceAction extends Action {
 
     private State state_ ;
     private GPMSubsystem sub_ ;
-    private ArmGotoAction arm_extend_action_ ;
-    private ArmGotoAction arm_retract_action_ ;
+    private ArmStaggeredGotoAction arm_extend_action_ ;
+    private ArmStaggeredGotoAction arm_retract_action_ ;
     private GrabberStowAction grabber_drop_item_ ;
     private GrabberGrabGampieceAction grabber_hold_action_ ;
     private boolean ready_to_drop_ ;
@@ -63,8 +63,8 @@ public class GPMPlaceAction extends Action {
             armpos += ":cube" ;
         }
 
-        arm_extend_action_ = new ArmGotoAction(sub_.getArm(), armpos + ":extend");
-        arm_retract_action_ = new ArmGotoAction(sub_.getArm(), armpos + ":retract");
+        arm_extend_action_ = new ArmStaggeredGotoAction(sub_.getArm(), armpos + ":extend", false);
+        arm_retract_action_ = new ArmStaggeredGotoAction(sub_.getArm(), armpos + ":retract", false);
 
         double duration = sub.getSettingsValue("place-delay").getDouble();
         timer_ = new XeroTimer(sub.getRobot(), "place", duration);

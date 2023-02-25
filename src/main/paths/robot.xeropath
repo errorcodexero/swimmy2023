@@ -79,6 +79,31 @@
                         }
                     ],
                     "startvelocity": 0
+                },
+                {
+                    "constraints": [
+                    ],
+                    "endvelocity": 0,
+                    "maxacceleration": 4,
+                    "maxvelocity": 4,
+                    "name": "Path4",
+                    "points": [
+                        {
+                            "heading": 0,
+                            "swrot": 180,
+                            "swrotvel": 0,
+                            "x": 10.4307,
+                            "y": 3.36556
+                        },
+                        {
+                            "heading": 0,
+                            "swrot": 90,
+                            "swrotvel": 0,
+                            "x": 12.587054978028956,
+                            "y": 3.35344383785569
+                        }
+                    ],
+                    "startvelocity": 0
                 }
             ]
         }

@@ -77,7 +77,7 @@ public class ArmStaggeredGotoAction extends Action {
         upper_trap_config_ = new TrapezoidalProfileConfig(maxa, -maxa, maxv);
 
         upper_start_time_ = sub_.getSettingsValue(key_ + ":upper:delay").getDouble();
-        upper_target_ = sub_.getSettingsValue(key_ + ":lower:target").getDouble();
+        upper_target_ = sub_.getSettingsValue(key_ + ":upper:target").getDouble();
 
         lower_goto_ = null ;
         upper_goto_ = null ;
@@ -104,10 +104,10 @@ public class ArmStaggeredGotoAction extends Action {
 
         if (delta > lower_start_time_ && lower_goto_ == null) {
             if (lower_scurve_config_ != null) {
-                lower_goto_ = new MotorEncoderGotoAction(sub_.getUpperSubsystem(), lower_target_, lower_scurve_config_, true);
+                lower_goto_ = new MotorEncoderGotoAction(sub_.getLowerSubsystem(), lower_target_, lower_scurve_config_, true);
             }
             else {
-                lower_goto_ = new MotorEncoderGotoAction(sub_.getUpperSubsystem(), lower_target_, lower_trap_config_, true);
+                lower_goto_ = new MotorEncoderGotoAction(sub_.getLowerSubsystem(), lower_target_, lower_trap_config_, true);
             }
             sub_.getLowerSubsystem().setAction(lower_goto_, true);
         }

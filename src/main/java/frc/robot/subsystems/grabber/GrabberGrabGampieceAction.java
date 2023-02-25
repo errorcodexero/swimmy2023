@@ -14,6 +14,7 @@ public class GrabberGrabGampieceAction extends Action {
     private XeroTimer timer_;
     private MotorEncoderHoldAction hold_action_ ;
     private MotorEncoderPowerAction power_action_ ;
+    private MotorEncoderPowerAction start_spinner_action_ ;
     private MotorEncoderPowerAction stop_spinner_action_ ;
 
     public GrabberGrabGampieceAction(GrabberSubsystem sub, RobotOperation.GamePiece gp) throws BadParameterTypeException, MissingParameterException {
@@ -32,6 +33,9 @@ public class GrabberGrabGampieceAction extends Action {
         power_action_ = new MotorEncoderPowerAction(sub.getGrabSubsystem(), 0.1);
         stop_spinner_action_ = new MotorEncoderPowerAction(sub.getSpinSubsystem(), 0.0);
 
+        v = sub.getSettingsValue("close:spin-power").getDouble() ;
+        start_spinner_action_ = new MotorEncoderPowerAction(sub.getSpinSubsystem(), v);
+
         v = sub.getSettingsValue("close:delay").getDouble() ;
         timer_ = new XeroTimer(sub.getRobot(), "grabbergp", v) ;
     }
@@ -40,6 +44,7 @@ public class GrabberGrabGampieceAction extends Action {
     public void start() throws Exception {
         super.start();
         
+        sub_.getSpinSubsystem().setAction(start_spinner_action_, true) ;
         sub_.getGrabSubsystem().setDefaultAction(hold_action_);
         timer_.start() ;
     }

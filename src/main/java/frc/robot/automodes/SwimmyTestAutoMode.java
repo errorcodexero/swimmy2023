@@ -8,27 +8,23 @@ import org.xero1425.base.subsystems.motorsubsystem.MotorEncoderGotoAction;
 import org.xero1425.base.subsystems.motorsubsystem.MotorEncoderHoldAction;
 import org.xero1425.base.subsystems.motorsubsystem.MotorEncoderPowerAction;
 import org.xero1425.base.subsystems.motorsubsystem.MotorEncoderSubsystem;
-import org.xero1425.base.subsystems.motorsubsystem.MotorEncoderVelocityAction;
 import org.xero1425.base.subsystems.swerve.common.SwerveAlignDriveBaseAction;
 import org.xero1425.base.subsystems.swerve.common.SwerveBaseSubsystem;
-import org.xero1425.base.subsystems.swerve.common.SwerveDriveSetPoseAction;
-import org.xero1425.base.subsystems.swerve.common.SwerveDriveToPoseAction;
-import org.xero1425.base.subsystems.swerve.common.SwerveEnableDisableVision;
 import org.xero1425.base.subsystems.swerve.common.SwerveHolonomicPathFollower;
 import org.xero1425.base.subsystems.swerve.common.SwervePowerAngleAction;
 import org.xero1425.base.subsystems.swerve.common.SwerveSpeedAngleAction;
 import org.xero1425.base.subsystems.vision.LimeLightSubsystem;
 import org.xero1425.misc.SCurveConfig;
+import org.xero1425.misc.TrapezoidalProfileConfig;
 
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
 import frc.robot.subsystems.arm.ArmGotoAction;
 import frc.robot.subsystems.arm.ArmStaggeredGotoAction;
 import frc.robot.subsystems.arm.ArmSubsystem;
 import frc.robot.subsystems.gpm.GPMCollectAction;
 import frc.robot.subsystems.gpm.GPMPlaceAction;
-import frc.robot.subsystems.gpm.GPMStartWithGPAction;
 import frc.robot.subsystems.gpm.GPMSubsystem;
+import frc.robot.subsystems.grabber.GrabberGrabGampieceAction;
 import frc.robot.subsystems.grabber.GrabberStartCollectAction;
 import frc.robot.subsystems.grabber.GrabberStopCollectAction;
 import frc.robot.subsystems.grabber.GrabberSubsystem;
@@ -117,58 +113,27 @@ public class SwimmyTestAutoMode extends TestAutoMode {
             // ARM test modes
             //
             case 10:
-                addSubActionPair(armUpper, new MotorEncoderGotoAction(armUpper, getDouble("height"), true), true) ;
-                addSubActionPair(armLower, new MotorEncoderPowerAction(armLower, getDouble("power"), getDouble("duration")), true) ;
-                break ;
-
-            case 11:
                 addSubActionPair(armUpper, new MotorEncoderPowerAction(armUpper, getDouble("power"), getDouble("duration")), true) ;
                 break ;
 
-            case 12:
-                addSubActionPair(armLower, new MotorEncoderVelocityAction(armLower, "follower", getDouble("velocity")), true) ;
-                break ;
-
-            case 13:
-                addSubActionPair(armUpper, new MotorEncoderVelocityAction(armUpper, "follower", getDouble("velocity")), true) ;
-                break ;
-
-            case 14:
-                addSubActionPair(armUpper, new MotorEncoderGotoAction(armUpper, getDouble("upper"), true), true) ;
-                addSubActionPair(armLower, new MotorEncoderGotoAction(armLower, getDouble("lower"), true), true) ;
+            case 11:
+                addSubActionPair(armUpper, new MotorEncoderGotoAction(armUpper, getDouble("height"), true), true) ;
+                addSubActionPair(armLower, new MotorEncoderPowerAction(armLower, getDouble("power"), getDouble("duration")), true) ;
                 break ;                
 
-            case 15:
+            case 12:
                 {
-                    SCurveConfig cfg = new SCurveConfig(1000000, 100000, 100000);
+                    TrapezoidalProfileConfig cfg = new TrapezoidalProfileConfig(100000, -100000, 100000) ;
                     addSubActionPair(armUpper, new MotorEncoderGotoAction(armUpper, getDouble("target"), cfg, true), true) ;
                 }
                 break ;
 
-            case 16:
-                addSubActionPair(arm, new ArmGotoAction(arm, getDouble("lower1"), getDouble("upper1")), true);
-                addSubActionPair(arm, new ArmGotoAction(arm, getDouble("lower2"), getDouble("upper2")), true);
-
-                addAction(new DelayAction(getAutoController().getRobot(), 4.0)) ;
-                addSubActionPair(arm, new ArmGotoAction(arm, 0.0, 0.0), true);
-                break ;
-
-            case 17:
-                addSubActionPair(armUpper, new MotorEncoderGotoAction(armUpper, 20000, true), true) ;
-                addAction(new DelayAction(getAutoController().getRobot(), 2.0)) ;
-                addSubActionPair(armUpper, new MotorEncoderGotoAction(armUpper, 50000, true), true) ;
-                addAction(new DelayAction(getAutoController().getRobot(), 2.0)) ;
-                addSubActionPair(armUpper, new MotorEncoderGotoAction(armUpper, 30000, true), true) ;
-                addAction(new DelayAction(getAutoController().getRobot(), 2.0)) ;
-                break ;
-
-            case 18:
-                addSubActionPair(armUpper, new MotorEncoderGotoAction(armUpper, getDouble("upper"), true), false) ;
-                addSubActionPair(armLower, new MotorEncoderGotoAction(armLower, getDouble("lower"), true), true) ;
-                addAction(new DelayAction(getAutoController().getRobot(), 2.0)) ;
-                addSubActionPair(armLower, new MotorEncoderGotoAction(armLower, 0, true), false) ;
-                addAction(new DelayAction(getAutoController().getRobot(), 0.5)) ;
-                addSubActionPair(armUpper, new MotorEncoderGotoAction(armUpper, 0, true), true) ;
+            case 13:
+                {
+                    SCurveConfig cfg = new SCurveConfig(1000000, 200000, 100000);
+                    addSubActionPair(armUpper, new MotorEncoderGotoAction(armUpper, getDouble("height"), cfg, true), true) ;
+                    addSubActionPair(armLower, new MotorEncoderGotoAction(armLower, getDouble("target"), cfg, true), true) ;
+                }
                 break ;
 
             case 19:
@@ -233,64 +198,45 @@ public class SwimmyTestAutoMode extends TestAutoMode {
             case 33:
                 addSubActionPair(gpm, new GPMCollectAction(gpm, RobotOperation.GamePiece.Cube, true), true);
                 break ;   
+
+            case 79:
+                addSubActionPair(grabber, new GrabberGrabGampieceAction(grabber, GamePiece.Cube), true);
+                addSubActionPair(arm, new ArmGotoAction(arm, 0, 20000), true);
+                addAction(new DelayAction(gpm.getRobot(), getDouble("delay")));
+                addSubActionPair(grabberGrabMotor, new MotorEncoderHoldAction(grabberGrabMotor, getDouble("position")), true);
+                break ;
+
+            case 80:
+                {
+                    addSubActionPair(grabber, new GrabberGrabGampieceAction(grabber, GamePiece.Cone), true);
+                    addAction(new DelayAction(gpm.getRobot(), getDouble("delay")));
+                    addSubActionPair(gpm, new GPMPlaceAction(gpm, Location.Middle, GamePiece.Cone, true), true);
+                }
+                break;
+
+            case 81:
+                {
+                    addSubActionPair(grabber, new GrabberGrabGampieceAction(grabber, GamePiece.Cube), true);
+                    addAction(new DelayAction(gpm.getRobot(), getDouble("delay")));
+                    addSubActionPair(gpm, new GPMPlaceAction(gpm, Location.Middle, GamePiece.Cube, true), true);
+                }
+                break;
+
+            case 82:
+                addSubActionPair(gpm, new GPMCollectAction(gpm, GamePiece.Cone, false), true) ;
+                break;
+
+            case 83:
+                addSubActionPair(gpm, new GPMCollectAction(gpm, GamePiece.Cube, false), true) ;
+                break;                
                 
-            case 95:
+            case 84:
                 addSubActionPair(gpm, new GPMCollectAction(gpm, GamePiece.Cone, true), true);
-                break;
+                break;  
                 
-            case 96:
-                addSubActionPair(gpm, new GPMStartWithGPAction(gpm, GamePiece.Cone), true);
-                break ;
-                
-            case 97:
-                {
-                    addSubActionPair(grabber, new MotorEncoderPowerAction(grabberGrabMotor, 0.1), false);
-                    addAction(new DelayAction(getAutoController().getRobot(), getDouble("delay"))) ;
-                    addSubActionPair(gpm, new GPMPlaceAction(gpm, Location.Top, GamePiece.Cone, true), true);
-                }
-                break;
-
-            case 98:
-                {
-                    initial_pose_ = new Pose2d(getDouble("initx"), getDouble("inity"), Rotation2d.fromDegrees(getDouble("initangle")));
-                    addSubActionPair(swerve, new SwerveDriveSetPoseAction(swerve, initial_pose_), true);
-                    addAction(new DelayAction(getAutoController().getRobot(), getDouble("delay"))) ;
-
-                    // GPMCollectAction coll = new GPMCollectAction(gpm);
-                    // addSubActionPair(gpm, coll, false) ;
-
-                    SwerveEnableDisableVision vact = new SwerveEnableDisableVision(swerve, false) ;
-                    addSubActionPair(swerve, vact, true);
-
-                    Pose2d dest = new Pose2d(getDouble("x"), getDouble("y"), Rotation2d.fromDegrees(getDouble("angle")));
-                    SwerveDriveToPoseAction act = new SwerveDriveToPoseAction(swerve, dest) ;
-                    addSubActionPair(swerve, act, true);
-
-                    addAction(new DelayAction(getAutoController().getRobot(), 3.0));
-
-                    initial_pose_ = new Pose2d(3.6, 4.0, Rotation2d.fromDegrees(180.0));
-                }
-                break ;
-
-            case 99:
-                {
-                    initial_pose_ = new Pose2d(getDouble("initx"), getDouble("inity"), Rotation2d.fromDegrees(getDouble("initangle")));
-                    addSubActionPair(swerve, new SwerveDriveSetPoseAction(swerve, initial_pose_), true);
-                    addAction(new DelayAction(getAutoController().getRobot(), getDouble("delay"))) ;
-
-                    GPMCollectAction coll = new GPMCollectAction(gpm, RobotOperation.GamePiece.Cone, false);
-                    addSubActionPair(gpm, coll, false) ;
-
-                    SwerveEnableDisableVision vact = new SwerveEnableDisableVision(swerve, false) ;
-                    addSubActionPair(swerve, vact, true);
-
-                    Pose2d dest = new Pose2d(getDouble("x"), getDouble("y"), Rotation2d.fromDegrees(getDouble("angle")));
-                    SwerveDriveToPoseAction act = new SwerveDriveToPoseAction(swerve, dest) ;
-                    addSubActionPair(swerve, act, true);
-
-                    addAction(new DelayAction(getAutoController().getRobot(), 10.0));
-                }
-                break ;
+            case 85:
+                addSubActionPair(gpm, new GPMCollectAction(gpm, GamePiece.Cube, true), true);
+                break;                    
         }
     }
 
