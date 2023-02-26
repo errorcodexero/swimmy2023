@@ -3,7 +3,7 @@ area_min:0.0017850625000000004
 area_similarity:0
 aspect_max:0.4626882000000001
 aspect_min:0
-black_level:28
+black_level:34
 blue_balance:1975
 botfloorsnap:0
 botlength:0.7112
@@ -28,6 +28,7 @@ cross_b_y:0
 desc:Reflective
 desired_contour_region:0
 detector_conf:0.800000
+detector_idfilters:
 dilation_steps:0
 direction_filter:0
 dual_close_sort_origin:0
@@ -37,11 +38,13 @@ fiducial_decoder_strictness:strict
 fiducial_denoise:0.000000
 fiducial_idfilters:
 fiducial_locfilters:
+fiducial_qualitythreshold:0.000000
 fiducial_resdiv:2
 fiducial_size:152.4
 fiducial_skip3d:1
 fiducial_type:aprilClassic16h5
 fiducial_vis_mode:3dtargposebotspace
+flicker_correction:0
 force_convex:1
 hue_max:85
 hue_min:60
@@ -68,7 +71,7 @@ rss:0.000000
 rsu:0.000000
 rsyaw:0.000000
 sat_max:255
-sat_min:70
+sat_min:101
 send_corners:0
 send_raw_contours:0
 solve3d:0
@@ -84,6 +87,6 @@ tsf:0
 tss:0
 tsu:0
 val_max:255
-val_min:70
+val_min:134
 x_outlier_miqr:1.5
 y_outlier_miqr:1.5
