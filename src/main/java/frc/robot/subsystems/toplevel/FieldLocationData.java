@@ -232,33 +232,36 @@ public class FieldLocationData {
 
         JSONObject grid = (JSONObject)colorobj.get("grid") ;
 
+
+        double yoffset = (Double)grid.get("yoffset");
+
         if (!grid.containsKey("left")) {
             throw new Exception("the 'grid' section is missing the 'left' key") ;
         }
-        item = readFieldItem((JSONObject)grid.get("left"));
+        item = readFieldItem((JSONObject)grid.get("left"), false, yoffset);
         items.setGridLeft(item);
 
         if (!grid.containsKey("middle")) {
             throw new Exception("the 'grid' section is missing the 'middle' key") ;
         }
-        item = readFieldItem((JSONObject)grid.get("middle"));
+        item = readFieldItem((JSONObject)grid.get("middle"), false, yoffset);
         items.setGridMiddle(item);
 
         if (!grid.containsKey("right")) {
             throw new Exception("the 'grid' section is missing the 'right' key") ;
         }
-        item = readFieldItem((JSONObject)grid.get("right"));
+        item = readFieldItem((JSONObject)grid.get("right"), false, yoffset);
         items.setGridRight(item);
 
         if (!colorobj.containsKey("loading-station")) {
             throw new Exception("the top level color section is missing the 'loading-station' key") ;
         }
 
-        item = readFieldItem((JSONObject)colorobj.get("loading-station"));
+        item = readFieldItem((JSONObject)colorobj.get("loading-station"), true, 0.0);
         items.setLoadingStation(item);
     }
 
-    private FieldItem readFieldItem(JSONObject obj) throws Exception {
+    private FieldItem readFieldItem(JSONObject obj, boolean lstation, double yoffset) throws Exception {
         if (!obj.containsKey("grid-id")) {
             throw new Exception("Field Item is missing the 'grid-id' key");
         }
@@ -288,6 +291,23 @@ public class FieldLocationData {
                 double dy = getDouble(poseobj, "y") ;
                 double dheading = getDouble(poseobj, "heading") ;
                 item.addPose(keystr, new Pose2d(dx, dy, Rotation2d.fromDegrees(dheading)));
+            }
+        }
+
+        if (!lstation) {
+            Pose2d middle = item.getPose("middle") ;
+            if (middle == null) {
+                throw new Exception("cannot read middle pose from location file");
+            }
+
+            if (item.getPose("left") == null) {
+                Pose2d p = new Pose2d(middle.getX(), middle.getY() - yoffset, middle.getRotation());
+                item.addPose("left", p) ;
+            }
+
+            if (item.getPose("right") == null) {
+                Pose2d p = new Pose2d(middle.getX(), middle.getY() + yoffset, middle.getRotation());
+                item.addPose("right", p) ;
             }
         }
         

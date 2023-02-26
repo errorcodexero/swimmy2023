@@ -1,58 +1,28 @@
-// TODO: update with actual (x,y) field coordinates (as xero path gen would generate coordinates)
 {
     "red": {
         "grid": {
+            "yoffset" : 0.556574,
             "right": {                          // center of field
                 "grid-id": 3,
-                "left": {
-                    "x" : 14.667988,
-                    "y" : 5.05,
-                    "heading" : 0
-                },
                 "middle": {
                     "x": 14.66798,
                     "y": 4.424426,
                     "heading" : 0
                 },
-                "right": {
-                    "x": 14.66798,
-                    "y": 3.798852,
-                    "heading" : 0
-                }
             },
             "middle": {                           //coopertition grid of field
                 "grid-id": 2,
-                "left": {
-                    "x": 14.66798,
-                    "y": 3.3736,
-                    "heading" : 0
-                },
                 "middle": {
                     "x": 14.66798,
                     "y": 2.748026,
                     "heading" : 0
                 },
-                "right": {
-                    "x": 14.66798,
-                    "y": 2.122452,
-                    "heading" : 0
-                }
             },
             "left": {                               //edge of field
                 "grid-id": 1,
-                "right": {
-                    "x": 14.66798,
-                    "y": 1.6272,
-                    "heading" : 0
-                },
                 "middle": {
                     "x": 14.66798,
                     "y": 1.071626,
-                    "heading" : 0
-                },
-                "left": {
-                    "x": 14.66798,      // 14.62598
-                    "y": 0.515052,
                     "heading" : 0
                 }
             }
@@ -73,59 +43,30 @@
     },
     "blue": {
         "grid": {
+            "yoffset" : 0.556574,
             "left": { //middle of field
                 "grid-id": 6,
-                "left": {
-                    "x": 1.873,
-                    "y": 3.798852,
-                    "heading" : 180
-                },
                 "middle": {
                     "x": 1.873,
                     "y": 4.424426,
                     "heading" : 180
                 },
-                "right": {
-                    "x": 1.873,
-                    "y": 5.05,
-                    "heading" : 180
-                }
             },
             "middle": { //coopertition grid of field
                 "grid-id": 7,
-                "left": {
-                    "x": 1.873,
-                    "y": 2.122452,
-                    "heading" : 180
-                },
                 "middle": {
                     "x": 1.873,
                     "y": 2.748026,
                     "heading" : 180
                 },
-                "right": {
-                    "x": 1.873,
-                    "y": 3.3736,
-                    "heading" : 180
-                }
             },
             "right": { //edge of field
                 "grid-id": 8,
-                "left": {
-                    "x": 1.873,
-                    "y": 0.446052,
-                    "heading" : 180
-                },
                 "middle": {
                     "x": 1.873,
                     "y": 1.071626,
                     "heading" : 180
                 },
-                "right": {
-                    "x": 1.873,
-                    "y": 1.6972,
-                    "heading" : 180
-                }
             }
         },
         "loading-station": { //loading station
