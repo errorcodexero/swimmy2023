@@ -15,9 +15,8 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import frc.robot.subsystems.gpm.GPMPlaceAction;
+import frc.robot.subsystems.swerve.SwerveAlignRobotAction;
 import frc.robot.subsystems.toplevel.RobotOperation.Action;
 import frc.robot.subsystems.toplevel.RobotOperation.GamePiece;
 import frc.robot.subsystems.toplevel.RobotOperation.Location;
@@ -27,8 +26,10 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
     private enum State {
         Idle,
         LookingForTag,
-        DrivingToLocation,
         WaitingOnVision,
+        DrivingToLocation,
+        AlignRobot,
+        DriveForward,
         WaitingOnArm,
         DroppingPiece
     }
@@ -40,8 +41,10 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
     private SwerveDrivePathAction drive_to_action_ ;
     private GPMPlaceAction place_action_ ;
     private MotorEncoderPowerAction spit_cube_action_ ;
+    private SwerveAlignRobotAction align_action_ ;
 
     private XeroTimer vision_timer_ ;
+    private XeroTimer forward_timer_ ;
     
     public AutoPlaceOpCtrl(Swimmy2023RobotSubsystem sub, RobotOperation oper) throws BadParameterTypeException, MissingParameterException {
         super(sub, oper) ;
@@ -59,6 +62,9 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
         else {
             place_action_ = new GPMPlaceAction(sub.getGPM(), oper.getLocation(), oper.getGamePiece(), false);
         }
+
+        align_action_ = new SwerveAlignRobotAction(sub.getSwerve(), sub.getLimeLight());
+        forward_timer_ = new XeroTimer(sub.getRobot(), "forward", 0.5) ;
     }
 
     @Override
@@ -80,12 +86,20 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
                 stateLookingForTag() ;
                 break ;
 
+            case WaitingOnVision:
+                stateWaitingForVision() ;
+                break ;                
+
             case DrivingToLocation:
                 stateDrivingToLocation() ;
                 break;
 
-            case WaitingOnVision:
-                stateWaitingForVision() ;
+            case AlignRobot:
+                stateAlignRobot() ;
+                break ;
+
+            case DriveForward:
+                stateDriveForward() ;
                 break ;
 
             case WaitingOnArm:
@@ -115,6 +129,9 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
                 break ;
 
             case WaitingOnVision:
+                break ;
+
+            case AlignRobot:
                 break ;
 
             case DrivingToLocation:
@@ -151,20 +168,18 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
         double dx = destpos.getX() - robotpos.getX() ;
         double angle = Math.atan2(dy, dx);
 
-        Pose2d p2 ;
         Pose2d p0 = new Pose2d(robotpos.getX(), robotpos.getY(), Rotation2d.fromRadians(angle)) ;
         Pose2d p1 = new Pose2d(destpos.getX(), destpos.getY(), Rotation2d.fromRadians(angle)) ;
 
-        if (DriverStation.getAlliance() == Alliance.Red) {
-            p2 = new Pose2d(p1.getX() + 0.07, p1.getY(), target_pose_.getRotation());
-        }
-        else {
-            p2 = new Pose2d(p1.getX() - 0.07, p1.getY(), target_pose_.getRotation());
-        }
+        // if (DriverStation.getAlliance() == Alliance.Red) {
+        //     p2 = new Pose2d(p1.getX() + 0.07, p1.getY(), target_pose_.getRotation());
+        // }
+        // else {
+        //     p2 = new Pose2d(p1.getX() - 0.07, p1.getY(), target_pose_.getRotation());
+        // }
 
         ret.add(p0);
         ret.add(p1) ;
-        ret.add(p2) ;
 
         return ret;
     }
@@ -185,6 +200,11 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
         int tag = getRobotSubsystem().getFieldData().getGridTag(getOper().getAprilTag());
         double dist = getRobotSubsystem().getLimeLight().distantToTag(tag) ;
 
+        MessageLogger logger = getRobotSubsystem().getRobot().getMessageLogger();
+        logger.startMessage(MessageType.Debug, getRobotSubsystem().getLoggerID());
+        logger.add("looking for tag", tag) ;
+        logger.endMessage();
+
         if (vision_timer_.isExpired()) {
 
             // getRobotSubsystem().getOI().getGamePad().rumble(1.0, 2.0);
@@ -193,17 +213,16 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
 
             List<Pose2d> pts = computeDrivePathPoints(getRobotSubsystem().getSwerve().getPose(), target_pose_);
             List<Translation2d> interior = new ArrayList<Translation2d>() ;
-            interior.add(pts.get(1).getTranslation());
-            drive_to_action_ = new SwerveDrivePathAction(getRobotSubsystem().getSwerve(), pts.get(0), interior, pts.get(2), target_pose_.getRotation());
+            drive_to_action_ = new SwerveDrivePathAction(getRobotSubsystem().getSwerve(), pts.get(0), interior, pts.get(1), target_pose_.getRotation());
 
             getRobotSubsystem().getSwerve().setAction(drive_to_action_);
             if (place_action_ != null) {
                 getRobotSubsystem().getGPM().setAction(place_action_);
             }
+            getRobotSubsystem().getLimeLight().setPipeline(1);
             state_ = State.DrivingToLocation ;
         }
         else {
-            MessageLogger logger = getRobotSubsystem().getRobot().getMessageLogger() ;
             logger.startMessage(MessageType.Debug, getRobotSubsystem().getLoggerID());
             logger.add("Waiting On Vision") ;
             logger.add("tag", tag) ;
@@ -217,7 +236,30 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
     private void stateDrivingToLocation() {
         if (drive_to_action_.isDone()) {
             getRobotSubsystem().getSwerve().enableVision(true);
-            state_ = State.WaitingOnArm ;
+            getRobotSubsystem().getSwerve().setAction(align_action_) ;
+            state_ = State.AlignRobot ;
+        }
+    }
+
+    private void stateAlignRobot() {
+        if (align_action_.isDone()) {
+            getRobotSubsystem().getLimeLight().setPipeline(0);
+
+            ChassisSpeeds speed ;            
+            double xspeed = 0.25 ;
+            speed = new ChassisSpeeds(xspeed, 0.0, 0.0) ;
+
+            getRobotSubsystem().getSwerve().drive(speed) ;
+
+            forward_timer_.start() ;
+            state_ = State.DriveForward;
+        }
+    }
+
+    private void stateDriveForward() {
+        if (forward_timer_.isExpired()) {
+            getRobotSubsystem().getSwerve().drive(new ChassisSpeeds());
+            state_ = State.WaitingOnArm;
         }
     }
 

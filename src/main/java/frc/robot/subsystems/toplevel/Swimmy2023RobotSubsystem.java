@@ -72,6 +72,7 @@ public class Swimmy2023RobotSubsystem extends RobotSubsystem {
 
         limelight_ = new LimeLightSubsystem(this, "limelight");
         addChild(limelight_);
+        limelight_.setPipeline(0);
         
         gpm_ = new GPMSubsystem(this);
         addChild(gpm_);     

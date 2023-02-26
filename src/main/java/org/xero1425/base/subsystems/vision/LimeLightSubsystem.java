@@ -103,6 +103,7 @@ public class LimeLightSubsystem extends Subsystem implements IVisionLocalization
         super(parent, name) ;
 
         cam_mode_ = CamMode.Invalid ;
+        pipeline_ = -1 ;
 
         nt_ = NetworkTableInstance.getDefault().getTable(LimeLightTableName) ;
 

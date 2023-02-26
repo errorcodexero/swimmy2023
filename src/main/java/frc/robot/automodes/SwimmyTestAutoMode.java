@@ -28,6 +28,7 @@ import frc.robot.subsystems.grabber.GrabberGrabGampieceAction;
 import frc.robot.subsystems.grabber.GrabberStartCollectAction;
 import frc.robot.subsystems.grabber.GrabberStopCollectAction;
 import frc.robot.subsystems.grabber.GrabberSubsystem;
+import frc.robot.subsystems.swerve.SwerveAlignRobotAction;
 import frc.robot.subsystems.toplevel.RobotOperation;
 import frc.robot.subsystems.toplevel.Swimmy2023RobotSubsystem;
 import frc.robot.subsystems.toplevel.RobotOperation.GamePiece;
@@ -198,6 +199,10 @@ public class SwimmyTestAutoMode extends TestAutoMode {
             case 33:
                 addSubActionPair(gpm, new GPMCollectAction(gpm, RobotOperation.GamePiece.Cube, true), true);
                 break ;   
+
+            case 78:
+                addSubActionPair(swerve, new SwerveAlignRobotAction(swerve, limelight), true);
+                break ;
 
             case 79:
                 addSubActionPair(grabber, new GrabberGrabGampieceAction(grabber, GamePiece.Cube), true);
