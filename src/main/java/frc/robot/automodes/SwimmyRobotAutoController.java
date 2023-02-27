@@ -10,6 +10,9 @@ import org.xero1425.misc.MessageLogger;
 import org.xero1425.misc.MessageType;
 import org.xero1425.misc.MissingParameterException;
 
+import frc.robot.subsystems.toplevel.RobotOperation.GamePiece;
+import frc.robot.subsystems.toplevel.RobotOperation.Location;
+
 public class SwimmyRobotAutoController extends AutoController {
     private SwimmyTestAutoMode test_mode_ ;
     
@@ -19,9 +22,8 @@ public class SwimmyRobotAutoController extends AutoController {
             try {
                 test_mode_ = new SwimmyTestAutoMode(this) ;
 
-                // addAutoMode(new SwimmyAutoModeLeft(this));
-                // addAutoMode(new SwimmyAutoModeMiddle(this, Location.Top, GamePiece.Cone));
-                // addAutoMode(new SwimmyAutoModeRight(this));
+                addAutoMode(new SwimmyAutoModeCenter1(this, "Red", Location.Top, GamePiece.Cone));
+                addAutoMode(new SwimmyAutoModeCenter1(this, "Blue", Location.Top, GamePiece.Cone));
             }
             catch(Exception ex) {
                 MessageLogger logger = robot.getMessageLogger() ;

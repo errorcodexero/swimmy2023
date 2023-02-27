@@ -18,8 +18,8 @@ import frc.robot.subsystems.toplevel.RobotOperation.GamePiece;
 import frc.robot.subsystems.toplevel.RobotOperation.Location;
 
 public class SwimmyAutoModeCenter1 extends SwimmyAutoMode  {
-    public SwimmyAutoModeCenter1(AutoController ctrl, Location where, GamePiece what, boolean placetwo) throws Exception {
-        super(ctrl, "Center-1") ;
+    public SwimmyAutoModeCenter1(AutoController ctrl, String color, Location where, GamePiece what) throws Exception {
+        super(ctrl, color + "Center-1") ;
 
         Swimmy2023RobotSubsystem robot = (Swimmy2023RobotSubsystem)getAutoController().getRobot().getRobotSubsystem();
 
@@ -38,7 +38,7 @@ public class SwimmyAutoModeCenter1 extends SwimmyAutoMode  {
         //
         // Drive path 1, across the platform to find another game piece.
         //
-        action.addSubActionPair(robot.getSwerve(), new SwerveHolonomicPathFollower(robot.getSwerve(), "Center1-Path1", true, 1.0) , true);
+        action.addSubActionPair(robot.getSwerve(), new SwerveHolonomicPathFollower(robot.getSwerve(), "Center1" + color + "-Path1", true, 1.0) , true);
 
         //
         // In parallel with path 1 above, delay a fixed amount of time and then enter a ground collect operation
@@ -54,7 +54,7 @@ public class SwimmyAutoModeCenter1 extends SwimmyAutoMode  {
         //
         // Drive to the center of the platform rotating 90 degrees
         //
-        action.addSubActionPair(robot.getSwerve(), new SwerveHolonomicPathFollower(robot.getSwerve(), "Center1-Path2", false, 1.0) , true);
+        action.addSubActionPair(robot.getSwerve(), new SwerveHolonomicPathFollower(robot.getSwerve(), "Center1" + color + "-Path2", false, 1.0) , true);
 
         //
         // Delay for 1 second to be sure the platform has settled
