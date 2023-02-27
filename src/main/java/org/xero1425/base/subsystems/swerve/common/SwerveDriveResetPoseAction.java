@@ -8,7 +8,7 @@ public class SwerveDriveResetPoseAction extends SwerveDriveAction {
     @Override
     public void start() throws Exception {
         super.start() ;
-        getSubsystem().resetPose();
+        getSubsystem().resetPose(false);
         setDone();
     }
 

@@ -178,7 +178,6 @@ public class LimeLightSubsystem extends Subsystem implements IVisionLocalization
     //
     ///////////////////////////////////////////////////////
 
-    
     public int getTagCount() {
         if (fuds_ == null)
             return 0;
@@ -213,9 +212,11 @@ public class LimeLightSubsystem extends Subsystem implements IVisionLocalization
         }
 
         if (found_ && valid_targets_ && fuds_ != null && fuds_.length > 0) {
-            ret = new LocationData() ;
-            ret.location = wpiblue_ ;
-            ret.when = getRobot().getTime() - (tl_ + cl_) / 1000.0;
+            if (getDistance() < 5.0) {
+                ret = new LocationData() ;
+                ret.location = wpiblue_ ;
+                ret.when = getRobot().getTime() - (tl_ + cl_) / 1000.0;
+            }
         }
 
         return ret ;
@@ -395,14 +396,29 @@ public class LimeLightSubsystem extends Subsystem implements IVisionLocalization
         if (fuds_ != null) {
             count = fuds_.length ;
         }
-        putDashboard("AprilTags", DisplayType.Always, count);
+
+        String str = "" ;
+        if (fuds_ != null && fuds_.length > 0) {
+            for(int i = 0 ; i < fuds_.length ; i++) {
+                if (str.length() > 0) {
+                    str += ", " ;
+                }
+                str += fuds_[i].id ;
+            }
+        }
+
+        if (str == "")
+            str = "NONE" ;
+
+        logger.startMessage(MessageType.Debug, getLoggerID());
+        logger.add("April Tags Seen: ", str) ;
+        logger.endMessage();
 
         retroComputeMyState();
     }
 
     public double distantToTag(int id) {
         double ret = Double.MAX_VALUE ;
-
 
         if (fuds_ != null) {
             for(int i = 0 ; i < fuds_.length ; i++) {

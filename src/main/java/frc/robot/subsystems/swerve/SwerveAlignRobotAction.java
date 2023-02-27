@@ -26,8 +26,8 @@ public class SwerveAlignRobotAction extends SwerveDriveAction {
         double i = 0 ;
         double d = 0 ;
         double f = 0 ;
-        double minout = -1.0 ;
-        double maxout = 1.0 ;
+        double minout = -0.5 ;
+        double maxout = 0.5 ;
         double maxint = 0.0 ;
         ctrl_ = new PIDCtrl(p, i, d, f, minout, maxout, maxint, false) ;
 

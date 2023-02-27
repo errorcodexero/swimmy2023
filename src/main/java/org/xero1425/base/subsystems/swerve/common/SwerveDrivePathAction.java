@@ -20,6 +20,9 @@ public class SwerveDrivePathAction extends SwerveHolonomicControllerAction {
     private Rotation2d facing_ ;
     private Pose2d last_vision_pose_ ;
     private XeroTimer timer_ ;
+    private Pose2d start_ ;
+    private Pose2d end_ ;
+    private List<Translation2d> interior_ ;
 
     private int plot_id_ ;
     private Double[] plot_data_ ;
@@ -43,6 +46,10 @@ public class SwerveDrivePathAction extends SwerveHolonomicControllerAction {
 
         plot_data_ = new Double[columns_.length] ;
         plot_id_ = getSubsystem().initPlot("SwerveDrivePathAction") ;
+
+        start_ = start ;
+        end_ = end ;
+        interior_ = interior ;
     }
 
     @Override
@@ -108,6 +115,7 @@ public class SwerveDrivePathAction extends SwerveHolonomicControllerAction {
     }
 
     public String toString(int indent) {
-        return spaces(indent) + "SwerveDrivePathAction" ;
+        return spaces(indent) + "SwerveDrivePathAction: from " + 
+                start_.getTranslation().toString() + " to " + end_.getTranslation().toString() ;
     }
 }

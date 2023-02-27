@@ -128,14 +128,14 @@ public class SwerveDriveGamepad extends Gamepad {
             RobotSubsystem robotSubsystem = getSubsystem().getRobot().getRobotSubsystem();
             SwerveBaseSubsystem db = (SwerveBaseSubsystem)robotSubsystem.getDB() ;
             if (db != null) {
-                db.resetPose();
+                db.resetPose(invert_);
             }
         }
 
-        if (isButtonSequencePressed(drivebase_x_on_buttons_) && !holding_x_) {
-            db_.setAction(x_action_);
-            holding_x_ = true ;
-        }
+        // if (isButtonSequencePressed(drivebase_x_on_buttons_) && !holding_x_) {
+        //     db_.setAction(x_action_);
+        //     holding_x_ = true ;
+        // }
 
         if (isButtonSequencePressed(drivebase_x_off_buttons_) && holding_x_) {
             db_.setAction(action_);

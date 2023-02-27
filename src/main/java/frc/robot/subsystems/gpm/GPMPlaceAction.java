@@ -8,7 +8,6 @@ import org.xero1425.misc.MessageType;
 import org.xero1425.misc.MissingParameterException;
 
 import frc.robot.subsystems.arm.ArmStaggeredGotoAction;
-import frc.robot.subsystems.grabber.GrabberGrabGampieceAction;
 import frc.robot.subsystems.grabber.GrabberStowAction;
 import frc.robot.subsystems.toplevel.RobotOperation;
 
@@ -27,11 +26,11 @@ public class GPMPlaceAction extends Action {
     private ArmStaggeredGotoAction arm_extend_action_ ;
     private ArmStaggeredGotoAction arm_retract_action_ ;
     private GrabberStowAction grabber_drop_item_ ;
-    private GrabberGrabGampieceAction grabber_hold_action_ ;
     private boolean ready_to_drop_ ;
     private boolean drop_game_piece_ ;
     private boolean force_drop_ ;
     private XeroTimer timer_ ;
+    private String title_ ;
 
     public GPMPlaceAction(GPMSubsystem sub, RobotOperation.Location loc, RobotOperation.GamePiece gp, boolean force) throws MissingParameterException, BadParameterTypeException {
         super(sub.getRobot().getMessageLogger());
@@ -63,13 +62,13 @@ public class GPMPlaceAction extends Action {
             armpos += ":cube" ;
         }
 
+        title_ = armpos ;
         arm_extend_action_ = new ArmStaggeredGotoAction(sub_.getArm(), armpos + ":extend", false);
         arm_retract_action_ = new ArmStaggeredGotoAction(sub_.getArm(), armpos + ":retract", false);
 
         double duration = sub.getSettingsValue("place-delay").getDouble();
         timer_ = new XeroTimer(sub.getRobot(), "place", duration);
 
-        grabber_hold_action_ = new GrabberGrabGampieceAction(sub_.getGrabber(), gp);
         grabber_drop_item_ = new GrabberStowAction(sub.getGrabber());
     }
 
@@ -89,7 +88,6 @@ public class GPMPlaceAction extends Action {
         drop_game_piece_ = false ;
 
         sub_.getArm().setAction(arm_extend_action_, true) ;
-        sub_.getGrabber().getGrabSubsystem().setAction(grabber_hold_action_, true);
         state_ = State.ExtendingArm ;
     }
 
@@ -144,6 +142,6 @@ public class GPMPlaceAction extends Action {
 
     @Override
     public String toString(int indent) {
-        return spaces(indent) + "GPMPlaceAction";
+        return spaces(indent) + "GPMPlaceAction(" + title_ + ")" ;
     }
 }

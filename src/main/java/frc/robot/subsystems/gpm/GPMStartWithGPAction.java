@@ -23,7 +23,7 @@ public class GPMStartWithGPAction extends Action {
         SwerveBaseSubsystem swerve = (SwerveBaseSubsystem)sub.getRobot().getRobotSubsystem().getDB();
 
         grabber_action_ = new GrabberGrabGampieceAction(sub_.getGrabber(), gp);
-        arm_action_ = new ArmGotoAction(sub_.getArm(), 0.0, 20000);
+        arm_action_ = new ArmGotoAction(sub_.getArm(), 0.0, 40000);
         reset_db_action_ = new SwerveDriveResetPoseAction(swerve);
     }
     

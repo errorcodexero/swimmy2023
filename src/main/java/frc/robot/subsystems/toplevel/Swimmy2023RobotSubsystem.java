@@ -72,7 +72,6 @@ public class Swimmy2023RobotSubsystem extends RobotSubsystem {
 
         limelight_ = new LimeLightSubsystem(this, "limelight");
         addChild(limelight_);
-        limelight_.setPipeline(0);
         
         gpm_ = new GPMSubsystem(this);
         addChild(gpm_);     
@@ -183,6 +182,8 @@ public class Swimmy2023RobotSubsystem extends RobotSubsystem {
             logger.add("expection caught while creating operation controller in Swimmy2023RobotSubsystem");
             logger.logStackTrace(ex.getStackTrace());
             logger.endMessage();
+            getOI().enableGamepad();
+            getSwerve().enableVision(true);
             ctrl_ = null;
 
             return false;
@@ -195,6 +196,8 @@ public class Swimmy2023RobotSubsystem extends RobotSubsystem {
             logger.add("expection caught while starting operation controller in Swimmy2023RobotSubsystem");
             logger.logStackTrace(ex.getStackTrace());
             logger.endMessage();
+            getOI().enableGamepad();
+            getSwerve().enableVision(true);
             ctrl_ = null;
 
             return false;
@@ -236,6 +239,8 @@ public class Swimmy2023RobotSubsystem extends RobotSubsystem {
                 logger.startMessage(MessageType.Debug, getLoggerID()) ;
                 logger.add("Swimmy2023RobotSubsystem: completed: " + ctrl_.getOper().toString()) ;
                 logger.endMessage();
+                getOI().enableGamepad();
+                getSwerve().enableVision(true);
                 ctrl_ = null;
             }
         }

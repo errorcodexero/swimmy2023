@@ -109,7 +109,7 @@ public abstract class SwerveBaseSubsystem extends DriveBaseSubsystem {
         return vision_.getCurrentPose() ;
     }
 
-    public void resetPose() {
+    public void resetPose(boolean inverted) {
         boolean reset = false ;
         if (vision_ != null && vision_.hasTargets()) {
             Pose2d vpose = vision_.getCurrentPose();
@@ -120,7 +120,12 @@ public abstract class SwerveBaseSubsystem extends DriveBaseSubsystem {
         }
 
         if (!reset) {
-            setPose(new Pose2d());
+            if (inverted) {
+                setPose(new Pose2d(0, 0, Rotation2d.fromDegrees(180.0)));
+            }
+            else {
+                setPose(new Pose2d());
+            }
         }
     }
 

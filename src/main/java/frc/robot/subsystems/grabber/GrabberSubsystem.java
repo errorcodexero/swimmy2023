@@ -19,7 +19,7 @@ public class GrabberSubsystem extends Subsystem {
         super(parent, "grabber");
         
         motor_grab_ = new MotorEncoderSubsystem(this, "grabber-motor-grab", false);
-        motor_grab_.getMotorController().setCurrentLimit(40.0, 40.0);
+        motor_grab_.getMotorController().setCurrentLimit(40.0, 20.0);
         addChild(motor_grab_);
         
         motor_spin_ = new MotorEncoderSubsystem(this, "grabber-motor-spin", false);

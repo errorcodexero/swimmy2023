@@ -84,7 +84,8 @@ public class ArmStaggeredGotoAction extends Action {
     }
 
     @Override
-    public void start() {
+    public void start() throws Exception {
+        super.start() ;
         start_time_ = sub_.getRobot().getTime();
     }
 

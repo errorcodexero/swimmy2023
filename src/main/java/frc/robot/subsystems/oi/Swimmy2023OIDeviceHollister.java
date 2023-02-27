@@ -57,6 +57,7 @@ public class Swimmy2023OIDeviceHollister extends OIPanel {
     private OILed state_output1_ ;
     private OILed state_output2_ ;
 
+    private int station_ground_gadget_ ;
 
     private org.xero1425.base.actions.Action turtleAction;
 
@@ -152,12 +153,9 @@ public class Swimmy2023OIDeviceHollister extends OIPanel {
             operation.setManual(getValue(auto_v_manual_gadget_) == 0);
             operation.setSlot(getSlot());
             operation.setLocation(getHeight());
-
-            if (getValue(action_gadget_) == 1) {
-                operation.setGround(true);
-                robotSubsystem.setOperation(operation);
-            }
-            else if (getValue(lock_gadget_) == 1) {
+            operation.setGround(getValue(station_ground_gadget_) == 1) ;
+            
+            if (getValue(lock_gadget_) == 1) {
                 robotSubsystem.setOperation(operation);
             }
         }
@@ -224,5 +222,8 @@ public class Swimmy2023OIDeviceHollister extends OIPanel {
         
         num = getSubsystem().getSettingsValue("panel:gadgets:height:2").getInteger();
         height_2_gadget_ = mapButton(num, ButtonType.Level);
+
+        num = getSubsystem().getSettingsValue("panel:gadgets:station_v_ground").getInteger();
+        station_ground_gadget_ = mapButton(num, ButtonType.Level);
     }
 }

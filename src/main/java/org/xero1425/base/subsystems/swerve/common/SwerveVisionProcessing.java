@@ -3,6 +3,7 @@ package org.xero1425.base.subsystems.swerve.common;
 import org.xero1425.base.IVisionLocalization;
 import org.xero1425.base.IVisionLocalization.LocationData;
 import org.xero1425.base.subsystems.Subsystem;
+import org.xero1425.base.subsystems.Subsystem.DisplayType;
 import org.xero1425.misc.BadParameterTypeException;
 import org.xero1425.misc.MessageLogger;
 import org.xero1425.misc.MessageType;
@@ -14,6 +15,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class SwerveVisionProcessing {
     private enum VisionParamsType {
@@ -61,18 +63,6 @@ public class SwerveVisionProcessing {
         multi_tag_far_params_ = getParams(sub, "vision:multi-far");
 
         added_ = false ;
-
-        ShuffleboardTab shuffleboardTab = Shuffleboard.getTab("Vision");
-        shuffleboardTab.addNumber("DB Heading", () -> sub_.getHeading().getDegrees());
-        shuffleboardTab.addNumber("DB X", () -> sub_.getPose().getX());
-        shuffleboardTab.addNumber("DB Y", () -> sub_.getPose().getY());
-
-        shuffleboardTab.addNumber("VS Heading", () -> getVisionDegrees());
-        shuffleboardTab.addNumber("VS X", () -> getVisionX());
-        shuffleboardTab.addNumber("VS Y", () -> getVisionY());
-
-        shuffleboardTab.addBoolean("Adding", () -> { return added_ ;});
-        shuffleboardTab.addString("Params", () -> { return params_type_.toString() ;});
 
         logger_id_ = sub.getRobot().getMessageLogger().registerSubsystem("vision");
     }
@@ -191,6 +181,13 @@ public class SwerveVisionProcessing {
             logger.add("vsheading", vision_pose_.getRotation().getDegrees());
         }
         logger.endMessage();
+
+        if (vision_pose_ != null)
+            sub_.putDashboard("VisionPose", DisplayType.Always, vision_pose_.toString()) ;
+        else
+            sub_.putDashboard("VisionPose", DisplayType.Always, "N/A") ;
+            
+        sub_.putDashboard("DBPose", DisplayType.Always, sub_.getPose().toString()) ;
     }
 
     private void setVisionParams(VisionParamsType vtype)
