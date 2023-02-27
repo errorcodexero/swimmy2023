@@ -914,7 +914,7 @@
         }
     },
     "automodes" : {
-        "center" : {
+        "center1" : {
             "before-collect-delay" : 3.0,
             "collect-delay" : 1.0
         }

@@ -10,6 +10,7 @@ import org.xero1425.misc.MissingParameterException;
 
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 
 public class SwerveDriveGamepad extends Gamepad {
     public enum SwerveButton {
@@ -128,7 +129,11 @@ public class SwerveDriveGamepad extends Gamepad {
             RobotSubsystem robotSubsystem = getSubsystem().getRobot().getRobotSubsystem();
             SwerveBaseSubsystem db = (SwerveBaseSubsystem)robotSubsystem.getDB() ;
             if (db != null) {
-                db.resetPose(invert_);
+                boolean invert = false ;
+                if (invert_ && DriverStation.getAlliance() == Alliance.Red) {
+                    invert = true ;
+                }
+                db.resetPose(invert);
             }
         }
 
@@ -162,7 +167,7 @@ public class SwerveDriveGamepad extends Gamepad {
             return ;
         }
 
-        if (invert_) {
+        if (invert_ && DriverStation.getAlliance() == Alliance.Red) {
             ly = -ly ;
             lx = -lx ;
         }

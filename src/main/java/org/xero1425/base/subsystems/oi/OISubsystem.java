@@ -57,7 +57,7 @@ public class OISubsystem extends Subsystem {
     private final String DriverGamepadStandard = "standard_gamepad:index" ;
     private final String DriverGamepadSwerve = "swerve_gamepad:index" ;
 
-    private boolean invertred_ ;
+    private boolean inverted_ ;
     
     /// \brief Create a new OI subsystem
     /// \param parent the subsystem that manages this one
@@ -72,7 +72,7 @@ public class OISubsystem extends Subsystem {
         gp_index_ = -1 ;
 
         gamepad_type_ = type ;
-        invertred_ = invertred;
+        inverted_ = invertred;
         addGamePad();
 
         if (addshuffleboard) {
@@ -324,11 +324,7 @@ public class OISubsystem extends Subsystem {
                         SwerveDriveGamepad gp = new SwerveDriveGamepad(this, gp_index_, (SwerveBaseSubsystem)db_) ;
                         gp_ = gp ;
                         addHIDDevice(gp_) ;
-                        if (invertred_) {
-                            if (DriverStation.getAlliance() == Alliance.Red) {
-                                gp.invert(true);
-                            }
-                        }
+                        gp.invert(inverted_);
 
                         logger.startMessage(MessageType.Info) ;
                         logger.add("using swerve gamepad control").endMessage();

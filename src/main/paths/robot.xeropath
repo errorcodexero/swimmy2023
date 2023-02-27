@@ -3,7 +3,7 @@
     "generator": "errorcodexeroswerve",
     "groups": [
         {
-            "name": "CenterMode",
+            "name": "Center1Red",
             "paths": [
                 {
                     "constraints": [
@@ -17,15 +17,29 @@
                             "heading": 180,
                             "swrot": 0,
                             "swrotvel": 0,
-                            "x": 14.192755481084733,
-                            "y": 3.3207747568453962
+                            "x": 14.762215779229978,
+                            "y": 3.371845749486863
+                        },
+                        {
+                            "heading": 180,
+                            "swrot": 0,
+                            "swrotvel": 0,
+                            "x": 14.437704781569677,
+                            "y": 3.371845749486863
                         },
                         {
                             "heading": 180,
                             "swrot": 180,
                             "swrotvel": 0,
-                            "x": 10.430733803084516,
-                            "y": 3.3655607292025422
+                            "x": 14.081789493813217,
+                            "y": 3.371845749486863
+                        },
+                        {
+                            "heading": 180,
+                            "swrot": 180,
+                            "swrotvel": 0,
+                            "x": 10.376083262466548,
+                            "y": 3.3404414593907052
                         }
                     ],
                     "startvelocity": 0
@@ -47,60 +61,93 @@
                         },
                         {
                             "heading": 0,
-                            "swrot": 0,
+                            "swrot": 90,
                             "swrotvel": 0,
-                            "x": 14.1928,
-                            "y": 3.32077
-                        }
-                    ],
-                    "startvelocity": 0
-                },
-                {
-                    "constraints": [
-                    ],
-                    "endvelocity": 0,
-                    "maxacceleration": 4,
-                    "maxvelocity": 4,
-                    "name": "Path3",
-                    "points": [
-                        {
-                            "heading": 180,
-                            "swrot": 0,
-                            "swrotvel": 0,
-                            "x": 14.1928,
-                            "y": 3.32077
-                        },
-                        {
-                            "heading": 180,
-                            "swrot": 0,
-                            "swrotvel": 0,
-                            "x": 12.670032420941789,
-                            "y": 2.9848799641668053
-                        }
-                    ],
-                    "startvelocity": 0
-                },
-                {
-                    "constraints": [
-                    ],
-                    "endvelocity": 0,
-                    "maxacceleration": 4,
-                    "maxvelocity": 4,
-                    "name": "Path4",
-                    "points": [
-                        {
-                            "heading": 0,
-                            "swrot": 180,
-                            "swrotvel": 0,
-                            "x": 10.4307,
-                            "y": 3.36556
+                            "x": 11.265713837979463,
+                            "y": 3.350909556089424
                         },
                         {
                             "heading": 0,
                             "swrot": 90,
                             "swrotvel": 0,
-                            "x": 12.587054978028956,
-                            "y": 3.35344383785569
+                            "x": 12.700000729582255,
+                            "y": 3.350909556089424
+                        }
+                    ],
+                    "startvelocity": 0
+                }
+            ]
+        },
+        {
+            "name": "Center1Blue",
+            "paths": [
+                {
+                    "constraints": [
+                    ],
+                    "endvelocity": 0,
+                    "maxacceleration": 4,
+                    "maxvelocity": 4,
+                    "name": "Path1",
+                    "points": [
+                        {
+                            "heading": 0,
+                            "swrot": 180,
+                            "swrotvel": 0,
+                            "x": 1.8236482596127916,
+                            "y": 3.3299733626919856
+                        },
+                        {
+                            "heading": 0,
+                            "swrot": 180,
+                            "swrotvel": 0,
+                            "x": 2.1272230638756544,
+                            "y": 3.3299733626919856
+                        },
+                        {
+                            "heading": 0,
+                            "swrot": 0,
+                            "swrotvel": 0,
+                            "x": 2.577351221920589,
+                            "y": 3.3299733626919856
+                        },
+                        {
+                            "heading": 0,
+                            "swrot": 0,
+                            "swrotvel": 0,
+                            "x": 6.324929840062136,
+                            "y": 3.350909556089424
+                        }
+                    ],
+                    "startvelocity": 0
+                },
+                {
+                    "constraints": [
+                    ],
+                    "endvelocity": 0,
+                    "maxacceleration": 4,
+                    "maxvelocity": 4,
+                    "name": "Path2",
+                    "points": [
+                        {
+                            "heading": 180,
+                            "swrot": 0,
+                            "swrotvel": 0,
+                            "x": 6.32493,
+                            "y": 3.35091
+                        },
+                        {
+                            "heading": 180,
+                            "swrot": 90,
+                            "swrotvel": 0,
+                            "x": 5.278120170190196,
+                            "y": 3.350909556089424
+                        },
+                        {
+                            "heading": 180,
+                            "swrot": 90,
+                            "swrotvel": 0,
+                            "x": 3.948671889452831,
+                            "y": 3.359837169294546
                         }
                     ],
                     "startvelocity": 0

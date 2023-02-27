@@ -152,12 +152,15 @@
 - Hollister OI Code                                                 Done
 
 ------------------------- To Write ---------------------------
-- Center - 1 auto mode - place one then balance
-- Left auto mode - place two
-- Right auto mode - place two
-- Center - 2 auto mode - place two then balance
+- Look at timing of DriverStation.getAlliance() vs robot init
 - Update AutoPlaceOp to spit out cube in lower                      Done
   level using motorencoderpoweraction                               Done
 - External display on robot for cone/cube                           Done
 - Update SparkMax to apply stall current limit                      Done
 - Hold down button, drive half speed                                Done
+- Automodes
+  - Center - 1 auto mode - place one then balance
+  - Left auto mode - place two
+  - Right auto mode - place two
+  - Center - 2 auto mode - place two then balance
+

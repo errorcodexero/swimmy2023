@@ -11,18 +11,15 @@ import frc.robot.subsystems.gpm.GPMCollectAction;
 import frc.robot.subsystems.gpm.GPMPlaceAction;
 import frc.robot.subsystems.grabber.GrabberGrabGampieceAction;
 import frc.robot.subsystems.swerve.SwerveDriveBalancePlatform;
-import frc.robot.subsystems.toplevel.AutoGamePieceAction;
+import frc.robot.subsystems.swerve.SwerveDriveBalancePlatform.XYDirection;
 import frc.robot.subsystems.toplevel.RobotOperation;
 import frc.robot.subsystems.toplevel.Swimmy2023RobotSubsystem;
-import frc.robot.subsystems.toplevel.RobotOperation.Action;
 import frc.robot.subsystems.toplevel.RobotOperation.GamePiece;
-import frc.robot.subsystems.toplevel.RobotOperation.GridTagPosition;
 import frc.robot.subsystems.toplevel.RobotOperation.Location;
-import frc.robot.subsystems.toplevel.RobotOperation.Slot;
 
-public class SwimmyAutoModeCenter extends SwimmyAutoMode  {
-    public SwimmyAutoModeCenter(AutoController ctrl, Location where, GamePiece what, boolean placetwo) throws Exception {
-        super(ctrl, "Middle") ;
+public class SwimmyAutoModeCenter1 extends SwimmyAutoMode  {
+    public SwimmyAutoModeCenter1(AutoController ctrl, Location where, GamePiece what, boolean placetwo) throws Exception {
+        super(ctrl, "Center-1") ;
 
         Swimmy2023RobotSubsystem robot = (Swimmy2023RobotSubsystem)getAutoController().getRobot().getRobotSubsystem();
 
@@ -39,40 +36,34 @@ public class SwimmyAutoModeCenter extends SwimmyAutoMode  {
         ParallelAction action = new ParallelAction(getMessageLogger(), DonePolicy.All) ;
 
         //
-        // Drive path 1, across the platform to find another game piece.  This is in parallel with getting the
-        // ARM and grabber ready to collect
+        // Drive path 1, across the platform to find another game piece.
         //
-        action.addSubActionPair(robot.getSwerve(), new SwerveHolonomicPathFollower(robot.getSwerve(), "CenterMode-Path1", true, 1.0) , true);
+        action.addSubActionPair(robot.getSwerve(), new SwerveHolonomicPathFollower(robot.getSwerve(), "Center1-Path1", true, 1.0) , true);
 
+        //
+        // In parallel with path 1 above, delay a fixed amount of time and then enter a ground collect operation
+        //
         SequenceAction delaycollect = new SequenceAction(getMessageLogger());
-        delaycollect.addAction(new DelayAction(getAutoController().getRobot(), "automodes:center:before-collect-delay"));
-
+        delaycollect.addAction(new DelayAction(getAutoController().getRobot(), "automodes:center1:before-collect-delay"));
         double grabdelay = robot.getRobot().getSettingsSupplier().get("automodes:center:collect-delay").getDouble();
         delaycollect.addSubActionPair(robot.getGPM(), new GPMCollectAction(robot.getGPM(), RobotOperation.GamePiece.Cone, true, grabdelay), true);
-
         action.addAction(delaycollect);
+
         addAction(action);
 
-        if (placetwo) {
-            //
-            // Drive path 2 and place the piece
-            //
-            RobotOperation oper = new RobotOperation(Action.Place, GamePiece.Cone, GridTagPosition.Middle, Slot.Right, Location.Middle);
-            AutoGamePieceAction act = new AutoGamePieceAction(robot, oper, "CenterMode-Path2", 1.0);
-            addSubActionPair(robot, act, true);
+        //
+        // Drive to the center of the platform rotating 90 degrees
+        //
+        action.addSubActionPair(robot.getSwerve(), new SwerveHolonomicPathFollower(robot.getSwerve(), "Center1-Path2", false, 1.0) , true);
 
-            //
-            // Drive path 3 to the center of the platform
-            //
-            action.addSubActionPair(robot.getSwerve(), new SwerveHolonomicPathFollower(robot.getSwerve(), "CenterMode-Path3", false, 1.0) , true);
-        }
-        else {
-            //
-            // Drive to the center of the platform
-            //
-            action.addSubActionPair(robot.getSwerve(), new SwerveHolonomicPathFollower(robot.getSwerve(), "CenterMode-Path4", false, 1.0) , true);
-        }
+        //
+        // Delay for 1 second to be sure the platform has settled
+        //
+        addAction(new DelayAction(getAutoController().getRobot(), 1.0));
 
-        action.addSubActionPair(robot.getSwerve(), new SwerveDriveBalancePlatform(robot.getSwerve()), true);
+        //
+        // Now run the auto balance operation (with the robot sideways)
+        //
+        action.addSubActionPair(robot.getSwerve(), new SwerveDriveBalancePlatform(robot.getSwerve(), XYDirection.YDirection), true);
     }
 }

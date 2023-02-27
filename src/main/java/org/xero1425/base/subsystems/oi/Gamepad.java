@@ -2,6 +2,9 @@ package org.xero1425.base.subsystems.oi ;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController ;
+
+import org.xero1425.base.misc.XeroTimer;
+
 import edu.wpi.first.wpilibj.DriverStation ;
 
 /// \file
@@ -13,14 +16,8 @@ public abstract class Gamepad extends OIDevice
     // The XBOX Controller attached
     private XboxController controller_ ;
 
-    // The start time for a rumble functgion
-    private double start_ ;
-
-    // The duration of the rumble function
-    private double duration_ ;
-
-    // If true, we are rumbling
-    private boolean rumbling_ ;
+    // The timer for rumbling
+    private XeroTimer timer_ ;
     
     /// \brief Create the new gamepad
     /// \param oi the OI subsystem that owns this device
@@ -30,29 +27,30 @@ public abstract class Gamepad extends OIDevice
         super(oi, name, index) ;
 
         controller_ = new XboxController(index) ;
-        rumbling_ = false ;
+        timer_ = null ;
     }
 
     /// \brief Rumble the gamepad for a fixed magnitude and duraction
     /// \param amount the magnitude of the rumble
     /// \param duration the duration of the rumble
     public void rumble(double amount, double duration) {
-        controller_.setRumble(GenericHID.RumbleType.kRightRumble, amount);
-        controller_.setRumble(GenericHID.RumbleType.kLeftRumble, amount) ;
-        start_ = getSubsystem().getRobot().getTime() ;
-        duration_ = duration ;
-        rumbling_ = true ;
+        if (timer_ == null) {
+            controller_.setRumble(GenericHID.RumbleType.kRightRumble, amount);
+            controller_.setRumble(GenericHID.RumbleType.kLeftRumble, amount) ;
+            timer_ = new XeroTimer(getSubsystem().getRobot(), "rumble-timer", amount);
+        }
     }
 
     /// \brief Compute the state of this Gamepad device.  For the gamepad the
     /// rumble function is processed.
     @Override
     public void computeState() {
-        if (rumbling_ && getSubsystem().getRobot().getTime() - start_ > duration_)
-        {
-            controller_.setRumble(GenericHID.RumbleType.kLeftRumble, 0.0) ;
-            controller_.setRumble(GenericHID.RumbleType.kRightRumble, 0.0) ;
-            rumbling_ = false ;
+        if (timer_ != null) {
+            if (timer_.isExpired()) {
+                controller_.setRumble(GenericHID.RumbleType.kLeftRumble, 0.0) ;
+                controller_.setRumble(GenericHID.RumbleType.kRightRumble, 0.0) ;
+                timer_ = null ;
+            }
         }
     }
 

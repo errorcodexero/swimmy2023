@@ -16,25 +16,20 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import frc.robot.subsystems.gpm.GPMPlaceAction;
-import frc.robot.subsystems.swerve.SwerveAlignRobotAction;
 import frc.robot.subsystems.toplevel.RobotOperation.Action;
 import frc.robot.subsystems.toplevel.RobotOperation.GamePiece;
 import frc.robot.subsystems.toplevel.RobotOperation.Location;
 
 public class AutoPlaceOpCtrl extends OperationCtrl {
-
     private enum State {
         Idle,
         LookingForTag,
         WaitingOnVision,
         DrivingToLocation,
-        AlignRobot,
         DriveForward,
-        SettlingDelay,
         WaitingOnArm,
+        SettlingDelay,
         DroppingPiece,
-
-        InfiniteLoop
     }
 
     private double april_tag_action_threshold_ ;
@@ -44,7 +39,6 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
     private SwerveDrivePathAction drive_to_action_ ;
     private GPMPlaceAction place_action_ ;
     private MotorEncoderPowerAction spit_cube_action_ ;
-    private SwerveAlignRobotAction align_action_ ;
 
     private XeroTimer vision_timer_ ;
     private XeroTimer forward_timer_ ;
@@ -68,7 +62,6 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
             place_action_ = new GPMPlaceAction(sub.getGPM(), oper.getLocation(), oper.getGamePiece(), false);
         }
 
-        align_action_ = new SwerveAlignRobotAction(sub.getSwerve(), sub.getLimeLight());
         forward_timer_ = new XeroTimer(sub.getRobot(), "forward", 0.5) ;
     }
 
@@ -84,7 +77,6 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
 
         switch(state_) {
             case Idle:
-            case InfiniteLoop:
                 stateIdle() ;
                 break ;
 
@@ -100,21 +92,17 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
                 stateDrivingToLocation() ;
                 break;
 
-            case AlignRobot:
-                stateAlignRobot() ;
-                break ;
-
             case DriveForward:
                 stateDriveForward() ;
-                break ;
-
-            case SettlingDelay:
-                stateSettlingDelay() ;
                 break ;
 
             case WaitingOnArm:
                 stateWaitingOnArm() ;
                 break;
+
+            case SettlingDelay:
+                stateSettlingDelay() ;
+                break ;                
 
             case DroppingPiece:
                 stateDroppingPiece() ;
@@ -133,33 +121,31 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
     public void abort() throws BadParameterTypeException, MissingParameterException {
         switch(state_) {
             case Idle:
-            case InfiniteLoop:
                 break ;
 
             case LookingForTag:
                 break ;
 
             case WaitingOnVision:
-            case SettlingDelay:
-                break ;
-
-            case DriveForward:
-                getRobotSubsystem().getOI().enableGamepad() ;
-                drive_to_action_.cancel() ;
-                getRobotSubsystem().getSwerve().enableVision(true);
-                getRobotSubsystem().getSwerve().drive(new ChassisSpeeds());
-                break ;
-
-            case AlignRobot:
                 break ;
 
             case DrivingToLocation:
                 getRobotSubsystem().getOI().enableGamepad() ;
                 drive_to_action_.cancel() ;
                 getRobotSubsystem().getSwerve().enableVision(true);
+                break ;                
+
+            case DriveForward:
+                drive_to_action_.cancel() ;
+                getRobotSubsystem().getOI().enableGamepad() ;
+                getRobotSubsystem().getSwerve().enableVision(true);
+                getRobotSubsystem().getSwerve().drive(new ChassisSpeeds());
                 break ;
 
             case WaitingOnArm:
+                break;
+
+            case SettlingDelay:                
                 break;
 
             case DroppingPiece:
@@ -208,6 +194,7 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
         if (dist < april_tag_action_threshold_) {
             getRobotSubsystem().getSwerve().drive(new ChassisSpeeds());
             getRobotSubsystem().getOI().disableGamepad();
+            getRobotSubsystem().getOI().getGamePad().rumble(1.0, 0.5);
             state_ = State.WaitingOnVision ;
             vision_timer_.start() ;
         }
@@ -220,7 +207,6 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
         MessageLogger logger = getRobotSubsystem().getRobot().getMessageLogger();
         if (vision_timer_.isExpired()) {
 
-            // getRobotSubsystem().getOI().getGamePad().rumble(1.0, 2.0);
             getRobotSubsystem().getSwerve().enableVision(false);
             target_pose_ = getRobotSubsystem().getFieldData().getGridPose(getOper().getAprilTag(), getOper().getSlot());
 
@@ -232,7 +218,6 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
             if (place_action_ != null) {
                 getRobotSubsystem().getGPM().setAction(place_action_);
             }
-            // getRobotSubsystem().getLimeLight().setPipeline(1);
             state_ = State.DrivingToLocation ;
         }
         else {
@@ -248,8 +233,6 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
 
     private void stateDrivingToLocation() {
         if (drive_to_action_.isDone()) {
-            // getRobotSubsystem().getLimeLight().setPipeline(0);
-
             ChassisSpeeds speed ;            
             double xspeed = 0.5 ;
             speed = new ChassisSpeeds(xspeed, 0.0, 0.0) ;
@@ -258,23 +241,6 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
 
             forward_timer_.start() ;
             state_ = State.DriveForward;
-        }
-    }
-
-    private void stateAlignRobot() {
-        if (align_action_.isDone()) {
-            // getRobotSubsystem().getLimeLight().setPipeline(0);
-
-            // ChassisSpeeds speed ;            
-            // double xspeed = 0.25 ;
-            // speed = new ChassisSpeeds(xspeed, 0.0, 0.0) ;
-
-            // getRobotSubsystem().getSwerve().drive(speed) ;
-
-            // forward_timer_.start() ;
-            // state_ = State.DriveForward;
-
-            state_ = State.InfiniteLoop ;
         }
     }
 
@@ -307,13 +273,13 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
         if (place_action_ != null && place_action_.isDone()) {
             state_ = State.Idle ;
             getRobotSubsystem().getOI().enableGamepad();
-            // getRobotSubsystem().getOI().getGamePad().rumble(1.0, 2.0);
+            getRobotSubsystem().getOI().getGamePad().rumble(1.0, 0.5);
             setDone();
         }
         else if (spit_cube_action_ != null && spit_cube_action_.isDone()) {
             state_ = State.Idle ;
             getRobotSubsystem().getOI().enableGamepad();
-            // getRobotSubsystem().getOI().getGamePad().rumble(1.0, 2.0);
+            getRobotSubsystem().getOI().getGamePad().rumble(1.0, 0.5);
             setDone();
         }
     }

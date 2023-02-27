@@ -9,12 +9,18 @@ import org.xero1425.misc.PIDCtrl;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 
 public class SwerveDriveBalancePlatform extends SwerveDriveAction {
+    public enum XYDirection {
+        XDirection,
+        YDirection
+    }
 
     private PIDCtrl pid_ ;
+    private XYDirection dir_ ;
 
-    public SwerveDriveBalancePlatform(SwerveBaseSubsystem sub) throws MissingParameterException, BadParameterTypeException {
+    public SwerveDriveBalancePlatform(SwerveBaseSubsystem sub, XYDirection dir) throws MissingParameterException, BadParameterTypeException {
         super(sub);
 
+        dir_ = dir;
         pid_ = new PIDCtrl(sub.getRobot().getSettingsSupplier(), "balance-pid", false);
     }
 
@@ -27,9 +33,18 @@ public class SwerveDriveBalancePlatform extends SwerveDriveAction {
     public void run() throws Exception {
         super.run() ;
 
-        double out = pid_.getOutput(0.0, getSubsystem().getPitch(), getSubsystem().getRobot().getDeltaTime());
-        ChassisSpeeds speeds = new ChassisSpeeds(out, 0.0, 0.0);
-        getSubsystem().drive(speeds);
+        double out ;
+        ChassisSpeeds speed ;
+
+        if (dir_ == XYDirection.XDirection) {
+            out = pid_.getOutput(0.0, getSubsystem().getPitch(), getSubsystem().getRobot().getDeltaTime());
+            speed = new ChassisSpeeds(out, 0.0, 0.0);
+        }
+        else {
+            out = pid_.getOutput(0.0, getSubsystem().getRoll(), getSubsystem().getRobot().getDeltaTime());
+            speed = new ChassisSpeeds(0.0, out, 0.0);
+        }
+        getSubsystem().drive(speed);
     }
 
     @Override
