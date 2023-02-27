@@ -22,7 +22,6 @@ public class SwerveDrivePathAction extends SwerveHolonomicControllerAction {
     private XeroTimer timer_ ;
     private Pose2d start_ ;
     private Pose2d end_ ;
-    private List<Translation2d> interior_ ;
 
     private int plot_id_ ;
     private Double[] plot_data_ ;
@@ -49,7 +48,6 @@ public class SwerveDrivePathAction extends SwerveHolonomicControllerAction {
 
         start_ = start ;
         end_ = end ;
-        interior_ = interior ;
     }
 
     @Override

@@ -1,5 +1,6 @@
 package org.xero1425.base;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 
 public interface IVisionLocalization {
@@ -9,7 +10,7 @@ public interface IVisionLocalization {
     }
 
     int getTagCount();
-    LocationData getLocation() ;
+    LocationData getLocation(Pose2d db) ;
     double getDistance() ;
     double getMultiTagDistance() ;
 }

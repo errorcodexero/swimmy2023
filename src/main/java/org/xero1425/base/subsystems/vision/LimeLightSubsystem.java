@@ -10,6 +10,7 @@ import org.xero1425.base.IVisionLocalization;
 import org.xero1425.base.XeroRobot;
 import org.xero1425.base.subsystems.Subsystem;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -23,6 +24,9 @@ public class LimeLightSubsystem extends Subsystem implements IVisionLocalization
     public final static String CamModeKeyName = "camMode" ;
     public final static String LedModeKeyName = "ledMode" ;
     public final static String PipelineKeyName = "pipeline" ;
+
+    public final static boolean TestTagZHeight = true ;
+    public final static boolean TestHeadingVersusDB = true ;
 
 
     public class Retro {
@@ -185,7 +189,33 @@ public class LimeLightSubsystem extends Subsystem implements IVisionLocalization
         return fuds_.length;
     }
 
-    public LocationData getLocation() {
+    private boolean areTagsValid(Pose2d db) {
+        if (fuds_ == null || fuds_.length == 0) {
+            return false ;
+        }
+
+        //
+        // Check the Z coordinate of any tag detected and if any of the Z
+        // coordinate are on 
+        // 
+        boolean ret = true ;
+
+        if (TestTagZHeight) {
+            for(int i = 0 ; i < fuds_.length ; i++) {
+                if (Math.abs(fuds_[i].targetToRobot.getZ()) > 1.0) {
+                    ret = false ;
+                }
+            }
+        }
+
+        if (TestHeadingVersusDB) {
+            
+        }
+
+        return ret ;
+    }
+
+    public LocationData getLocation(Pose2d db) {
         LocationData ret = null ;
 
         if (XeroRobot.isSimulation()) {
@@ -211,12 +241,10 @@ public class LimeLightSubsystem extends Subsystem implements IVisionLocalization
             }
         }
 
-        if (found_ && valid_targets_ && fuds_ != null && fuds_.length > 0) {
-            if (getDistance() < 5.0) {
-                ret = new LocationData() ;
-                ret.location = wpiblue_ ;
-                ret.when = getRobot().getTime() - (tl_ + cl_) / 1000.0;
-            }
+        if (found_ && valid_targets_ && areTagsValid(db)) {
+            ret = new LocationData() ;
+            ret.location = wpiblue_ ;
+            ret.when = getRobot().getTime() - (tl_ + cl_) / 1000.0;
         }
 
         return ret ;
@@ -390,11 +418,6 @@ public class LimeLightSubsystem extends Subsystem implements IVisionLocalization
             if (obj instanceof JSONObject) {
                 parseLimelightJsonObject((JSONObject)obj) ;
             }
-        }
-
-        int count = 0 ;
-        if (fuds_ != null) {
-            count = fuds_.length ;
         }
 
         String str = "" ;

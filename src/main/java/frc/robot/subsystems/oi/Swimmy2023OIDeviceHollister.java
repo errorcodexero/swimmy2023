@@ -8,11 +8,12 @@ import org.xero1425.base.subsystems.oi.OIPanelButton.ButtonType;
 import org.xero1425.misc.BadParameterTypeException;
 import org.xero1425.misc.MissingParameterException;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import frc.robot.SwimmyRobot2023;
 import frc.robot.subsystems.gpm.GPMStartWithGPAction;
+import frc.robot.subsystems.gpm.GPMStowAction;
 import frc.robot.subsystems.toplevel.RobotOperation;
 import frc.robot.subsystems.toplevel.Swimmy2023RobotSubsystem;
-// import frc.robot.subsystems.toplevel.TurtleAction;
 import frc.robot.subsystems.toplevel.RobotOperation.GamePiece;
 import frc.robot.subsystems.toplevel.RobotOperation.GridTagPosition;
 import frc.robot.subsystems.toplevel.RobotOperation.Slot;
@@ -34,6 +35,21 @@ import frc.robot.subsystems.toplevel.RobotOperation.Slot;
 //
 
 public class Swimmy2023OIDeviceHollister extends OIPanel {
+    private enum DisplayPattern {
+        NONE(0), 
+        CONE(1),
+        CUBE(2),
+        ERROR(3);
+
+        /// The value of the enum
+        public final int value ;
+
+        private DisplayPattern(int value) {
+            this.value = value ;
+        }  
+    } ;
+
+    private DisplayPattern current_pattern_ ;
     private int collect_v_place_gadget_;
     private int auto_v_manual_gadget_;
     private int lock_gadget_;
@@ -59,7 +75,8 @@ public class Swimmy2023OIDeviceHollister extends OIPanel {
 
     private int station_ground_gadget_ ;
 
-    private org.xero1425.base.actions.Action turtleAction;
+    private GPMStowAction turtle_action_ ;
+    private GPMStartWithGPAction start_with_gp_action_ ;
 
     public Swimmy2023OIDeviceHollister(OISubsystem sub, String name, int index)
             throws BadParameterTypeException, MissingParameterException {
@@ -83,7 +100,9 @@ public class Swimmy2023OIDeviceHollister extends OIPanel {
     public void createStaticActions() throws MissingParameterException, BadParameterTypeException {
         SwimmyRobot2023 robot = (SwimmyRobot2023)getSubsystem().getRobot();
         Swimmy2023RobotSubsystem subsystem = (Swimmy2023RobotSubsystem)robot.getRobotSubsystem();
-        turtleAction = new GPMStartWithGPAction(subsystem.getGPM(), RobotOperation.GamePiece.Cone) ;
+
+        turtle_action_ = new GPMStowAction(subsystem.getGPM());
+        start_with_gp_action_ = new GPMStartWithGPAction(subsystem.getGPM(), RobotOperation.GamePiece.Cone) ;
     }
 
     private GamePiece getGamePiece() {
@@ -134,15 +153,26 @@ public class Swimmy2023OIDeviceHollister extends OIPanel {
         SwimmyRobot2023 robot = ((SwimmyRobot2023)getSubsystem().getRobot());
         Swimmy2023RobotSubsystem robotSubsystem = ((Swimmy2023RobotSubsystem)robot.getRobotSubsystem());
 
-        state_output1_.setState(State.OFF);
-        state_output2_.setState(State.OFF);
+        if (robotSubsystem.isOperationComplete() == false && current_pattern_ != DisplayPattern.ERROR) {
+            setDisplay(DisplayPattern.NONE);
+        }
 
         if (getValue(turtle_gadget_) == 1) {
-            robotSubsystem.getGPM().setAction(turtleAction);
-            
+            if (DriverStation.isFMSAttached()) {
+                robotSubsystem.getGPM().setAction(turtle_action_);
+            }
+            else {
+                if (getValue(auto_v_manual_gadget_) == 0) {
+                    robotSubsystem.getGPM().setAction(turtle_action_);
+                }
+                else {
+                    robotSubsystem.getGPM().setAction(start_with_gp_action_);
+                }            
+            }
         }
         else if (getValue(abort_gadget_) == 1) {
             robotSubsystem.abort();
+            setDisplay(DisplayPattern.NONE);
         }
         else {
             RobotOperation operation = new RobotOperation();
@@ -156,8 +186,37 @@ public class Swimmy2023OIDeviceHollister extends OIPanel {
             operation.setGround(getValue(station_ground_gadget_) == 1) ;
             
             if (getValue(lock_gadget_) == 1) {
-                robotSubsystem.setOperation(operation);
+                if (robotSubsystem.setOperation(operation)) {
+                    if (operation.getGamePiece() == GamePiece.Cone) {
+                        setDisplay(DisplayPattern.CONE);
+                    }
+                    else {
+                        setDisplay(DisplayPattern.CONE);                        
+                    }
+                } else {
+                    setDisplay(DisplayPattern.ERROR);
+                }
             }
+        }
+    }
+
+    private void setDisplay(DisplayPattern pattern) {
+        current_pattern_ = pattern ;
+
+        int value = pattern.value ;
+
+        if ((value & 1) == 0) {
+            state_output1_.setState(State.OFF);
+        }
+        else {
+            state_output1_.setState(State.ON);
+        }
+
+        if ((value & 2) == 0) {
+            state_output2_.setState(State.OFF);
+        }
+        else {
+            state_output2_.setState(State.ON);
         }
     }
 

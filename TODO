@@ -1,7 +1,5 @@
 ------------------------- Testing -----------------------------
 
-Fri 2/23
---------
 - Tune ARM
   o Upper
     - Get MaxV/MaxA/MaxJ (MotorEncoderPowerAction TestMode 10)      Done
@@ -22,102 +20,122 @@ Fri 2/23
     o Cone Collect Ground (TestMode 84)                             Done
     o Cube Collect Ground (TestMode 85)                             Done
 
-Sat 2/24 (as much as possible)
-------------------------------
+- Test new OI code (low -> high buttons especially)                 Done
 
-- Test new OI code (low -> high buttons especially)
+- Test new trajectory generation when placing                       Done
+  o Place on high location                                          Done
+  o Target april tag straight on                                    Done
+  o Target april tag to the right                                   Done
+  o Target april tag to the left                                    Done
 
-- Test new trajectory generation when placing
-  o Place on high location
-  o Target april tag straight on
-  o Target april tag to the right
-  o Target april tag to the left
+- Experiment with vision on while placing look at graphs            Deferred
 
-- Experiment with vision on while placing look at graphs
+- Test the OI display for cone/cube/none/error
 
-- Test/Tune each of the drivebase locations for telop auto place
-  o Red Place Cone/Tag 1/Right/Top
-  o Red Place Cube/Tag 1/Middle/Bottom
+- Test/Tune first cube place operation
+- Test cube ground collect
 
-  o Red Place Cone/Tag 1/Right/Middle
-  o Red Place Cone/Tag 1/Right/Bottom
-  o Red Place Cube/Tag 1/Right/Bottom
-  o Red Place Cube/Tag 1/Middle/Top
-  o Red Place Cube/Tag 1/Middle/Middle
-  o Red Place Cube/Tag 1/Middle/Bottom
-  o Red Place Cone/Tag 1/Left/Top
-  o Red Place Cone/Tag 1/Left/Middle
-  o Red Place Cone/Tag 1/Left/Bottom
-  o Red Place Cube/Tag 1/Left/Bottom
-  o Red Place Cone/Tag 2/Right/Top
-  o Red Place Cone/Tag 2/Right/Middle
-  o Red Place Cone/Tag 2/Right/Bottom
-  o Red Place Cube/Tag 2/Right/Bottom
-  o Red Place Cube/Tag 2/Middle/Top
-  o Red Place Cube/Tag 2/Middle/Middle
-  o Red Place Cube/Tag 2/Middle/Bottom
-  o Red Place Cone/Tag 2/Left/Top
-  o Red Place Cone/Tag 2/Left/Middle
-  o Red Place Cone/Tag 2/Left/Bottom
-  o Red Place Cube/Tag 2/Left/Bottom
-  o Red Place Cone/Tag 3/Right/Top
-  o Red Place Cone/Tag 3/Right/Middle
-  o Red Place Cone/Tag 3/Right/Bottom
-  o Red Place Cube/Tag 3/Right/Bottom
-  o Red Place Cube/Tag 3/Middle/Top
-  o Red Place Cube/Tag 3/Middle/Middle
-  o Red Place Cube/Tag 3/Middle/Bottom
-  o Red Place Cone/Tag 3/Left/Top
-  o Red Place Cone/Tag 3/Left/Middle
-  o Red Place Cone/Tag 3/Left/Bottom
-  o Red Place Cube/Tag 3/Left/Bottom
-  o Blue Place Cone/Tag 6/Right/Top
-  o Blue Place Cone/Tag 6/Right/Middle
-  o Blue Place Cone/Tag 6/Right/Bottom
-  o Blue Place Cube/Tag 6/Right/Bottom
-  o Blue Place Cube/Tag 6/Middle/Top
-  o Blue Place Cube/Tag 6/Middle/Middle
-  o Blue Place Cube/Tag 6/Middle/Bottom
-  o Blue Place Cone/Tag 6/Left/Top
-  o Blue Place Cone/Tag 6/Left/Middle
-  o Blue Place Cone/Tag 6/Left/Bottom
-  o Blue Place Cube/Tag 6/Left/Bottom
-  o Blue Place Cone/Tag 7/Right/Top
-  o Blue Place Cone/Tag 7/Right/Middle
-  o Blue Place Cone/Tag 7/Right/Bottom
-  o Blue Place Cube/Tag 7/Right/Bottom
-  o Blue Place Cube/Tag 7/Middle/Top
-  o Blue Place Cube/Tag 7/Middle/Middle
-  o Blue Place Cube/Tag 7/Middle/Bottom
-  o Blue Place Cone/Tag 7/Left/Top
-  o Blue Place Cone/Tag 7/Left/Middle
-  o Blue Place Cone/Tag 7/Left/Bottom
-  o Blue Place Cube/Tag 7/Left/Bottom  
-  o Blue Place Cone/Tag 8/Right/Top
-  o Blue Place Cone/Tag 8/Right/Middle
-  o Blue Place Cone/Tag 8/Right/Bottom
-  o Blue Place Cube/Tag 8/Right/Bottom
-  o Blue Place Cube/Tag 8/Middle/Top
-  o Blue Place Cube/Tag 8/Middle/Middle
-  o Blue Place Cube/Tag 8/Middle/Bottom
-  o Blue Place Cone/Tag 8/Left/Top
-  o Blue Place Cone/Tag 8/Left/Middle
-  o Blue Place Cone/Tag 8/Left/Bottom
-  o Blue Place Cube/Tag 8/Left/Bottom  
-  
 - Tune each of the drivebase locations for collect
   o Red (Tag 5) Left
   o Red (Tag 5) Right
   o Blue (Tag 4) Left
   o Blue (Tag 4) Right
 
+- Test/Tune each of the drivebase locations/auto place
+  o Red Place Cone/Tag 1/Right/Top                                  Done
+  o Red Place Cone/Tag 1/Right/Middle                               Done
+  o Red Place Cone/Tag 1/Right/Bottom                               Done
+  o Red Place Cube/Tag 1/Right/Bottom
+
+  o Red Place Cone/Tag 1/Left/Top
+  o Red Place Cone/Tag 1/Left/Middle
+  o Red Place Cone/Tag 1/Left/Bottom
+  o Red Place Cube/Tag 1/Left/Bottom
+
+  o Red Place Cube/Tag 1/Middle/Top
+  o Red Place Cube/Tag 1/Middle/Bottom
+  o Red Place Cube/Tag 1/Right/Bottom
+
+  o Red Place Cone/Tag 2/Right/Top
+  o Red Place Cone/Tag 2/Right/Middle
+  o Red Place Cone/Tag 2/Right/Bottom
+  o Red Place Cube/Tag 2/Right/Bottom
+
+  o Red Place Cone/Tag 2/Left/Top
+  o Red Place Cone/Tag 2/Left/Middle
+  o Red Place Cone/Tag 2/Left/Bottom
+  o Red Place Cube/Tag 2/Left/Bottom
+
+  o Red Place Cube/Tag 2/Middle/Top
+  o Red Place Cube/Tag 2/Middle/Bottom
+  o Red Place Cube/Tag 2/Right/Bottom  
+
+  o Red Place Cone/Tag 3/Right/Top
+  o Red Place Cone/Tag 3/Right/Middle
+  o Red Place Cone/Tag 3/Right/Bottom
+  o Red Place Cube/Tag 3/Right/Bottom
+
+  o Red Place Cone/Tag 3/Left/Top
+  o Red Place Cone/Tag 3/Left/Middle
+  o Red Place Cone/Tag 3/Left/Bottom
+  o Red Place Cube/Tag 3/Left/Bottom
+
+  o Red Place Cube/Tag 3/Middle/Top
+  o Red Place Cube/Tag 3/Middle/Bottom
+  o Red Place Cube/Tag 3/Right/Bottom   
+
+  o Blue Place Cone/Tag 6/Right/Top
+  o Blue Place Cone/Tag 6/Right/Middle
+  o Blue Place Cone/Tag 6/Right/Bottom
+  o Blue Place Cube/Tag 6/Right/Bottom
+
+  o Blue Place Cone/Tag 6/Left/Top
+  o Blue Place Cone/Tag 6/Left/Middle
+  o Blue Place Cone/Tag 6/Left/Bottom
+  o Blue Place Cube/Tag 6/Left/Bottom
+
+  o Blue Place Cube/Tag 6/Middle/Top
+  o Blue Place Cube/Tag 6/Middle/Bottom
+  o Blue Place Cube/Tag 6/Right/Bottom 
+
+  o Blue Place Cone/Tag 7/Right/Top
+  o Blue Place Cone/Tag 7/Right/Middle
+  o Blue Place Cone/Tag 7/Right/Bottom
+  o Blue Place Cube/Tag 7/Right/Bottom
+
+  o Blue Place Cone/Tag 7/Left/Top
+  o Blue Place Cone/Tag 7/Left/Middle
+  o Blue Place Cone/Tag 7/Left/Bottom
+  o Blue Place Cube/Tag 7/Left/Bottom
+
+  o Blue Place Cube/Tag 7/Middle/Top
+  o Blue Place Cube/Tag 7/Middle/Bottom
+  o Blue Place Cube/Tag 7/Right/Bottom   
+
+  o Blue Place Cone/Tag 8/Right/Top
+  o Blue Place Cone/Tag 8/Right/Middle
+  o Blue Place Cone/Tag 8/Right/Bottom
+  o Blue Place Cube/Tag 8/Right/Bottom
+
+  o Blue Place Cone/Tag 8/Left/Top
+  o Blue Place Cone/Tag 8/Left/Middle
+  o Blue Place Cone/Tag 8/Left/Bottom
+  o Blue Place Cube/Tag 8/Left/Bottom
+
+  o Blue Place Cube/Tag 8/Middle/Top
+  o Blue Place Cube/Tag 8/Middle/Bottom
+  o Blue Place Cube/Tag 8/Right/Bottom   
+
+- Test the Robot display for cone/cube/none
+
 - Test manual collect
 - Test manual place
   o Cube (low/middle/high)
   o Cone (low/middle/high)
 
-- Check out abort functionality at different phases of place
-- Check out abort functionality at different phases of collect
+- Check out abort functionality in place
+- Check out abort functionality in loading station collect
+- Check out abort functionality in ground collect                   Done
 - Check out OI display
 
 - Test/Tune the auto balance code for platform
@@ -131,15 +149,15 @@ Sat 2/24 (as much as possible)
 - Vibrate gamepad is not working as expected
 
 ------------------------- To Integrate -----------------------
-- Hollister's OI Code
+- Hollister OI Code                                                 Done
 
 ------------------------- To Write ---------------------------
 - Center - 1 auto mode - place one then balance
 - Left auto mode - place two
 - Right auto mode - place two
 - Center - 2 auto mode - place two then balance
-- Update AutoPlaceOp to spit out cube in lower                    Done
-  level using motorencoderpoweraction
-- External display on robot for cone/cube
-- Update Falcons to apply stall current limit
-- Hold down button, drive half speed
+- Update AutoPlaceOp to spit out cube in lower                      Done
+  level using motorencoderpoweraction                               Done
+- External display on robot for cone/cube                           Done
+- Update SparkMax to apply stall current limit                      Done
+- Hold down button, drive half speed                                Done

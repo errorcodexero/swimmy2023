@@ -13,9 +13,6 @@ import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.Vector;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.numbers.N3;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class SwerveVisionProcessing {
     private enum VisionParamsType {
@@ -44,7 +41,6 @@ public class SwerveVisionProcessing {
     private double single_tag_distance_threshold_;
     private boolean advanced_rejection_ ;
 
-    private boolean added_ ;
     private Pose2d vision_pose_ ;
 
     public SwerveVisionProcessing(SwerveBaseSubsystem sub, IVisionLocalization vision) throws BadParameterTypeException, MissingParameterException {
@@ -62,15 +58,13 @@ public class SwerveVisionProcessing {
         multi_tag_near_params_ = getParams(sub, "vision:multi-near");
         multi_tag_far_params_ = getParams(sub, "vision:multi-far");
 
-        added_ = false ;
-
         logger_id_ = sub.getRobot().getMessageLogger().registerSubsystem("vision");
     }
 
     public Pose2d getCurrentPose() {
         Pose2d ret = null ;
 
-        LocationData lc = vision_.getLocation();
+        LocationData lc = vision_.getLocation(sub_.getPose());
         if (lc != null) { 
             ret = lc.location.toPose2d();
         }
@@ -82,36 +76,11 @@ public class SwerveVisionProcessing {
         return vision_.getTagCount() > 0 ;
     }
 
-    private double getVisionDegrees() {
-        if (vision_pose_ == null) {
-            return Double.NaN;
-        }
-
-        return vision_pose_.getRotation().getDegrees();
-    }
-
-    private double getVisionX() {
-        if (vision_pose_ == null) {
-            return Double.NaN;
-        }
-
-        return vision_pose_.getX();
-    }
-
-    private double getVisionY() {
-        if (vision_pose_ == null) {
-            return Double.NaN;
-        }
-
-        return vision_pose_.getY();
-    }
-
     public void processVision() {
         MessageLogger logger = sub_.getRobot().getMessageLogger();
         boolean ignore = false;
 
-        added_ = false ;
-        LocationData lc = vision_.getLocation() ;
+        LocationData lc = vision_.getLocation(sub_.getPose()) ;
         setVisionParams();
         if (lc != null) {
             vision_pose_ = lc.location.toPose2d();
@@ -157,7 +126,6 @@ public class SwerveVisionProcessing {
 
             if (!ignore) {
                 sub_.getEstimator().addVisionMeasurement(vision_pose_, lc.when) ; 
-                added_ = true ;
             }
             else {
                 logger.startMessage(MessageType.Debug, logger_id_);

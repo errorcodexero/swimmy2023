@@ -11,34 +11,16 @@ import org.xero1425.misc.MessageLogger;
 import org.xero1425.misc.MessageType;
 import org.xero1425.misc.MissingParameterException;
 
+import edu.wpi.first.wpilibj.DigitalOutput;
 import frc.robot.SwimmyRobot2023;
 import frc.robot.subsystems.gpm.GPMSubsystem;
 import frc.robot.subsystems.oi.Swimmy2023OISubsystem;
 import frc.robot.subsystems.toplevel.RobotOperation.Action;
+import frc.robot.subsystems.toplevel.RobotOperation.GamePiece;
 import frc.robot.subsystems.toplevel.RobotOperation.Slot;
 
 
 public class Swimmy2023RobotSubsystem extends RobotSubsystem {
-
-    enum State {
-        Idle,
-
-        //
-        // Common to all automatic operations
-        //
-        LookingForTag,
-        DrivingToLocation,
-
-        //
-        // Manual collect operation
-        //
-        ManualWaitForCollectDone,
-
-        //
-        // Manual place operation
-        //
-        ManualWaitForPlaceDone
-    } ;
 
     //
     // The subsystems
@@ -47,6 +29,12 @@ public class Swimmy2023RobotSubsystem extends RobotSubsystem {
     private SDSSwerveDriveSubsystem db_;
     private Swimmy2023OISubsystem oi_;
     private LimeLightSubsystem limelight_;
+
+    //
+    // Digital IOs
+    //
+    DigitalOutput display_out_2_ ;
+    DigitalOutput display_out_3_ ;
 
     //
     // The field related data
@@ -77,6 +65,28 @@ public class Swimmy2023RobotSubsystem extends RobotSubsystem {
         addChild(gpm_);     
 
         db_.setVision(limelight_);
+
+        display_out_2_ = new DigitalOutput(2) ;
+        display_out_3_ = new DigitalOutput(3) ;
+    }
+
+    public void setDisplayState(GamePiece st) {
+        switch(st) {
+            case Cone:
+                display_out_2_.set(true) ;
+                display_out_3_.set(false);
+                break;
+
+            case Cube:
+                display_out_2_.set(false);
+                display_out_3_.set(true) ;
+                break; 
+
+            default:
+                display_out_2_.set(false);
+                display_out_3_.set(false);
+                break ;
+        }
     }
 
     public GPMSubsystem getGPM() {
@@ -157,6 +167,8 @@ public class Swimmy2023RobotSubsystem extends RobotSubsystem {
         logger.endMessage();
 
         try {
+            setDisplayState(oper.getGamePiece());
+            
             if (oper.getGround()) {
                 ctrl_ = new AutoCollectGroundOpCtrl(this, oper);
             }
@@ -184,6 +196,7 @@ public class Swimmy2023RobotSubsystem extends RobotSubsystem {
             logger.endMessage();
             getOI().enableGamepad();
             getSwerve().enableVision(true);
+            setDisplayState(GamePiece.None);
             ctrl_ = null;
 
             return false;
@@ -198,6 +211,7 @@ public class Swimmy2023RobotSubsystem extends RobotSubsystem {
             logger.endMessage();
             getOI().enableGamepad();
             getSwerve().enableVision(true);
+            setDisplayState(GamePiece.None);
             ctrl_ = null;
 
             return false;
@@ -229,7 +243,9 @@ public class Swimmy2023RobotSubsystem extends RobotSubsystem {
         Gamepad gp = oi_.getGamePad() ;
         if (gp != null && gp.isEnabled() == false && gp.isXPressed() && gp.isAPressed()) {
             abort() ;
-            gp.enable();
+            getOI().enableGamepad();
+            getSwerve().enableVision(true);
+            setDisplayState(GamePiece.None);
         }
 
         if (ctrl_ != null) {
@@ -241,6 +257,7 @@ public class Swimmy2023RobotSubsystem extends RobotSubsystem {
                 logger.endMessage();
                 getOI().enableGamepad();
                 getSwerve().enableVision(true);
+                setDisplayState(GamePiece.None);
                 ctrl_ = null;
             }
         }

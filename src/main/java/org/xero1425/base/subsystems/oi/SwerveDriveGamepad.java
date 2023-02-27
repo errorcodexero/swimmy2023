@@ -132,10 +132,10 @@ public class SwerveDriveGamepad extends Gamepad {
             }
         }
 
-        // if (isButtonSequencePressed(drivebase_x_on_buttons_) && !holding_x_) {
-        //     db_.setAction(x_action_);
-        //     holding_x_ = true ;
-        // }
+        if (isButtonSequencePressed(drivebase_x_on_buttons_) && !holding_x_) {
+            db_.setAction(x_action_);
+            holding_x_ = true ;
+        }
 
         if (isButtonSequencePressed(drivebase_x_off_buttons_) && holding_x_) {
             db_.setAction(action_);
@@ -170,6 +170,12 @@ public class SwerveDriveGamepad extends Gamepad {
         double lyscaled = mapJoyStick(ly, pos_maximum_, deadband_pos_y_, power_) ;
         double lxscaled = mapJoyStick(lx, pos_maximum_, deadband_pos_x_, power_) ;
         double rxscaled = mapJoyStick(rx, angle_maximum_, deadband_rotate_, power_) ;
+
+        if (isLTriggerPressed() || isRTriggerPressed()) {
+            lxscaled *= 0.25 ;
+            lyscaled *= 0.25 ;
+            rxscaled *= 0.25 ;
+        }
 
         //
         // The rotational velocity is given by rxscaled

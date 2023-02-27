@@ -84,6 +84,7 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
 
         switch(state_) {
             case Idle:
+            case InfiniteLoop:
                 stateIdle() ;
                 break ;
 
