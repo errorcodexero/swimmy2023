@@ -171,6 +171,8 @@ public class OISubsystem extends Subsystem {
         for (OIDevice dev : devices_) {
             if (dev.isEnabled())
                 dev.computeState();
+            else
+                dev.disabledProcessing();
         }
     }
 

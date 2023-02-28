@@ -24,6 +24,10 @@ public class OIShuffleBoardDevice extends OIDevice {
     }
 
     @Override
+    public void disabledProcessing() {
+    }
+
+    @Override
     public void computeState() {
         List<AutoMode> modes = getSubsystem().getRobot().getAllAutomodes() ;
 

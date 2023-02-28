@@ -131,6 +131,10 @@ public class OIPanel extends OIDevice
         return led ;
     }
 
+    @Override
+    public void disabledProcessing() {
+    }
+
     /// \brief computes the state of the logical items
     @Override
     public void computeState() throws Exception {

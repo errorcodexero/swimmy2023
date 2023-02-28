@@ -41,10 +41,19 @@ public abstract class Gamepad extends OIDevice
         }
     }
 
+    @Override
+    public void disabledProcessing() {
+        processRumble();
+    }
+
     /// \brief Compute the state of this Gamepad device.  For the gamepad the
     /// rumble function is processed.
     @Override
     public void computeState() {
+        processRumble();
+    }
+
+    private void processRumble() {
         if (timer_ != null) {
             if (timer_.isExpired()) {
                 controller_.setRumble(GenericHID.RumbleType.kLeftRumble, 0.0) ;

@@ -86,6 +86,9 @@ public abstract class OIDevice
     /// \brief Compute the current state of the HID device.
     public abstract void computeState() throws Exception ;
 
+    /// \brief called when the device is disabled
+    public abstract void disabledProcessing() throws Exception ;
+
     /// \brief Return the state of the auto mode selector, if one exists.  Otherwise return -1 if 
     /// this device does not contain an auto mode selector
     public int getAutoModeSelector() {
