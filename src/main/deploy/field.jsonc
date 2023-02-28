@@ -72,13 +72,13 @@
         "loading-station": { //loading station
             "grid-id": 4,
             "left": { //closer to edge of field
-                "x": 14.878784,
-                "y": 7.60976,
+                "x": 15.598784,
+                "y": 7.62476,
                 "heading" : 0
             },
             "right": {
-                "x": 14.878784,
-                "y": 5.889832,
+                "x": 15.598784,
+                "y": 5.874832,
                 "heading" : 0
             }
         }

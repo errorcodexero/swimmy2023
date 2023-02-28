@@ -16,14 +16,14 @@
             "vision": false,
             "swerve" : false,
             "swimmy2023oi" : false,
-            "Swimmy2023RobotSubsystem" : false,
+            "Swimmy2023RobotSubsystem" : true,
             "limelight" : false,
             "arm-motor-lower" : false,
             "arm-motor-upper" : false,
             "gpm" : false
         },
         "verbose": {
-            "swerve" : true,
+            "swerve" : false,
             "arm-motor-upper" : false,
             "grabber-motor-grab" : false
         },
@@ -57,7 +57,7 @@
                             "maxv" : 100000                 // Max velocity for trapezoidal profile, upper arm
                         },
                         "delay" : 0.4,                      // Delay until we start lower arm
-                        "target" : 73000                    // Lower arm target position
+                        "target" : 7000                     // Lower arm target position
                     },
                     "upper" : {
                         "config" : {
@@ -66,7 +66,7 @@
                             "maxv" : 150000                 // Max velocity for trapezoidal profile, upper arm
                         },
                         "delay" : 0.0,                      // Delay until we start upper arm
-                        "target" : 131000                   // Upper arm target position
+                        "target" : 87749                   // Upper arm target position
                     }
                 },
                 "lift-shelf" : {
@@ -86,7 +86,7 @@
                             "maxv" : 100000                 // Max velocity for trapezoidal profile, upper arm
                         },
                         "delay" : 0.0,                      // Delay until we start upper arm
-                        "target" : 138000                    // Upper arm target position
+                        "target" : 130000                    // Upper arm target position
                     }
                 },          
                 "retract-shelf" : {
@@ -581,7 +581,7 @@
                 }
             },
             "hold": {
-                "kp": 0.004,
+                "kp": 0.003,
                 "ki": 0,
                 "kd": 0,
                 "kf": 0,
@@ -592,7 +592,7 @@
             "positions" : {
                 "open" : {
                     "cube" : 500,
-                    "cone" : 600
+                    "cone" : 100
                 }
             }
         },
@@ -615,8 +615,8 @@
             "panel" : {
                 "index" : 2,
                 "outputs" : {
-                    "state1" : 0,
-                    "state2" : 1
+                    "state1" : 1,
+                    "state2" : 2
                 },
                 "gadgets" : {
                     "collect_v_place" : 6,
@@ -892,8 +892,8 @@
                 "width": 0.5715, // meters
                 "length": 0.5842, // meters
                 "path" : {
-                    "maxv" : 0.5,
-                    "maxa" : 0.5
+                    "maxv" : 2.0,
+                    "maxa" : 2.0
                 },
                 "max-angular-speed": 100,
                 "max-angular-accel": 100
@@ -921,7 +921,7 @@
     },
     "testmode": {
         "enabled": true,
-        "which": 80,
+        "which": 21,
         "0": {
             "angle": 0.0,
             "power": 0.2

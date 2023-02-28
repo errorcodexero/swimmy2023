@@ -200,18 +200,13 @@ public class LimeLightSubsystem extends Subsystem implements IVisionLocalization
         // 
         boolean ret = true ;
 
-        if (TestTagZHeight) {
-            for(int i = 0 ; i < fuds_.length ; i++) {
-                if (Math.abs(fuds_[i].targetToRobot.getZ()) > 1.0) {
-                    ret = false ;
-                }
-            }
-        }
-
-        if (TestHeadingVersusDB) {
-            
-        }
-
+        // if (TestTagZHeight) {
+        //     for(int i = 0 ; i < fuds_.length ; i++) {
+        //         if (Math.abs(fuds_[i].targetToRobot.getZ()) > 1.0) {
+        //             ret = false ;
+        //         }
+        //     }
+        // }
         return ret ;
     }
 

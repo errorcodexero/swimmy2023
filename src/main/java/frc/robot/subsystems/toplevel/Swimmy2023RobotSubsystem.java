@@ -1,6 +1,7 @@
 package frc.robot.subsystems.toplevel;
 
 import org.xero1425.base.XeroRobot;
+import org.xero1425.base.IVisionLocalization.LocationData;
 import org.xero1425.base.subsystems.RobotSubsystem;
 import org.xero1425.base.subsystems.oi.Gamepad;
 import org.xero1425.base.subsystems.swerve.common.SwerveBaseSubsystem;
@@ -11,6 +12,7 @@ import org.xero1425.misc.MessageLogger;
 import org.xero1425.misc.MessageType;
 import org.xero1425.misc.MissingParameterException;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.DigitalOutput;
 import frc.robot.SwimmyRobot2023;
 import frc.robot.subsystems.gpm.GPMSubsystem;
@@ -73,13 +75,13 @@ public class Swimmy2023RobotSubsystem extends RobotSubsystem {
     public void setDisplayState(GamePiece st) {
         switch(st) {
             case Cone:
-                display_out_2_.set(true) ;
-                display_out_3_.set(false);
+                display_out_3_.set(true) ;
+                display_out_2_.set(false);
                 break;
 
             case Cube:
-                display_out_2_.set(false);
-                display_out_3_.set(true) ;
+                display_out_3_.set(false);
+                display_out_2_.set(true) ;
                 break; 
 
             default:
@@ -138,6 +140,28 @@ public class Swimmy2023RobotSubsystem extends RobotSubsystem {
         }
 
         return ret ;
+    }
+
+    @Override
+    public void computeState() {
+        super.computeState();
+
+        LocationData loc = getLimeLight().getLocation(getSwerve().getPose());
+        if (loc == null) {
+            putDashboard("v-x", DisplayType.Always, "NONE");
+            putDashboard("v-y", DisplayType.Always, "NONE");
+            putDashboard("v-h", DisplayType.Always, "NONE");
+        }
+        else {
+            Pose2d p2d = loc.location.toPose2d() ;
+            putDashboard("v-x", DisplayType.Always, p2d.getX());
+            putDashboard("v-y", DisplayType.Always, p2d.getY());
+            putDashboard("v-h", DisplayType.Always, p2d.getRotation().getDegrees());
+        }
+
+        putDashboard("db-x", DisplayType.Always, getSwerve().getPose().getX()) ;
+        putDashboard("db-y", DisplayType.Always, getSwerve().getPose().getY()) ;
+        putDashboard("db-h", DisplayType.Always, getSwerve().getPose().getRotation().getDegrees()) ;
     }
 
     public boolean isOperationComplete() {
@@ -234,7 +258,6 @@ public class Swimmy2023RobotSubsystem extends RobotSubsystem {
             }
         }
     }
-
 
     @Override
     public void run() throws Exception {

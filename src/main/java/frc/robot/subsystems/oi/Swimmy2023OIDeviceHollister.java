@@ -36,10 +36,10 @@ import frc.robot.subsystems.toplevel.RobotOperation.Slot;
 
 public class Swimmy2023OIDeviceHollister extends OIPanel {
     private enum DisplayPattern {
-        NONE(0), 
+        NONE(3), 
         CONE(1),
         CUBE(2),
-        ERROR(3);
+        ERROR(0);
 
         /// The value of the enum
         public final int value ;
@@ -86,6 +86,8 @@ public class Swimmy2023OIDeviceHollister extends OIPanel {
     @Override
     public void computeState() throws Exception {
         super.computeState();
+
+        setDisplay(DisplayPattern.CONE);
     }
        
     public boolean isActionButtonPressed() {
@@ -153,7 +155,7 @@ public class Swimmy2023OIDeviceHollister extends OIPanel {
         SwimmyRobot2023 robot = ((SwimmyRobot2023)getSubsystem().getRobot());
         Swimmy2023RobotSubsystem robotSubsystem = ((Swimmy2023RobotSubsystem)robot.getRobotSubsystem());
 
-        if (robotSubsystem.isOperationComplete() == false && current_pattern_ != DisplayPattern.ERROR) {
+        if (robotSubsystem.isOperationComplete() == true && current_pattern_ != DisplayPattern.ERROR) {
             setDisplay(DisplayPattern.NONE);
         }
 
@@ -191,7 +193,7 @@ public class Swimmy2023OIDeviceHollister extends OIPanel {
                         setDisplay(DisplayPattern.CONE);
                     }
                     else {
-                        setDisplay(DisplayPattern.CONE);                        
+                        setDisplay(DisplayPattern.CUBE);                        
                     }
                 } else {
                     setDisplay(DisplayPattern.ERROR);
@@ -202,7 +204,6 @@ public class Swimmy2023OIDeviceHollister extends OIPanel {
 
     private void setDisplay(DisplayPattern pattern) {
         current_pattern_ = pattern ;
-
         int value = pattern.value ;
 
         if ((value & 1) == 0) {

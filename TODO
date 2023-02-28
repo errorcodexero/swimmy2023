@@ -30,22 +30,22 @@
 
 - Experiment with vision on while placing look at graphs            Deferred
 
-- Test the OI display for cone/cube/none/error
+- Test the OI display for cone/cube/none/error                      Patterns ok, check logic
 
 - Test/Tune first cube place operation
 - Test cube ground collect
 
 - Tune each of the drivebase locations for collect
-  o Red (Tag 5) Left
-  o Red (Tag 5) Right
-  o Blue (Tag 4) Left
-  o Blue (Tag 4) Right
+  o Red (Tag 5) Left                                                Tuesday
+  o Red (Tag 5) Right                                               Tuesday
+  o Blue (Tag 4) Left                                               Tuesday/Update offset
+  o Blue (Tag 4) Right                                              Done
 
 - Test/Tune each of the drivebase locations/auto place
   o Red Place Cone/Tag 1/Right/Top                                  Done
   o Red Place Cone/Tag 1/Right/Middle                               Done
   o Red Place Cone/Tag 1/Right/Bottom                               Done
-  o Red Place Cube/Tag 1/Right/Bottom
+  o Red Place Cube/Tag 1/Right/Bottom                               Tuesday
 
   o Red Place Cone/Tag 1/Left/Top
   o Red Place Cone/Tag 1/Left/Middle
@@ -126,7 +126,7 @@
   o Blue Place Cube/Tag 8/Middle/Bottom
   o Blue Place Cube/Tag 8/Right/Bottom   
 
-- Test the Robot display for cone/cube/none
+- Test the Robot display for cone/cube/none                         Done
 
 - Test manual collect
 - Test manual place
@@ -163,4 +163,3 @@
   - Left auto mode - place two
   - Right auto mode - place two
   - Center - 2 auto mode - place two then balance
-

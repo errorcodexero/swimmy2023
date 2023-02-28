@@ -117,8 +117,8 @@ public class GPMCollectAction extends Action {
 
             case LiftArm:
                 if (arm_lift_action_.isDone()) {
-                    subsystem_.getArm().setAction(arm_retract_action_, true);
-                    state_ = State.RetractArm ;
+                    state_ = State.Done ;
+                    setDone() ;
                 }
                 break ;
 

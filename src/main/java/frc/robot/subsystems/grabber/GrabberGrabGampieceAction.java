@@ -31,7 +31,7 @@ public class GrabberGrabGampieceAction extends Action {
 
         hold_action_ = new MotorEncoderHoldAction(sub.getGrabSubsystem(), v);
         power_action_ = new MotorEncoderPowerAction(sub.getGrabSubsystem(), 0.1);
-        stop_spinner_action_ = new MotorEncoderPowerAction(sub.getSpinSubsystem(), 0.0);
+        stop_spinner_action_ = new MotorEncoderPowerAction(sub.getSpinSubsystem(), 0.1);
 
         v = sub.getSettingsValue("close:spin-power").getDouble() ;
         start_spinner_action_ = new MotorEncoderPowerAction(sub.getSpinSubsystem(), v);
