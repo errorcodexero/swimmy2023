@@ -1,15 +1,9 @@
 package frc.robot.automodes;
 
 import org.xero1425.base.actions.DelayAction;
-import org.xero1425.base.actions.ParallelAction;
-import org.xero1425.base.actions.SequenceAction;
-import org.xero1425.base.actions.ParallelAction.DonePolicy;
 import org.xero1425.base.controllers.AutoController;
 import org.xero1425.base.subsystems.swerve.common.SwerveHolonomicPathFollower;
 
-import frc.robot.subsystems.gpm.GPMCollectAction;
-import frc.robot.subsystems.gpm.GPMPlaceAction;
-import frc.robot.subsystems.grabber.GrabberGrabGampieceAction;
 import frc.robot.subsystems.swerve.SwerveDriveBalancePlatform;
 import frc.robot.subsystems.swerve.SwerveDriveBalancePlatform.XYDirection;
 import frc.robot.subsystems.toplevel.RobotOperation;
@@ -24,37 +18,21 @@ public class SwimmyAutoModeCenter1 extends SwimmyAutoMode  {
         Swimmy2023RobotSubsystem robot = (Swimmy2023RobotSubsystem)getAutoController().getRobot().getRobotSubsystem();
 
         //
-        // Close the grabber around the game piece
-        // 
-        addSubActionPair(robot.getGPM(), new GrabberGrabGampieceAction(robot.getGPM().getGrabber(), RobotOperation.GamePiece.Cone), true);
+        // Grab the loaded game piece and place it on the grid
+        //
+        grabAndPlace(where, what);
 
         //
-        // Place the game piece onto the placement location
+        // Drive a path across the charging station collecting on the other side
         //
-        addSubActionPair(robot.getGPM(), new GPMPlaceAction(robot.getGPM(), where, what, true), true);
-
-        ParallelAction action = new ParallelAction(getMessageLogger(), DonePolicy.All) ;
-
-        //
-        // Drive path 1, across the platform to find another game piece.
-        //
-        action.addSubActionPair(robot.getSwerve(), new SwerveHolonomicPathFollower(robot.getSwerve(), "Center1" + color + "-Path1", true, 1.0) , true);
-
-        //
-        // In parallel with path 1 above, delay a fixed amount of time and then enter a ground collect operation
-        //
-        SequenceAction delaycollect = new SequenceAction(getMessageLogger());
-        delaycollect.addAction(new DelayAction(getAutoController().getRobot(), "automodes:center1:before-collect-delay"));
-        double grabdelay = robot.getRobot().getSettingsSupplier().get("automodes:center:collect-delay").getDouble();
-        delaycollect.addSubActionPair(robot.getGPM(), new GPMCollectAction(robot.getGPM(), RobotOperation.GamePiece.Cone, true, grabdelay), true);
-        action.addAction(delaycollect);
-
-        addAction(action);
+        double beforedelay = ctrl.getRobot().getSettingsSupplier().get("automodes:center1:before-collect-delay").getDouble() ;
+        double collectdelay = ctrl.getRobot().getSettingsSupplier().get("automodes:center:collect-delay").getDouble();
+        driveAndCollect("Center1" + color + "-Path1", true, beforedelay, collectdelay, RobotOperation.GamePiece.Cone);
 
         //
         // Drive to the center of the platform rotating 90 degrees
         //
-        action.addSubActionPair(robot.getSwerve(), new SwerveHolonomicPathFollower(robot.getSwerve(), "Center1" + color + "-Path2", false, 1.0) , true);
+        addSubActionPair(robot.getSwerve(), new SwerveHolonomicPathFollower(robot.getSwerve(), "Center1" + color + "-Path2", false, 1.0) , true);
 
         //
         // Delay for 1 second to be sure the platform has settled
@@ -64,6 +42,6 @@ public class SwimmyAutoModeCenter1 extends SwimmyAutoMode  {
         //
         // Now run the auto balance operation (with the robot sideways)
         //
-        action.addSubActionPair(robot.getSwerve(), new SwerveDriveBalancePlatform(robot.getSwerve(), XYDirection.YDirection), true);
+        addSubActionPair(robot.getSwerve(), new SwerveDriveBalancePlatform(robot.getSwerve(), XYDirection.YDirection), true);
     }
 }

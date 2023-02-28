@@ -23,7 +23,6 @@ public class AutoCollectOpCtrl extends OperationCtrl {
     private GPMCollectAction collect_action_ ;
     private SwerveDriveToPoseAction drive_to_action_ ;
 
-
     private Pose2d target_pose_ ;
     
     public AutoCollectOpCtrl(Swimmy2023RobotSubsystem sub, RobotOperation oper) throws Exception {
@@ -79,7 +78,6 @@ public class AutoCollectOpCtrl extends OperationCtrl {
 
             case DrivingToLocation:
                 getRobotSubsystem().getOI().enableGamepad() ;
-                // getRobotSubsystem().getOI().getGamePad().rumble(1.0, 2.0);
                 drive_to_action_.cancel() ;
                 getRobotSubsystem().getSwerve().enableVision(true);
                 break ;                
@@ -98,7 +96,7 @@ public class AutoCollectOpCtrl extends OperationCtrl {
 
         if (getRobotSubsystem().getLimeLight().distantToTag(tag) < april_tag_action_threshold_) {
             getRobotSubsystem().getOI().disableGamepad();
-            // getRobotSubsystem().getOI().getGamePad().rumble(1.0, 2.0);
+            getRobotSubsystem().getOI().getGamePad().rumble(1.0, 0.5);
 
             getRobotSubsystem().getSwerve().enableVision(false);
 
@@ -114,9 +112,9 @@ public class AutoCollectOpCtrl extends OperationCtrl {
     private void stateDrivingToLocation() {
         if (collect_action_.isDone()) {
             getRobotSubsystem().getSwerve().enableVision(true);
-            state_ = State.Idle ;
             getRobotSubsystem().getOI().enableGamepad();
-            // getRobotSubsystem().getOI().getGamePad().rumble(1.0, 2.0);
+            getRobotSubsystem().getOI().getGamePad().rumble(1.0, 0.5);
+            state_ = State.Idle ;
             setDone() ;
         }
     }
