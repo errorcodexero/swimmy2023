@@ -30,13 +30,13 @@
         "loading-station": {                                 //loading station
             "grid-id": 5,
             "left": {                           //closer to edge of field
-                "x": 1.66195,
-                "y": 7.60976,
+                "x": 0.942204,
+                "y": 5.874832,
                 "heading" : 180
             },
             "right": {
-                "x": 1.66195,
-                "y": 5.889832,
+                "x": 0.942204,
+                "y": 7.62476,
                 "heading" : 180
             }
         }
