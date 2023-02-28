@@ -137,6 +137,7 @@ public class AutoCollectOpCtrl extends OperationCtrl {
             getRobotSubsystem().getOI().disableGamepad();
             getRobotSubsystem().getOI().getGamePad().rumble(1.0, 0.5);
             getRobotSubsystem().getSwerve().drive(new ChassisSpeeds()) ;
+            getRobotSubsystem().getGPM().setAction(collect_action_);
             wait_for_vision_timer_.start() ;
             state_ = State.WaitForVision ;
         }
@@ -146,10 +147,8 @@ public class AutoCollectOpCtrl extends OperationCtrl {
         if (wait_for_vision_timer_.isExpired()) {
             target_pose_ = getRobotSubsystem().getFieldData().getLoadingStationPose(getOper().getSlot());
             getRobotSubsystem().getSwerve().enableVision(false);
-
-            drive_to_action_ = new SwerveDriveToPoseAction(getRobotSubsystem().getSwerve(), target_pose_);
+            drive_to_action_ = new SwerveDriveToPoseAction(getRobotSubsystem().getSwerve(), target_pose_, 1.0, 1.0);
             getRobotSubsystem().getSwerve().setAction(drive_to_action_);
-            getRobotSubsystem().getGPM().setAction(collect_action_);
             state_ = State.DrivingToLocation ;
         }
         else {

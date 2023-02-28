@@ -19,6 +19,8 @@ public class SwerveDriveToPoseAction extends SwerveHolonomicControllerAction {
     private XeroTimer timer_ ;
     private Pose2d last_vision_pose_ ;
     private Rotation2d facing_ ;
+    private double maxa_ ;
+    private double maxv_ ;
 
     private int plot_id_ ;
     private Double[] plot_data_ ;
@@ -30,6 +32,19 @@ public class SwerveDriveToPoseAction extends SwerveHolonomicControllerAction {
         "vx (m)", "vy (m)", "va (deg)"
     } ;
     
+    public SwerveDriveToPoseAction(SwerveBaseSubsystem subsys, Pose2d pose2d, double maxa, double maxv) throws BadParameterTypeException, MissingParameterException {
+        super(subsys) ;
+
+        start_position_ = subsys.getPose();
+        target_position_ = pose2d ;
+        plot_data_ = new Double[columns_.length] ;
+        plot_id_ = getSubsystem().initPlot("DriveToPose") ;
+        maxa_ = maxa ;
+        maxv_ = maxv ;
+
+        timer_ = new XeroTimer(subsys.getRobot(), "drivetimer", 1.0);
+    }
+
     public SwerveDriveToPoseAction(SwerveBaseSubsystem subsys, Pose2d pose2d) throws BadParameterTypeException, MissingParameterException {
         super(subsys) ;
 
@@ -37,6 +52,8 @@ public class SwerveDriveToPoseAction extends SwerveHolonomicControllerAction {
         target_position_ = pose2d ;
         plot_data_ = new Double[columns_.length] ;
         plot_id_ = getSubsystem().initPlot("DriveToPose") ;
+        maxa_ = Double.MAX_VALUE;
+        maxv_ = Double.MAX_VALUE;
 
         timer_ = new XeroTimer(subsys.getRobot(), "drivetimer", 1.0);
     }
@@ -50,14 +67,32 @@ public class SwerveDriveToPoseAction extends SwerveHolonomicControllerAction {
         plot_data_ = new Double[columns_.length] ;
         plot_id_ = getSubsystem().initPlot("DriveToPose") ;
 
+        maxa_ = Double.MAX_VALUE;
+        maxv_ = Double.MAX_VALUE;
+
         timer_ = new XeroTimer(subsys.getRobot(), "drivetimer", 1.0);
     }
+
+    public SwerveDriveToPoseAction(SwerveBaseSubsystem subsys, Pose2d[] endpoints, Rotation2d facing, double maxa, double maxv) throws BadParameterTypeException, MissingParameterException {
+        super(subsys) ;
+
+        start_position_ = endpoints[0];
+        target_position_ = endpoints[1];
+        facing_ = facing ;
+        plot_data_ = new Double[columns_.length] ;
+        plot_id_ = getSubsystem().initPlot("DriveToPose") ;
+
+        maxa_ = maxa ;
+        maxv_ = maxv ;
+
+        timer_ = new XeroTimer(subsys.getRobot(), "drivetimer", 1.0);
+    }    
 
     @Override
     public void start() throws Exception {
         super.start();
         getSubsystem().startPlot(plot_id_, columns_);
-        trajectory_ = getSubsystem().createTrajectory(start_position_, target_position_) ;
+        trajectory_ = getSubsystem().createTrajectory(start_position_, target_position_, maxa_, maxv_) ;
         trajectory_start_time_ = getSubsystem().getRobot().getTime() ;
     }
 

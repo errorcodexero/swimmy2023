@@ -22,6 +22,8 @@ public class SwerveDrivePathAction extends SwerveHolonomicControllerAction {
     private XeroTimer timer_ ;
     private Pose2d start_ ;
     private Pose2d end_ ;
+    private double maxa_ ;
+    private double maxv_ ;
 
     private int plot_id_ ;
     private Double[] plot_data_ ;
@@ -33,10 +35,18 @@ public class SwerveDrivePathAction extends SwerveHolonomicControllerAction {
         "vx (m)", "vy (m)", "va (deg)"
     } ;
 
-    public SwerveDrivePathAction(SwerveBaseSubsystem sub, Pose2d start, List<Translation2d> interior, Pose2d end, Rotation2d facing) throws BadParameterTypeException, MissingParameterException {
+    public SwerveDrivePathAction(SwerveBaseSubsystem sub, Pose2d start, List<Translation2d> interior, Pose2d end, Rotation2d facing, double maxa, double maxv) throws BadParameterTypeException, MissingParameterException {
         super(sub) ;
 
-        TrajectoryConfig config = new TrajectoryConfig(getSubsystem().getMaxVelocity(), getSubsystem().getMaxAccel()) ;
+        if (maxa == Double.MAX_VALUE) {
+            maxa = getSubsystem().getMaxAccel() ;
+        }
+
+        if (maxv == Double.MAX_VALUE) {
+            maxv = getSubsystem().getMaxVelocity();
+        }
+
+        TrajectoryConfig config = new TrajectoryConfig(maxv, maxa) ;
         config.setKinematics(getSubsystem().getKinematics());
         trajectory_ = TrajectoryGenerator.generateTrajectory(start, interior, end, config) ;
 
@@ -48,6 +58,9 @@ public class SwerveDrivePathAction extends SwerveHolonomicControllerAction {
 
         start_ = start ;
         end_ = end ;
+
+        maxa_ = maxa ;
+        maxv_ = maxv ;
     }
 
     @Override

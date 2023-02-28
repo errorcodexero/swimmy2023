@@ -312,8 +312,16 @@ public abstract class SwerveBaseSubsystem extends DriveBaseSubsystem {
         plotid_ = -1 ;
     }
 
-    public Trajectory createTrajectory(List<Pose2d> waypoints) {
-        TrajectoryConfig config = new TrajectoryConfig(maxv_, maxa_) ;
+    public Trajectory createTrajectory(List<Pose2d> waypoints, double maxa, double maxv) {
+        if (maxa == Double.MAX_VALUE) {
+            maxa = maxa_ ;
+        }
+
+        if (maxv == Double.MAX_VALUE) {
+            maxv = maxv_ ;
+        }
+
+        TrajectoryConfig config = new TrajectoryConfig(maxv, maxa) ;
         config.setKinematics(kinematics_) ;
         Trajectory traj = TrajectoryGenerator.generateTrajectory(waypoints, config) ;
         printTrajectory(traj);
@@ -321,11 +329,11 @@ public abstract class SwerveBaseSubsystem extends DriveBaseSubsystem {
         return traj ;
     }
    
-    public Trajectory createTrajectory(Pose2d start, Pose2d end) {
+    public Trajectory createTrajectory(Pose2d start, Pose2d end, double maxa, double maxv) {
         List<Pose2d> waypoints = new ArrayList<Pose2d>() ;
         waypoints.add(start) ;
         waypoints.add(end) ;
-        return createTrajectory(waypoints) ;
+        return createTrajectory(waypoints, maxa, maxv) ;
     }
 
     private void printTrajectory(Trajectory traj) {
