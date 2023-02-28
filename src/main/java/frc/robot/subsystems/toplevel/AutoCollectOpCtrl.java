@@ -104,6 +104,7 @@ public class AutoCollectOpCtrl extends OperationCtrl {
                 break ;
 
             case LookingForTag:
+            case WaitForVision:
                 break ;
 
             case DrivingToLocation:

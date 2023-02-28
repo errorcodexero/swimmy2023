@@ -86,8 +86,6 @@ public class Swimmy2023OIDeviceHollister extends OIPanel {
     @Override
     public void computeState() throws Exception {
         super.computeState();
-
-        setDisplay(DisplayPattern.CONE);
     }
        
     public boolean isActionButtonPressed() {
