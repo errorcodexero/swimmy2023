@@ -1,5 +1,5 @@
 area_max:100
-area_min:0.0017850625000000004
+area_min:0.07059117610000001
 area_similarity:0
 aspect_max:20.000000
 aspect_min:0.000000
@@ -38,7 +38,7 @@ fiducial_decoder_strictness:strict
 fiducial_denoise:0.000000
 fiducial_idfilters:
 fiducial_locfilters:
-fiducial_qualitythreshold:3
+fiducial_qualitythreshold:10
 fiducial_resdiv:4
 fiducial_size:152.4
 fiducial_skip3d:0
