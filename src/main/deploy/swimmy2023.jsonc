@@ -531,13 +531,23 @@
                 // The delay between closing the grabber and stopping the motors when grabbing
                 // a game piece
                 //
-                "delay" : 1.0,
-
-                "cone-position" : 1400,
-                
-                "cube-position" : 990,
-
-                "spin-power" : 0.2
+                "ground" : {
+                    "position" : {
+                        "cube" : 990,
+                        "cone" : 1200
+                    },
+                    "spin-power" : 0.4,
+                    "spin-delay" : 1.0
+                },
+                "shelf" : {
+                    "position" : {
+                        "cube" : 990,
+                        "cone" : 1400
+                    },
+                    "spin-power" : 0.4,
+                    "spin-delay" : 1.0
+                },
+                "hold-power" : 0.1
             }
         },
         "grabber-motor-spin": {
@@ -559,7 +569,10 @@
                 }
             },
             "power" : {
-                "spin" : 0.4
+                "spin" : {
+                    "cone": 0.4,
+                    "cube" : 0.4
+                }
             }
         },
         "grabber-motor-grab": {

@@ -203,6 +203,10 @@ public class Swimmy2023RobotSubsystem extends RobotSubsystem {
         return ctrl_ == null ;
     }
 
+    public OperationCtrl getRunningController() {
+        return ctrl_ ;
+    }
+
     public boolean setOperation(RobotOperation oper) {
         if (ctrl_ != null) {
             //

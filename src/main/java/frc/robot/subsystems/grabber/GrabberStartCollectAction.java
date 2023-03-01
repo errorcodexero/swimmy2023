@@ -22,11 +22,12 @@ public class GrabberStartCollectAction extends Action {
 
         if (gp_ == GamePiece.Cone) {
             hold_action_ = new MotorEncoderHoldAction(sub_.getGrabSubsystem(), "positions:open:cone");
+            spin_action_ = new MotorEncoderPowerAction(sub_.getSpinSubsystem(), "power:spin:cone");
         }
         else {
-            hold_action_ = new MotorEncoderHoldAction(sub_.getGrabSubsystem(), "positions:open:cube");            
+            hold_action_ = new MotorEncoderHoldAction(sub_.getGrabSubsystem(), "positions:open:cube");
+            spin_action_ = new MotorEncoderPowerAction(sub_.getSpinSubsystem(), "power:spin:cube");
         }
-        spin_action_ = new MotorEncoderPowerAction(sub_.getSpinSubsystem(), "power:spin");
     }
 
     @Override

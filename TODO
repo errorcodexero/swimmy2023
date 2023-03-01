@@ -44,6 +44,7 @@
 
 - Tune cube ground collect                                          Wednesday (3/1)
 - Test drivebase X pattern based on holding button                  Wednesday (3/1)
+- Dynamically switch between cone/cube ground collect profiles      Wednesday (3/1)
 
 - Tune each of the drivebase locations for collect
   o Red (Tag 5) Left                                                Done

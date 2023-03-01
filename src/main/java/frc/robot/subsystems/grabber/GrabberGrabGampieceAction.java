@@ -16,28 +16,44 @@ public class GrabberGrabGampieceAction extends Action {
     private MotorEncoderPowerAction power_action_ ;
     private MotorEncoderPowerAction start_spinner_action_ ;
     private MotorEncoderPowerAction stop_spinner_action_ ;
+    private boolean ground_ ;
 
-    public GrabberGrabGampieceAction(GrabberSubsystem sub, RobotOperation.GamePiece gp) throws BadParameterTypeException, MissingParameterException {
+    public GrabberGrabGampieceAction(GrabberSubsystem sub, RobotOperation.GamePiece gp, boolean ground) throws BadParameterTypeException, MissingParameterException {
         super(sub.getRobot().getMessageLogger());
 
         sub_ = sub ;
+        ground_ = ground;
 
-        double v = 0 ;
-        
-        if (gp == RobotOperation.GamePiece.Cone)
-            v = sub.getSettingsValue("close:cone-position").getDouble() ;
-        else
-            v = sub.getSettingsValue("close:cube-position").getDouble() ;
+        double holdpos = 0 ;
+        double spinpower = 0;
+        double spindelay = 0 ;
 
-        hold_action_ = new MotorEncoderHoldAction(sub.getGrabSubsystem(), v);
-        power_action_ = new MotorEncoderPowerAction(sub.getGrabSubsystem(), 0.1);
+        if (ground) {
+            if (gp == RobotOperation.GamePiece.Cone)
+                holdpos = sub.getSettingsValue("close:ground:position:cone").getDouble() ;
+            else
+                holdpos = sub.getSettingsValue("close:ground:position:cube").getDouble() ;
+
+            spinpower = sub.getSettingsValue("close:ground:spin-power").getDouble();
+            spindelay = sub.getSettingsValue("close:ground:spin-delay").getDouble();
+        }
+        else {
+            if (gp == RobotOperation.GamePiece.Cone)
+                holdpos = sub.getSettingsValue("close:shelf:position:cone").getDouble() ;
+            else
+                holdpos = sub.getSettingsValue("close:shelf:position:cube").getDouble() ;
+
+            spinpower = sub.getSettingsValue("close:shelf:spin-power").getDouble();
+            spindelay = sub.getSettingsValue("close:shelf:spin-delay").getDouble();
+        }
+
+        hold_action_ = new MotorEncoderHoldAction(sub.getGrabSubsystem(), holdpos);
+        power_action_ = new MotorEncoderPowerAction(sub.getGrabSubsystem(), sub.getSettingsValue("close:hold-power").getDouble());
+        start_spinner_action_ = new MotorEncoderPowerAction(sub.getSpinSubsystem(), spinpower);
+
         stop_spinner_action_ = new MotorEncoderPowerAction(sub.getSpinSubsystem(), 0.1);
 
-        v = sub.getSettingsValue("close:spin-power").getDouble() ;
-        start_spinner_action_ = new MotorEncoderPowerAction(sub.getSpinSubsystem(), v);
-
-        v = sub.getSettingsValue("close:delay").getDouble() ;
-        timer_ = new XeroTimer(sub.getRobot(), "grabbergp", v) ;
+        timer_ = new XeroTimer(sub.getRobot(), "grabbergp", spindelay);
     }
 
     @Override
@@ -62,6 +78,6 @@ public class GrabberGrabGampieceAction extends Action {
 
     @Override
     public String toString(int indent) {
-        return spaces(indent) + "GrabberGrabGampieceAction";
+        return spaces(indent) + "GrabberGrabGampieceAction(" + (ground_ ? "ground" : "shelf") + ")";
     }
 }

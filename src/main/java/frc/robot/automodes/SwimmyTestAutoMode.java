@@ -26,7 +26,6 @@ import frc.robot.subsystems.gpm.GPMPlaceAction;
 import frc.robot.subsystems.gpm.GPMSubsystem;
 import frc.robot.subsystems.grabber.GrabberGrabGampieceAction;
 import frc.robot.subsystems.grabber.GrabberStartCollectAction;
-import frc.robot.subsystems.grabber.GrabberStopCollectAction;
 import frc.robot.subsystems.grabber.GrabberSubsystem;
 import frc.robot.subsystems.swerve.SwerveAlignRobotAction;
 import frc.robot.subsystems.toplevel.RobotOperation;
@@ -172,12 +171,6 @@ public class SwimmyTestAutoMode extends TestAutoMode {
                 addSubActionPair(grabber, new GrabberStartCollectAction(grabber, GamePiece.Cone), true) ;
                 break ;
 
-            case 26:
-                addSubActionPair(grabber, new GrabberStartCollectAction(grabber, GamePiece.Cone), true) ;
-                addAction(new DelayAction(getAutoController().getRobot(), 2.0));
-                addSubActionPair(grabber, new GrabberStopCollectAction(grabber), true) ;
-                break ;
-
             case 27:
                 break ;
 
@@ -205,7 +198,7 @@ public class SwimmyTestAutoMode extends TestAutoMode {
                 break ;
 
             case 79:
-                addSubActionPair(grabber, new GrabberGrabGampieceAction(grabber, GamePiece.Cube), true);
+                addSubActionPair(grabber, new GrabberGrabGampieceAction(grabber, GamePiece.Cube, false), true);
                 addSubActionPair(arm, new ArmGotoAction(arm, 0, 20000), true);
                 addAction(new DelayAction(gpm.getRobot(), getDouble("delay")));
                 addSubActionPair(grabberGrabMotor, new MotorEncoderHoldAction(grabberGrabMotor, getDouble("position")), true);
@@ -213,7 +206,7 @@ public class SwimmyTestAutoMode extends TestAutoMode {
 
             case 80:
                 {
-                    addSubActionPair(grabber, new GrabberGrabGampieceAction(grabber, GamePiece.Cone), true);
+                    addSubActionPair(grabber, new GrabberGrabGampieceAction(grabber, GamePiece.Cone, false), true);
                     addAction(new DelayAction(gpm.getRobot(), getDouble("delay")));
                     addSubActionPair(gpm, new GPMPlaceAction(gpm, Location.Top, GamePiece.Cone, true), true);
                 }
@@ -221,7 +214,7 @@ public class SwimmyTestAutoMode extends TestAutoMode {
 
             case 81:
                 {
-                    addSubActionPair(grabber, new GrabberGrabGampieceAction(grabber, GamePiece.Cube), true);
+                    addSubActionPair(grabber, new GrabberGrabGampieceAction(grabber, GamePiece.Cube, false), true);
                     addAction(new DelayAction(gpm.getRobot(), getDouble("delay")));
                     addSubActionPair(gpm, new GPMPlaceAction(gpm, Location.Middle, GamePiece.Cube, true), true);
                 }

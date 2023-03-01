@@ -3,6 +3,7 @@ package frc.robot.subsystems.toplevel;
 import frc.robot.subsystems.arm.ArmStaggeredGotoAction;
 import frc.robot.subsystems.gpm.GPMCollectAction;
 import frc.robot.subsystems.grabber.GrabberStowAction;
+import frc.robot.subsystems.toplevel.RobotOperation.GamePiece;
 
 public class AutoCollectGroundOpCtrl extends OperationCtrl {
 
@@ -35,5 +36,13 @@ public class AutoCollectGroundOpCtrl extends OperationCtrl {
         getRobotSubsystem().getGPM().cancelAction();
         getRobotSubsystem().getGPM().getArm().setAction(abort_arm_action_) ;
         getRobotSubsystem().getGPM().getGrabber().setAction(abort_grabber_action_) ;
+    }
+
+    @Override
+    public void updateGamePiece(GamePiece gp) {
+        if (getOper().getGamePiece() != gp) {
+            collect_action_.setGamePiece(gp) ;
+            getOper().setGamePiece(gp);
+        }
     }
 }

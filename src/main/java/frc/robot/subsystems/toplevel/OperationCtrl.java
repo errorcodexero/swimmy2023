@@ -3,6 +3,8 @@ package frc.robot.subsystems.toplevel;
 import org.xero1425.misc.BadParameterTypeException;
 import org.xero1425.misc.MissingParameterException;
 
+import frc.robot.subsystems.toplevel.RobotOperation.GamePiece;
+
 public abstract class OperationCtrl {
     private Swimmy2023RobotSubsystem sub_ ;
     private RobotOperation oper_ ;
@@ -13,11 +15,14 @@ public abstract class OperationCtrl {
         sub_ = sub ;
     }
 
-    protected RobotOperation getOper() {
+    public void updateGamePiece(GamePiece gp) {
+    }
+
+    public RobotOperation getOper() {
         return oper_ ;
     }
 
-    protected Swimmy2023RobotSubsystem getRobotSubsystem() {
+    public Swimmy2023RobotSubsystem getRobotSubsystem() {
         return sub_ ;
     }
 

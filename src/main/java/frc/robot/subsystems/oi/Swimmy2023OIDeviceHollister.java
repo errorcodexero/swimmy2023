@@ -1,5 +1,6 @@
 package frc.robot.subsystems.oi;
 
+import org.xero1425.base.subsystems.oi.Gamepad;
 import org.xero1425.base.subsystems.oi.OILed;
 import org.xero1425.base.subsystems.oi.OIPanel;
 import org.xero1425.base.subsystems.oi.OISubsystem;
@@ -12,6 +13,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import frc.robot.SwimmyRobot2023;
 import frc.robot.subsystems.gpm.GPMStartWithGPAction;
 import frc.robot.subsystems.gpm.GPMStowAction;
+import frc.robot.subsystems.toplevel.OperationCtrl;
 import frc.robot.subsystems.toplevel.RobotOperation;
 import frc.robot.subsystems.toplevel.Swimmy2023RobotSubsystem;
 import frc.robot.subsystems.toplevel.RobotOperation.GamePiece;
@@ -146,6 +148,11 @@ public class Swimmy2023OIDeviceHollister extends OIPanel {
         }
     }
 
+    private boolean driverLock(RobotOperation oper) {
+        Gamepad gp = getSubsystem().getGamePad();
+        return oper.getGround() && gp.isRTriggerPressed();
+    }
+
     @Override
     public void generateActions() {
         super.generateActions();
@@ -185,7 +192,7 @@ public class Swimmy2023OIDeviceHollister extends OIPanel {
             operation.setLocation(getHeight());
             operation.setGround(getValue(station_ground_gadget_) == 1) ;
             
-            if (getValue(lock_gadget_) == 1) {
+            if (getValue(lock_gadget_) == 1 || driverLock(operation)) {
                 if (robotSubsystem.setOperation(operation)) {
                     if (operation.getGamePiece() == GamePiece.Cone) {
                         setDisplay(DisplayPattern.CONE);
@@ -195,6 +202,18 @@ public class Swimmy2023OIDeviceHollister extends OIPanel {
                     }
                 } else {
                     setDisplay(DisplayPattern.ERROR);
+                }
+            }
+            else {
+                OperationCtrl running = robotSubsystem.getRunningController();
+
+                if (running != null && running.getOper().getGround()) {
+                    //
+                    // We are actively running a ground operation
+                    //
+                    if (operation.getGamePiece() != running.getOper().getGamePiece() && operation.getGamePiece() != GamePiece.None) {
+                        running.updateGamePiece(operation.getGamePiece());
+                    }
                 }
             }
         }

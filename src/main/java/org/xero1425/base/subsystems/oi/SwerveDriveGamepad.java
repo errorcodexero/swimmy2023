@@ -175,7 +175,7 @@ public class SwerveDriveGamepad extends Gamepad {
         double lxscaled = mapJoyStick(lx, pos_maximum_, deadband_pos_x_, power_) ;
         double rxscaled = mapJoyStick(rx, angle_maximum_, deadband_rotate_, power_) ;
 
-        if (isLTriggerPressed() || isRTriggerPressed()) {
+        if (isLTriggerPressed()) {
             lxscaled *= 0.25 ;
             lyscaled *= 0.25 ;
             rxscaled *= 0.25 ;

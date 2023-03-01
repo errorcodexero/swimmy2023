@@ -10,6 +10,7 @@ import frc.robot.subsystems.arm.ArmStaggeredGotoAction;
 import frc.robot.subsystems.grabber.GrabberGrabGampieceAction;
 import frc.robot.subsystems.grabber.GrabberStowAction;
 import frc.robot.subsystems.toplevel.RobotOperation;
+import frc.robot.subsystems.toplevel.RobotOperation.GamePiece;
 
 public class GPMCollectAction extends Action {
 
@@ -55,7 +56,7 @@ public class GPMCollectAction extends Action {
             arm_lift_action_ = new ArmStaggeredGotoAction(subsystem.getArm(), "collect:lift-shelf", false) ;
         }       
 
-        grabber_stop_collect_action_ = new GrabberGrabGampieceAction(subsystem.getGrabber(), gp);
+        grabber_stop_collect_action_ = new GrabberGrabGampieceAction(subsystem.getGrabber(), gp, ground);
         grabber_start_collect_action_ = new GrabberStartCollectAction(subsystem_.getGrabber(), gp);
         grabber_stow_action_ = new GrabberStowAction(subsystem_.getGrabber());
 
@@ -66,6 +67,16 @@ public class GPMCollectAction extends Action {
     public GPMCollectAction(GPMSubsystem subsystem, RobotOperation.GamePiece gp, boolean ground, double timeout) throws Exception {
         this(subsystem, gp, ground) ;
         timer_ = new XeroTimer(subsystem.getRobot(), "collect-overall", timeout);
+    }
+
+    public void setGamePiece(GamePiece gp) {
+        try {
+            grabber_start_collect_action_ = new GrabberStartCollectAction(subsystem_.getGrabber(), gp);
+            subsystem_.getGrabber().setAction(grabber_start_collect_action_, true);
+        }
+        catch(Exception ex) {
+
+        }
     }
 
     @Override
@@ -156,6 +167,6 @@ public class GPMCollectAction extends Action {
 
     @Override
     public String toString(int indent) {
-        return spaces(indent) + "GPMCollectAction";
+        return spaces(indent) + "GPMCollectAction(" + (ground_ ? "ground" : "shelf") ;
     }
 }
