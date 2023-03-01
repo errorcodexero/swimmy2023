@@ -40,13 +40,14 @@
 
 - Check out abort functionality in loading station collect          Done
 
-- Test trigger buttons (left & right) slowing drive base
+- Test left trigger buttons slowing drive base                      Done
 
-- Test cube ground collect                                          Drive Practice
+- Tune cube ground collect                                          Wednesday (3/1)
+- Test drivebase X pattern based on holding button                  Wednesday (3/1)
 
 - Tune each of the drivebase locations for collect
-  o Red (Tag 5) Left                                                Tuesday
-  o Red (Tag 5) Right                                               Tuesday
+  o Red (Tag 5) Left                                                Done
+  o Red (Tag 5) Right                                               Done
   o Blue (Tag 4) Left                                               Done
   o Blue (Tag 4) Right                                              Done
 
@@ -54,35 +55,35 @@
   o Red Place Cone/Tag 1/Right/Top                                  Done
   o Red Place Cone/Tag 1/Right/Middle                               Done
   o Red Place Cone/Tag 1/Right/Bottom                               Done
-  o Red Place Cube/Tag 1/Right/Bottom                               
+  o Red Place Cube/Tag 1/Right/Bottom                               Wednesday (3/1)
 
   o Red Place Cone/Tag 1/Left/Top                                   Done
-  o Red Place Cone/Tag 1/Left/Middle
-  o Red Place Cone/Tag 1/Left/Bottom                                Done
-  o Red Place Cube/Tag 1/Left/Bottom
+  o Red Place Cone/Tag 1/Left/Middle                                Wednesday (3/1)
+  o Red Place Cone/Tag 1/Left/Bottom                                Wednesday (3/1)
+  o Red Place Cube/Tag 1/Left/Bottom                                Wednesday (3/1)
 
   o Red Place Cube/Tag 1/Middle/Top                                 Done
   o Red Place Cube/Tag 1/Middle/Bottom                              Done
   o Red Place Cube/Tag 1/Right/Bottom                               Done
 
-  o Red Place Cone/Tag 2/Right/Top
-  o Red Place Cone/Tag 2/Right/Middle
-  o Red Place Cone/Tag 2/Right/Bottom
-  o Red Place Cube/Tag 2/Right/Bottom
+  o Red Place Cone/Tag 2/Right/Top                                  Wednesday (3/1)
+  o Red Place Cone/Tag 2/Right/Middle                               Wednesday (3/1)
+  o Red Place Cone/Tag 2/Right/Bottom                               Wednesday (3/1)
+  o Red Place Cube/Tag 2/Right/Bottom                               Wednesday (3/1)
 
   o Red Place Cone/Tag 2/Left/Top
-  o Red Place Cone/Tag 2/Left/Middle
-  o Red Place Cone/Tag 2/Left/Bottom
-  o Red Place Cube/Tag 2/Left/Bottom
+  o Red Place Cone/Tag 2/Left/Middle                               Wednesday (3/1)
+  o Red Place Cone/Tag 2/Left/Bottom                               Wednesday (3/1)
+  o Red Place Cube/Tag 2/Left/Bottom                               Wednesday (3/1)
 
-  o Red Place Cube/Tag 2/Middle/Top
-  o Red Place Cube/Tag 2/Middle/Bottom
-  o Red Place Cube/Tag 2/Right/Bottom  
+  o Red Place Cube/Tag 2/Middle/Top                                Wednesday (3/1)
+  o Red Place Cube/Tag 2/Middle/Bottom                             Wednesday (3/1)
+  o Red Place Cube/Tag 2/Right/Bottom                              Wednesday (3/1)  
 
-  o Red Place Cone/Tag 3/Right/Top
-  o Red Place Cone/Tag 3/Right/Middle
-  o Red Place Cone/Tag 3/Right/Bottom
-  o Red Place Cube/Tag 3/Right/Bottom
+  o Red Place Cone/Tag 3/Right/Top                                 Wednesday (3/1)
+  o Red Place Cone/Tag 3/Right/Middle                              Wednesday (3/1)
+  o Red Place Cone/Tag 3/Right/Bottom                              Wednesday (3/1)
+  o Red Place Cube/Tag 3/Right/Bottom                              Wednesday (3/1)
 
   o Red Place Cone/Tag 3/Left/Top
   o Red Place Cone/Tag 3/Left/Middle
@@ -135,22 +136,21 @@
   o Blue Place Cube/Tag 8/Middle/Bottom
   o Blue Place Cube/Tag 8/Right/Bottom   
 
+- Test/Tune the auto balance code for platform  
+- Test center-1 automode
+- Test left-1 automode
+- Test right-1 automode
+
 - Test manual collect
 - Test manual place
   o Cube (low/middle/high)
   o Cone (low/middle/high)
 
-- Check out OI display
-
-- Test/Tune the auto balance code for platform
-
-- Test center-1 automode
 - Test center-2 automode
-- Test left-1 automode
-- Test right-1 automode
 
 ------------------------- To Integrate -----------------------
 - Hollister OI Code                                                 Done
+- Hollister automodes
 
 ------------------------- To Write ---------------------------
 - Look at timing of DriverStation.getAlliance() vs robot init       Done
@@ -163,5 +163,7 @@
   - Center - 1 auto mode - place one then balance                   Done
   - Left auto mode - place two                                      Done
   - Right auto mode - place two                                     Done
-  - Center - 2 auto mode - place two then balance                   Done
+  - Center - 2 auto mode - place two then balance
+  - Left auto mode - place three
+  - Right auto mode - place three
   

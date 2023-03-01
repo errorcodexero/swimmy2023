@@ -34,12 +34,11 @@ public class SwerveDriveGamepad extends Gamepad {
     private double deadband_pos_y_ ;
     private double deadband_rotate_ ;
     private double power_ ;
-    private boolean holding_x_ ;
     private SwerveDriveChassisSpeedAction action_;
     private SwerveDriveXPatternAction x_action_;
     private SwerveButton[] reset_buttons_ ;
-    private SwerveButton[] drivebase_x_on_buttons_;
-    private SwerveButton[] drivebase_x_off_buttons_;
+    private SwerveButton[] drivebase_x_buttons_;
+    private boolean holding_x_;
 
     public SwerveDriveGamepad(OISubsystem oi, int index, SwerveBaseSubsystem drive_) throws Exception {
         super(oi, "swerve_gamepad", index);
@@ -54,7 +53,7 @@ public class SwerveDriveGamepad extends Gamepad {
 
         db_ = drive_;
         reset_buttons_ = null ;
-        drivebase_x_on_buttons_ = null;
+        drivebase_x_buttons_ = null;
         holding_x_ = false ;
     }
 
@@ -66,12 +65,8 @@ public class SwerveDriveGamepad extends Gamepad {
         reset_buttons_ = buttons ;
     }
 
-    public void setSwerveXOnButtons(SwerveButton[] buttons) {
-        drivebase_x_on_buttons_ = buttons ;
-    }
-
-    public void setSwerveXOffButtons(SwerveButton[] buttons) {
-        drivebase_x_off_buttons_ = buttons ;
+    public void setSwerveXButtons(SwerveButton[] buttons) {
+        drivebase_x_buttons_ = buttons ;
     }
 
     @Override
@@ -137,13 +132,17 @@ public class SwerveDriveGamepad extends Gamepad {
             }
         }
 
-        if (isButtonSequencePressed(drivebase_x_on_buttons_) && !holding_x_) {
-            db_.setAction(x_action_);
+        if (isButtonSequencePressed(drivebase_x_buttons_)) {
+            if (db_.getAction() != x_action_) {
+                db_.setAction(x_action_);
+            }
+            action_.update(new ChassisSpeeds());
             holding_x_ = true ;
         }
-
-        if (isButtonSequencePressed(drivebase_x_off_buttons_) && holding_x_) {
-            db_.setAction(action_);
+        else {
+            if (db_.getAction() != action_) {
+                db_.setAction(action_);
+            }
             holding_x_ = false ;
         }
     }

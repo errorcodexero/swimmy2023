@@ -206,11 +206,9 @@ public class Swimmy2023RobotSubsystem extends RobotSubsystem {
     public boolean setOperation(RobotOperation oper) {
         if (ctrl_ != null) {
             //
-            // If another controller is running, we cannot override it.  The gunner must press
-            // abort to stop the current operation before assigning a new operation.
+            // Another operation is running, we just ignore the new one
             //
-            putDashboard(OIError, DisplayType.Always, "operation already running");
-            return false ;
+            return true ;
         }
 
         if (!isOperationValid(oper)) {

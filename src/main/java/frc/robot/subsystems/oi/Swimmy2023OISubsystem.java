@@ -15,8 +15,7 @@ public class Swimmy2023OISubsystem extends OISubsystem {
     private final static String OIHIDIndexName = "panel:index";
 
     private final static SwerveDriveGamepad.SwerveButton[] resetButtons = { SwerveDriveGamepad.SwerveButton.Y, SwerveDriveGamepad.SwerveButton.B} ;
-    private final static SwerveDriveGamepad.SwerveButton[] xActionOnButtons = { SwerveDriveGamepad.SwerveButton.RBack} ;
-    private final static SwerveDriveGamepad.SwerveButton[] xActionOffButtons = { SwerveDriveGamepad.SwerveButton.LBack} ;
+    private final static SwerveDriveGamepad.SwerveButton[] xActionButtons = { SwerveDriveGamepad.SwerveButton.RBack} ;
 
     private Swimmy2023OIDeviceHollister oipanel_ ;
 
@@ -61,8 +60,7 @@ public class Swimmy2023OISubsystem extends OISubsystem {
         SwerveDriveGamepad swgp = (SwerveDriveGamepad)gp ;
         if (swgp != null) {
             swgp.setSwerveResetButtons(resetButtons);
-            swgp.setSwerveXOnButtons(xActionOnButtons);
-            swgp.setSwerveXOffButtons(xActionOffButtons);
+            swgp.setSwerveXButtons(xActionButtons);
         }
     }
 
