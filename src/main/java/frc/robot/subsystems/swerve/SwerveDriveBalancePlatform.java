@@ -21,7 +21,8 @@ public class SwerveDriveBalancePlatform extends SwerveDriveAction {
         super(sub);
 
         dir_ = dir;
-        pid_ = new PIDCtrl(sub.getRobot().getSettingsSupplier(), "balance-pid", false);
+        String name = "subsystems:" + sub.getName() + ":balance-pid" ;
+        pid_ = new PIDCtrl(sub.getRobot().getSettingsSupplier(), name, false);
     }
 
     @Override

@@ -126,7 +126,7 @@ public class SwerveDrivePathAction extends SwerveHolonomicControllerAction {
     }
 
     public String toString(int indent) {
-        return spaces(indent) + "SwerveDrivePathAction: from " + 
-                start_.getTranslation().toString() + " to " + end_.getTranslation().toString() ;
+        return spaces(indent) + "SwerveDrivePathAction(maxv " + maxv_ + ", maxa " + maxa_ + ")" +
+                ": from " + start_.getTranslation().toString() + " to " + end_.getTranslation().toString() ;
     }
 }

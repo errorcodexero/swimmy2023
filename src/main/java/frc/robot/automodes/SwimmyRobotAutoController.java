@@ -11,7 +11,9 @@ import org.xero1425.misc.MessageType;
 import org.xero1425.misc.MissingParameterException;
 
 import frc.robot.subsystems.toplevel.RobotOperation.GamePiece;
+import frc.robot.subsystems.toplevel.RobotOperation.GridTagPosition;
 import frc.robot.subsystems.toplevel.RobotOperation.Location;
+import frc.robot.subsystems.toplevel.RobotOperation.Slot;
 
 public class SwimmyRobotAutoController extends AutoController {
     private SwimmyTestAutoMode test_mode_ ;
@@ -24,6 +26,10 @@ public class SwimmyRobotAutoController extends AutoController {
 
                 addAutoMode(new SwimmyAutoModeCenter1(this, "Red", Location.Top, GamePiece.Cone));
                 addAutoMode(new SwimmyAutoModeCenter1(this, "Blue", Location.Top, GamePiece.Cone));
+                addAutoMode(new SwimmyAutoPlaceCollectPlace(this, "Edge1", "Red", Location.Top, GamePiece.Cone, GridTagPosition.Left, Slot.Right, Location.Top, GamePiece.Cone));
+                addAutoMode(new SwimmyAutoPlaceCollectPlace(this, "Edge1", "Blue", Location.Top, GamePiece.Cone, GridTagPosition.Right, Slot.Left, Location.Top, GamePiece.Cone));
+                addAutoMode(new SwimmyAutoPlaceCollectPlace(this, "Middle1", "Red", Location.Top, GamePiece.Cone, GridTagPosition.Right, Slot.Left, Location.Top, GamePiece.Cone));
+                addAutoMode(new SwimmyAutoPlaceCollectPlace(this, "Middle1", "Blue", Location.Top, GamePiece.Cone, GridTagPosition.Left, Slot.Right, Location.Top, GamePiece.Cone));
             }
             catch(Exception ex) {
                 MessageLogger logger = robot.getMessageLogger() ;

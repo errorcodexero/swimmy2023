@@ -153,6 +153,254 @@
                     "startvelocity": 0
                 }
             ]
+        },
+        {
+            "name": "Edge1Red",
+            "paths": [
+                {
+                    "constraints": [
+                    ],
+                    "endvelocity": 0,
+                    "maxacceleration": 4,
+                    "maxvelocity": 4,
+                    "name": "Path1",
+                    "points": [
+                        {
+                            "heading": 180,
+                            "swrot": 0,
+                            "swrotvel": 0,
+                            "x": 14.751747682531258,
+                            "y": 0.4826510606403076
+                        },
+                        {
+                            "heading": 180,
+                            "swrot": 0,
+                            "swrotvel": 0,
+                            "x": 13.767746592851635,
+                            "y": 0.5035872540377451
+                        },
+                        {
+                            "heading": 180,
+                            "swrot": 180,
+                            "swrotvel": 0,
+                            "x": 10.020167974710088,
+                            "y": 0.9851197021788387
+                        }
+                    ],
+                    "startvelocity": 0
+                },
+                {
+                    "constraints": [
+                    ],
+                    "endvelocity": 0,
+                    "maxacceleration": 4,
+                    "maxvelocity": 4,
+                    "name": "Path2",
+                    "points": [
+                        {
+                            "heading": -1.4033418597069752e-14,
+                            "swrot": 180,
+                            "swrotvel": 0,
+                            "x": 10.0202,
+                            "y": 0.98512
+                        },
+                        {
+                            "heading": 0,
+                            "swrot": 0,
+                            "swrotvel": 0,
+                            "x": 14.626130522146626,
+                            "y": 1.1316730559609098
+                        }
+                    ],
+                    "startvelocity": 0
+                }
+            ]
+        },
+        {
+            "name": "Edge1Blue",
+            "paths": [
+                {
+                    "constraints": [
+                    ],
+                    "endvelocity": 0,
+                    "maxacceleration": 4,
+                    "maxvelocity": 4,
+                    "name": "Path1",
+                    "points": [
+                        {
+                            "heading": 0,
+                            "swrot": 180,
+                            "swrotvel": 0,
+                            "x": 1.8341163563115113,
+                            "y": 0.4931191573390272
+                        },
+                        {
+                            "heading": 0,
+                            "swrot": 180,
+                            "swrotvel": 0,
+                            "x": 2.786713155894977,
+                            "y": 0.4826510606403076
+                        },
+                        {
+                            "heading": 0,
+                            "swrot": 0,
+                            "swrotvel": 0,
+                            "x": 6.398206516953174,
+                            "y": 0.9851197021788387
+                        }
+                    ],
+                    "startvelocity": 0
+                },
+                {
+                    "constraints": [
+                    ],
+                    "endvelocity": 0,
+                    "maxacceleration": 4,
+                    "maxvelocity": 4,
+                    "name": "Path2",
+                    "points": [
+                        {
+                            "heading": 180,
+                            "swrot": 0,
+                            "swrotvel": 0,
+                            "x": 6.39821,
+                            "y": 0.98512
+                        },
+                        {
+                            "heading": 180,
+                            "swrot": 180,
+                            "swrotvel": 0,
+                            "x": 1.9387973232987057,
+                            "y": 1.1107368625634706
+                        }
+                    ],
+                    "startvelocity": 0
+                }
+            ]
+        },
+        {
+            "name": "Middle1Red",
+            "paths": [
+                {
+                    "constraints": [
+                    ],
+                    "endvelocity": 0,
+                    "maxacceleration": 4,
+                    "maxvelocity": 4,
+                    "name": "Path1",
+                    "points": [
+                        {
+                            "heading": 180,
+                            "swrot": 0,
+                            "swrotvel": 0,
+                            "x": 14.745743392435102,
+                            "y": 5.130485994871724
+                        },
+                        {
+                            "heading": 180,
+                            "swrot": 0,
+                            "swrotvel": 0,
+                            "x": 13.830555173043953,
+                            "y": 5.140954091570443
+                        },
+                        {
+                            "heading": 180,
+                            "swrot": 180,
+                            "swrotvel": 0,
+                            "x": 10.407487552562706,
+                            "y": 4.648953546730631
+                        }
+                    ],
+                    "startvelocity": 0
+                },
+                {
+                    "constraints": [
+                    ],
+                    "endvelocity": 0,
+                    "maxacceleration": 4,
+                    "maxvelocity": 4,
+                    "name": "Path2",
+                    "points": [
+                        {
+                            "heading": -1.4033418597069752e-14,
+                            "swrot": 180,
+                            "swrotvel": 0,
+                            "x": 10.4075,
+                            "y": 4.64895
+                        },
+                        {
+                            "heading": 0,
+                            "swrot": 0,
+                            "swrotvel": 0,
+                            "x": 14.835492456121015,
+                            "y": 4.481463999551121
+                        }
+                    ],
+                    "startvelocity": 0
+                }
+            ]
+        },
+        {
+            "name": "Middle1Blue",
+            "paths": [
+                {
+                    "constraints": [
+                    ],
+                    "endvelocity": 0,
+                    "maxacceleration": 4,
+                    "maxvelocity": 4,
+                    "name": "Path1",
+                    "points": [
+                        {
+                            "heading": 0,
+                            "swrot": 180,
+                            "swrotvel": 0,
+                            "x": 1.8445844530102309,
+                            "y": 5.130485994871724
+                        },
+                        {
+                            "heading": 0,
+                            "swrot": 180,
+                            "swrotvel": 0,
+                            "x": 2.3889254813436396,
+                            "y": 5.151422188269162
+                        },
+                        {
+                            "heading": 0,
+                            "swrot": 0,
+                            "swrotvel": 0,
+                            "x": 6.534291774036525,
+                            "y": 4.596613063237034
+                        }
+                    ],
+                    "startvelocity": 0
+                },
+                {
+                    "constraints": [
+                    ],
+                    "endvelocity": 0,
+                    "maxacceleration": 4,
+                    "maxvelocity": 4,
+                    "name": "Path2",
+                    "points": [
+                        {
+                            "heading": 180,
+                            "swrot": 0,
+                            "swrotvel": 0,
+                            "x": 6.53429,
+                            "y": 4.59661
+                        },
+                        {
+                            "heading": 180,
+                            "swrot": 180,
+                            "swrotvel": 0,
+                            "x": 1.896924936503828,
+                            "y": 4.470995902852401
+                        }
+                    ],
+                    "startvelocity": 0
+                }
+            ]
         }
     ],
     "outdir": "C:/cygwin64/home/butch/robottools/robots/swimmy2023/src/main/deploy/paths",

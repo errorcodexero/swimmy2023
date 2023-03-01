@@ -28,17 +28,26 @@
   o Target april tag to the right                                   Done
   o Target april tag to the left                                    Done
 
-- Experiment with vision on while placing look at graphs            Deferred
+- Experiment with vision on while placing look at graphs            Done (does not work)
 
-- Test the OI display for cone/cube/none/error                      Patterns ok, check logic
+- Test the Robot display for cone/cube/none                         Done
+- Check out abort functionality in ground collect                   Done
+-------------------------------------------------------------------------------------------------
+- Test the OI display for cone/cube/none/error
+- Test the rumble function
 
-- Test/Tune first cube place operation
-- Test cube ground collect
+- Check out abort functionality in place
+
+- Check out abort functionality in loading station collect
+
+- Test trigger buttons (left & right) slowing drive base
+
+- Test cube ground collect                                          Drive Practice
 
 - Tune each of the drivebase locations for collect
   o Red (Tag 5) Left                                                Tuesday
   o Red (Tag 5) Right                                               Tuesday
-  o Blue (Tag 4) Left                                               Tuesday/Update offset
+  o Blue (Tag 4) Left                                               Done
   o Blue (Tag 4) Right                                              Done
 
 - Test/Tune each of the drivebase locations/auto place
@@ -126,16 +135,14 @@
   o Blue Place Cube/Tag 8/Middle/Bottom
   o Blue Place Cube/Tag 8/Right/Bottom   
 
-- Test the Robot display for cone/cube/none                         Done
+
 
 - Test manual collect
 - Test manual place
   o Cube (low/middle/high)
   o Cone (low/middle/high)
 
-- Check out abort functionality in place
-- Check out abort functionality in loading station collect
-- Check out abort functionality in ground collect                   Done
+
 - Check out OI display
 
 - Test/Tune the auto balance code for platform
@@ -152,14 +159,15 @@
 - Hollister OI Code                                                 Done
 
 ------------------------- To Write ---------------------------
-- Look at timing of DriverStation.getAlliance() vs robot init
+- Look at timing of DriverStation.getAlliance() vs robot init       Done
 - Update AutoPlaceOp to spit out cube in lower                      Done
   level using motorencoderpoweraction                               Done
 - External display on robot for cone/cube                           Done
 - Update SparkMax to apply stall current limit                      Done
 - Hold down button, drive half speed                                Done
 - Automodes
-  - Center - 1 auto mode - place one then balance
+  - Center - 1 auto mode - place one then balance                   Done
   - Left auto mode - place two
   - Right auto mode - place two
   - Center - 2 auto mode - place two then balance
+  
