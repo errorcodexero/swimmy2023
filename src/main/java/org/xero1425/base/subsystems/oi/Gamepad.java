@@ -38,6 +38,7 @@ public abstract class Gamepad extends OIDevice
             controller_.setRumble(GenericHID.RumbleType.kRightRumble, amount);
             controller_.setRumble(GenericHID.RumbleType.kLeftRumble, amount) ;
             timer_ = new XeroTimer(getSubsystem().getRobot(), "rumble-timer", amount);
+            timer_.start() ;
         }
     }
 

@@ -104,6 +104,8 @@ public class AutoCollectOpCtrl extends OperationCtrl {
                 break ;
 
             case LookingForTag:
+                break ;
+
             case WaitForVision:
                 break ;
 
@@ -115,11 +117,16 @@ public class AutoCollectOpCtrl extends OperationCtrl {
                 break ;        
                 
             case DriveForward:
+                getRobotSubsystem().getOI().enableGamepad() ;
+                getRobotSubsystem().getSwerve().enableVision(true);
+                getRobotSubsystem().getSwerve().drive(new ChassisSpeeds());
+                break; 
+
             case DriveBack:
+                getRobotSubsystem().getOI().enableGamepad() ;
+                getRobotSubsystem().getSwerve().enableVision(true);
                 getRobotSubsystem().getSwerve().drive(new ChassisSpeeds());
                 break ;
-
-
         }
 
         setDone();

@@ -33,12 +33,12 @@
 - Test the Robot display for cone/cube/none                         Done
 - Check out abort functionality in ground collect                   Done
 -------------------------------------------------------------------------------------------------
-- Test the OI display for cone/cube/none/error
-- Test the rumble function
+- Test the OI display for cone/cube/none/error                      Done
+- Test the rumble function                                          Done
 
-- Check out abort functionality in place
+- Check out abort functionality in place                            Done
 
-- Check out abort functionality in loading station collect
+- Check out abort functionality in loading station collect          Done
 
 - Test trigger buttons (left & right) slowing drive base
 
@@ -54,16 +54,16 @@
   o Red Place Cone/Tag 1/Right/Top                                  Done
   o Red Place Cone/Tag 1/Right/Middle                               Done
   o Red Place Cone/Tag 1/Right/Bottom                               Done
-  o Red Place Cube/Tag 1/Right/Bottom                               Tuesday
+  o Red Place Cube/Tag 1/Right/Bottom                               
 
-  o Red Place Cone/Tag 1/Left/Top
+  o Red Place Cone/Tag 1/Left/Top                                   Done
   o Red Place Cone/Tag 1/Left/Middle
-  o Red Place Cone/Tag 1/Left/Bottom
+  o Red Place Cone/Tag 1/Left/Bottom                                Done
   o Red Place Cube/Tag 1/Left/Bottom
 
-  o Red Place Cube/Tag 1/Middle/Top
-  o Red Place Cube/Tag 1/Middle/Bottom
-  o Red Place Cube/Tag 1/Right/Bottom
+  o Red Place Cube/Tag 1/Middle/Top                                 Done
+  o Red Place Cube/Tag 1/Middle/Bottom                              Done
+  o Red Place Cube/Tag 1/Right/Bottom                               Done
 
   o Red Place Cone/Tag 2/Right/Top
   o Red Place Cone/Tag 2/Right/Middle

@@ -36,6 +36,8 @@ public class ArmGotoAction extends Action {
     public ArmGotoAction(ArmSubsystem sub, double [] lower, double [] upper) throws Exception {
         this(sub.getRobot().getMessageLogger());
 
+        arm_ = sub ;
+
         if (lower.length != upper.length) {
             throw new Exception("the to arrays, upper and lower, must be the same size") ;
         }
@@ -87,6 +89,8 @@ public class ArmGotoAction extends Action {
     public void start() throws Exception {
         super.start();
 
+        current_index_ = 0 ;
+
         if (lower_targets_.size() == 0) {
             //
             // If we created an action with no targets, we are done immediately
@@ -107,8 +111,6 @@ public class ArmGotoAction extends Action {
         // size of the lower_targets_ and upper_targets array.
         //
         current_index_ = 1 ;
-
-        // current_index_++;
     }
 
     @Override

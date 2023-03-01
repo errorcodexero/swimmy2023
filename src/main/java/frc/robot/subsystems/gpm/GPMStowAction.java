@@ -1,8 +1,6 @@
 package frc.robot.subsystems.gpm;
 
 import org.xero1425.base.actions.Action;
-import org.xero1425.misc.BadParameterTypeException;
-import org.xero1425.misc.MissingParameterException;
 
 import frc.robot.subsystems.arm.ArmGotoAction;
 import frc.robot.subsystems.grabber.GrabberStowAction;
@@ -12,11 +10,11 @@ public class GPMStowAction extends Action {
     private ArmGotoAction stow_arm_action_ ;
     private GrabberStowAction stow_grabber_action_ ;
 
-    public GPMStowAction(GPMSubsystem sub) throws MissingParameterException, BadParameterTypeException {
+    public GPMStowAction(GPMSubsystem sub) throws Exception {
         super(sub.getRobot().getMessageLogger());
         
         sub_ = sub ;
-        stow_arm_action_ = new ArmGotoAction(sub_.getArm(), 0.0, 0.0) ;
+        stow_arm_action_ = new ArmGotoAction(sub_.getArm(), new double []{ 0.0, 0.0 }, new double [] { 20000.0,0.0 }) ;
         stow_grabber_action_ = new GrabberStowAction(sub_.getGrabber());
     }
 

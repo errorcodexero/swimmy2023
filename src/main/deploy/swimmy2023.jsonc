@@ -15,7 +15,7 @@
             // Subsystem related messages
             "vision": false,
             "swerve" : false,
-            "swimmy2023oi" : false,
+            "swimmy2023oi" : true,
             "Swimmy2023RobotSubsystem" : true,
             "limelight" : false,
             "arm-motor-lower" : false,
@@ -915,6 +915,10 @@
     },
     "automodes" : {
         "center1" : {
+            "before-collect-delay" : 3.0,
+            "collect-delay" : 1.0
+        },
+        "left1" : {
             "before-collect-delay" : 3.0,
             "collect-delay" : 1.0
         }

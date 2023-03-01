@@ -97,7 +97,7 @@ public class Swimmy2023OIDeviceHollister extends OIPanel {
     }
 
     @Override
-    public void createStaticActions() throws MissingParameterException, BadParameterTypeException {
+    public void createStaticActions() throws Exception {
         SwimmyRobot2023 robot = (SwimmyRobot2023)getSubsystem().getRobot();
         Swimmy2023RobotSubsystem subsystem = (Swimmy2023RobotSubsystem)robot.getRobotSubsystem();
 

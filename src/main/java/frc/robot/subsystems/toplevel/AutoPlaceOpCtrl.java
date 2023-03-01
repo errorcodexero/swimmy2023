@@ -131,8 +131,9 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
 
             case DrivingToLocation:
                 getRobotSubsystem().getOI().enableGamepad() ;
-                drive_to_action_.cancel() ;
                 getRobotSubsystem().getSwerve().enableVision(true);
+                drive_to_action_.cancel() ;
+                getRobotSubsystem().getSwerve().drive(new ChassisSpeeds());
                 break ;                
 
             case DriveForward:
@@ -143,9 +144,13 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
                 break ;
 
             case WaitingOnArm:
+                getRobotSubsystem().getOI().enableGamepad() ;
+                getRobotSubsystem().getSwerve().enableVision(true);
                 break;
 
             case SettlingDelay:                
+                getRobotSubsystem().getOI().enableGamepad() ;
+                getRobotSubsystem().getSwerve().enableVision(true);
                 break;
 
             case DroppingPiece:

@@ -1,7 +1,6 @@
 package frc.robot.subsystems.toplevel;
 
 import org.xero1425.base.XeroRobot;
-import org.xero1425.base.IVisionLocalization.LocationData;
 import org.xero1425.base.subsystems.RobotSubsystem;
 import org.xero1425.base.subsystems.oi.Gamepad;
 import org.xero1425.base.subsystems.swerve.common.SwerveBaseSubsystem;
@@ -12,17 +11,18 @@ import org.xero1425.misc.MessageLogger;
 import org.xero1425.misc.MessageType;
 import org.xero1425.misc.MissingParameterException;
 
-import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.DigitalOutput;
 import frc.robot.SwimmyRobot2023;
 import frc.robot.subsystems.gpm.GPMSubsystem;
 import frc.robot.subsystems.oi.Swimmy2023OISubsystem;
 import frc.robot.subsystems.toplevel.RobotOperation.Action;
 import frc.robot.subsystems.toplevel.RobotOperation.GamePiece;
+import frc.robot.subsystems.toplevel.RobotOperation.Location;
 import frc.robot.subsystems.toplevel.RobotOperation.Slot;
 
 
 public class Swimmy2023RobotSubsystem extends RobotSubsystem {
+    private final String OIError = "OIError" ;
 
     //
     // The subsystems
@@ -116,27 +116,62 @@ public class Swimmy2023RobotSubsystem extends RobotSubsystem {
         boolean ret = true ;
 
         if (oper.getGround()) {
-            if (oper.getAction() != Action.Collect)
+            //
+            // Ground collect rules
+            //
+            if (oper.getAction() != Action.Collect) {
+                putDashboard(OIError, DisplayType.Always, "ground place is not valid");
                 return false;
+            }
 
-            return true ;
-        }
-
-        if (oper.getAction() == Action.Collect) {
-            //
-            // Rules for collect
-            //
-            if (oper.getSlot() == Slot.Middle) {
-                logger.startMessage(MessageType.Error);
-                logger.add("Swimmy2023RobotSubsystem: invalid operation assigned - collect operation must be slot Left or Right");
-                logger.endMessage();
-                ret = false ;
+            if (oper.getGamePiece() == GamePiece.None) {
+                putDashboard(OIError, DisplayType.Always, "ground operation with gamepiece 'none'");
+                return false;
             }
         }
         else {
             //
-            // Rules for placement
-            // 
+            // Shelf/Loading station rules
+            //
+            if (oper.getAction() == Action.Collect) {
+                //
+                // Collect Loading Station Rules
+                //
+                if (oper.getGamePiece() == GamePiece.None) {
+                    putDashboard(OIError, DisplayType.Always, "loading station collect with gamepiece 'none'");
+                    return false ;
+                }
+
+                if (oper.getSlot() == Slot.Middle) {
+                    putDashboard("OIError", null, getName());
+                    logger.startMessage(MessageType.Error);
+                    logger.add("Swimmy2023RobotSubsystem: invalid operation assigned - collect operation must be slot Left or Right");
+                    logger.endMessage();
+                    ret = false ;
+                }
+            }
+            else {
+                //
+                // Grid Placement Rules
+                // 
+                if (oper.getGamePiece() == GamePiece.None) {
+                    putDashboard(OIError, DisplayType.Always, "grid place with gamepiece 'none'");
+                    return false ;
+                }
+
+                if (oper.getSlot() == Slot.Middle) {
+                    if (oper.getGamePiece() != GamePiece.Cube) {
+                        putDashboard(OIError, DisplayType.Always, "grid place in middle slot must be gamepiece 'cube'");
+                        return false ;
+                    }
+                }
+                else {
+                    if (oper.getLocation() == Location.Top || oper.getLocation() == Location.Middle) {
+                        putDashboard(OIError, DisplayType.Always, "grid place in left/right slot and top/bottom location must be gamepiece 'cone'");
+                        return false ; 
+                    }
+                }
+            }
         }
 
         return ret ;
@@ -146,22 +181,22 @@ public class Swimmy2023RobotSubsystem extends RobotSubsystem {
     public void computeState() {
         super.computeState();
 
-        LocationData loc = getLimeLight().getLocation(getSwerve().getPose());
-        if (loc == null) {
-            putDashboard("v-x", DisplayType.Always, "NONE");
-            putDashboard("v-y", DisplayType.Always, "NONE");
-            putDashboard("v-h", DisplayType.Always, "NONE");
-        }
-        else {
-            Pose2d p2d = loc.location.toPose2d() ;
-            putDashboard("v-x", DisplayType.Always, p2d.getX());
-            putDashboard("v-y", DisplayType.Always, p2d.getY());
-            putDashboard("v-h", DisplayType.Always, p2d.getRotation().getDegrees());
-        }
+        // LocationData loc = getLimeLight().getLocation(getSwerve().getPose());
+        // if (loc == null) {
+        //     putDashboard("v-x", DisplayType.Always, "NONE");
+        //     putDashboard("v-y", DisplayType.Always, "NONE");
+        //     putDashboard("v-h", DisplayType.Always, "NONE");
+        // }
+        // else {
+        //     Pose2d p2d = loc.location.toPose2d() ;
+        //     putDashboard("v-x", DisplayType.Always, p2d.getX());
+        //     putDashboard("v-y", DisplayType.Always, p2d.getY());
+        //     putDashboard("v-h", DisplayType.Always, p2d.getRotation().getDegrees());
+        // }
 
-        putDashboard("db-x", DisplayType.Always, getSwerve().getPose().getX()) ;
-        putDashboard("db-y", DisplayType.Always, getSwerve().getPose().getY()) ;
-        putDashboard("db-h", DisplayType.Always, getSwerve().getPose().getRotation().getDegrees()) ;
+        // putDashboard("db-x", DisplayType.Always, getSwerve().getPose().getX()) ;
+        // putDashboard("db-y", DisplayType.Always, getSwerve().getPose().getY()) ;
+        // putDashboard("db-h", DisplayType.Always, getSwerve().getPose().getRotation().getDegrees()) ;
     }
 
     public boolean isOperationComplete() {
@@ -174,6 +209,7 @@ public class Swimmy2023RobotSubsystem extends RobotSubsystem {
             // If another controller is running, we cannot override it.  The gunner must press
             // abort to stop the current operation before assigning a new operation.
             //
+            putDashboard(OIError, DisplayType.Always, "operation already running");
             return false ;
         }
 
