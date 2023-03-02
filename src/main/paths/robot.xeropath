@@ -3,7 +3,7 @@
     "generator": "errorcodexeroswerve",
     "groups": [
         {
-            "name": "CenterMode",
+            "name": "center1",
             "paths": [
                 {
                     "constraints": [
@@ -11,21 +11,21 @@
                     "endvelocity": 0,
                     "maxacceleration": 4,
                     "maxvelocity": 4,
-                    "name": "Path1",
+                    "name": "red1",
                     "points": [
                         {
-                            "heading": 180,
+                            "heading": -180,
                             "swrot": 0,
                             "swrotvel": 0,
-                            "x": 14.192755481084733,
-                            "y": 3.3207747568453962
+                            "x": 14.82768509912495,
+                            "y": 3.3459378009079117
                         },
                         {
-                            "heading": 180,
-                            "swrot": 180,
+                            "heading": -180,
+                            "swrot": -180,
                             "swrotvel": 0,
-                            "x": 10.430733803084516,
-                            "y": 3.3655607292025422
+                            "x": 9.752676203537394,
+                            "y": 3.4069599519570613
                         }
                     ],
                     "startvelocity": 0
@@ -36,21 +36,21 @@
                     "endvelocity": 0,
                     "maxacceleration": 4,
                     "maxvelocity": 4,
-                    "name": "Path2",
+                    "name": "red2",
                     "points": [
                         {
-                            "heading": 0,
-                            "swrot": 180,
+                            "heading": -4.085237137479866,
+                            "swrot": -180,
                             "swrotvel": 0,
-                            "x": 10.4307,
-                            "y": 3.36556
+                            "x": 9.75268,
+                            "y": 3.40696
                         },
                         {
                             "heading": 0,
                             "swrot": 0,
                             "swrotvel": 0,
-                            "x": 14.1928,
-                            "y": 3.32077
+                            "x": 12.549524793290056,
+                            "y": 2.257709440531422
                         }
                     ],
                     "startvelocity": 0
@@ -61,21 +61,46 @@
                     "endvelocity": 0,
                     "maxacceleration": 4,
                     "maxvelocity": 4,
-                    "name": "Path3",
+                    "name": "blue1",
                     "points": [
                         {
-                            "heading": 180,
+                            "heading": -180,
                             "swrot": 0,
                             "swrotvel": 0,
-                            "x": 14.1928,
-                            "y": 3.32077
+                            "x": 14.81751474061676,
+                            "y": 3.386619234940678
                         },
                         {
-                            "heading": 180,
+                            "heading": -180,
+                            "swrot": -180,
+                            "swrotvel": 0,
+                            "x": 9.671313335471863,
+                            "y": 3.4069599519570613
+                        }
+                    ],
+                    "startvelocity": 0
+                },
+                {
+                    "constraints": [
+                    ],
+                    "endvelocity": 0,
+                    "maxacceleration": 4,
+                    "maxvelocity": 4,
+                    "name": "blue2",
+                    "points": [
+                        {
+                            "heading": 0,
+                            "swrot": -180,
+                            "swrotvel": 0,
+                            "x": 9.67131,
+                            "y": 3.40696
+                        },
+                        {
+                            "heading": 0,
                             "swrot": 0,
                             "swrotvel": 0,
-                            "x": 12.670032420941789,
-                            "y": 2.9848799641668053
+                            "x": 12.529184076273673,
+                            "y": 2.522138761744401
                         }
                     ],
                     "startvelocity": 0
@@ -83,6 +108,6 @@
             ]
         }
     ],
-    "outdir": "C:/cygwin64/home/butch/robottools/robots/swimmy2023/src/main/deploy/paths",
+    "outdir": "/home/hollister/swimmy2023/src/main/deploy/paths",
     "units": "m"
 }
