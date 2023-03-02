@@ -14,10 +14,10 @@ import frc.robot.subsystems.toplevel.Swimmy2023RobotSubsystem;
 import frc.robot.subsystems.toplevel.RobotOperation.GamePiece;
 import frc.robot.subsystems.toplevel.RobotOperation.Location;
 
-public class SwimmyAutoModeCenter1 extends SwimmyAutoMode {
+public class SwimmyAutoModeB extends SwimmyAutoMode {
 
-    public SwimmyAutoModeCenter1(AutoController ctrl, Location location, GamePiece piece) throws Exception {
-        super(ctrl, "center1");
+    public SwimmyAutoModeB(AutoController ctrl, Location location, GamePiece piece) throws Exception {
+        super(ctrl, "b");
 
         var robot = (Swimmy2023RobotSubsystem)ctrl.getRobot().getRobotSubsystem();
         var gpm = robot.getGPM();
@@ -26,13 +26,13 @@ public class SwimmyAutoModeCenter1 extends SwimmyAutoMode {
 
         grabAndPlace(location, piece);
 
-        drivePath("center1-"+color+"1", true, 5);
+        drivePath("a-"+color+"1", true, 5);
 
         addSubActionPair(gpm, new GPMCollectAction(gpm, true), false);
 
         addAction(new DelayAction(ctrl.getRobot(), 3));
 
-        drivePath("center1-"+color+"2", false, 5);
+        drivePath("b-"+color+"2", false, 5);
 
         addSubActionPair(robot_.getSwerve(), new SwerveDriveBalancePlatform(robot.getSwerve()), true);
 
