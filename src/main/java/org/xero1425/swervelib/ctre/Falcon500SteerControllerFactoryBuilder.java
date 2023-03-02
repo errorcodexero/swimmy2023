@@ -180,7 +180,7 @@ public final class Falcon500SteerControllerFactoryBuilder {
         public void setReferenceAngle(double referenceAngleRadians) {
             double currentAngleRadians = motor.getSelectedSensorPosition() * motorEncoderPositionCoefficient;
 
-            // Reset the NEO's encoder periodically when the module is not rotating.
+            // Reset the Falcon's encoder periodically when the module is not rotating.
             // Sometimes (~5% of the time) when we initialize, the absolute encoder isn't fully set up, and we don't
             // end up getting a good reading. If we reset periodically this won't matter anymore.
             if (motor.getSelectedSensorVelocity() * motorEncoderVelocityCoefficient < ENCODER_RESET_MAX_ANGULAR_VELOCITY) {

@@ -271,6 +271,7 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
         }
         else if (spit_cube_action_ != null) {
             getRobotSubsystem().getGPM().getGrabber().getSpinSubsystem().setAction(spit_cube_action_);
+            state_ = State.DroppingPiece ;
         }
     }
 

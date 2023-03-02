@@ -112,7 +112,6 @@ public class Swimmy2023RobotSubsystem extends RobotSubsystem {
     }
 
     private boolean isOperationValid(RobotOperation oper) {
-        MessageLogger logger = getRobot().getMessageLogger();
         boolean ret = true ;
 
         if (oper.getGround()) {

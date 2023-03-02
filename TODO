@@ -32,7 +32,7 @@
 
 - Test the Robot display for cone/cube/none                         Done
 - Check out abort functionality in ground collect                   Done
--------------------------------------------------------------------------------------------------
+
 - Test the OI display for cone/cube/none/error                      Done
 - Test the rumble function                                          Done
 
@@ -43,10 +43,15 @@
 - Test left trigger buttons slowing drive base                      Done
 
 - Test drivebase X pattern based on holding button                  Done
-- Dynamically switch between cone/cube ground collect profiles      Wednesday (3/1)
+
 - Test ground collect drive lock button                             Done
 
-- Tune cube ground collect                                          Wednesday (3/1) - drive 
+- Tune cube ground collect                                          Done
+
+-------------------------------------------------------------------------------------------------
+
+- Dynamically switch between cone/cube ground collect profiles      Thursday
+- Test cube place on bottom returns control to DriverStation        Thursday
 
 - Tune each of the drivebase locations for collect
   o Red (Tag 5) Left                                                Done
@@ -55,94 +60,94 @@
   o Blue (Tag 4) Right                                              Done
 
 - Test/Tune each of the drivebase locations/auto place
-  o Red Place Cone/Tag 1/Right/Top                                  Done
-  o Red Place Cone/Tag 1/Right/Middle                               Done
-  o Red Place Cone/Tag 1/Right/Bottom                               Done
-  o Red Place Cube/Tag 1/Right/Bottom                               Done
+  o Red Place Cone/Tag 1/Right/Top
+  o Red Place Cone/Tag 1/Right/Middle                               
+  o Red Place Cone/Tag 1/Right/Bottom                               
+  o Red Place Cube/Tag 1/Right/Bottom                               
 
-  o Red Place Cone/Tag 1/Left/Top                                   Done
-  o Red Place Cone/Tag 1/Left/Middle                                Done
-  o Red Place Cone/Tag 1/Left/Bottom                                Done
-  o Red Place Cube/Tag 1/Left/Bottom                                Done
+  o Red Place Cone/Tag 1/Left/Top                                   
+  o Red Place Cone/Tag 1/Left/Middle                                
+  o Red Place Cone/Tag 1/Left/Bottom                                
+  o Red Place Cube/Tag 1/Left/Bottom                                
 
-  o Red Place Cube/Tag 1/Middle/Top                                 Done
-  o Red Place Cube/Tag 1/Middle/Bottom                              Done
-  o Red Place Cube/Tag 1/Right/Bottom                               Done
+  o Red Place Cube/Tag 1/Middle/Top                                 
+  o Red Place Cube/Tag 1/Middle/Bottom                              
+  o Red Place Cube/Tag 1/Right/Bottom                               
 
-  o Red Place Cone/Tag 2/Right/Top                                  Done
-  o Red Place Cone/Tag 2/Right/Middle                               Done
-  o Red Place Cone/Tag 2/Right/Bottom                               Done
-  o Red Place Cube/Tag 2/Right/Bottom                               Done
+  o Red Place Cone/Tag 2/Right/Top                                  
+  o Red Place Cone/Tag 2/Right/Middle                               
+  o Red Place Cone/Tag 2/Right/Bottom                               
+  o Red Place Cube/Tag 2/Right/Bottom                               
 
-  o Red Place Cone/Tag 2/Left/Top                                  Done
-  o Red Place Cone/Tag 2/Left/Middle                               Done
-  o Red Place Cone/Tag 2/Left/Bottom                               Done
-  o Red Place Cube/Tag 2/Left/Bottom                               Done
+  o Red Place Cone/Tag 2/Left/Top                                   
+  o Red Place Cone/Tag 2/Left/Middle                                
+  o Red Place Cone/Tag 2/Left/Bottom                                
+  o Red Place Cube/Tag 2/Left/Bottom                                
 
-  o Red Place Cube/Tag 2/Middle/Top                                Done
-  o Red Place Cube/Tag 2/Middle/Bottom                             Done
-  o Red Place Cone/Tag 2/Middle/Bottom                             Done
-  o Red Place Cube/Tag 2/Right/Bottom                              Done
+  o Red Place Cube/Tag 2/Middle/Top                                 
+  o Red Place Cube/Tag 2/Middle/Bottom                              
+  o Red Place Cone/Tag 2/Middle/Bottom                              
+  o Red Place Cube/Tag 2/Right/Bottom                               
 
-  o Red Place Cone/Tag 3/Right/Top                                 Done
-  o Red Place Cone/Tag 3/Right/Middle                              Done
-  o Red Place Cone/Tag 3/Right/Bottom                              Done
-  o Red Place Cube/Tag 3/Right/Bottom                              Done
+  o Red Place Cone/Tag 3/Right/Top                                  
+  o Red Place Cone/Tag 3/Right/Middle                               
+  o Red Place Cone/Tag 3/Right/Bottom                               
+  o Red Place Cube/Tag 3/Right/Bottom                               
 
-  o Red Place Cone/Tag 3/Left/Top                                   Done
-  o Red Place Cone/Tag 3/Left/Middle                                Done
-  o Red Place Cone/Tag 3/Left/Bottom                                Done
-  o Red Place Cube/Tag 3/Left/Bottom                                Done
+  o Red Place Cone/Tag 3/Left/Top                                   
+  o Red Place Cone/Tag 3/Left/Middle                                
+  o Red Place Cone/Tag 3/Left/Bottom                                
+  o Red Place Cube/Tag 3/Left/Bottom                                
 
-  o Red Place Cube/Tag 3/Middle/Top                                Done
-  o Red Place Cube/Tag 3/Middle/Middle                             Done
-  o Red Place Cube/Tag 3/Middle/Bottom                             Done
-  o Red Place Cone/Tag 3/Middle/Bottom                             Done
+  o Red Place Cube/Tag 3/Middle/Top                                 
+  o Red Place Cube/Tag 3/Middle/Middle                              
+  o Red Place Cube/Tag 3/Middle/Bottom                              
+  o Red Place Cone/Tag 3/Middle/Bottom                              
 
-  o Blue Place Cone/Tag 6/Right/Top                                ? 
-  o Blue Place Cone/Tag 6/Right/Middle                             ? 
-  o Blue Place Cone/Tag 6/Right/Bottom                             ? 
-  o Blue Place Cube/Tag 6/Right/Bottom                             ? 
+  o Blue Place Cone/Tag 6/Right/Top                                 
+  o Blue Place Cone/Tag 6/Right/Middle                              
+  o Blue Place Cone/Tag 6/Right/Bottom                              
+  o Blue Place Cube/Tag 6/Right/Bottom                              
 
-  o Blue Place Cone/Tag 6/Left/Top                                ? 
-  o Blue Place Cone/Tag 6/Left/Middle                             ? 
-  o Blue Place Cone/Tag 6/Left/Bottom                             ? 
-  o Blue Place Cube/Tag 6/Left/Bottom                             ? 
+  o Blue Place Cone/Tag 6/Left/Top                                  
+  o Blue Place Cone/Tag 6/Left/Middle                               
+  o Blue Place Cone/Tag 6/Left/Bottom                               
+  o Blue Place Cube/Tag 6/Left/Bottom                               
 
-  o Blue Place Cube/Tag 6/Middle/Top                                ? 
-  o Blue Place Cube/Tag 6/Middle/Middle                             ? 
-  o Blue Place Cube/Tag 6/Middle/Bottom                             ? 
-  o Blue Place Cone/Tag 6/Middle/Bottom                             ? 
+  o Blue Place Cube/Tag 6/Middle/Top                                 
+  o Blue Place Cube/Tag 6/Middle/Middle                             
+  o Blue Place Cube/Tag 6/Middle/Bottom                             
+  o Blue Place Cone/Tag 6/Middle/Bottom                             
 
-  o Blue Place Cone/Tag 7/Right/Top                                ? 
-  o Blue Place Cone/Tag 7/Right/Middle                             ? 
-  o Blue Place Cone/Tag 7/Right/Bottom                             ? 
-  o Blue Place Cube/Tag 7/Right/Bottom                             ? 
+  o Blue Place Cone/Tag 7/Right/Top                                 
+  o Blue Place Cone/Tag 7/Right/Middle                               
+  o Blue Place Cone/Tag 7/Right/Bottom                               
+  o Blue Place Cube/Tag 7/Right/Bottom                               
 
-  o Blue Place Cone/Tag 7/Left/Top                                ? 
-  o Blue Place Cone/Tag 7/Left/Middle                             ? 
-  o Blue Place Cone/Tag 7/Left/Bottom                             ? 
-  o Blue Place Cube/Tag 7/Left/Bottom                             ? 
+  o Blue Place Cone/Tag 7/Left/Top                                   
+  o Blue Place Cone/Tag 7/Left/Middle                               
+  o Blue Place Cone/Tag 7/Left/Bottom                               
+  o Blue Place Cube/Tag 7/Left/Bottom                               
 
-  o Blue Place Cube/Tag 7/Middle/Top                                ? 
-  o Blue Place Cube/Tag 7/Middle/Middle                             ? 
-  o Blue Place Cone/Tag 7/Middle/Bottom                             ?  
-  o Blue Place Cube/Tag 7/Middle/Bottom                             ?    
+  o Blue Place Cube/Tag 7/Middle/Top                                 
+  o Blue Place Cube/Tag 7/Middle/Middle                              
+  o Blue Place Cone/Tag 7/Middle/Bottom                               
+  o Blue Place Cube/Tag 7/Middle/Bottom                                 
 
-  o Blue Place Cone/Tag 8/Right/Top                                ? 
-  o Blue Place Cone/Tag 8/Right/Middle                             ? 
-  o Blue Place Cone/Tag 8/Right/Bottom                             ? 
-  o Blue Place Cube/Tag 8/Right/Bottom                             ? 
+  o Blue Place Cone/Tag 8/Right/Top                                 
+  o Blue Place Cone/Tag 8/Right/Middle                              
+  o Blue Place Cone/Tag 8/Right/Bottom                              
+  o Blue Place Cube/Tag 8/Right/Bottom                              
 
-  o Blue Place Cone/Tag 8/Left/Top                                ? 
-  o Blue Place Cone/Tag 8/Left/Middle                             ? 
-  o Blue Place Cone/Tag 8/Left/Bottom                             ? 
-  o Blue Place Cube/Tag 8/Left/Bottom                             ? 
+  o Blue Place Cone/Tag 8/Left/Top                                  
+  o Blue Place Cone/Tag 8/Left/Middle                               
+  o Blue Place Cone/Tag 8/Left/Bottom                               
+  o Blue Place Cube/Tag 8/Left/Bottom                               
 
-  o Blue Place Cube/Tag 8/Middle/Top                                ? 
-  o Blue Place Cube/Tag 8/Middle/Middle                             ? 
-  o Blue Place Cube/Tag 8/Middle/Bottom                             ?    
-  o Blue Place Cone/Tag 8/Middle/Bottom                             ?   
+  o Blue Place Cube/Tag 8/Middle/Top                                 
+  o Blue Place Cube/Tag 8/Middle/Middle                              
+  o Blue Place Cube/Tag 8/Middle/Bottom                                 
+  o Blue Place Cone/Tag 8/Middle/Bottom                                
 
 - Test/Tune the auto balance code for platform  
 - Test center-1 automode
