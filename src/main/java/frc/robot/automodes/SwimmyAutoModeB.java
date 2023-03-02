@@ -28,13 +28,8 @@ public class SwimmyAutoModeB extends SwimmyAutoMode {
 
         drivePath("a-"+color+"1", true, 5);
 
-        addSubActionPair(gpm, new GPMCollectAction(gpm, true), false);
+        addSubActionPair(gpm, new GPMCollectAction(gpm, true), true);
 
-        addAction(new DelayAction(ctrl.getRobot(), 3));
-
-        drivePath("b-"+color+"2", false, 5);
-
-        addSubActionPair(robot_.getSwerve(), new SwerveDriveBalancePlatform(robot.getSwerve()), true);
 
     }
     
