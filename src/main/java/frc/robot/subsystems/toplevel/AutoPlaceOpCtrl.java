@@ -217,7 +217,7 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
 
             List<Pose2d> pts = computeDrivePathPoints(getRobotSubsystem().getSwerve().getPose(), target_pose_);
             List<Translation2d> interior = new ArrayList<Translation2d>() ;
-            drive_to_action_ = new SwerveDrivePathAction(getRobotSubsystem().getSwerve(), pts.get(0), interior, pts.get(1), target_pose_.getRotation(), 0.5, 0.5);
+            drive_to_action_ = new SwerveDrivePathAction(getRobotSubsystem().getSwerve(), pts.get(0), interior, pts.get(1), target_pose_.getRotation(), 1.0, 1.0);
 
             getRobotSubsystem().getSwerve().setAction(drive_to_action_);
             if (place_action_ != null) {

@@ -12,12 +12,14 @@ public class SwerveDriveXPatternAction extends SwerveDriveAction {
     @Override
     public void start() throws Exception {
         super.start();
+
         getSubsystem().setRawTargets(true, angles_, powers_);
     }
 
     @Override
     public void run() throws Exception {
         super.run() ;
+        getSubsystem().setRawTargets(true, angles_, powers_);
     }
 
     @Override

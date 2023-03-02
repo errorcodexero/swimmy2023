@@ -14,7 +14,6 @@ import org.xero1425.base.subsystems.swerve.common.SwerveHolonomicPathFollower;
 import org.xero1425.base.subsystems.swerve.common.SwervePowerAngleAction;
 import org.xero1425.base.subsystems.swerve.common.SwerveSpeedAngleAction;
 import org.xero1425.base.subsystems.vision.LimeLightSubsystem;
-import org.xero1425.misc.SCurveConfig;
 import org.xero1425.misc.TrapezoidalProfileConfig;
 
 import edu.wpi.first.math.geometry.Pose2d;
@@ -130,10 +129,17 @@ public class SwimmyTestAutoMode extends TestAutoMode {
 
             case 13:
                 {
-                    SCurveConfig cfg = new SCurveConfig(1000000, 200000, 100000);
+                    TrapezoidalProfileConfig cfg = new TrapezoidalProfileConfig(100000, -100000, 100000) ;
                     addSubActionPair(armUpper, new MotorEncoderGotoAction(armUpper, getDouble("height"), cfg, true), true) ;
                     addSubActionPair(armLower, new MotorEncoderGotoAction(armLower, getDouble("target"), cfg, true), true) ;
                 }
+                break ;
+
+            case 18:
+                addSubActionPair(arm, new ArmStaggeredGotoAction(arm, getString("profile1"), false), true);
+                addAction(new DelayAction(arm.getRobot(), getDouble("delay")));
+                addSubActionPair(arm, new ArmStaggeredGotoAction(arm, getString("profile2"), false), true);
+
                 break ;
 
             case 19:
@@ -208,7 +214,7 @@ public class SwimmyTestAutoMode extends TestAutoMode {
                 {
                     addSubActionPair(grabber, new GrabberGrabGampieceAction(grabber, GamePiece.Cone, false), true);
                     addAction(new DelayAction(gpm.getRobot(), getDouble("delay")));
-                    addSubActionPair(gpm, new GPMPlaceAction(gpm, Location.Top, GamePiece.Cone, true), true);
+                    addSubActionPair(gpm, new GPMPlaceAction(gpm, Location.Middle, GamePiece.Cone, true), true);
                 }
                 break;
 
@@ -216,7 +222,7 @@ public class SwimmyTestAutoMode extends TestAutoMode {
                 {
                     addSubActionPair(grabber, new GrabberGrabGampieceAction(grabber, GamePiece.Cube, false), true);
                     addAction(new DelayAction(gpm.getRobot(), getDouble("delay")));
-                    addSubActionPair(gpm, new GPMPlaceAction(gpm, Location.Middle, GamePiece.Cube, true), true);
+                    addSubActionPair(gpm, new GPMPlaceAction(gpm, Location.Bottom, GamePiece.Cube, true), true);
                 }
                 break;
 

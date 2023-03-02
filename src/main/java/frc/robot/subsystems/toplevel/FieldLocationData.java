@@ -231,8 +231,6 @@ public class FieldLocationData {
         }
 
         JSONObject grid = (JSONObject)colorobj.get("grid") ;
-
-
         double yoffset = (Double)grid.get("yoffset");
 
         if (!grid.containsKey("left")) {
@@ -300,13 +298,18 @@ public class FieldLocationData {
                 throw new Exception("cannot read middle pose from location file");
             }
 
+            double sign = 1.0 ;
+            if (item.tag_ >= 6) {
+                sign = -1.0 ;
+            }
+
             if (item.getPose("left") == null) {
-                Pose2d p = new Pose2d(middle.getX(), middle.getY() - yoffset, middle.getRotation());
+                Pose2d p = new Pose2d(middle.getX(), middle.getY() - sign * yoffset, middle.getRotation());
                 item.addPose("left", p) ;
             }
 
             if (item.getPose("right") == null) {
-                Pose2d p = new Pose2d(middle.getX(), middle.getY() + yoffset, middle.getRotation());
+                Pose2d p = new Pose2d(middle.getX(), middle.getY() + sign * yoffset, middle.getRotation());
                 item.addPose("right", p) ;
             }
         }

@@ -143,10 +143,7 @@ public class Swimmy2023RobotSubsystem extends RobotSubsystem {
                 }
 
                 if (oper.getSlot() == Slot.Middle) {
-                    putDashboard("OIError", null, getName());
-                    logger.startMessage(MessageType.Error);
-                    logger.add("Swimmy2023RobotSubsystem: invalid operation assigned - collect operation must be slot Left or Right");
-                    logger.endMessage();
+                    putDashboard("OIError", DisplayType.Always, "collect operation must be slot Left or Right");
                     ret = false ;
                 }
             }
@@ -160,14 +157,14 @@ public class Swimmy2023RobotSubsystem extends RobotSubsystem {
                 }
 
                 if (oper.getSlot() == Slot.Middle) {
-                    if (oper.getGamePiece() != GamePiece.Cube) {
+                    if (oper.getGamePiece() != GamePiece.Cube && oper.getLocation() != Location.Bottom) {
                         putDashboard(OIError, DisplayType.Always, "grid place in middle slot must be gamepiece 'cube'");
                         return false ;
                     }
                 }
                 else {
-                    if (oper.getLocation() == Location.Top || oper.getLocation() == Location.Middle) {
-                        putDashboard(OIError, DisplayType.Always, "grid place in left/right slot and top/bottom location must be gamepiece 'cone'");
+                    if ((oper.getLocation() == Location.Top || oper.getLocation() == Location.Middle) && oper.getGamePiece() == GamePiece.Cube) {
+                        putDashboard(OIError, DisplayType.Always, "grid place in left/right slot and top/middle location must be gamepiece 'cone'");
                         return false ; 
                     }
                 }

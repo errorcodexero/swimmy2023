@@ -1,7 +1,7 @@
 {
     "red": {
         "grid": {
-            "yoffset" : 0.556574,               // 0.556574,
+            "yoffset" : 0.586574,               // 0.556574,
             "right": {                          // center of field
                 "grid-id": 3,
                 "middle": {
@@ -43,7 +43,7 @@
     },
     "blue": {
         "grid": {
-            "yoffset" : 0.556574,
+            "yoffset" : 0.586574,
             "left": { //middle of field
                 "grid-id": 6,
                 "middle": {
