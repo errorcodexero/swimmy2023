@@ -106,6 +106,116 @@
                     "startvelocity": 0
                 }
             ]
+        },
+        {
+            "name": "a",
+            "paths": [
+                {
+                    "constraints": [
+                    ],
+                    "endvelocity": 0,
+                    "maxacceleration": 4,
+                    "maxvelocity": 4,
+                    "name": "red1",
+                    "points": [
+                        {
+                            "heading": -180,
+                            "swrot": 0,
+                            "swrotvel": 0,
+                            "x": 14.747928924111749,
+                            "y": 4.922835604275444
+                        },
+                        {
+                            "heading": 180,
+                            "swrot": 180,
+                            "swrotvel": 0,
+                            "x": 9.765671092566798,
+                            "y": 4.637926432090322
+                        }
+                    ],
+                    "startvelocity": 0
+                },
+                {
+                    "constraints": [
+                    ],
+                    "endvelocity": 0,
+                    "maxacceleration": 4,
+                    "maxvelocity": 4,
+                    "name": "blue1",
+                    "points": [
+                        {
+                            "heading": 0,
+                            "swrot": -180,
+                            "swrotvel": 0,
+                            "x": 1.7589928178259386,
+                            "y": 4.995889238169065
+                        },
+                        {
+                            "heading": 0,
+                            "swrot": 0,
+                            "swrotvel": 0,
+                            "x": 6.865441826990045,
+                            "y": 4.608704978532874
+                        }
+                    ],
+                    "startvelocity": 0
+                }
+            ]
+        },
+        {
+            "name": "b",
+            "paths": [
+                {
+                    "constraints": [
+                    ],
+                    "endvelocity": 0,
+                    "maxacceleration": 4,
+                    "maxvelocity": 4,
+                    "name": "red1",
+                    "points": [
+                        {
+                            "heading": -180,
+                            "swrot": 0,
+                            "swrotvel": 0,
+                            "x": 14.799066467837283,
+                            "y": 0.5177014804900999
+                        },
+                        {
+                            "heading": -180,
+                            "swrot": -180,
+                            "swrotvel": 0,
+                            "x": 9.736449639009349,
+                            "y": 0.9706340106305493
+                        }
+                    ],
+                    "startvelocity": 0
+                },
+                {
+                    "constraints": [
+                    ],
+                    "endvelocity": 0,
+                    "maxacceleration": 4,
+                    "maxvelocity": 4,
+                    "name": "blue1",
+                    "points": [
+                        {
+                            "heading": 0,
+                            "swrot": -180,
+                            "swrotvel": 0,
+                            "x": 1.853962541887646,
+                            "y": 0.5469229340475472
+                        },
+                        {
+                            "heading": 0,
+                            "swrot": 0,
+                            "swrotvel": 0,
+                            "x": 6.806998919875149,
+                            "y": 1.014466190966722
+                        }
+                    ],
+                    "startvelocity": 0
+                }
+            ]
         }
     ],
     "outdir": "/home/hollister/swimmy2023/src/main/deploy/paths",
