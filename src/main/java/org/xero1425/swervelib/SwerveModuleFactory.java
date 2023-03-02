@@ -47,6 +47,11 @@ public class SwerveModuleFactory<DriveConfiguration, SteerConfiguration> {
         }
 
         @Override
+        public double resetSteerEncoders() {
+            return steerController.resetEncoders();
+        }
+
+        @Override
         public double getDriveVelocity() {
             return driveController.getStateVelocity();
         }

@@ -218,10 +218,10 @@ public class SDSSwerveDriveSubsystem extends SwerveBaseSubsystem {
 
         if (getRobot().isDisabled())
         {
-            fl_.set(0.0, 0.0) ;
-            fr_.set(0.0, 0.0) ;
-            bl_.set(0.0, 0.0) ;
-            br_.set(0.0, 0.0) ;
+            fl_.resetSteerEncoders();
+            fr_.resetSteerEncoders();
+            bl_.resetSteerEncoders();
+            br_.resetSteerEncoders();
         }
     }
 

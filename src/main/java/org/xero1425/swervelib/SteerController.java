@@ -7,5 +7,5 @@ public interface SteerController {
 
     double getStateAngle();
 
-    void resetEncoders() ;
+    double resetEncoders();
 }
