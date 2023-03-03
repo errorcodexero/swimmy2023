@@ -30,7 +30,6 @@ public class SwimmyRobot2023 extends XeroRobot {
 
   public SwimmyRobot2023() {
     super(0.02) ;
-
   }
 
   public FieldLocationData getFieldData() {
@@ -57,7 +56,9 @@ public class SwimmyRobot2023 extends XeroRobot {
   
   protected void hardwareInit() throws Exception {    
     String filename = getRobotFileSystemPaths().deployDirectory() + "field.jsonc" ;
-    locdata_ = new FieldLocationData(getMessageLogger(), filename);
+
+    filename = null ;
+    locdata_ = new FieldLocationData(getMessageLogger(), filename, getAprilTags());
 
     Swimmy2023RobotSubsystem robot = new Swimmy2023RobotSubsystem(this);
     setRobotSubsystem(robot);

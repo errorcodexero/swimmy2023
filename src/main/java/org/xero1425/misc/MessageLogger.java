@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.geometry.Translation3d;
 
 import java.util.List;
 import java.text.DecimalFormat;
@@ -458,6 +460,34 @@ public final class MessageLogger
             per.message_.append(String.format(java.util.Locale.US, "%.3f", pose.getY()));
             per.message_.append(" ") ;
             per.message_.append(String.format(java.util.Locale.US, "%.1f", pose.getRotation().getDegrees()));
+        }
+        return this;
+    }
+
+    public MessageLogger add(final String name, final Translation2d t) {
+        final ThreadData per = getPerThreadData();
+        if (per.enabled_&& per.in_message_) {
+            per.message_.append(" ") ;
+            per.message_.append(name) ;
+            per.message_.append(" = X: ") ;
+            per.message_.append(String.format(java.util.Locale.US, "%.3f", t.getX()));
+            per.message_.append(" Y: ") ;
+            per.message_.append(String.format(java.util.Locale.US, "%.3f", t.getY()));
+        }
+        return this;
+    }
+
+    public MessageLogger add(final String name, final Translation3d t) {
+        final ThreadData per = getPerThreadData();
+        if (per.enabled_&& per.in_message_) {
+            per.message_.append(" ") ;
+            per.message_.append(name) ;
+            per.message_.append(" = X: ") ;
+            per.message_.append(String.format(java.util.Locale.US, "%.3f", t.getX()));
+            per.message_.append(" Y: ") ;
+            per.message_.append(String.format(java.util.Locale.US, "%.3f", t.getY()));
+            per.message_.append(" Z: ") ;
+            per.message_.append(String.format(java.util.Locale.US, "%.3f", t.getZ()));
         }
         return this;
     }

@@ -9,6 +9,7 @@ import org.xero1425.misc.MissingParameterException;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import frc.robot.subsystems.arm.ArmStaggeredGotoAction;
 import frc.robot.subsystems.gpm.GPMCollectAction;
 
@@ -138,7 +139,7 @@ public class AutoCollectOpCtrl extends OperationCtrl {
     }
 
     private void stateLookingForTag() throws BadParameterTypeException, MissingParameterException {
-        int tag = getRobotSubsystem().getFieldData().getLoadingStationTag();
+        int tag = getRobotSubsystem().getFieldData().getLoadingStationTag(Alliance.Invalid);
 
         if (getRobotSubsystem().getLimeLight().distantToTag(tag) < april_tag_action_threshold_) {            
             getRobotSubsystem().getOI().disableGamepad();
@@ -152,7 +153,7 @@ public class AutoCollectOpCtrl extends OperationCtrl {
 
     private void stateWaitForVision() throws BadParameterTypeException, MissingParameterException {
         if (wait_for_vision_timer_.isExpired()) {
-            target_pose_ = getRobotSubsystem().getFieldData().getLoadingStationPose(getOper().getSlot());
+            target_pose_ = getRobotSubsystem().getFieldData().getLoadingStationPose(Alliance.Invalid, getOper().getSlot());
             getRobotSubsystem().getSwerve().enableVision(false);
             drive_to_action_ = new SwerveDriveToPoseAction(getRobotSubsystem().getSwerve(), target_pose_, 1.0, 1.0);
             getRobotSubsystem().getSwerve().setAction(drive_to_action_);

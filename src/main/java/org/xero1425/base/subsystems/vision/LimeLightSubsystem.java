@@ -194,20 +194,7 @@ public class LimeLightSubsystem extends Subsystem implements IVisionLocalization
             return false ;
         }
 
-        //
-        // Check the Z coordinate of any tag detected and if any of the Z
-        // coordinate are on 
-        // 
-        boolean ret = true ;
-
-        // if (TestTagZHeight) {
-        //     for(int i = 0 ; i < fuds_.length ; i++) {
-        //         if (Math.abs(fuds_[i].targetToRobot.getZ()) > 1.0) {
-        //             ret = false ;
-        //         }
-        //     }
-        // }
-        return ret ;
+        return true ;
     }
 
     public LocationData getLocation(Pose2d db) {
@@ -421,7 +408,10 @@ public class LimeLightSubsystem extends Subsystem implements IVisionLocalization
                 if (str.length() > 0) {
                     str += ", " ;
                 }
-                str += fuds_[i].id ;
+                if (fuds_[i] != null)
+                    str += fuds_[i].id ;
+                else
+                    str += "<NULL>";
             }
         }
 

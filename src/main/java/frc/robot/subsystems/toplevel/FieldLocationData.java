@@ -8,14 +8,49 @@ import org.xero1425.misc.JsonReader;
 import org.xero1425.misc.MessageLogger;
 import org.xero1425.misc.MessageType;
 
+import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import frc.robot.subsystems.toplevel.RobotOperation.GridTagPosition;
 import frc.robot.subsystems.toplevel.RobotOperation.Slot;
 
 public class FieldLocationData {
+    //
+    // This is the offset from the from the loading station April tag, to the position
+    // we want the robot to drive to.  This offset gets adjusted for the red vs blue end
+    // of the field.
+    //
+    static final double LoadingStationXOffset = 0.580;
+
+    //
+    // This is the offset from the loading station April tag, to the position of we want the
+    // robot to drive to.  This offset gets adjusted for the left versus right loading station
+    // on either side of the April tag.
+    //
+    // According to the game manual, this shouild be 0.859964 but we have adjusted slightly based on
+    // emperical experiments.
+    //
+    static final double LoadingStationYOffset = 0.875;
+
+    //
+    // This is the offset from the grid april tag to the position we want the robot to drive to.
+    // This offset gets adjusted for the red vs blue end of the field.
+    //
+    static final double GridXOffset = 0.846;
+
+    //
+    // This is the offset from the grid april tag to the position we want the robot to drive to for
+    // the columns on the left and right of the april tag.  This offset gets adjusted for the left column
+    // versus the right column.
+    //
+    // According to the game manual, this shouild be 0.859964 but we have adjusted slightly based on
+    // emperical experiments.
+    //
+    static final double GridYOffset = 0.625574 ;   
 
     public class FieldItem
     {
@@ -85,16 +120,117 @@ public class FieldLocationData {
     private MessageLogger logger_ ;
     private Items red_items_ ;
     private Items blue_items_;
+    private AprilTagFieldLayout layout_ ;
+    private String data_type_ ;
 
-    public FieldLocationData(MessageLogger logger, String filename) throws Exception {
+    public FieldLocationData(MessageLogger logger, String filename, AprilTagFieldLayout layout) throws Exception {
         logger_ = logger ;
-        readLocationFile(filename) ;
+        layout_ = layout ;
+
+        if (filename == null) {
+            data_type_ = "Computed" ;
+            computeLocationData();
+        } else {
+            data_type_ = "File" ;
+            readLocationFile(filename) ;
+        }
+        dumpDataToLogger();
     }
 
-    public int getLoadingStationTag() {
+    private void dumpDataToLogger() {
+        logger_.startMessage(MessageType.Debug);
+        logger_.add("================================================================================================================");
+        logger_.endMessage();
+        logger_.startMessage(MessageType.Debug);
+        logger_.add("Data Type: ").add(data_type_);
+        logger_.endMessage();
+        dumpOneColor(Alliance.Red);
+        dumpOneColor(Alliance.Blue);
+        logger_.startMessage(MessageType.Debug);
+        logger_.add("================================================================================================================");
+        logger_.endMessage();
+    }
+
+    private Translation2d difference(Pose3d tag, Pose2d loc) {
+        return tag.toPose2d().getTranslation().minus(loc.getTranslation()) ;
+    }
+
+    private void dumpOneColor(Alliance a) {
+        Pose3d p3d ;
+        Pose2d p2d;
+
+        logger_.startMessage(MessageType.Debug);
+        logger_.add("Alliance Color: ");
+        logger_.add(a.toString());
+        logger_.endMessage();
+
+        p3d = layout_.getTagPose(getLoadingStationTag(a)).get() ;
+        logger_.startMessage(MessageType.Debug);
+        logger_.add("LoadingStation:");
+        logger_.add("tag", getLoadingStationTag(a));
+        logger_.add("position", p3d.getTranslation());
+        logger_.endMessage();
+
+        p2d = getLoadingStationPose(a, Slot.Left) ;
+        logger_.startMessage(MessageType.Debug);
+        logger_.add("    ");
+        logger_.add("left", p2d);
+        logger_.add("difference", difference(p3d, p2d));
+        logger_.endMessage();
+
+        p2d = getLoadingStationPose(a, Slot.Right) ;
+        logger_.startMessage(MessageType.Debug);
+        logger_.add("    ");
+        logger_.add("right", p2d);
+        logger_.add("difference", difference(p3d, p2d));
+        logger_.endMessage();
+
+        dumpGrid(a, GridTagPosition.Left);
+        dumpGrid(a, GridTagPosition.Right);
+        dumpGrid(a, GridTagPosition.Middle);
+    }
+
+    private void dumpGrid(Alliance a, GridTagPosition tag) {
+        Pose3d p3d ;
+        Pose2d p2d;
+
+        p3d = layout_.getTagPose(getGridTag(a, tag)).get();
+
+        logger_.startMessage(MessageType.Debug);
+        logger_.add("Grid:");
+        logger_.add("tagname", tag.toString());
+        logger_.add("tag", getGridTag(a, tag));
+        logger_.add("position", p3d.getTranslation());
+        logger_.endMessage();
+
+        p2d = getGridPose(a, tag, Slot.Left);
+        logger_.startMessage(MessageType.Debug);
+        logger_.add("    ");
+        logger_.add("left", p2d);
+        logger_.add("difference", difference(p3d, p2d));
+        logger_.endMessage();
+
+        p2d = getGridPose(a, tag, Slot.Middle);
+        logger_.startMessage(MessageType.Debug);
+        logger_.add("    ");
+        logger_.add("middle", p2d);
+        logger_.add("difference", difference(p3d, p2d));
+        logger_.endMessage();
+
+        p2d = getGridPose(a, tag, Slot.Right);
+        logger_.startMessage(MessageType.Debug);
+        logger_.add("    ");
+        logger_.add("right", p2d);
+        logger_.add("difference", difference(p3d, p2d));
+        logger_.endMessage();
+    }
+
+    public int getLoadingStationTag(Alliance a) {
         int ret = -1 ;
 
-        Alliance a = DriverStation.getAlliance() ;
+        if (a == Alliance.Invalid)
+            a = DriverStation.getAlliance() ;
+
         if (a == Alliance.Red) {
             ret = 5 ;
         }
@@ -105,10 +241,13 @@ public class FieldLocationData {
         return ret ;
     }
 
-    public int getGridTag(RobotOperation.GridTagPosition tag) {
+    public int getGridTag(Alliance a, RobotOperation.GridTagPosition tag) {
         int ret = -1 ;
 
-        Alliance a = DriverStation.getAlliance() ;
+        if (a == Alliance.Invalid) {
+            a = DriverStation.getAlliance() ;
+        }
+
         if (a == Alliance.Red) {
             switch(tag) {
                 case Left:
@@ -143,10 +282,13 @@ public class FieldLocationData {
         return ret;
     }
 
-    private Items getItems() {
+    private Items getItems(Alliance a) {
         Items ret = null ;
 
-        Alliance a = DriverStation.getAlliance() ;
+        if (a == Alliance.Invalid) {
+            a = DriverStation.getAlliance() ;
+        }
+
         if (a == Alliance.Red) {
             ret = red_items_ ;
         }
@@ -172,13 +314,13 @@ public class FieldLocationData {
         return which;
     }
 
-    public Pose2d getLoadingStationPose(RobotOperation.Slot slot) {
-        Items items = getItems() ;
+    public Pose2d getLoadingStationPose(Alliance a, RobotOperation.Slot slot) {
+        Items items = getItems(a) ;
         return items.getLoadingStation().getPose(slot2Text(slot));
     }
 
-    public Pose2d getGridPose(GridTagPosition tag, RobotOperation.Slot slot) {
-        Items items = getItems();
+    public Pose2d getGridPose(Alliance a, GridTagPosition tag, RobotOperation.Slot slot) {
+        Items items = getItems(a);
         FieldItem gitem = null;
 
         switch(tag) {
@@ -337,5 +479,68 @@ public class FieldLocationData {
 
 
         return ret ;
+    }
+
+    private void computeLocationData() {
+        red_items_ = compuateAlliance(Alliance.Red);
+        blue_items_ = compuateAlliance(Alliance.Blue);
+    }
+
+    private Rotation2d rotate180(Rotation2d rot) {
+        return rot.rotateBy(Rotation2d.fromDegrees(180.0));
+    }
+
+    private Items compuateAlliance(Alliance a) {
+        Items ret = new Items();
+
+        int tag ;
+        Pose2d tagpose ;
+        Pose2d p2d ;
+        double sign = (a == Alliance.Red) ? 1.0 : -1.0 ;
+        FieldItem fi ;
+
+        tag = getLoadingStationTag(a);
+        tagpose = layout_.getTagPose(tag).get().toPose2d();
+        fi = new FieldItem(tag);
+        p2d = new Pose2d(tagpose.getX() + sign * LoadingStationXOffset, tagpose.getY() - sign * LoadingStationYOffset, rotate180(tagpose.getRotation()));
+        fi.addPose("left", p2d);
+        p2d = new Pose2d(tagpose.getX() + sign * LoadingStationXOffset, tagpose.getY() + sign * LoadingStationYOffset, rotate180(tagpose.getRotation()));
+        fi.addPose("right", p2d);
+        ret.setLoadingStation(fi);
+
+        tag = getGridTag(a, GridTagPosition.Left);
+        tagpose = layout_.getTagPose(tag).get().toPose2d();
+        fi = new FieldItem(tag);
+        p2d = new Pose2d(tagpose.getX() - sign * GridXOffset, tagpose.getY() - sign * GridYOffset, rotate180(tagpose.getRotation()));
+        fi.addPose("left", p2d);
+        p2d = new Pose2d(tagpose.getX() - sign * GridXOffset, tagpose.getY(), rotate180(tagpose.getRotation()));
+        fi.addPose("middle", p2d);
+        p2d = new Pose2d(tagpose.getX() - sign * GridXOffset, tagpose.getY() + sign * GridYOffset, rotate180(tagpose.getRotation()));
+        fi.addPose("right", p2d);
+        ret.setGridLeft(fi);
+
+        tag = getGridTag(a, GridTagPosition.Middle);
+        tagpose = layout_.getTagPose(tag).get().toPose2d();
+        fi = new FieldItem(tag);
+        p2d = new Pose2d(tagpose.getX() - sign * GridXOffset, tagpose.getY() - sign * GridYOffset, rotate180(tagpose.getRotation()));
+        fi.addPose("left", p2d);
+        p2d = new Pose2d(tagpose.getX() - sign * GridXOffset, tagpose.getY(), rotate180(tagpose.getRotation()));
+        fi.addPose("middle", p2d);
+        p2d = new Pose2d(tagpose.getX() - sign * GridXOffset, tagpose.getY() + sign * GridYOffset, rotate180(tagpose.getRotation()));
+        fi.addPose("right", p2d);
+        ret.setGridMiddle(fi);
+
+        tag = getGridTag(a, GridTagPosition.Right);
+        tagpose = layout_.getTagPose(tag).get().toPose2d();
+        fi = new FieldItem(tag);
+        p2d = new Pose2d(tagpose.getX() - sign * GridXOffset, tagpose.getY() - sign * GridYOffset, rotate180(tagpose.getRotation()));
+        fi.addPose("left", p2d);
+        p2d = new Pose2d(tagpose.getX() - sign * GridXOffset, tagpose.getY(), rotate180(tagpose.getRotation()));
+        fi.addPose("middle", p2d);
+        p2d = new Pose2d(tagpose.getX() - sign * GridXOffset, tagpose.getY() + sign * GridYOffset, rotate180(tagpose.getRotation()));
+        fi.addPose("right", p2d);
+        ret.setGridRight(fi);
+
+        return ret;
     }
 }

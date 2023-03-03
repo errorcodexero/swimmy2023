@@ -15,6 +15,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import frc.robot.subsystems.gpm.GPMPlaceAction;
 import frc.robot.subsystems.toplevel.RobotOperation.Action;
 import frc.robot.subsystems.toplevel.RobotOperation.GamePiece;
@@ -186,7 +187,7 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
     }
 
     private void stateLookingForTag() throws BadParameterTypeException, MissingParameterException {
-        int tag = getRobotSubsystem().getFieldData().getGridTag(getOper().getAprilTag());
+        int tag = getRobotSubsystem().getFieldData().getGridTag(Alliance.Invalid, getOper().getAprilTag());
         double dist = getRobotSubsystem().getLimeLight().distantToTag(tag) ;
 
         MessageLogger logger = getRobotSubsystem().getRobot().getMessageLogger();
@@ -206,14 +207,14 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
     }
 
     private void stateWaitingForVision() throws BadParameterTypeException, MissingParameterException {
-        int tag = getRobotSubsystem().getFieldData().getGridTag(getOper().getAprilTag());
+        int tag = getRobotSubsystem().getFieldData().getGridTag(Alliance.Invalid, getOper().getAprilTag());
         double dist = getRobotSubsystem().getLimeLight().distantToTag(tag) ;
 
         MessageLogger logger = getRobotSubsystem().getRobot().getMessageLogger();
         if (vision_timer_.isExpired()) {
 
             getRobotSubsystem().getSwerve().enableVision(false);
-            target_pose_ = getRobotSubsystem().getFieldData().getGridPose(getOper().getAprilTag(), getOper().getSlot());
+            target_pose_ = getRobotSubsystem().getFieldData().getGridPose(Alliance.Invalid, getOper().getAprilTag(), getOper().getSlot());
 
             List<Pose2d> pts = computeDrivePathPoints(getRobotSubsystem().getSwerve().getPose(), target_pose_);
             List<Translation2d> interior = new ArrayList<Translation2d>() ;
