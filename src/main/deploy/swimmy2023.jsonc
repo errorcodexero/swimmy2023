@@ -43,8 +43,8 @@
             "tape-align-margin" : 0.1016,
             "drive-forward-distance" : 0.1524,
             "spit-cube" : {
-                "power" : -0.1,
-                "duration" : 0.5
+                "power" : -0.3,
+                "duration" : 0.3
             }
         },
         "arm" : {
@@ -72,12 +72,12 @@
                 "lift-shelf" : {
                     "lower" : {
                         "config" : {
-                            "maxj" : 1000000,                // Max accel for trapezoidal profile, upper arm
+                            "maxj" : 1000000,              // Max accel for trapezoidal profile, upper arm
                             "maxa" : 100000,               // Max decel for trapezoidal profile, upper arm
-                            "maxv" : 100000                 // Max velocity for trapezoidal profile, upper arm
+                            "maxv" : 100000                // Max velocity for trapezoidal profile, upper arm
                         },
                         "delay" : 0.0,                      // Delay until we start lower arm
-                        "target" : 0                        // Lower arm target position
+                        "target" : 2000                     // Lower arm target position
                     },
                     "upper" : {
                         "config" : {
@@ -97,7 +97,7 @@
                             "maxv" : 100000                 // Max velocity for trapezoidal profile, upper arm
                         },
                         "delay" : 0.0,                      // Delay until we start lower arm
-                        "target" : 0                        // Lower arm target position
+                        "target" : 2000                        // Lower arm target position
                     },
                     "upper" : {
                         "config" : {
@@ -137,7 +137,7 @@
                             "maxv" : 150000                 // Max velocity for trapezoidal profile, upper arm
                         },
                         "delay" : 0.0,                      // Delay until we start lower arm
-                        "target" : 0                        // Lower arm target position
+                        "target" : 2000                        // Lower arm target position
                     },
                     "upper" : {
                         "config" : {
@@ -162,7 +162,7 @@
 
                                 },
                                 "delay" : 0.4,                      // Delay until we start lower arm
-                                "target" : 91000
+                                "target" : 94000
                             },
                             "upper" : {
                                 "config" : {
@@ -171,10 +171,7 @@
                                     "maxv" : 150000                 // Max velocity for trapezoidal profile, upper arm
                                 },
                                 "delay" : 0.0,                      // Delay until we start upper arm
-                                "target" : { 
-                                    "PRACTICE" : 211215,
-                                    "COMPETITION" : 211215
-                                }                   // Upper arm target position
+                                "target" : 211215
                             }
                         },
                         "retract" : {
@@ -185,7 +182,7 @@
                                     "maxv" : 100000                 // Max velocity for trapezoidal profile, upper arm
                                 },
                                 "delay" : 0.0,                      // Delay until we start lower arm
-                                "target" : 0                        // Lower arm target position
+                                "target" : 2000                        // Lower arm target position
                             },
                             "upper" : {
                                 "config" : {
@@ -227,7 +224,7 @@
                                     "maxv" : 100000                 // Max velocity for trapezoidal profile, upper arm
                                 },
                                 "delay" : 0.0,                      // Delay until we start lower arm
-                                "target" : 0                        // Lower arm target position
+                                "target" : 2000                        // Lower arm target position
                             },
                             "upper" : {
                                 "config" : {
@@ -251,7 +248,7 @@
                                     "maxv" : 100000                 // Max velocity for trapezoidal profile, upper arm
                                 },
                                 "delay" : 0.4,                      // Delay until we start lower arm
-                                "target" : 50000                    // Lower arm target position
+                                "target" : 56000                    // Lower arm target position
                             },
                             "upper" : {
                                 "config" : {
@@ -271,7 +268,7 @@
                                     "maxv" : 100000                 // Max velocity for trapezoidal profile, upper arm
                                 },
                                 "delay" : 0.0,                      // Delay until we start lower arm
-                                "target" : 0                        // Lower arm target position
+                                "target" : 2000                        // Lower arm target position
                             },
                             "upper" : {
                                 "config" : {
@@ -313,7 +310,7 @@
                                     "maxv" : 100000                 // Max velocity for trapezoidal profile, upper arm
                                 },
                                 "delay" : 0.0,                      // Delay until we start lower arm
-                                "target" : 0                        // Lower arm target position
+                                "target" : 2000                        // Lower arm target position
                             },
                             "upper" : {
                                 "config" : {
@@ -357,7 +354,7 @@
                                     "maxv" : 100000                 // Max velocity for trapezoidal profile, upper arm
                                 },
                                 "delay" : 0.0,                      // Delay until we start lower arm
-                                "target" : 0                        // Lower arm target position
+                                "target" : 2000                        // Lower arm target position
                             },
                             "upper" : {
                                 "config" : {
@@ -399,7 +396,7 @@
                                     "maxv" : 100000                 // Max velocity for trapezoidal profile, upper arm
                                 },
                                 "delay" : 0.0,                      // Delay until we start lower arm
-                                "target" : 0                        // Lower arm target position
+                                "target" : 2000                        // Lower arm target position
                             },
                             "upper" : {
                                 "config" : {
