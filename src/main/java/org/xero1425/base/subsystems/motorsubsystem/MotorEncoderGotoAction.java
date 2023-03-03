@@ -84,6 +84,8 @@ public class MotorEncoderGotoAction extends MotorAction {
     // subsystem in place.
     boolean addhold_ ;
 
+    boolean use_actual_ ;
+
     // The plot ID for plotting the motion
     int plot_id_ ;
 
@@ -111,6 +113,7 @@ public class MotorEncoderGotoAction extends MotorAction {
                     
         target_ = target ;
         addhold_ = addhold ;
+        use_actual_ = false ;
 
         ISettingsSupplier settings = sub.getRobot().getSettingsSupplier() ;
         profile_ = new TrapezoidalProfile(settings, "subsystems:" + sub.getName() + ":goto") ;
@@ -130,6 +133,7 @@ public class MotorEncoderGotoAction extends MotorAction {
 
         target_ = getSubsystem().getSettingsValue(target).getDouble() ;
         addhold_ = addhold ;
+        use_actual_ = false ;
         
         ISettingsSupplier settings = sub.getRobot().getSettingsSupplier() ;
         profile_ = new TrapezoidalProfile(settings, "subsystems:" + sub.getName() + ":goto") ;
@@ -149,6 +153,7 @@ public class MotorEncoderGotoAction extends MotorAction {
                     
         target_ = target ;
         addhold_ = addhold ;
+        use_actual_ = false ;
 
         profile_ = new TrapezoidalProfile(c) ;
         plot_id_ = sub.initPlot(sub.getName() + "-" + toString(plot_id_++)) ;
@@ -167,6 +172,7 @@ public class MotorEncoderGotoAction extends MotorAction {
 
         target_ = getSubsystem().getSettingsValue(target).getDouble() ;
         addhold_ = addhold ;
+        use_actual_ = false ;
         
         profile_ = new TrapezoidalProfile(c) ;
         plot_id_ = sub.initPlot(sub.getName() + "-" + toString(0)) ;        
@@ -185,6 +191,7 @@ public class MotorEncoderGotoAction extends MotorAction {
                     
         target_ = target ;
         addhold_ = addhold ;
+        use_actual_ = false ;
 
         profile_ = new SCurveProfile(c) ;
         plot_id_ = sub.initPlot(sub.getName() + "-" + toString(plot_id_++)) ;
@@ -203,10 +210,15 @@ public class MotorEncoderGotoAction extends MotorAction {
 
         target_ = getSubsystem().getSettingsValue(target).getDouble() ;
         addhold_ = addhold ;
+        use_actual_ = false ;
         
         profile_ = new SCurveProfile(c) ;
         plot_id_ = sub.initPlot(sub.getName() + "-" + toString(0)) ;        
     }   
+    
+    public void useActual(boolean b) {
+        use_actual_ = b ;
+    }
 
     public void setTarget(double target) throws BadParameterTypeException, MissingParameterException {
         target_ = target ;
@@ -290,7 +302,11 @@ public class MotorEncoderGotoAction extends MotorAction {
         // If addhold_ is true, set the default action that will be run when this action
         // is complete to a hold action to hold the end position
         if (addhold_)
-            sub.setDefaultAction(new MotorEncoderHoldAction(sub, target_)) ;
+        {
+            double target = use_actual_ ? sub.getPosition() : target_ ;
+            target = target_ ;
+            sub.setDefaultAction(new MotorEncoderHoldAction(sub, target)) ;
+        }
         else
             sub.setDefaultAction(null) ;
 

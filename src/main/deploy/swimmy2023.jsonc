@@ -162,10 +162,7 @@
 
                                 },
                                 "delay" : 0.4,                      // Delay until we start lower arm
-                                "target" : {
-                                    "PRACTICE" : 110000,
-                                    "COMPETITION" : 97000
-                                }                                   // Lower arm target position
+                                "target" : 91000
                             },
                             "upper" : {
                                 "config" : {
@@ -453,19 +450,18 @@
             },
             "follower": {
                 "up" : {
-                    "kp": 0.00004,
+                    "kp": 0.00006,
                     "ka": 0.0,
                     "ki": 0.0,
                     "kd": 0.0,
-                    "kv": 6.03133E-06
-
+                    "kv": 5.4339E-06
                 },
                 "down" : {
-                    "kp": 0.00004,
+                    "kp": 0.00006,
                     "ka": 0.0,
                     "ki": 0.0,
                     "kd": 0.0,
-                    "kv": 6.03133E-06
+                    "kv": 5.4339E-06
                 }
             }
         },
@@ -944,7 +940,7 @@
     },
     "testmode": {
         "enabled": true,
-        "which": 81,
+        "which": 13,
         "0": {
             "angle": 0.0,
             "power": 0.2
@@ -976,15 +972,15 @@
             "duration" : 1.0
         },
         "11" : {
-            "power" : 0.5,
-            "duration" : 1.0,
+            "power" : 0.1,
+            "duration" : 2.0,
             "height" : 60000
         },
         "12" : {
             "target" : 50000
         },
         "13" : {
-            "height" : 120000,
+            "height" : 100000,
             "target" : 100000
         },
         "18" : {

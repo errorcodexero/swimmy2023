@@ -22,6 +22,8 @@ public class ArmStaggeredGotoAction extends Action {
     private MotorEncoderGotoAction upper_goto_ ;
     private double upper_target_ ;
 
+    private boolean use_actual_ ;
+
     private String key_ ;
 
     private double start_time_ ;
@@ -31,12 +33,17 @@ public class ArmStaggeredGotoAction extends Action {
 
         sub_ = sub;
         key_ = key ;
+        use_actual_ = false ;
 
         if (scurve) {
             setupScurve() ;
         } else {
             setupTrapezoidal();
         }
+    }
+
+    public void useActual(boolean b) {
+        use_actual_ = b ;
     }
 
     private void setupScurve() throws BadParameterTypeException, MissingParameterException {
@@ -99,6 +106,7 @@ public class ArmStaggeredGotoAction extends Action {
             }
             else {
                 upper_goto_ = new MotorEncoderGotoAction(sub_.getUpperSubsystem(), upper_target_, upper_trap_config_, true) ;
+                upper_goto_.useActual(use_actual_) ;
             }
             sub_.getUpperSubsystem().setAction(upper_goto_, true);
         }
@@ -109,6 +117,7 @@ public class ArmStaggeredGotoAction extends Action {
             }
             else {
                 lower_goto_ = new MotorEncoderGotoAction(sub_.getLowerSubsystem(), lower_target_, lower_trap_config_, true);
+                lower_goto_.useActual(use_actual_) ;
             }
             sub_.getLowerSubsystem().setAction(lower_goto_, true);
         }
