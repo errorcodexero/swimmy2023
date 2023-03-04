@@ -10,13 +10,13 @@ import org.xero1425.misc.PIDCtrl;
 
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 
-public class SwerveAlignRobotAction extends SwerveDriveAction {
+public class SwerveRotationalAlignRobotAction extends SwerveDriveAction {
     private LimeLightSubsystem ll_ ;
     private PIDCtrl ctrl_ ;
     private double threshold_ ;
     private XeroTimer start_timer_ ;
 
-    public SwerveAlignRobotAction(SwerveBaseSubsystem sub, LimeLightSubsystem ll) {
+    public SwerveRotationalAlignRobotAction(SwerveBaseSubsystem sub, LimeLightSubsystem ll) {
         super(sub) ;
 
         ll_ = ll ;

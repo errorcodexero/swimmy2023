@@ -67,6 +67,6 @@ public class SwimmyAutoMode extends AutoMode {
         Swimmy2023RobotSubsystem robot = (Swimmy2023RobotSubsystem)getAutoController().getRobot().getRobotSubsystem();
 
         RobotOperation oper = new RobotOperation(Action.Place, what, tpos, slot, loc);
-        addSubActionPair(robot, new AutoGamePieceAction(robot, oper, path, 1.0), false);
+        addSubActionPair(robot, new AutoGamePieceAction(robot, oper, path, 1.0), true);
     }
 }

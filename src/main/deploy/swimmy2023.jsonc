@@ -14,7 +14,7 @@
 
             // Subsystem related messages
             "vision": false,
-            "swerve" : false,
+            "swerve" : true,
             "swimmy2023oi" : true,
             "Swimmy2023RobotSubsystem" : true,
             "limelight" : false,
@@ -39,8 +39,8 @@
     },
     "subsystems": {
         "Swimmy2023RobotSubsystem" : {
-            "april-tag-action-threshold" : 2.0,
-            "tape-align-margin" : 0.1016,
+            "april-tag-action-threshold" : 1.5,
+            "tape-align-threshold" : 0.1016,
             "drive-forward-distance" : 0.1524,
             "spit-cube" : {
                 "power" : -0.3,
@@ -248,7 +248,7 @@
                                     "maxv" : 100000                 // Max velocity for trapezoidal profile, upper arm
                                 },
                                 "delay" : 0.4,                      // Delay until we start lower arm
-                                "target" : 56000                    // Lower arm target position
+                                "target" : 53000                    // Lower arm target position
                             },
                             "upper" : {
                                 "config" : {
@@ -257,7 +257,7 @@
                                     "maxv" : 150000                 // Max velocity for trapezoidal profile, upper arm
                                 },
                                 "delay" : 0.0,                      // Delay until we start upper arm
-                                "target" : 125000                    // Upper arm target position
+                                "target" : 120000                    // Upper arm target position
                             }
                         },
                         "retract" : {
@@ -927,17 +927,17 @@
     },
     "automodes" : {
         "center1" : {
-            "before-collect-delay" : 3.0,
+            "before-collect-delay" : 2.2,
             "collect-delay" : 1.0
         },
         "left1" : {
-            "before-collect-delay" : 3.0,
+            "before-collect-delay" : 2.2,
             "collect-delay" : 1.0
         }
     },
     "testmode": {
-        "enabled": true,
-        "which": 13,
+        "enabled": false,
+        "which": 7,
         "0": {
             "angle": 0.0,
             "power": 0.2
@@ -963,6 +963,9 @@
             "angle": 0.0,
             "power": 0.1,
             "duration": 10
+        },
+        "7" : {
+            "name" : "Middle1Blue-Path1"
         },
         "10" : {
             "power" : 0.7,

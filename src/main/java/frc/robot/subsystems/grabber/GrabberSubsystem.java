@@ -40,8 +40,8 @@ public class GrabberSubsystem extends Subsystem {
     protected void computeMyState() {
         sensor_upper_value_ = !sensor_upper_.get() ;
         sensor_lower_value_ = !sensor_lower_.get() ;
-        putDashboard("s-upper", DisplayType.Always, sensor_upper_value_);
-        putDashboard("s-lower", DisplayType.Always, sensor_lower_value_);
+        putDashboard("s-upper", DisplayType.Verbose, sensor_upper_value_);
+        putDashboard("s-lower", DisplayType.Verbose, sensor_lower_value_);
     }
 
     public boolean sensor() {

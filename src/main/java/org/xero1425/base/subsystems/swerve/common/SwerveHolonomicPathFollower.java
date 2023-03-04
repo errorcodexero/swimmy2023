@@ -1,5 +1,7 @@
 package org.xero1425.base.subsystems.swerve.common;
 
+import javax.annotation.processing.SupportedSourceVersion;
+
 import org.xero1425.base.misc.XeroTimer;
 import org.xero1425.base.motors.BadMotorRequestException;
 import org.xero1425.base.motors.MotorRequestFailedException;
@@ -28,6 +30,8 @@ public class SwerveHolonomicPathFollower extends SwerveHolonomicControllerAction
     private boolean end_phase_;
     private XeroTimer end_timer_;
 
+    private boolean disable_vision_ ;
+
     private static final String [] columns_ = {
         "time",
         "tx (m)", "ty (m)", "ta (deg)",
@@ -44,12 +48,20 @@ public class SwerveHolonomicPathFollower extends SwerveHolonomicControllerAction
         plot_id_ = getSubsystem().initPlot("holonomic" + pathname_) ;
 
         end_timer_ = new XeroTimer(sub.getRobot(), "holonomicpath", endtime);
+        disable_vision_ = true ;
+    }
+
+    public void disableVision(boolean b) {
+        disable_vision_ = b ;
     }
 
     @Override
     public void start() throws Exception {
         super.start() ;
 
+        if (disable_vision_) {
+            getSubsystem().enableVision(false);
+        }
         getSubsystem().startPlot(plot_id_, columns_);
 
         start_ = getSubsystem().getRobot().getTime() ;
@@ -121,9 +133,15 @@ public class SwerveHolonomicPathFollower extends SwerveHolonomicControllerAction
             if (controller().atReference() || end_timer_.isExpired()) {
                 getSubsystem().endPlot(plot_id_);
                 getSubsystem().drive(new ChassisSpeeds()) ;
+                getSubsystem().enableVision(true);
                 setDone();                
             }            
         }
+    }
+
+    @Override
+    public void cancel() {
+        System.out.println("me") ;
     }
 
     @Override

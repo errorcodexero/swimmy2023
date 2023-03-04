@@ -10,6 +10,7 @@ import org.xero1425.base.subsystems.motorsubsystem.MotorEncoderPowerAction;
 import org.xero1425.base.subsystems.motorsubsystem.MotorEncoderSubsystem;
 import org.xero1425.base.subsystems.swerve.common.SwerveAlignDriveBaseAction;
 import org.xero1425.base.subsystems.swerve.common.SwerveBaseSubsystem;
+import org.xero1425.base.subsystems.swerve.common.SwerveDrivePathAction;
 import org.xero1425.base.subsystems.swerve.common.SwerveHolonomicPathFollower;
 import org.xero1425.base.subsystems.swerve.common.SwervePowerAngleAction;
 import org.xero1425.base.subsystems.swerve.common.SwerveSpeedAngleAction;
@@ -26,7 +27,7 @@ import frc.robot.subsystems.gpm.GPMSubsystem;
 import frc.robot.subsystems.grabber.GrabberGrabGampieceAction;
 import frc.robot.subsystems.grabber.GrabberStartCollectAction;
 import frc.robot.subsystems.grabber.GrabberSubsystem;
-import frc.robot.subsystems.swerve.SwerveAlignRobotAction;
+import frc.robot.subsystems.swerve.SwerveRotationalAlignRobotAction;
 import frc.robot.subsystems.toplevel.RobotOperation;
 import frc.robot.subsystems.toplevel.Swimmy2023RobotSubsystem;
 import frc.robot.subsystems.toplevel.RobotOperation.GamePiece;
@@ -107,6 +108,10 @@ public class SwimmyTestAutoMode extends TestAutoMode {
             case 6:
                 addSubActionPair(swerve, new SwerveAlignDriveBaseAction(swerve, limelight, 3.0), true);
                 break;
+
+            case 7:
+                addSubActionPair(swerve, new SwerveHolonomicPathFollower(swerve, getString("name"), true, 1.0), true) ;
+                break ;
                 
             //
             // ARM test modes
@@ -200,7 +205,7 @@ public class SwimmyTestAutoMode extends TestAutoMode {
                 break ;   
 
             case 78:
-                addSubActionPair(swerve, new SwerveAlignRobotAction(swerve, limelight), true);
+                addSubActionPair(swerve, new SwerveRotationalAlignRobotAction(swerve, limelight), true);
                 break ;
 
             case 79:

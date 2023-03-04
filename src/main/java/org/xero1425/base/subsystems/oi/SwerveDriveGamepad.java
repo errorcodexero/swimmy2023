@@ -140,7 +140,7 @@ public class SwerveDriveGamepad extends Gamepad {
             holding_x_ = true ;
         }
         else {
-            if (db_.getAction() != action_) {
+            if (db_.getAction() != action_ && getSubsystem().getRobot().isTeleop()) {
                 db_.setAction(action_);
             }
             holding_x_ = false ;

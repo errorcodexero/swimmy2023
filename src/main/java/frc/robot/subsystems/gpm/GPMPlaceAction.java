@@ -32,6 +32,7 @@ public class GPMPlaceAction extends Action {
     private boolean force_drop_ ;
     private XeroTimer timer_ ;
     private String title_ ;
+    private boolean is_dropped_ ;
 
     public GPMPlaceAction(GPMSubsystem sub, RobotOperation.Location loc, RobotOperation.GamePiece gp, boolean force) throws MissingParameterException, BadParameterTypeException {
         super(sub.getRobot().getMessageLogger());
@@ -84,12 +85,17 @@ public class GPMPlaceAction extends Action {
         drop_game_piece_ = true ;
     }
 
+    public boolean isDropComplete() {
+        return is_dropped_ ;
+    }
+
     @Override
     public void start() throws Exception {
         super.start() ;
 
         ready_to_drop_ = false ;
         drop_game_piece_ = false ;
+        is_dropped_ = false ;
 
         sub_.getArm().setAction(arm_extend_action_, true) ;
         state_ = State.ExtendingArm ;
@@ -123,6 +129,7 @@ public class GPMPlaceAction extends Action {
             case DroppingGamepiece:
                 if (timer_.isExpired()) {
                     sub_.getArm().setAction(arm_retract_action_, true);
+                    is_dropped_ = true ;
                     state_ = State.RetractingArm ;
                 }
                 break ;

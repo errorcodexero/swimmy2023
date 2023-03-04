@@ -27,13 +27,15 @@ public class AutoGamePieceAction extends Action {
         oper_ = oper;
 
         SwerveBaseSubsystem swerve = (SwerveBaseSubsystem)sub_.getRobot().getRobotSubsystem().getDB();
-        drive_action_ = new SwerveHolonomicPathFollower(swerve, pathname_, false, delay_) ;
+        drive_action_ = new SwerveHolonomicPathFollower(swerve, pathname, false, delay_) ;
+        drive_action_.disableVision(false);
         pathname_ = pathname;
         delay_ = delay;
     }
 
     @Override
-    public void start() {
+    public void start() throws Exception {
+        super.start() ;
         if (!sub_.setOperation(oper_)) {
             MessageLogger logger = sub_.getRobot().getMessageLogger();
             logger.startMessage(MessageType.Error);
@@ -44,12 +46,14 @@ public class AutoGamePieceAction extends Action {
 
         if (pathname_ != null) {
             SwerveBaseSubsystem swerve = (SwerveBaseSubsystem)sub_.getRobot().getRobotSubsystem().getDB();
-            swerve.setAction(drive_action_);
+            swerve.setAction(drive_action_, true);
         }
     }
 
     @Override
-    public void run() {
+    public void run() throws Exception {
+        super.run() ;
+
         if (pathname_ == null) {
             if (sub_.isOperationComplete()) {
                 setDone();

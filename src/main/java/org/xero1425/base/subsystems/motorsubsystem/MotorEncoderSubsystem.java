@@ -260,6 +260,6 @@ public class MotorEncoderSubsystem extends MotorSubsystem
         logger.endMessage();
 
         putDashboard(getName() + "-position", DisplayType.Verbose, pos);
-        putDashboard("raw", DisplayType.Always, encoder_.getRawCount());
+        putDashboard("raw", DisplayType.Verbose, encoder_.getRawCount());
     }
 }

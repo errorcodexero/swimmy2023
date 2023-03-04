@@ -17,16 +17,22 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import frc.robot.subsystems.gpm.GPMPlaceAction;
+import frc.robot.subsystems.swerve.SwerveLinearAlignAction;
 import frc.robot.subsystems.toplevel.RobotOperation.Action;
 import frc.robot.subsystems.toplevel.RobotOperation.GamePiece;
 import frc.robot.subsystems.toplevel.RobotOperation.Location;
 
 public class AutoPlaceOpCtrl extends OperationCtrl {
+
+    private final boolean AddAlignStep = false ;
+
     private enum State {
         Idle,
         LookingForTag,
         WaitingOnVision,
         DrivingToLocation,
+        AlignRobot,
+        AlignWheels,
         DriveForward,
         WaitingOnArm,
         SettlingDelay,
@@ -40,10 +46,12 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
     private SwerveDrivePathAction drive_to_action_ ;
     private GPMPlaceAction place_action_ ;
     private MotorEncoderPowerAction spit_cube_action_ ;
+    private SwerveLinearAlignAction align_action_ ;
 
     private XeroTimer vision_timer_ ;
     private XeroTimer forward_timer_ ;
     private XeroTimer settling_timer_ ;
+    private XeroTimer wheels_timer_ ;
     
     public AutoPlaceOpCtrl(Swimmy2023RobotSubsystem sub, RobotOperation oper) throws BadParameterTypeException, MissingParameterException {
         super(sub, oper) ;
@@ -52,7 +60,8 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
         state_ = State.Idle ;
 
         vision_timer_ = new XeroTimer(sub.getRobot(), "vision/timer", 0.5);
-        settling_timer_ = new XeroTimer(sub.getRobot(), "settling", 0.1) ;
+        settling_timer_ = new XeroTimer(sub.getRobot(), "settling", 0.25) ;
+        align_action_ = new SwerveLinearAlignAction(getRobotSubsystem().getSwerve(), getRobotSubsystem().getLimeLight()) ;
 
         if (oper.getAction() == Action.Place && oper.getGamePiece() == GamePiece.Cube && oper.getLocation() == Location.Bottom) {
             double power = getRobotSubsystem().getSettingsValue("spit-cube:power").getDouble();
@@ -63,7 +72,8 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
             place_action_ = new GPMPlaceAction(sub.getGPM(), oper.getLocation(), oper.getGamePiece(), false);
         }
 
-        forward_timer_ = new XeroTimer(sub.getRobot(), "forward", 0.5) ;
+        forward_timer_ = new XeroTimer(sub.getRobot(), "forward", 1.0) ;
+        wheels_timer_ = new XeroTimer(sub.getRobot(), "wheels", 0.2) ;
     }
 
     @Override
@@ -92,6 +102,14 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
             case DrivingToLocation:
                 stateDrivingToLocation() ;
                 break;
+
+            case AlignRobot:
+                stateAlignRobot() ;
+                break ;
+
+            case AlignWheels:
+                stateAlignWheels() ;
+                break ;
 
             case DriveForward:
                 stateDriveForward() ;
@@ -129,6 +147,17 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
 
             case WaitingOnVision:
                 break ;
+
+            case AlignWheels:
+                break ;
+
+            case AlignRobot:
+                getRobotSubsystem().getOI().enableGamepad() ;
+                getRobotSubsystem().getSwerve().enableVision(true);
+                drive_to_action_.cancel() ;
+                getRobotSubsystem().getSwerve().drive(new ChassisSpeeds());
+                getRobotSubsystem().getLimeLight().setPipeline(0);
+                break;
 
             case DrivingToLocation:
                 getRobotSubsystem().getOI().enableGamepad() ;
@@ -224,6 +253,10 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
             if (place_action_ != null) {
                 getRobotSubsystem().getGPM().setAction(place_action_);
             }
+
+            if (AddAlignStep) {
+                getRobotSubsystem().getLimeLight().setPipeline(1);
+            }
             state_ = State.DrivingToLocation ;
         }
         else {
@@ -239,12 +272,41 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
 
     private void stateDrivingToLocation() {
         if (drive_to_action_.isDone()) {
+            if (AddAlignStep) {
+                getRobotSubsystem().getSwerve().setAction(align_action_) ;
+                state_ = State.AlignRobot ;
+            } else {
+                double [] angles = new double[] { 0.0, 0.0, 0.0, 0.0} ;
+                double [] power = new double[] { 0.0, 0.0, 0.0, 0.0} ;
+    
+                getRobotSubsystem().getLimeLight().setPipeline(0);
+    
+                getRobotSubsystem().getSwerve().setRawTargets(true, angles, power) ;
+                state_ = State.AlignWheels ;
+                wheels_timer_.start() ;
+            }
+        }
+    }
+
+    private void stateAlignRobot() {
+        if (align_action_.isDone()) {
+            double [] angles = new double[] { 0.0, 0.0, 0.0, 0.0} ;
+            double [] power = new double[] { 0.0, 0.0, 0.0, 0.0} ;
+
+            getRobotSubsystem().getLimeLight().setPipeline(0);
+
+            getRobotSubsystem().getSwerve().setRawTargets(true, angles, power) ;
+            state_ = State.AlignWheels ;
+            wheels_timer_.start() ;
+        }
+    }
+
+    private void stateAlignWheels() {
+        if (wheels_timer_.isExpired()) {
             ChassisSpeeds speed ;            
             double xspeed = 0.5 ;
             speed = new ChassisSpeeds(xspeed, 0.0, 0.0) ;
-
             getRobotSubsystem().getSwerve().drive(speed) ;
-
             forward_timer_.start() ;
             state_ = State.DriveForward;
         }
@@ -267,6 +329,12 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
 
     private void stateWaitingOnArm() {
         if (place_action_ != null && place_action_.isReadyToDrop()) {
+            MessageLogger logger = getRobotSubsystem().getRobot().getMessageLogger() ;
+            logger.startMessage(MessageType.Info) ;
+            logger.add("Dropping game piece") ;
+            logger.add("uppper arm", getRobotSubsystem().getGPM().getArm().getUpperSubsystem().getPosition());
+            logger.add("lower arm", getRobotSubsystem().getGPM().getArm().getLowerSubsystem().getPosition());
+            logger.endMessage();
             place_action_.dropGamePiece();
             state_ = State.DroppingPiece ;
         }
@@ -279,8 +347,11 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
     private void stateDroppingPiece() {
         if (place_action_ != null && place_action_.isDone()) {
             state_ = State.Idle ;
-            getRobotSubsystem().getOI().enableGamepad();
-            getRobotSubsystem().getOI().getGamePad().rumble(1.0, 0.5);
+
+            if (place_action_.isDropComplete()) {
+                getRobotSubsystem().getOI().enableGamepad();
+                getRobotSubsystem().getOI().getGamePad().rumble(1.0, 0.5);
+            }
             setDone();
         }
         else if (spit_cube_action_ != null && spit_cube_action_.isDone()) {
