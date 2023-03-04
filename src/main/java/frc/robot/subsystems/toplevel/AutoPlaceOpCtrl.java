@@ -227,6 +227,7 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
         logger.endMessage();
 
         if (dist < april_tag_action_threshold_) {
+            getRobotSubsystem().getSwerve().cancelAction();
             getRobotSubsystem().getSwerve().drive(new ChassisSpeeds());
             getRobotSubsystem().getOI().disableGamepad();
             getRobotSubsystem().getOI().getGamePad().rumble(1.0, 0.5);
@@ -249,9 +250,9 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
             List<Translation2d> interior = new ArrayList<Translation2d>() ;
             drive_to_action_ = new SwerveDrivePathAction(getRobotSubsystem().getSwerve(), pts.get(0), interior, pts.get(1), target_pose_.getRotation(), 1.0, 1.0);
 
-            getRobotSubsystem().getSwerve().setAction(drive_to_action_);
+            getRobotSubsystem().getSwerve().setAction(drive_to_action_, true);
             if (place_action_ != null) {
-                getRobotSubsystem().getGPM().setAction(place_action_);
+                getRobotSubsystem().getGPM().setAction(place_action_, true);
             }
 
             if (AddAlignStep) {
@@ -273,7 +274,7 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
     private void stateDrivingToLocation() {
         if (drive_to_action_.isDone()) {
             if (AddAlignStep) {
-                getRobotSubsystem().getSwerve().setAction(align_action_) ;
+                getRobotSubsystem().getSwerve().setAction(align_action_, true) ;
                 state_ = State.AlignRobot ;
             } else {
                 double [] angles = new double[] { 0.0, 0.0, 0.0, 0.0} ;
@@ -339,7 +340,7 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
             state_ = State.DroppingPiece ;
         }
         else if (spit_cube_action_ != null) {
-            getRobotSubsystem().getGPM().getGrabber().getSpinSubsystem().setAction(spit_cube_action_);
+            getRobotSubsystem().getGPM().getGrabber().getSpinSubsystem().setAction(spit_cube_action_, true);
             state_ = State.DroppingPiece ;
         }
     }

@@ -1,7 +1,5 @@
 package org.xero1425.base.subsystems.swerve.common;
 
-import javax.annotation.processing.SupportedSourceVersion;
-
 import org.xero1425.base.misc.XeroTimer;
 import org.xero1425.base.motors.BadMotorRequestException;
 import org.xero1425.base.motors.MotorRequestFailedException;
