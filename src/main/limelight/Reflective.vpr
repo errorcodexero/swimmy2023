@@ -1,7 +1,7 @@
 area_max:100
 area_min:0.0017850625000000004
 area_similarity:0
-aspect_max:0.4626882000000001
+aspect_max:0.4868760125000002
 aspect_min:0
 black_level:34
 blue_balance:1975
@@ -15,8 +15,8 @@ contour_sort_final:0
 convexity_max:100
 convexity_min:10
 corner_approx:5.000000
-crop_x_max:1
-crop_x_min:-1
+crop_x_max:0.6
+crop_x_min:-0.6
 crop_y_max:0.77
 crop_y_min:-1
 cross_a_a:1
