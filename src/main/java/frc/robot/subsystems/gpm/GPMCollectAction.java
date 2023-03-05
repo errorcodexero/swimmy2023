@@ -30,7 +30,10 @@ public class GPMCollectAction extends Action {
     private GrabberGrabGampieceAction grabber_stop_collect_action_;
     private GrabberStowAction grabber_stow_action_ ;
 
+    private boolean timer_active_ ;
+    private Action act_ ;
     private XeroTimer timer_ ;
+    private XeroTimer ground_done_timer_ ;
 
     private ArmStaggeredGotoAction arm_collect_action_ ;
     private ArmStaggeredGotoAction arm_lift_action_;
@@ -60,12 +63,15 @@ public class GPMCollectAction extends Action {
         grabber_start_collect_action_ = new GrabberStartCollectAction(subsystem_.getGrabber(), gp);
         grabber_stow_action_ = new GrabberStowAction(subsystem_.getGrabber());
 
+        ground_done_timer_ = new XeroTimer(subsystem.getRobot(), "groundtimer", 0.1);
+
         timer_ = null ;
         state_ = State.Idle ;
     }
 
-    public GPMCollectAction(GPMSubsystem subsystem, RobotOperation.GamePiece gp, boolean ground, double timeout) throws Exception {
+    public GPMCollectAction(GPMSubsystem subsystem, RobotOperation.GamePiece gp, boolean ground, Action act, double timeout) throws Exception {
         this(subsystem, gp, ground) ;
+        act_ = act ;
         timer_ = new XeroTimer(subsystem.getRobot(), "collect-overall", timeout);
     }
 
@@ -83,15 +89,37 @@ public class GPMCollectAction extends Action {
     public void start() throws Exception {
         super.start();
 
+        timer_active_ = false ;
         state_ = State.WaitingForDeploy ;
 
         subsystem_.getGrabber().setAction(grabber_start_collect_action_, true);
         subsystem_.getArm().setAction(arm_collect_action_, true);
     }
 
+    private boolean isCollectDone() {
+        MessageLogger logger = subsystem_.getRobot().getMessageLogger();
+        boolean ret = false;
+
+        if (subsystem_.getGrabber().sensor()) {
+            ret = true ;
+            logger.startMessage(MessageType.Info).add("GPMCollectAction - sensor detected").endMessage();
+        }
+        else if (timer_ != null && timer_.isExpired()) {
+            ret = true ;
+            logger.startMessage(MessageType.Info).add("GPMCollectAction - timer timed out").endMessage();
+        }
+
+        return ret ;
+    }
+
     @Override
     public void run() throws Exception {
         super.run();
+        
+        if (act_ != null && act_.isDone() && timer_active_ == false) {
+            timer_.start() ;
+            timer_active_ = true ;
+        }
 
         State orig = state_ ;
         switch(state_) {
@@ -100,7 +128,7 @@ public class GPMCollectAction extends Action {
 
             case WaitingForDeploy:
                 if (arm_collect_action_.isDone() && grabber_start_collect_action_.isDone()) {
-                    if (timer_ != null) {
+                    if (timer_ != null && act_ == null) {
                         timer_.start() ;
                     }
                     state_ = State.WaitingForSensor ;
@@ -108,13 +136,9 @@ public class GPMCollectAction extends Action {
                 break ;
 
             case WaitingForSensor:
-                if (subsystem_.getGrabber().sensor()) {
+                if (isCollectDone()) {
                     subsystem_.getGrabber().setAction(grabber_stop_collect_action_, true);
                     state_ = State.CloseGrabber;
-                }
-                else if (timer_ != null && timer_.isExpired()) {
-                    subsystem_.getGrabber().setAction(grabber_stow_action_, true);
-                    state_ = State.StowGrabber;
                 }
                 break ;
 
@@ -134,7 +158,11 @@ public class GPMCollectAction extends Action {
                 break ;
 
             case RetractArm:
-                if (arm_retract_action_.isDone()) {
+                if (ground_ && ground_done_timer_.isExpired()) {
+                    state_ = State.Done ;
+                    setDone() ;
+                }
+                else if (arm_retract_action_.isDone()) {
                     state_ = State.Done ;
                     setDone() ;
                 }
@@ -155,6 +183,7 @@ public class GPMCollectAction extends Action {
     private void processStowOrCloseGrabber(Action action) {
         if (action.isDone()) {
             if (ground_) {
+                ground_done_timer_.start() ;
                 subsystem_.getArm().setAction(arm_retract_action_, true);
                 state_ = State.RetractArm ;
             }

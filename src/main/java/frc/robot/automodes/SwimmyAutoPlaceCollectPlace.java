@@ -20,8 +20,9 @@ public class SwimmyAutoPlaceCollectPlace extends SwimmyAutoMode  {
         //
         // Drive a path across the charging station collecting on the other side
         //
-        double beforedelay = ctrl.getRobot().getSettingsSupplier().get("automodes:left1:before-collect-delay").getDouble() ;
-        driveAndCollect(side + color + "-Path1", true, beforedelay, Double.MAX_VALUE, what2);
+        double beforedelay = ctrl.getRobot().getSettingsSupplier().get("automodes:edges:before-collect-delay").getDouble() ;
+        double grabdelay = ctrl.getRobot().getSettingsSupplier().get("automodes:edges:grab-delay").getDouble() ;
+        driveAndCollect(side + color + "-Path1", true, beforedelay, grabdelay, what2);
 
         //
         // Drive back to place second cube

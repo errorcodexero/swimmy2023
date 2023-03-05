@@ -146,7 +146,7 @@
                             "maxv" : 150000                 // Max velocity for trapezoidal profile, upper arm
                         },
                         "delay" : 0.0,                      // Delay until we start upper arm
-                        "target" : 20000                    // Upper arm target position
+                        "target" : 40000                    // Upper arm target position
                     }
                 }
             },
@@ -519,6 +519,10 @@
                     "lower" : 1
                 }
             },
+            "start" : {
+                "position" : 1400,
+                "delay" : 0.2
+            },
             "open" : {
                 //
                 // The motor power to run the grabber motors while collecting a game piece
@@ -536,7 +540,7 @@
                         "cone" : 1200
                     },
                     "spin-power" : 0.4,
-                    "spin-delay" : 1.0
+                    "spin-delay" : 0.4
                 },
                 "shelf" : {
                     "position" : {
@@ -922,17 +926,17 @@
             }
         },
         "gpm" : {
-            "place-delay" : 1.0
+            "place-delay" : 0.0
         }
     },
     "automodes" : {
         "center1" : {
             "before-collect-delay" : 2.2,
-            "collect-delay" : 1.0
+            "grab-delay" : 0.1
         },
-        "left1" : {
-            "before-collect-delay" : 2.2,
-            "collect-delay" : 1.0
+        "edges" : {
+            "before-collect-delay" : 1.2,
+            "grab-delay" : 0.1
         }
     },
     "testmode": {

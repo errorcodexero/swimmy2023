@@ -13,7 +13,7 @@ import org.xero1425.misc.MissingParameterException;
 
 import frc.robot.subsystems.gpm.GPMCollectAction;
 import frc.robot.subsystems.gpm.GPMPlaceAction;
-import frc.robot.subsystems.grabber.GrabberGrabGampieceAction;
+import frc.robot.subsystems.grabber.GrabberGrabLoadedGamepieceAction;
 import frc.robot.subsystems.toplevel.AutoGamePieceAction;
 import frc.robot.subsystems.toplevel.RobotOperation;
 import frc.robot.subsystems.toplevel.Swimmy2023RobotSubsystem;
@@ -34,7 +34,7 @@ public class SwimmyAutoMode extends AutoMode {
         //
         // Close the grabber around the game piece
         // 
-        addSubActionPair(robot.getGPM(), new GrabberGrabGampieceAction(robot.getGPM().getGrabber(), what, false), true);
+        addSubActionPair(robot.getGPM().getGrabber(), new GrabberGrabLoadedGamepieceAction(robot.getGPM().getGrabber()), true);
 
         //
         // Place the game piece onto the placement location
@@ -50,14 +50,15 @@ public class SwimmyAutoMode extends AutoMode {
         //
         // Drive path 1, across the platform to find another game piece.
         //
-        action.addSubActionPair(robot.getSwerve(), new SwerveHolonomicPathFollower(robot.getSwerve(), path, setpose, 1.0) , true);
+        SwerveHolonomicPathFollower act = new SwerveHolonomicPathFollower(robot.getSwerve(), path, setpose, 1.0);
+        action.addSubActionPair(robot.getSwerve(), act , true);
 
         //
         // In parallel with path 1 above, delay a fixed amount of time and then enter a ground collect operation
         //
         SequenceAction delaycollect = new SequenceAction(getMessageLogger());
         delaycollect.addAction(new DelayAction(getAutoController().getRobot(), collectdelay));
-        delaycollect.addSubActionPair(robot.getGPM(), new GPMCollectAction(robot.getGPM(), what, true, grabdelay), true);
+        delaycollect.addSubActionPair(robot.getGPM(), new GPMCollectAction(robot.getGPM(), what, true, act, grabdelay), true);
         action.addAction(delaycollect);
 
         addAction(action);

@@ -59,8 +59,12 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
         april_tag_action_threshold_ = sub.getSettingsValue("april-tag-action-threshold").getDouble() ;
         state_ = State.Idle ;
 
-        vision_timer_ = new XeroTimer(sub.getRobot(), "vision/timer", 0.5);
-        settling_timer_ = new XeroTimer(sub.getRobot(), "settling", 0.25) ;
+        if (getRobotSubsystem().getRobot().isAutonomous())
+            vision_timer_ = new XeroTimer(sub.getRobot(), "vision/timer", 0.3);
+        else
+            vision_timer_ = new XeroTimer(sub.getRobot(), "vision/timer", 0.5);
+
+        settling_timer_ = new XeroTimer(sub.getRobot(), "settling", 0.04) ;
         align_action_ = new SwerveLinearAlignAction(getRobotSubsystem().getSwerve(), getRobotSubsystem().getLimeLight()) ;
 
         if (oper.getAction() == Action.Place && oper.getGamePiece() == GamePiece.Cube && oper.getLocation() == Location.Bottom) {

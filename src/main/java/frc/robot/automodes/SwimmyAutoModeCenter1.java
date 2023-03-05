@@ -26,7 +26,7 @@ public class SwimmyAutoModeCenter1 extends SwimmyAutoMode  {
         // Drive a path across the charging station collecting on the other side
         //
         double beforedelay = ctrl.getRobot().getSettingsSupplier().get("automodes:center1:before-collect-delay").getDouble() ;
-        double collectdelay = ctrl.getRobot().getSettingsSupplier().get("automodes:center1:collect-delay").getDouble();
+        double collectdelay = ctrl.getRobot().getSettingsSupplier().get("automodes:center1:grab-delay").getDouble();
         driveAndCollect("Center1" + color + "-Path1", true, beforedelay, collectdelay, RobotOperation.GamePiece.Cone);
 
         //

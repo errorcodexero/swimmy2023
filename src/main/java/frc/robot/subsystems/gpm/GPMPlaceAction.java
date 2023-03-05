@@ -131,6 +131,8 @@ public class GPMPlaceAction extends Action {
                     sub_.getArm().setAction(arm_retract_action_, true);
                     is_dropped_ = true ;
                     state_ = State.RetractingArm ;
+
+                    setDone() ;
                 }
                 break ;
 
