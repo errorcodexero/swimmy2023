@@ -26,7 +26,9 @@ import frc.robot.subsystems.gpm.GPMSubsystem;
 import frc.robot.subsystems.grabber.GrabberGrabGampieceAction;
 import frc.robot.subsystems.grabber.GrabberStartCollectAction;
 import frc.robot.subsystems.grabber.GrabberSubsystem;
+import frc.robot.subsystems.swerve.SwerveDriveBalancePlatform;
 import frc.robot.subsystems.swerve.SwerveRotationalAlignRobotAction;
+import frc.robot.subsystems.swerve.SwerveDriveBalancePlatform.XYDirection;
 import frc.robot.subsystems.toplevel.RobotOperation;
 import frc.robot.subsystems.toplevel.Swimmy2023RobotSubsystem;
 import frc.robot.subsystems.toplevel.RobotOperation.GamePiece;
@@ -138,16 +140,21 @@ public class SwimmyTestAutoMode extends TestAutoMode {
                     addSubActionPair(armLower, new MotorEncoderGotoAction(armLower, getDouble("target"), cfg, true), true) ;
                 }
                 break ;
+            
+            case 17:
+                addSubActionPair(arm.getUpperSubsystem(), new MotorEncoderGotoAction(arm.getUpperSubsystem(), 230000.0, true), true);
+                addSubActionPair(arm.getLowerSubsystem(), new MotorEncoderGotoAction(arm.getLowerSubsystem(), 2000.0, true), true);
+                addSubActionPair(arm.getUpperSubsystem(), new MotorEncoderGotoAction(arm.getUpperSubsystem(), 2000.0, true), true);
+                break; 
 
             case 18:
                 addSubActionPair(arm, new ArmStaggeredGotoAction(arm, getString("profile1"), false), true);
                 addAction(new DelayAction(arm.getRobot(), getDouble("delay")));
                 addSubActionPair(arm, new ArmStaggeredGotoAction(arm, getString("profile2"), false), true);
-
                 break ;
 
             case 19:
-                addSubActionPair(arm, new ArmStaggeredGotoAction(arm, "place:top:cone:extend", true), true) ;
+                addSubActionPair(arm, new ArmStaggeredGotoAction(arm, "place:middle:cone:extend", false), true) ;
                 break ;
 
             case 20:
@@ -202,6 +209,10 @@ public class SwimmyTestAutoMode extends TestAutoMode {
             case 33:
                 addSubActionPair(gpm, new GPMCollectAction(gpm, RobotOperation.GamePiece.Cube, true), true);
                 break ;   
+
+            case 77:
+                addSubActionPair(swerve, new SwerveDriveBalancePlatform(swerve, XYDirection.XDirection), true) ;
+                break;
 
             case 78:
                 addSubActionPair(swerve, new SwerveRotationalAlignRobotAction(swerve, limelight), true);

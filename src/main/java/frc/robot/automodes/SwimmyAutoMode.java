@@ -70,4 +70,14 @@ public class SwimmyAutoMode extends AutoMode {
         RobotOperation oper = new RobotOperation(Action.Place, what, tpos, slot, loc);
         addSubActionPair(robot, new AutoGamePieceAction(robot, oper, path, 1.0), true);
     }
+
+    protected void drivePath(String path, boolean setpose) throws Exception {
+        Swimmy2023RobotSubsystem robot = (Swimmy2023RobotSubsystem)getAutoController().getRobot().getRobotSubsystem();
+
+        //
+        // Drive path 1, across the platform to find another game piece.
+        //
+        SwerveHolonomicPathFollower act = new SwerveHolonomicPathFollower(robot.getSwerve(), path, setpose, 1.0);
+        addSubActionPair(robot.getSwerve(), act , true);
+    }    
 }

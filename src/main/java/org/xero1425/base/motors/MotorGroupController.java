@@ -27,6 +27,12 @@ public class MotorGroupController extends MotorController
         return motors_.get(index) ;
     }
 
+    public void setNeutralDeadband(double value) throws BadMotorRequestException, MotorRequestFailedException {
+        for(MotorController ctrl : motors_) {
+            ctrl.setNeutralDeadband(value);
+        }
+    }
+
     /// \brief Add a new motor to the group
     /// \param ctrl the motor to add to the group
     /// \param leader if true, the leader is inverted

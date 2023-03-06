@@ -94,6 +94,9 @@ public class TalonFXMotorController extends MotorController
         }
     }
 
+    public void setNeutralDeadband(double value) {
+        controller_.configNeutralDeadband(value) ;
+    }
 
     /// \brief Return the current input voltage to the motor controller
     /// \returns the current input voltage to the motor controller

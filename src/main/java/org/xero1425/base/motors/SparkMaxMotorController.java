@@ -123,6 +123,9 @@ public class SparkMaxMotorController extends MotorController
         }
     }
 
+    public void setNeutralDeadband(double value) throws BadMotorRequestException {
+        throw new BadMotorRequestException(this, "not supported") ;
+    }
 
     /// \brief Return the current input voltage to the motor controller
     /// \returns the current input voltage to the motor controller    

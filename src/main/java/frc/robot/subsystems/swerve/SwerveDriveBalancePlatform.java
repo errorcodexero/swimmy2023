@@ -1,8 +1,11 @@
 package frc.robot.subsystems.swerve;
 
+import org.xero1425.base.subsystems.Subsystem.DisplayType;
 import org.xero1425.base.subsystems.swerve.common.SwerveBaseSubsystem;
 import org.xero1425.base.subsystems.swerve.common.SwerveDriveAction;
 import org.xero1425.misc.BadParameterTypeException;
+import org.xero1425.misc.MessageLogger;
+import org.xero1425.misc.MessageType;
 import org.xero1425.misc.MissingParameterException;
 import org.xero1425.misc.PIDCtrl;
 
@@ -36,15 +39,27 @@ public class SwerveDriveBalancePlatform extends SwerveDriveAction {
 
         double out ;
         ChassisSpeeds speed ;
+        double value = 0.0 ;
 
         if (dir_ == XYDirection.XDirection) {
-            out = pid_.getOutput(0.0, getSubsystem().getPitch(), getSubsystem().getRobot().getDeltaTime());
+            value = getSubsystem().getPitch() ;
+            out = pid_.getOutput(0.0, value, getSubsystem().getRobot().getDeltaTime());
             speed = new ChassisSpeeds(out, 0.0, 0.0);
         }
         else {
-            out = pid_.getOutput(0.0, getSubsystem().getRoll(), getSubsystem().getRobot().getDeltaTime());
+            value = getSubsystem().getRoll() ;
+            out = pid_.getOutput(0.0, value, getSubsystem().getRobot().getDeltaTime());
             speed = new ChassisSpeeds(0.0, out, 0.0);
         }
+
+        MessageLogger logger = getSubsystem().getRobot().getMessageLogger();
+        logger.startMessage(MessageType.Debug);
+        logger.add("AutoBalance: ") ;
+        logger.add("angle", value) ;
+        logger.add("power", out) ;
+        logger.endMessage();
+
+        getSubsystem().putDashboard("balance", DisplayType.Always, out);
         getSubsystem().drive(speed);
     }
 

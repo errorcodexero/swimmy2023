@@ -14,8 +14,8 @@
 
             // Subsystem related messages
             "vision": false,
-            "swerve" : true,
-            "swimmy2023oi" : true,
+            "swerve" : false,
+            "swimmy2023oi" : false,
             "Swimmy2023RobotSubsystem" : true,
             "limelight" : false,
             "arm-motor-lower" : false,
@@ -48,6 +48,48 @@
             }
         },
         "arm" : {
+            "escape" : {
+                "1" : {
+                    "lower" : {
+                        "config" : {
+                            "maxj" : 1000000,              // Max accel for trapezoidal profile, upper arm
+                            "maxa" : 100000,               // Max decel for trapezoidal profile, upper arm
+                            "maxv" : 100000                // Max velocity for trapezoidal profile, upper arm
+                        },
+                        "delay" : 0.0,                      // Delay until we start lower arm
+                        "target" : 94000                     // Lower arm target position
+                    },
+                    "upper" : {
+                        "config" : {
+                            "maxj" : 1000000,                // Max accel for trapezoidal profile, upper arm
+                            "maxa" : 100000,               // Max decel for trapezoidal profile, upper arm
+                            "maxv" : 100000                 // Max velocity for trapezoidal profile, upper arm
+                        },
+                        "delay" : 0.0,                      // Delay until we start upper arm
+                        "target" : 230215                    // Upper arm target position
+                    }
+                },
+                "2" : {
+                    "lower" : {
+                        "config" : {
+                            "maxj" : 1000000,              // Max accel for trapezoidal profile, upper arm
+                            "maxa" : 100000,               // Max decel for trapezoidal profile, upper arm
+                            "maxv" : 100000                // Max velocity for trapezoidal profile, upper arm
+                        },
+                        "delay" : 0.0,                      // Delay until we start lower arm
+                        "target" : 2000                     // Lower arm target position
+                    },
+                    "upper" : {
+                        "config" : {
+                            "maxj" : 1000000,                // Max accel for trapezoidal profile, upper arm
+                            "maxa" : 100000,               // Max decel for trapezoidal profile, upper arm
+                            "maxv" : 100000                 // Max velocity for trapezoidal profile, upper arm
+                        },
+                        "delay" : 2.0,                      // Delay until we start upper arm
+                        "target" : 20000                    // Upper arm target position
+                    }                    
+                }
+            },
             "collect" : {
                 "extend-shelf" : {
                     "lower" : {
@@ -117,7 +159,7 @@
                             "maxv" : 150000                 // Max velocity for trapezoidal profile, lower arm
                         },
                         "delay" : 0.0,                      // Delay until we start lower arm
-                        "target" : 112000                   // Lower arm target position
+                        "target" : 106000                   // Lower arm target position
                     },
                     "upper" : {
                         "config" : {
@@ -248,7 +290,7 @@
                                     "maxv" : 100000                 // Max velocity for trapezoidal profile, upper arm
                                 },
                                 "delay" : 0.4,                      // Delay until we start lower arm
-                                "target" : 52000                    // Lower arm target position
+                                "target" : 48000                    // Lower arm target position
                             },
                             "upper" : {
                                 "config" : {
@@ -482,7 +524,7 @@
             },
             "hold": {
                 "kp": 0.00015,
-                "ki": 0,
+                "ki": 0.0,
                 "kd": 0,
                 "kf": 0,
                 "min": -0.30,
@@ -892,12 +934,12 @@
             // This section is a PID controller for rotationally aligning the robot with a vision target
             //
             "balance-pid" : {
-                "kp" : 0.0,
+                "kp" : 0.04,
                 "ki" : 0.0,
                 "kd" : 0.0,
                 "kf" : 0.0,
                 "max" : 0.5,          // Meters Per Second
-                "min" : 0.5,          // Meters Per Second
+                "min" : -0.5,          // Meters Per Second
                 "imax" : 0.0
             },
 
@@ -931,7 +973,7 @@
     },
     "automodes" : {
         "center1" : {
-            "before-collect-delay" : 2.2,
+            "before-collect-delay" : 5.0,
             "grab-delay" : 0.1
         },
         "edges" : {
@@ -940,8 +982,8 @@
         }
     },
     "testmode": {
-        "enabled": false,
-        "which": 7,
+        "enabled": true,
+        "which": 19,
         "0": {
             "angle": 0.0,
             "power": 0.2
@@ -988,9 +1030,9 @@
             "target" : 100000
         },
         "18" : {
-            "profile1" : "collect:extend-ground",
+            "profile1" : "escape:1",
             "delay" : 3.0,
-            "profile2" : "collect:retract-ground"
+            "profile2" : "escape:2"
         },
         "20" : {
             "power" : 0.1,

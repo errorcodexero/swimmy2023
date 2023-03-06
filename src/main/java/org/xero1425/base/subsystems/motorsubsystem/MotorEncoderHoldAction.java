@@ -74,7 +74,7 @@ public class MotorEncoderHoldAction extends MotorAction {
 
         String subname = "subsystems:" + subsystem.getName() + ":hold" ;
         pid_ = new PIDCtrl(subsystem.getRobot().getSettingsSupplier(), subname, subsystem.isAngular()) ;           
-    }     
+    }
     
     /// \brief Create the action that holds the motor at an explicit position
     /// \param subsystem the MotorEncoderSubsystem for the action    

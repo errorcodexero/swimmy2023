@@ -27,6 +27,9 @@ public class RomiMotorController extends MotorController {
         return 0.0 ;
     }
 
+    public void setNeutralDeadband(double value) throws BadMotorRequestException, MotorRequestFailedException {
+    }
+
     /// \brief Set the motor power
     /// \param percent the motor power to assign to the motor        
     public void set(double percent) throws BadMotorRequestException {

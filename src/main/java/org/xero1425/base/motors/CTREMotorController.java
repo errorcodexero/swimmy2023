@@ -105,6 +105,10 @@ public class CTREMotorController extends MotorController
         }
     }
 
+    public void setNeutralDeadband(double value) {
+        controller_.configNeutralDeadband(value) ;
+    }
+
     /// \brief should return the velocity if the motor controller can be configured with the PID loop in the controller.  This is
     /// not supports for the TalonSRX or VictorSPX so this method throws an exception
     /// \throws BadMotorRequestException always

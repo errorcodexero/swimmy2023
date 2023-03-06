@@ -17,6 +17,9 @@ public class ArmSubsystem extends Subsystem {
         
         motor_upper_ = new MotorEncoderSubsystem(this, "arm-motor-upper", false, true);
         addChild(motor_upper_);
+
+        motor_lower_.getMotorController().setNeutralDeadband(0.001) ;
+        motor_upper_.getMotorController().setNeutralDeadband(0.001) ;
     }
 
     public MotorEncoderSubsystem getLowerSubsystem() {

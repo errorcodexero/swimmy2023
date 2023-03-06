@@ -58,6 +58,8 @@ public abstract class MotorController
         Velocity,                   ///< Velocity PID control
     }
 
+    public abstract void setNeutralDeadband(double value) throws BadMotorRequestException, MotorRequestFailedException ;
+
     /// \brief Return the velocity of the motor if there is PID control in the motor controller
     public abstract double getVelocity()  throws BadMotorRequestException, MotorRequestFailedException ;
 

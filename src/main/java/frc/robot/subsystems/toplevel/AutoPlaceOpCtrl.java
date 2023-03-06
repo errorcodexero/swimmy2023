@@ -64,7 +64,7 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
         else
             vision_timer_ = new XeroTimer(sub.getRobot(), "vision/timer", 0.5);
 
-        settling_timer_ = new XeroTimer(sub.getRobot(), "settling", 0.04) ;
+        settling_timer_ = new XeroTimer(sub.getRobot(), "settling", 0.0) ;
         align_action_ = new SwerveLinearAlignAction(getRobotSubsystem().getSwerve(), getRobotSubsystem().getLimeLight()) ;
 
         if (oper.getAction() == Action.Place && oper.getGamePiece() == GamePiece.Cube && oper.getLocation() == Location.Bottom) {
@@ -76,7 +76,7 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
             place_action_ = new GPMPlaceAction(sub.getGPM(), oper.getLocation(), oper.getGamePiece(), false);
         }
 
-        forward_timer_ = new XeroTimer(sub.getRobot(), "forward", 1.0) ;
+        forward_timer_ = new XeroTimer(sub.getRobot(), "forward", 0.0) ;
         wheels_timer_ = new XeroTimer(sub.getRobot(), "wheels", 0.2) ;
     }
 

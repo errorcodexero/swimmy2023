@@ -9,8 +9,8 @@
                     "constraints": [
                     ],
                     "endvelocity": 0,
-                    "maxacceleration": 4,
-                    "maxvelocity": 4,
+                    "maxacceleration": 1.5,
+                    "maxvelocity": 1.5,
                     "name": "Path1",
                     "points": [
                         {
@@ -21,25 +21,11 @@
                             "y": 3.371845749486863
                         },
                         {
-                            "heading": 180,
+                            "heading": 0,
                             "swrot": 0,
                             "swrotvel": 0,
-                            "x": 14.437704781569677,
-                            "y": 3.371845749486863
-                        },
-                        {
-                            "heading": 180,
-                            "swrot": 180,
-                            "swrotvel": 0,
-                            "x": 14.081789493813217,
-                            "y": 3.371845749486863
-                        },
-                        {
-                            "heading": 180,
-                            "swrot": 180,
-                            "swrotvel": 0,
-                            "x": 10.376083262466548,
-                            "y": 3.3404414593907052
+                            "x": 10.235745631879803,
+                            "y": 3.467891699819468
                         }
                     ],
                     "startvelocity": 0
@@ -48,30 +34,23 @@
                     "constraints": [
                     ],
                     "endvelocity": 0,
-                    "maxacceleration": 4,
-                    "maxvelocity": 4,
+                    "maxacceleration": 1.5,
+                    "maxvelocity": 1.5,
                     "name": "Path2",
                     "points": [
                         {
-                            "heading": 0,
-                            "swrot": 180,
+                            "heading": -1.4033418597069752e-14,
+                            "swrot": 0,
                             "swrotvel": 0,
-                            "x": 10.4307,
-                            "y": 3.36556
+                            "x": 10.2357,
+                            "y": 3.46789
                         },
                         {
                             "heading": 0,
-                            "swrot": 90,
+                            "swrot": 0,
                             "swrotvel": 0,
-                            "x": 11.265713837979463,
-                            "y": 3.350909556089424
-                        },
-                        {
-                            "heading": 0,
-                            "swrot": 90,
-                            "swrotvel": 0,
-                            "x": 12.700000729582255,
-                            "y": 3.350909556089424
+                            "x": 12.578589417826796,
+                            "y": 3.3677701705054934
                         }
                     ],
                     "startvelocity": 0
@@ -85,8 +64,8 @@
                     "constraints": [
                     ],
                     "endvelocity": 0,
-                    "maxacceleration": 4,
-                    "maxvelocity": 4,
+                    "maxacceleration": 1.5,
+                    "maxvelocity": 1.5,
                     "name": "Path1",
                     "points": [
                         {
@@ -100,22 +79,8 @@
                             "heading": 0,
                             "swrot": 180,
                             "swrotvel": 0,
-                            "x": 2.2354602202492595,
-                            "y": 2.2584969870270584
-                        },
-                        {
-                            "heading": 0,
-                            "swrot": 0,
-                            "swrotvel": 0,
-                            "x": 2.6856319590464786,
-                            "y": 2.2584969870270584
-                        },
-                        {
-                            "heading": 0,
-                            "swrot": 0,
-                            "swrotvel": 0,
-                            "x": 6.5871203619557095,
-                            "y": 2.2209826754606237
+                            "x": 6.591321964851147,
+                            "y": 2.2464090421889846
                         }
                     ],
                     "startvelocity": 0
@@ -124,27 +89,20 @@
                     "constraints": [
                     ],
                     "endvelocity": 0,
-                    "maxacceleration": 4,
-                    "maxvelocity": 4,
+                    "maxacceleration": 1.5,
+                    "maxvelocity": 1.5,
                     "name": "Path2",
                     "points": [
                         {
                             "heading": 180,
-                            "swrot": 0,
+                            "swrot": 180,
                             "swrotvel": 0,
-                            "x": 6.549606050389275,
-                            "y": 2.2584969870270584
+                            "x": 6.51122,
+                            "y": 2.26643
                         },
                         {
                             "heading": 180,
-                            "swrot": 90,
-                            "swrotvel": 0,
-                            "x": 5.724291195927706,
-                            "y": 2.2772541428102766
-                        },
-                        {
-                            "heading": 180,
-                            "swrot": 90,
+                            "swrot": 180,
                             "swrotvel": 0,
                             "x": 3.9986328638717,
                             "y": 2.3335256101599287
