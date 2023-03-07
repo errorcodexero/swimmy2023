@@ -108,7 +108,7 @@
                             "maxv" : 150000                 // Max velocity for trapezoidal profile, upper arm
                         },
                         "delay" : 0.0,                      // Delay until we start upper arm
-                        "target" : 87749                   // Upper arm target position
+                        "target" : 89749                   // Upper arm target position
                     }
                 },
                 "lift-shelf" : {
@@ -135,8 +135,8 @@
                     "lower" : {
                         "config" : {
                             "maxj" : 1000000,                // Max accel for trapezoidal profile, upper arm
-                            "maxa" : 100000,               // Max decel for trapezoidal profile, upper arm
-                            "maxv" : 100000                 // Max velocity for trapezoidal profile, upper arm
+                            "maxa" : 150000,               // Max decel for trapezoidal profile, upper arm
+                            "maxv" : 150000                 // Max velocity for trapezoidal profile, upper arm
                         },
                         "delay" : 0.0,                      // Delay until we start lower arm
                         "target" : 2000                        // Lower arm target position
@@ -144,8 +144,8 @@
                     "upper" : {
                         "config" : {
                             "maxj" : 1000000,                // Max accel for trapezoidal profile, upper arm
-                            "maxa" : 100000,               // Max decel for trapezoidal profile, upper arm
-                            "maxv" : 100000                 // Max velocity for trapezoidal profile, upper arm
+                            "maxa" : 150000,               // Max decel for trapezoidal profile, upper arm
+                            "maxv" : 150000                 // Max velocity for trapezoidal profile, upper arm
                         },
                         "delay" : 0.0,                      // Delay until we start upper arm
                         "target" : 40000                    // Upper arm target position
@@ -290,7 +290,7 @@
                                     "maxv" : 100000                 // Max velocity for trapezoidal profile, upper arm
                                 },
                                 "delay" : 0.4,                      // Delay until we start lower arm
-                                "target" : 48000                    // Lower arm target position
+                                "target" : 46000                    // Lower arm target position
                             },
                             "upper" : {
                                 "config" : {

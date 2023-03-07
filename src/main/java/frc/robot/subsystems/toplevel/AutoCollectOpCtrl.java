@@ -49,7 +49,7 @@ public class AutoCollectOpCtrl extends OperationCtrl {
         stow_arm_ = new ArmStaggeredGotoAction(sub.getGPM().getArm(), "collect:retract-shelf", false);
 
         drive_forward_timer_ = new XeroTimer(sub.getRobot(), "collect-forward-timer", 0.8);
-        drive_back_timer_ = new XeroTimer(sub.getRobot(), "collect-back-timer", 1.0);
+        drive_back_timer_ = new XeroTimer(sub.getRobot(), "collect-back-timer", 0.5);
         wait_for_vision_timer_ = new XeroTimer(sub.getRobot(), "wait-for-vision-timer", 0.5);
     }
 
@@ -184,7 +184,7 @@ public class AutoCollectOpCtrl extends OperationCtrl {
         }
 
         if (collect_action_.isDone()) {
-            ChassisSpeeds speed = new ChassisSpeeds(-1.0, 0.0, 0.0) ;
+            ChassisSpeeds speed = new ChassisSpeeds(-3.0, 0.0, 0.0) ;
             getRobotSubsystem().getSwerve().drive(speed) ;
             drive_back_timer_.start() ;
             state_ = State.DriveBack ;

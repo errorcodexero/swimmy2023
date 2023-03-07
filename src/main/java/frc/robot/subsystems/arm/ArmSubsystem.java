@@ -1,7 +1,6 @@
 package frc.robot.subsystems.arm;
 
 import org.xero1425.base.LoopType;
-import org.xero1425.base.motors.MotorController.NeutralMode;
 import org.xero1425.base.subsystems.Subsystem;
 import org.xero1425.base.subsystems.motorsubsystem.MotorEncoderSubsystem;
 
@@ -34,13 +33,13 @@ public class ArmSubsystem extends Subsystem {
     public void init(LoopType ltype) {
         super.init(ltype) ;
 
-        if (ltype == LoopType.Disabled) {
-            try {
-                motor_upper_.getMotorController().setNeutralMode(NeutralMode.Coast);
-            }
-            catch(Exception ex) {
-            }
-        }
+        // if (ltype == LoopType.Disabled && !DriverStation.isFMSAttached()) {
+        //     try {
+        //         motor_upper_.getMotorController().setNeutralMode(NeutralMode.Coast);
+        //     }
+        //     catch(Exception ex) {
+        //     }
+        // }
     }
 }
 

@@ -25,6 +25,8 @@ import frc.robot.subsystems.toplevel.RobotOperation.Location;
 public class AutoPlaceOpCtrl extends OperationCtrl {
 
     private final boolean AddAlignStep = false ;
+    private final boolean AddDriveForward = true ;
+    private final boolean AddSettlingDelay = false ;
 
     private enum State {
         Idle,
@@ -64,7 +66,7 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
         else
             vision_timer_ = new XeroTimer(sub.getRobot(), "vision/timer", 0.5);
 
-        settling_timer_ = new XeroTimer(sub.getRobot(), "settling", 0.0) ;
+        settling_timer_ = new XeroTimer(sub.getRobot(), "settling", 0.3) ;
         align_action_ = new SwerveLinearAlignAction(getRobotSubsystem().getSwerve(), getRobotSubsystem().getLimeLight()) ;
 
         if (oper.getAction() == Action.Place && oper.getGamePiece() == GamePiece.Cube && oper.getLocation() == Location.Bottom) {
@@ -76,8 +78,8 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
             place_action_ = new GPMPlaceAction(sub.getGPM(), oper.getLocation(), oper.getGamePiece(), false);
         }
 
-        forward_timer_ = new XeroTimer(sub.getRobot(), "forward", 0.0) ;
-        wheels_timer_ = new XeroTimer(sub.getRobot(), "wheels", 0.2) ;
+        forward_timer_ = new XeroTimer(sub.getRobot(), "forward", 0.5) ;
+        wheels_timer_ = new XeroTimer(sub.getRobot(), "wheels", 0.1) ;
     }
 
     @Override
@@ -308,21 +310,39 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
 
     private void stateAlignWheels() {
         if (wheels_timer_.isExpired()) {
-            ChassisSpeeds speed ;            
-            double xspeed = 0.5 ;
-            speed = new ChassisSpeeds(xspeed, 0.0, 0.0) ;
-            getRobotSubsystem().getSwerve().drive(speed) ;
-            forward_timer_.start() ;
-            state_ = State.DriveForward;
+            if (AddDriveForward) {
+                ChassisSpeeds speed ;            
+                double xspeed = 0.5 ;
+                speed = new ChassisSpeeds(xspeed, 0.0, 0.0) ;
+                getRobotSubsystem().getSwerve().drive(speed) ;
+                forward_timer_.start() ;
+                state_ = State.DriveForward;
+            }
+            else {
+                if (AddSettlingDelay) {
+                    getRobotSubsystem().getSwerve().drive(new ChassisSpeeds());
+                    getRobotSubsystem().getSwerve().enableVision(true);
+                    settling_timer_.start() ;
+                    state_ = State.SettlingDelay ;
+                }
+                else {
+                    state_ = State.WaitingOnArm;                    
+                }
+            }
         }
     }
 
     private void stateDriveForward() {
         if (forward_timer_.isExpired()) {
-            getRobotSubsystem().getSwerve().drive(new ChassisSpeeds());
-            getRobotSubsystem().getSwerve().enableVision(true);
-            settling_timer_.start() ;
-            state_ = State.SettlingDelay ;
+            if (AddSettlingDelay) {
+                getRobotSubsystem().getSwerve().drive(new ChassisSpeeds());
+                getRobotSubsystem().getSwerve().enableVision(true);
+                settling_timer_.start() ;
+                state_ = State.SettlingDelay ;
+            }
+            else {
+                state_ = State.WaitingOnArm;
+            }
         }
     }
 
@@ -333,8 +353,13 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
     }
 
     private void stateWaitingOnArm() {
+        MessageLogger logger = getRobotSubsystem().getRobot().getMessageLogger() ;
+        logger.startMessage(MessageType.Debug, getRobotSubsystem().getLoggerID());
+        logger.add("Waiting On Arm") ;
+        logger.endMessage();
+
         if (place_action_ != null && place_action_.isReadyToDrop()) {
-            MessageLogger logger = getRobotSubsystem().getRobot().getMessageLogger() ;
+
             logger.startMessage(MessageType.Info) ;
             logger.add("Dropping game piece") ;
             logger.add("uppper arm", getRobotSubsystem().getGPM().getArm().getUpperSubsystem().getPosition());
