@@ -145,6 +145,17 @@ public class Swimmy2023OIDeviceHollister extends OIPanel {
         return oper.getGround() && gp.isRTriggerPressed();
     }
 
+    private boolean isAbort() {
+        if (getValue(abort_gadget_) == 1)
+            return true ;
+
+        Gamepad gp = getSubsystem().getGamePad();
+        if (gp.isXPressed() && gp.isAPressed())
+            return true ;
+
+        return false ;
+    }
+
     @Override
     public void generateActions() {
         super.generateActions();
@@ -169,7 +180,7 @@ public class Swimmy2023OIDeviceHollister extends OIPanel {
                 }            
             }
         }
-        else if (getValue(abort_gadget_) == 1) {
+        else if (isAbort()) {
             robotSubsystem.abort();
             setDisplay(DisplayPattern.NONE);
         }
