@@ -230,14 +230,6 @@ public class Swimmy2023RobotSubsystem extends RobotSubsystem {
             if (oper.getGround()) {
                 ctrl_ = new AutoCollectGroundOpCtrl(this, oper);
             }
-            else if (oper.getManual()) {
-                if (oper.getAction() == Action.Place) {
-                    ctrl_ = new ManualPlaceOpCtrl(this, oper);
-                }
-                else {
-                    ctrl_ = new ManualCollectOpCtrl(this, oper);
-                }
-            }
             else {
                 if (oper.getAction() == Action.Place) {
                     ctrl_ = new AutoPlaceOpCtrl(this, oper);

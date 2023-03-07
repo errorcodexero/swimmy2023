@@ -11,6 +11,7 @@ import org.xero1425.misc.MissingParameterException;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import frc.robot.SwimmyRobot2023;
+import frc.robot.subsystems.gpm.GPMCollectAction;
 import frc.robot.subsystems.gpm.GPMStartWithGPAction;
 import frc.robot.subsystems.gpm.GPMStowAction;
 import frc.robot.subsystems.toplevel.OperationCtrl;
@@ -57,8 +58,7 @@ public class Swimmy2023OIDeviceHollister extends OIPanel {
     private int lock_gadget_;
     private int abort_gadget_;
     private int turtle_gadget_;
-    private int action_gadget_;
-    private int drop_gadget_;
+    private int collect_gadget_;
 
     private int cone_v_cube_1_gadget_;
     private int cone_v_cube_2_gadget_;
@@ -90,14 +90,6 @@ public class Swimmy2023OIDeviceHollister extends OIPanel {
         super.computeState();
     }
        
-    public boolean isActionButtonPressed() {
-        return getValue(action_gadget_) == 1 ;
-    }
-
-    public boolean isDropButtonPressed() {
-        return getValue(drop_gadget_) == 1;
-    }
-
     @Override
     public void createStaticActions() throws Exception {
         SwimmyRobot2023 robot = (SwimmyRobot2023)getSubsystem().getRobot();
@@ -181,7 +173,14 @@ public class Swimmy2023OIDeviceHollister extends OIPanel {
             robotSubsystem.abort();
             setDisplay(DisplayPattern.NONE);
         }
-        else {
+        else if (getValue(collect_gadget_) == 1) {
+            try {
+                GPMCollectAction coll = new GPMCollectAction(robotSubsystem.getGPM(), getGamePiece(), false);
+                robotSubsystem.getGPM().setAction(coll);
+            }
+            catch(Exception ex) {
+            }
+        } else {
             RobotOperation operation = new RobotOperation();
 
             operation.setAction(getValue(collect_v_place_gadget_) == 1 ? RobotOperation.Action.Place : RobotOperation.Action.Collect);
@@ -267,12 +266,9 @@ public class Swimmy2023OIDeviceHollister extends OIPanel {
         num = getSubsystem().getSettingsValue("panel:gadgets:abort").getInteger();
         abort_gadget_ = mapButton(num, ButtonType.LowToHigh);
 
-        num = getSubsystem().getSettingsValue("panel:gadgets:action").getInteger();
-        action_gadget_ = mapButton(num, ButtonType.Level);
+        num = getSubsystem().getSettingsValue("panel:gadgets:collect").getInteger();
+        collect_gadget_ = mapButton(num, ButtonType.Level);
         
-        num = getSubsystem().getSettingsValue("panel:gadgets:drop").getInteger();
-        drop_gadget_ = mapButton(num, ButtonType.LowToHigh);
-
         num = getSubsystem().getSettingsValue("panel:gadgets:turtle").getInteger();
         turtle_gadget_ = mapButton(num, ButtonType.LowToHigh);
 

@@ -683,9 +683,8 @@
                     "lock" : 4,
                     "abort" : 1,
                     "turtle" : 2,
-                    "action" : 3,
+                    "collect" : 3,
                     "station_v_ground" : 15,
-                    "drop" : 16,
                     "cone_v_cube" : {
                         "1" : 9,
                         "2" : 10
