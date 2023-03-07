@@ -26,7 +26,7 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
 
     private final boolean AddAlignStep = false ;
     private final boolean AddDriveForward = true ;
-    private final boolean AddSettlingDelay = false ;
+    private final boolean AddSettlingDelay = true ;
 
     private enum State {
         Idle,
@@ -78,7 +78,7 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
             place_action_ = new GPMPlaceAction(sub.getGPM(), oper.getLocation(), oper.getGamePiece(), false);
         }
 
-        forward_timer_ = new XeroTimer(sub.getRobot(), "forward", 0.5) ;
+        forward_timer_ = new XeroTimer(sub.getRobot(), "forward", 0.7) ;
         wheels_timer_ = new XeroTimer(sub.getRobot(), "wheels", 0.1) ;
     }
 
