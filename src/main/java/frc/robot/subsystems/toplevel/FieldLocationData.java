@@ -24,7 +24,7 @@ public class FieldLocationData {
     // we want the robot to drive to.  This offset gets adjusted for the red vs blue end
     // of the field.
     //
-    static final double LoadingStationXOffset = 0.580;
+    static final double LoadingStationXOffset = 0.620;
 
     //
     // This is the offset from the loading station April tag, to the position of we want the
@@ -34,7 +34,7 @@ public class FieldLocationData {
     // According to the game manual, this shouild be 0.859964 but we have adjusted slightly based on
     // emperical experiments.
     //
-    static final double LoadingStationYOffset = 0.845;
+    static final double LoadingStationYOffset = 0.920;
 
     //
     // This is the offset from the grid april tag to the position we want the robot to drive to.

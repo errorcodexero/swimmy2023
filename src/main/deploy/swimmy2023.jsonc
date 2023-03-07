@@ -39,7 +39,8 @@
     },
     "subsystems": {
         "Swimmy2023RobotSubsystem" : {
-            "april-tag-action-threshold" : 1.5,
+            "april-tag-collect-action-threshold" : 1.75,
+            "april-tag-place-action-threshold" : 1.5,
             "tape-align-threshold" : 0.1016,
             "drive-forward-distance" : 0.1524,
             "spit-cube" : {
@@ -108,7 +109,7 @@
                             "maxv" : 150000                 // Max velocity for trapezoidal profile, upper arm
                         },
                         "delay" : 0.0,                      // Delay until we start upper arm
-                        "target" : 89749                   // Upper arm target position
+                        "target" : 91000                   // Upper arm target position
                     }
                 },
                 "lift-shelf" : {
@@ -204,7 +205,7 @@
 
                                 },
                                 "delay" : 0.4,                      // Delay until we start lower arm
-                                "target" : 94000
+                                "target" : 96500
                             },
                             "upper" : {
                                 "config" : {

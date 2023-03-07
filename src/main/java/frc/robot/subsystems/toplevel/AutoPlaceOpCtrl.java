@@ -58,7 +58,7 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
     public AutoPlaceOpCtrl(Swimmy2023RobotSubsystem sub, RobotOperation oper) throws BadParameterTypeException, MissingParameterException {
         super(sub, oper) ;
 
-        april_tag_action_threshold_ = sub.getSettingsValue("april-tag-action-threshold").getDouble() ;
+        april_tag_action_threshold_ = sub.getSettingsValue("april-tag-place-action-threshold").getDouble() ;
         state_ = State.Idle ;
 
         if (getRobotSubsystem().getRobot().isAutonomous())

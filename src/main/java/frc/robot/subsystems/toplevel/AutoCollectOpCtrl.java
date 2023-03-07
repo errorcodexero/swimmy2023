@@ -43,7 +43,7 @@ public class AutoCollectOpCtrl extends OperationCtrl {
     public AutoCollectOpCtrl(Swimmy2023RobotSubsystem sub, RobotOperation oper) throws Exception {
         super(sub, oper) ;
 
-        april_tag_action_threshold_ = sub.getSettingsValue("april-tag-action-threshold").getDouble() ;
+        april_tag_action_threshold_ = sub.getSettingsValue("april-tag-collect-action-threshold").getDouble() ;
         state_ = State.Idle;
 
         collect_action_ = new GPMCollectAction(sub.getGPM(), oper.getGamePiece(), oper.getGround());
