@@ -379,7 +379,7 @@ public final class MessageLogger
             per.message_.append(" ") ;
             per.message_.append(name) ;
             per.message_.append(" = ") ;
-            per.message_.append(String.format(java.util.Locale.US, "%.4f", value)) ;
+            per.message_.append(String.format(java.util.Locale.US, "%.4g", value)) ;
         }
 
         return this;        
@@ -395,7 +395,7 @@ public final class MessageLogger
             per.message_.append(" ") ;
             per.message_.append(name) ;
             per.message_.append(" = ") ;
-            per.message_.append(String.format(java.util.Locale.US, "%.4f", value)) ;
+            per.message_.append(String.format(java.util.Locale.US, "%.4g", value)) ;
         }
 
         return this;        
