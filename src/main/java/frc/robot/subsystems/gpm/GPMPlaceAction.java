@@ -10,7 +10,6 @@ import org.xero1425.misc.MissingParameterException;
 import frc.robot.subsystems.arm.ArmStaggeredGotoAction;
 import frc.robot.subsystems.grabber.GrabberStowAction;
 import frc.robot.subsystems.toplevel.RobotOperation;
-import frc.robot.subsystems.toplevel.RobotOperation.Location;
 
 public class GPMPlaceAction extends Action {
 

@@ -237,6 +237,11 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
             getRobotSubsystem().getSwerve().drive(new ChassisSpeeds());
             getRobotSubsystem().getOI().disableGamepad();
             getRobotSubsystem().getOI().getGamePad().rumble(1.0, 0.5);
+
+            if (place_action_ != null) {
+                getRobotSubsystem().getGPM().setAction(place_action_, true);
+            }
+
             state_ = State.WaitingOnVision ;
             vision_timer_.start() ;
         }
@@ -257,9 +262,7 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
             drive_to_action_ = new SwerveDrivePathAction(getRobotSubsystem().getSwerve(), pts.get(0), interior, pts.get(1), target_pose_.getRotation(), 1.0, 1.0);
 
             getRobotSubsystem().getSwerve().setAction(drive_to_action_, true);
-            if (place_action_ != null) {
-                getRobotSubsystem().getGPM().setAction(place_action_, true);
-            }
+
 
             if (AddAlignStep) {
                 getRobotSubsystem().getLimeLight().setPipeline(1);
