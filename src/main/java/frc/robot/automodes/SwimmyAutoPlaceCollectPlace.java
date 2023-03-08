@@ -8,9 +8,9 @@ import frc.robot.subsystems.toplevel.RobotOperation.Location;
 import frc.robot.subsystems.toplevel.RobotOperation.Slot;
 
 public class SwimmyAutoPlaceCollectPlace extends SwimmyAutoMode  {
-    public SwimmyAutoPlaceCollectPlace(AutoController ctrl, String side, String color, Location loc1, GamePiece what1,
+    public SwimmyAutoPlaceCollectPlace(AutoController ctrl, String name, String side, String color, Location loc1, GamePiece what1,
             GridTagPosition grid2, Slot slot2, Location loc2, GamePiece what2) throws Exception {
-        super(ctrl, color + "-" + side) ;
+        super(ctrl, name) ;
 
         //
         // Grab the loaded game piece and place it on the grid

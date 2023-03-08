@@ -143,7 +143,7 @@ public class Swimmy2023RobotSubsystem extends RobotSubsystem {
 
                 if (oper.getSlot() == Slot.Middle) {
                     putDashboard("OIError", DisplayType.Always, "collect operation must be slot Left or Right");
-                    ret = false ;
+                    return false ;
                 }
             }
             else {

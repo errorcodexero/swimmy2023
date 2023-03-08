@@ -9,8 +9,8 @@ import frc.robot.subsystems.toplevel.RobotOperation.GamePiece;
 import frc.robot.subsystems.toplevel.RobotOperation.Location;
 
 public class SwimmyAutoModeCenter1 extends SwimmyAutoMode  {
-    public SwimmyAutoModeCenter1(AutoController ctrl, String color, Location where, GamePiece what) throws Exception {
-        super(ctrl, color + "Center-1") ;
+    public SwimmyAutoModeCenter1(AutoController ctrl, String name, String color, Location where, GamePiece what) throws Exception {
+        super(ctrl, name) ;
 
         Swimmy2023RobotSubsystem robot = (Swimmy2023RobotSubsystem)getAutoController().getRobot().getRobotSubsystem();
 

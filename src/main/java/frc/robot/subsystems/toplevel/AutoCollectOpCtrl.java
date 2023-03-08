@@ -50,7 +50,7 @@ public class AutoCollectOpCtrl extends OperationCtrl {
 
         stow_arm_ = new ArmStaggeredGotoAction(sub.getGPM().getArm(), "collect:retract-shelf", false);
 
-        drive_forward_timer_ = new XeroTimer(sub.getRobot(), "collect-forward-timer", 0.4);
+        drive_forward_timer_ = new XeroTimer(sub.getRobot(), "collect-forward-timer", 0.8);
         drive_back_timer_ = new XeroTimer(sub.getRobot(), "collect-back-timer", 0.5);
         wait_for_vision_timer_ = new XeroTimer(sub.getRobot(), "wait-for-vision-timer", 0.5);
     }

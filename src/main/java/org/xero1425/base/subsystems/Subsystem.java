@@ -470,7 +470,9 @@ public class Subsystem {
             logger.startMessage(MessageType.Error) ;
             logger.add("action ").addQuoted(act.toString()) ;
             logger.add(" cannot be assigned because a parent is busy") ;
-            logger.endMessage();            
+            logger.endMessage();
+
+            logger.logStackTrace(Thread.currentThread().getStackTrace());
             
             //
             // If we are busy the new action overrides the current action.  If any

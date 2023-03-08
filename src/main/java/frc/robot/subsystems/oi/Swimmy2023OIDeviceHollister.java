@@ -9,10 +9,7 @@ import org.xero1425.base.subsystems.oi.OIPanelButton.ButtonType;
 import org.xero1425.misc.BadParameterTypeException;
 import org.xero1425.misc.MissingParameterException;
 
-import edu.wpi.first.wpilibj.DriverStation;
 import frc.robot.SwimmyRobot2023;
-import frc.robot.subsystems.gpm.GPMCollectAction;
-import frc.robot.subsystems.gpm.GPMStartWithGPAction;
 import frc.robot.subsystems.gpm.GPMStowAction;
 import frc.robot.subsystems.toplevel.OperationCtrl;
 import frc.robot.subsystems.toplevel.RobotOperation;
@@ -78,7 +75,6 @@ public class Swimmy2023OIDeviceHollister extends OIPanel {
     private int station_ground_gadget_ ;
 
     private GPMStowAction turtle_action_ ;
-    private GPMStartWithGPAction start_with_gp_action_ ;
 
     public Swimmy2023OIDeviceHollister(OISubsystem sub, String name, int index)
             throws BadParameterTypeException, MissingParameterException {
@@ -96,7 +92,6 @@ public class Swimmy2023OIDeviceHollister extends OIPanel {
         Swimmy2023RobotSubsystem subsystem = (Swimmy2023RobotSubsystem)robot.getRobotSubsystem();
 
         turtle_action_ = new GPMStowAction(subsystem.getGPM());
-        start_with_gp_action_ = new GPMStartWithGPAction(subsystem.getGPM(), RobotOperation.GamePiece.Cone) ;
     }
 
     private GamePiece getGamePiece() {
@@ -168,29 +163,12 @@ public class Swimmy2023OIDeviceHollister extends OIPanel {
         }
 
         if (getValue(turtle_gadget_) == 1) {
-            if (DriverStation.isFMSAttached()) {
-                robotSubsystem.getGPM().setAction(turtle_action_);
-            }
-            else {
-                if (getValue(auto_v_manual_gadget_) == 0) {
-                    robotSubsystem.getGPM().setAction(turtle_action_);
-                }
-                else {
-                    robotSubsystem.getGPM().setAction(start_with_gp_action_);
-                }            
-            }
+            robotSubsystem.getGPM().setAction(turtle_action_);
+            setDisplay(DisplayPattern.NONE);
         }
         else if (isAbort()) {
             robotSubsystem.abort();
             setDisplay(DisplayPattern.NONE);
-        }
-        else if (getValue(collect_gadget_) == 1) {
-            try {
-                GPMCollectAction coll = new GPMCollectAction(robotSubsystem.getGPM(), getGamePiece(), false);
-                robotSubsystem.getGPM().setAction(coll);
-            }
-            catch(Exception ex) {
-            }
         } else {
             RobotOperation operation = new RobotOperation();
 

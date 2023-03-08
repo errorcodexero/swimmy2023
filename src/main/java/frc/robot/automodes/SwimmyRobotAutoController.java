@@ -24,12 +24,12 @@ public class SwimmyRobotAutoController extends AutoController {
             try {
                 test_mode_ = new SwimmyTestAutoMode(this) ;
 
-                addAutoMode(new SwimmyAutoModeCenter1(this, "Red", Location.Top, GamePiece.Cone));
-                addAutoMode(new SwimmyAutoModeCenter1(this, "Blue", Location.Top, GamePiece.Cone));
-                addAutoMode(new SwimmyAutoPlaceCollectPlace(this, "Edge1", "Red", Location.Top, GamePiece.Cone, GridTagPosition.Left, Slot.Right, Location.Top, GamePiece.Cone));
-                addAutoMode(new SwimmyAutoPlaceCollectPlace(this, "Edge1", "Blue", Location.Top, GamePiece.Cone, GridTagPosition.Right, Slot.Left, Location.Top, GamePiece.Cone));
-                addAutoMode(new SwimmyAutoPlaceCollectPlace(this, "Middle1", "Red", Location.Top, GamePiece.Cone, GridTagPosition.Right, Slot.Left, Location.Top, GamePiece.Cone));
-                addAutoMode(new SwimmyAutoPlaceCollectPlace(this, "Middle1", "Blue", Location.Top, GamePiece.Cone, GridTagPosition.Left, Slot.Right, Location.Top, GamePiece.Cone));
+                addAutoMode(new SwimmyAutoModeCenter1(this, "Red Balance", "Red", Location.Top, GamePiece.Cone));
+                addAutoMode(new SwimmyAutoModeCenter1(this, "Blue Balance", "Blue", Location.Top, GamePiece.Cone));
+                // addAutoMode(new SwimmyAutoPlaceCollectPlace(this, "Edge1", "Red", Location.Top, GamePiece.Cone, GridTagPosition.Left, Slot.Right, Location.Top, GamePiece.Cone));
+                // addAutoMode(new SwimmyAutoPlaceCollectPlace(this, "Edge1", "Blue", Location.Top, GamePiece.Cone, GridTagPosition.Right, Slot.Left, Location.Top, GamePiece.Cone));
+                addAutoMode(new SwimmyAutoPlaceCollectPlace(this, "Red Two Center", "Middle1", "Red", Location.Top, GamePiece.Cone, GridTagPosition.Right, Slot.Left, Location.Top, GamePiece.Cone));
+                addAutoMode(new SwimmyAutoPlaceCollectPlace(this, "Blue Two Center", "Middle1", "Blue", Location.Top, GamePiece.Cone, GridTagPosition.Left, Slot.Right, Location.Top, GamePiece.Cone));
             }
             catch(Exception ex) {
                 MessageLogger logger = robot.getMessageLogger() ;
