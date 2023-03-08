@@ -141,33 +141,8 @@
                             "heading": 180,
                             "swrot": 180,
                             "swrotvel": 0,
-                            "x": 10.020167974710088,
-                            "y": 0.9851197021788387
-                        }
-                    ],
-                    "startvelocity": 0
-                },
-                {
-                    "constraints": [
-                    ],
-                    "endvelocity": 0,
-                    "maxacceleration": 4,
-                    "maxvelocity": 4,
-                    "name": "Path2",
-                    "points": [
-                        {
-                            "heading": -1.4033418597069752e-14,
-                            "swrot": 180,
-                            "swrotvel": 0,
-                            "x": 10.0202,
-                            "y": 0.98512
-                        },
-                        {
-                            "heading": 0,
-                            "swrot": 0,
-                            "swrotvel": 0,
-                            "x": 14.626130522146626,
-                            "y": 1.1316730559609098
+                            "x": 10.476913027061427,
+                            "y": 0.997598353067664
                         }
                     ],
                     "startvelocity": 0
@@ -203,33 +178,8 @@
                             "heading": 0,
                             "swrot": 0,
                             "swrotvel": 0,
-                            "x": 6.398206516953174,
-                            "y": 0.9851197021788387
-                        }
-                    ],
-                    "startvelocity": 0
-                },
-                {
-                    "constraints": [
-                    ],
-                    "endvelocity": 0,
-                    "maxacceleration": 4,
-                    "maxvelocity": 4,
-                    "name": "Path2",
-                    "points": [
-                        {
-                            "heading": 180,
-                            "swrot": 0,
-                            "swrotvel": 0,
-                            "x": 6.39821,
-                            "y": 0.98512
-                        },
-                        {
-                            "heading": 180,
-                            "swrot": 180,
-                            "swrotvel": 0,
-                            "x": 1.9387973232987057,
-                            "y": 1.1107368625634706
+                            "x": 6.180670217116665,
+                            "y": 0.9569719435173578
                         }
                     ],
                     "startvelocity": 0
@@ -386,6 +336,11 @@
                     ],
                     "startvelocity": 0
                 }
+            ]
+        },
+        {
+            "name": "NewGroup",
+            "paths": [
             ]
         }
     ],
