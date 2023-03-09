@@ -524,6 +524,12 @@ public abstract class XeroRobot extends TimedRobot {
             return;
 
         logger_.startMessage(MessageType.Info).add("Starting teleop mode").endMessage();
+        if (robot_subsystem_.getDB() != null) {
+            logger_.startMessage(MessageType.Info).add("Drivebase Pose", robot_subsystem_.getDB().getPose()).endMessage();
+        }
+        else {
+            logger_.startMessage(MessageType.Info).add("Drivebase Pose", "NONE").endMessage();
+        }
 
         current_controller_ = teleop_controller_;
         if (current_controller_ != null)
