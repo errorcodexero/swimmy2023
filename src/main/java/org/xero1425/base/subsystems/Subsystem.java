@@ -468,7 +468,7 @@ public class Subsystem {
         {
             MessageLogger logger = getRobot().getMessageLogger() ;
             logger.startMessage(MessageType.Error) ;
-            logger.add("action ").addQuoted(act.toString()) ;
+            logger.add("action ").addQuoted(act.toString(0)) ;
             logger.add(" cannot be assigned because a parent is busy") ;
             logger.endMessage();
 

@@ -463,7 +463,7 @@
                         "canid": 1,
                         "bus" : "",
                         "inverted" : true,
-                        "neutral_mode": "coast"
+                        "neutral_mode": "brake"
                     }
                 },
                 "encoder": {
@@ -982,7 +982,7 @@
         }
     },
     "testmode": {
-        "enabled": false,
+        "enabled": true,
         "which": 19,
         "0": {
             "angle": 0.0,

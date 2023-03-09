@@ -196,6 +196,6 @@ public class GPMCollectAction extends Action {
 
     @Override
     public String toString(int indent) {
-        return spaces(indent) + "GPMCollectAction(" + (ground_ ? "ground" : "shelf") ;
+        return spaces(indent) + "GPMCollectAction(" + (ground_ ? "ground" : "shelf") + ")" ;
     }
 }

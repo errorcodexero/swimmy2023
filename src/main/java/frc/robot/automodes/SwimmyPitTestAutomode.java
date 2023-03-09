@@ -4,6 +4,7 @@ import org.xero1425.base.actions.Action;
 import org.xero1425.base.actions.DelayAction;
 import org.xero1425.base.controllers.AutoMode;
 import org.xero1425.base.subsystems.motorsubsystem.MotorEncoderGotoAction;
+import org.xero1425.base.subsystems.motorsubsystem.MotorEncoderHoldAction;
 import org.xero1425.base.subsystems.motorsubsystem.MotorEncoderPowerAction;
 
 import frc.robot.subsystems.arm.ArmSubsystem;
@@ -19,12 +20,12 @@ public class SwimmyPitTestAutomode extends AutoMode {
         GrabberSubsystem grabber = robot.getGPM().getGrabber();
         ArmSubsystem arm = robot.getGPM().getArm() ;
 
-        act = new MotorEncoderGotoAction(grabber.getGrabSubsystem(), 750, true);
+        act = new MotorEncoderHoldAction(grabber.getGrabSubsystem(), 750);
         addSubActionPair(grabber.getGrabSubsystem(), act, true);
 
         addAction(new DelayAction(ctrl.getRobot(), 1.0));
 
-        act = new MotorEncoderGotoAction(grabber.getGrabSubsystem(), 25, true);
+        act = new MotorEncoderHoldAction(grabber.getGrabSubsystem(), 25);
         addSubActionPair(grabber.getGrabSubsystem(), act, true);
         
         act = new MotorEncoderPowerAction(grabber.getSpinSubsystem(), 0.4, 2.0) ;

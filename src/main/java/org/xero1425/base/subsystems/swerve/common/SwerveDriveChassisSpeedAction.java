@@ -41,6 +41,6 @@ public class SwerveDriveChassisSpeedAction extends SwerveDriveAction {
 
     @Override
     public String toString(int indent) {
-        return spaces(indent) + "SwerveDriveChassisSpeedAction" ;
+        return spaces(indent) + "SwerveDriveChassisSpeedAction(" + speed_.toString() + ")" ;
     }
 }

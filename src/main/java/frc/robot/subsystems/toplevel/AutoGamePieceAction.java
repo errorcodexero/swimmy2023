@@ -60,7 +60,13 @@ public class AutoGamePieceAction extends Action {
             }
         }
         else {
-            if (sub_.isOperationComplete() && drive_action_.isDone()) {
+            if (sub_.isOperationComplete() && (drive_action_.isDone() || sub_.getSwerve().getAction() != drive_action_)) {
+                MessageLogger logger = sub_.getRobot().getMessageLogger();
+                logger.startMessage(MessageType.Error);
+                logger.add("Running AutoGamePieceAction") ;
+                logger.add("subcomplete", sub_.isOperationComplete());
+                logger.add("path", drive_action_.isDone());
+                logger.endMessage(); 
                 setDone();
             }
         }

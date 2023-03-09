@@ -154,7 +154,7 @@ public class SwimmyTestAutoMode extends TestAutoMode {
                 break ;
 
             case 19:
-                addSubActionPair(arm, new ArmStaggeredGotoAction(arm, "place:middle:cone:extend", false), true) ;
+                addSubActionPair(arm, new ArmStaggeredGotoAction(arm, "place:top:cone:extend", false), true) ;
                 break ;
 
             case 20:

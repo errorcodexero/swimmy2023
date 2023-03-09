@@ -44,9 +44,15 @@ public class OIShuffleBoardDevice extends OIDevice {
             Shuffleboard.getTab("AutoMode").add("AutoMode", chooser_).withSize(2,1).withWidget(BuiltInWidgets.kComboBoxChooser) ;
         }
         else if (chooser_ != null) {
-            int num = chooser_.getSelected() ;
-            if (num != automode_) {
-                automode_ = num ;
+            Integer i = chooser_.getSelected() ;
+            if (i != null) {
+                int num = chooser_.getSelected() ;
+                if (num != automode_) {
+                    automode_ = num ;
+                }
+            }
+            else {
+                automode_ = -1 ;
             }
         }
     }
