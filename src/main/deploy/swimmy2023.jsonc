@@ -650,7 +650,7 @@
             },
             "positions" : {
                 "open" : {
-                    "cube" : 500,
+                    "cube" : 750,
                     "cone" : 100
                 }
             }
@@ -983,7 +983,7 @@
     },
     "testmode": {
         "enabled": true,
-        "which": 77,
+        "which": 23,
         "0": {
             "angle": 90,
             "power": 0.2
@@ -1046,7 +1046,7 @@
             "position" : 500
         },
         "23" : {
-            "position" : 500
+            "position" : 750
         },
         "29" : {
             "power" : 0.4,
