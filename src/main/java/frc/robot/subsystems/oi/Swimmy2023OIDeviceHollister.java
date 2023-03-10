@@ -144,7 +144,7 @@ public class Swimmy2023OIDeviceHollister extends OIPanel {
             return true ;
 
         Gamepad gp = getSubsystem().getGamePad();
-        if (gp.isXPressed() && gp.isAPressed())
+        if (gp != null && gp.isXPressed() && gp.isAPressed())
             return true ;
 
         return false ;

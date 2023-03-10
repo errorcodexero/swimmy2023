@@ -23,7 +23,7 @@
             "gpm" : false
         },
         "verbose": {
-            "swerve" : false,
+            "swerve" : true,
             "arm-motor-upper" : false,
             "grabber-motor-grab" : false
         },
@@ -934,12 +934,12 @@
             // This section is a PID controller for rotationally aligning the robot with a vision target
             //
             "balance-pid" : {
-                "kp" : 0.04,
+                "kp" : 0.031,
                 "ki" : 0.0,
                 "kd" : 0.0,
                 "kf" : 0.0,
-                "max" : 0.5,          // Meters Per Second
-                "min" : -0.5,          // Meters Per Second
+                "max" : 0.5,           // Meters Per Second
+                "min" : -0.5,          //Meters Per Second
                 "imax" : 0.0
             },
 
@@ -983,9 +983,9 @@
     },
     "testmode": {
         "enabled": true,
-        "which": 19,
+        "which": 77,
         "0": {
-            "angle": 0.0,
+            "angle": 90,
             "power": 0.2
         },
         "1": {
