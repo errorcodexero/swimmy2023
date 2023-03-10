@@ -583,7 +583,7 @@
                         "cone" : 1200
                     },
                     "spin-power" : 0.4,
-                    "spin-delay" : 0.4
+                    "spin-delay" : 0.8
                 },
                 "shelf" : {
                     "position" : {
@@ -644,8 +644,8 @@
                 "ki": 0,
                 "kd": 0,
                 "kf": 0,
-                "min": -1.0,
-                "max": 1.0,
+                "min": -0.8,
+                "max": 0.8,
                 "imax": 0
             },
             "positions" : {
@@ -934,7 +934,7 @@
             // This section is a PID controller for rotationally aligning the robot with a vision target
             //
             "balance-pid" : {
-                "kp" : 0.031,
+                "kp" : 0.032,
                 "ki" : 0.0,
                 "kd" : 0.0,
                 "kf" : 0.0,
