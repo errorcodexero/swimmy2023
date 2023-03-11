@@ -114,6 +114,13 @@ public class Swimmy2023RobotSubsystem extends RobotSubsystem {
     private boolean isOperationValid(RobotOperation oper) {
         boolean ret = true ;
 
+        if (oper.getManual()) {
+            if (oper.getAction() == Action.Place)
+                return false ;
+
+            return true ;
+        }
+
         if (oper.getGround()) {
             //
             // Ground collect rules
@@ -229,6 +236,11 @@ public class Swimmy2023RobotSubsystem extends RobotSubsystem {
             
             if (oper.getGround()) {
                 ctrl_ = new AutoCollectGroundOpCtrl(this, oper);
+            }
+            else if (oper.getManual()) {
+                if (oper.getAction() == Action.Collect) {
+                    ctrl_ = new ManualCollectOpCtrl(this, oper) ;
+                }
             }
             else {
                 if (oper.getAction() == Action.Place) {

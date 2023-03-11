@@ -55,6 +55,7 @@ public class Swimmy2023OIDeviceHollister extends OIPanel {
     private int lock_gadget_;
     private int abort_gadget_;
     private int turtle_gadget_;
+    private int collect_gadget_ ;
 
     private int cone_v_cube_1_gadget_;
     private int cone_v_cube_2_gadget_;
@@ -78,6 +79,10 @@ public class Swimmy2023OIDeviceHollister extends OIPanel {
     public Swimmy2023OIDeviceHollister(OISubsystem sub, String name, int index)
             throws BadParameterTypeException, MissingParameterException {
         super(sub, name, index);
+    }
+
+    public boolean isCollectPressed() {
+        return getValue(collect_gadget_) == 1 ;
     }
 
     @Override
@@ -283,5 +288,8 @@ public class Swimmy2023OIDeviceHollister extends OIPanel {
 
         num = getSubsystem().getSettingsValue("panel:gadgets:station_v_ground").getInteger();
         station_ground_gadget_ = mapButton(num, ButtonType.Level);
+
+        num = getSubsystem().getSettingsValue("panel:gadgets:collect").getInteger();
+        collect_gadget_ = mapButton(num, ButtonType.LowToHigh);
     }
 }
