@@ -27,7 +27,6 @@ import frc.robot.subsystems.grabber.GrabberGrabGampieceAction;
 import frc.robot.subsystems.grabber.GrabberStartCollectAction;
 import frc.robot.subsystems.grabber.GrabberSubsystem;
 import frc.robot.subsystems.swerve.SwerveDriveBalancePlatform;
-import frc.robot.subsystems.swerve.SwerveRotationalAlignRobotAction;
 import frc.robot.subsystems.swerve.SwerveDriveBalancePlatform.XYDirection;
 import frc.robot.subsystems.toplevel.RobotOperation;
 import frc.robot.subsystems.toplevel.Swimmy2023RobotSubsystem;
@@ -210,13 +209,55 @@ public class SwimmyTestAutoMode extends TestAutoMode {
                 addSubActionPair(gpm, new GPMCollectAction(gpm, RobotOperation.GamePiece.Cube, true), true);
                 break ;   
 
+            //
+            // Test shooting cubes
+            //
+            // The position of the ARM is controlled by the 'shoot' profile under 'subsystems:arm' in the settings file.
+            // The shooting is controlled by the value 'grabber-power' in the test mode data  in the settings file under test
+            // 76.  The duration of time is in the same place and given as 'duration'.
+            //
+            // The cube will need to be fed in by hand when the test mode is started as we cannot hold a cube on the shelf
+            // right now.
+            //
+            case 76:
+                //
+                // Feed in a cube by hand
+                //
+                addSubActionPair(grabber, new GrabberGrabGampieceAction(grabber, GamePiece.Cube, false), true);
+
+                //
+                // Let the mentor get their hand out of the way
+                //
+                addAction(new DelayAction(getAutoController().getRobot(), "grab-delay"));
+
+                //
+                // Position the ARM for shooting, uses the profile "subsytems:arm:shoot" to position the arm
+                //
+                addSubActionPair(arm, new ArmStaggeredGotoAction(arm, getString("shoot"), false), true);
+
+                //
+                // Let the arm settings before shooting
+                //
+                addAction(new DelayAction(getAutoController().getRobot(), getDouble("settle-delay")));
+
+                //
+                // Shoot the cube by running the grabbers backwards.  May need to experiment with opening them in parallel
+                // to get better results
+                //
+                addSubActionPair(grabberSpinMotor, new MotorEncoderPowerAction(grabberSpinMotor, getDouble("grabber-power"), getDouble("duration")), true);
+
+                //
+                // Move the ARM back to the stowed position
+                //
+                addSubActionPair(arm, new ArmStaggeredGotoAction(arm, getString("collect:retract-shelf"), false), true);
+                break;
+
+            //
+            // Test balance action on charging station
+            //
             case 77:
                 addSubActionPair(swerve, new SwerveDriveBalancePlatform(swerve, XYDirection.XDirection), true) ;
                 break;
-
-            case 78:
-                addSubActionPair(swerve, new SwerveRotationalAlignRobotAction(swerve, limelight), true);
-                break ;
 
             case 79:
                 addSubActionPair(grabber, new GrabberGrabGampieceAction(grabber, GamePiece.Cube, false), true);
