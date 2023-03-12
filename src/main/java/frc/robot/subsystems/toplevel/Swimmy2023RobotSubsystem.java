@@ -183,23 +183,6 @@ public class Swimmy2023RobotSubsystem extends RobotSubsystem {
     @Override
     public void computeState() {
         super.computeState();
-
-        // LocationData loc = getLimeLight().getLocation(getSwerve().getPose());
-        // if (loc == null) {
-        //     putDashboard("v-x", DisplayType.Always, "NONE");
-        //     putDashboard("v-y", DisplayType.Always, "NONE");
-        //     putDashboard("v-h", DisplayType.Always, "NONE");
-        // }
-        // else {
-        //     Pose2d p2d = loc.location.toPose2d() ;
-        //     putDashboard("v-x", DisplayType.Always, p2d.getX());
-        //     putDashboard("v-y", DisplayType.Always, p2d.getY());
-        //     putDashboard("v-h", DisplayType.Always, p2d.getRotation().getDegrees());
-        // }
-
-        // putDashboard("db-x", DisplayType.Always, getSwerve().getPose().getX()) ;
-        // putDashboard("db-y", DisplayType.Always, getSwerve().getPose().getY()) ;
-        // putDashboard("db-h", DisplayType.Always, getSwerve().getPose().getRotation().getDegrees()) ;
     }
 
     public boolean isOperationComplete() {
