@@ -49,46 +49,24 @@
             }
         },
         "arm" : {
-            "escape" : {
-                "1" : {
-                    "lower" : {
-                        "config" : {
-                            "maxj" : 1000000,              // Max accel for trapezoidal profile, upper arm
-                            "maxa" : 100000,               // Max decel for trapezoidal profile, upper arm
-                            "maxv" : 100000                // Max velocity for trapezoidal profile, upper arm
-                        },
-                        "delay" : 0.0,                      // Delay until we start lower arm
-                        "target" : 94000                     // Lower arm target position
+            "shoot" : {
+                "lower" : {
+                    "config" : {
+                        "maxj" : 1000000,               // Max accel for trapezoidal profile, upper arm
+                        "maxa" : 100000,                // Max decel for trapezoidal profile, upper arm
+                        "maxv" : 100000                 // Max velocity for trapezoidal profile, upper arm
                     },
-                    "upper" : {
-                        "config" : {
-                            "maxj" : 1000000,                // Max accel for trapezoidal profile, upper arm
-                            "maxa" : 100000,               // Max decel for trapezoidal profile, upper arm
-                            "maxv" : 100000                 // Max velocity for trapezoidal profile, upper arm
-                        },
-                        "delay" : 0.0,                      // Delay until we start upper arm
-                        "target" : 230215                    // Upper arm target position
-                    }
+                    "delay" : 0.4,                      // Delay until we start lower arm
+                    "target" : 7000                     // Lower arm target position
                 },
-                "2" : {
-                    "lower" : {
-                        "config" : {
-                            "maxj" : 1000000,              // Max accel for trapezoidal profile, upper arm
-                            "maxa" : 100000,               // Max decel for trapezoidal profile, upper arm
-                            "maxv" : 100000                // Max velocity for trapezoidal profile, upper arm
-                        },
-                        "delay" : 0.0,                      // Delay until we start lower arm
-                        "target" : 2000                     // Lower arm target position
+                "upper" : {
+                    "config" : {
+                        "maxj" : 1000000,               // Max accel for trapezoidal profile, upper arm
+                        "maxa" : 150000,                // Max decel for trapezoidal profile, upper arm
+                        "maxv" : 150000                 // Max velocity for trapezoidal profile, upper arm
                     },
-                    "upper" : {
-                        "config" : {
-                            "maxj" : 1000000,                // Max accel for trapezoidal profile, upper arm
-                            "maxa" : 100000,               // Max decel for trapezoidal profile, upper arm
-                            "maxv" : 100000                 // Max velocity for trapezoidal profile, upper arm
-                        },
-                        "delay" : 2.0,                      // Delay until we start upper arm
-                        "target" : 20000                    // Upper arm target position
-                    }                    
+                    "delay" : 0.0,                      // Delay until we start upper arm
+                    "target" : 91000                   // Upper arm target position
                 }
             },
             "collect" : {
@@ -1051,6 +1029,10 @@
         "29" : {
             "power" : 0.4,
             "duration" : 3.0
+        },
+        "76" : {
+            "grabber-power" : -0.5,
+            "duration" : 1.0
         },
         "79" : {
             "position" : 0,
