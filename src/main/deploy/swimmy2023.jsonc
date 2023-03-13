@@ -35,6 +35,9 @@
             "type": "REVPH",
             "min-pressure" : 100.0,
             "max-pressure" : 120.0
+        },
+        "pdp" : {
+            "type" : "rev"
         }
     },
     "subsystems": {

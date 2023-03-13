@@ -28,6 +28,8 @@ public class MotorEncoderSubsystem extends MotorSubsystem
     private double max_value_ ;
     private double min_value_ ;
 
+    private boolean dump_currents_ ;
+
 
     /// \brief Create the subsystem
     /// \param parent the owning subsystem
@@ -63,6 +65,8 @@ public class MotorEncoderSubsystem extends MotorSubsystem
             min_value_ = getSettingsValue("minpos").getDouble() ;
         else
             min_value_ = -Double.MAX_VALUE ;
+
+        dump_currents_ = false ;
     }
 
 
@@ -90,6 +94,8 @@ public class MotorEncoderSubsystem extends MotorSubsystem
             min_value_ = getSettingsValue("minpos").getDouble() ;
         else
             min_value_ = -Double.MAX_VALUE ;
+
+        dump_currents_ = false ;            
     }    
 
     /// \brief Create the subsystem
@@ -119,7 +125,8 @@ public class MotorEncoderSubsystem extends MotorSubsystem
             min_value_ = getSettingsValue("minpos").getDouble() ;
         else
             min_value_ = -Double.MAX_VALUE ;        
-        
+     
+        dump_currents_ = false ;            
     }
 
     /// \brief Create the subsystem
@@ -137,6 +144,11 @@ public class MotorEncoderSubsystem extends MotorSubsystem
         encoder_ = new XeroEncoder(parent.getRobot(), encname, angle, getMotorController()) ;
 
         use_ctrl_velocity_ = false ;
+        dump_currents_ = false ;        
+    }
+
+    public void setDumpCurrents(boolean b) {
+        dump_currents_ = b ;
     }
 
     public String getUnits() {
@@ -238,6 +250,17 @@ public class MotorEncoderSubsystem extends MotorSubsystem
         return encoder_.getRawCount() ;
     }
 
+    private double computeCurrent() {
+        double total = 0.0 ;
+        int [] channels = getMotorController().getPDPChannels() ;
+
+        for(int i = 0 ; i < channels.length ; i++) {
+            total += getRobot().getCurrent(channels[i]);
+        }
+
+        return total ;
+    }
+
     /// \brief Called once per robot loop by the Xero Framework to compute the position, velocity, and
     /// acceleration of the motor in real world units.  It also displays the position and velocity on the
     /// SmartDashboard if verbose output is enabled for this subsystem.
@@ -261,5 +284,14 @@ public class MotorEncoderSubsystem extends MotorSubsystem
 
         putDashboard(getName() + "-position", DisplayType.Verbose, pos);
         putDashboard("raw", DisplayType.Verbose, encoder_.getRawCount());
+
+        if (dump_currents_) {
+            double current = computeCurrent() ;
+
+            logger.startMessage(MessageType.Info) ;
+            logger.add(getName()) ;
+            logger.add("current", current) ;
+            logger.endMessage();
+        }
     }
 }

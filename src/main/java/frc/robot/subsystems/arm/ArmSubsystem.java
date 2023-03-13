@@ -12,9 +12,11 @@ public class ArmSubsystem extends Subsystem {
         super(parent, "arm");
         
         motor_lower_ = new MotorEncoderSubsystem(this, "arm-motor-lower", false, true);
+        motor_lower_.setDumpCurrents(false);        // Change to true to dump currents in log file every robot loop
         addChild(motor_lower_);
         
         motor_upper_ = new MotorEncoderSubsystem(this, "arm-motor-upper", false, true);
+        motor_upper_.setDumpCurrents(false);        // Change to true to dump currents in log file every robot loop
         addChild(motor_upper_);
 
         motor_lower_.getMotorController().setNeutralDeadband(0.001) ;

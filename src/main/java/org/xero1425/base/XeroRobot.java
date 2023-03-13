@@ -17,13 +17,14 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
+import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.xero1425.simulator.engine.SimulationEngine;
-// import org.xero1425.websrv.StatusServer;
 import org.xero1425.misc.MessageType;
 import org.xero1425.misc.MissingParameterException;
 import org.xero1425.misc.SettingsValue;
@@ -122,6 +123,8 @@ public abstract class XeroRobot extends TimedRobot {
     // The type of pneumatics on the robot
     private PneumaticsModuleType pneumatics_type_ ;
 
+    private PowerDistribution pdp_ ;
+
     // Server for dispalying the status of the robot
     // private StatusServer server_ ;
 
@@ -133,6 +136,8 @@ public abstract class XeroRobot extends TimedRobot {
 
     // A array to convert hex characters to integers
     private static final char[] HEX_ARRAY = "0123456789ABCDEF".toCharArray();
+
+    private static final String PDPPropertyName = "system:pdp:type" ;
 
     /// \brief Create a new XeroRobot robot
     /// \param period the robot loop timing (generally 20 ms)
@@ -380,6 +385,23 @@ public abstract class XeroRobot extends TimedRobot {
             logger_.add(" - no FMS") ;
         logger_.endMessage();
 
+        if (settings_.isDefined(PDPPropertyName)) {
+            try {
+                String pdptype = settings_.get(PDPPropertyName).getString() ;
+                if (pdptype == "rev") {
+                    pdp_ = new PowerDistribution(0, ModuleType.kRev);
+                }
+                else if (pdptype == "ctre") {
+                    pdp_ = new PowerDistribution(0, ModuleType.kCTRE);
+                }
+            }
+            catch(Exception ex) {
+                logger_.startMessage(MessageType.Error);
+                logger_.add("error initialzing PDP - " + ex.getMessage());
+                logger_.endMessage();
+            }
+        }
+
         /// Initialize the plotting subsystem
         start = getTime() ;
         try {
@@ -485,6 +507,16 @@ public abstract class XeroRobot extends TimedRobot {
 
             logStackTrace(ex.getStackTrace());
         }
+    }
+
+    public double getCurrent(int channel) {
+        double ret = Double.POSITIVE_INFINITY ;
+
+        if (pdp_ != null) {
+            ret = pdp_.getCurrent(channel);
+        }
+
+        return ret;
     }
 
     /// \brief Called from the base class to indicate we are entering auto mode.

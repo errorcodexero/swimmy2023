@@ -20,6 +20,15 @@ public class MotorGroupController extends MotorController
         motors_ = new ArrayList<MotorController>() ;
     }
 
+    public int[] getPDPChannels() {
+        int [] channels = new int[motors_.size()] ;
+        for(int i = 0 ; i < motors_.size() ; i++) {
+            channels[i] = motors_.get(i).getPDPChannel() ;
+        }
+
+        return channels ;
+    }
+
     /// \brief Return a specific motor from the group.  This is used for debugging issues.
     /// \param index the index of the motor to retreive
     /// \returns a specific motor controller from the group
