@@ -250,7 +250,7 @@ public class MotorEncoderSubsystem extends MotorSubsystem
         return encoder_.getRawCount() ;
     }
 
-    private double computeCurrent() {
+    public double getTotalCurrent() {
         double total = 0.0 ;
         int [] channels = getMotorController().getPDPChannels() ;
 
@@ -286,7 +286,7 @@ public class MotorEncoderSubsystem extends MotorSubsystem
         putDashboard("raw", DisplayType.Verbose, encoder_.getRawCount());
 
         if (dump_currents_) {
-            double current = computeCurrent() ;
+            double current = getTotalCurrent() ;
 
             logger.startMessage(MessageType.Info) ;
             logger.add(getName()) ;

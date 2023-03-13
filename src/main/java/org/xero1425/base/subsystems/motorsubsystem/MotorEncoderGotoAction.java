@@ -98,7 +98,8 @@ public class MotorEncoderGotoAction extends MotorAction {
         "tpos (%%units%%)", "apos (%%units%%)", 
         "tvel (%%units%%/s)", "avel (%%units%%/s)", 
         "tacc (%%units%%/s/s)", "aacc (%%units%%/s/s)",
-        "out (volts)" } ;
+        "out (volts)", "current (amps)"
+    } ;
 
     /// \brief Create the action
     /// \param sub the MotorEncoderSubsystem subsystem for the action    
@@ -270,6 +271,7 @@ public class MotorEncoderGotoAction extends MotorAction {
             data[5] = targetAcc;
             data[6] = sub.getAcceleration();
             data[7] = out ;
+            data[8] = sub.getTotalCurrent();
             sub.addPlotData(plot_id_, data);
         }
     }
