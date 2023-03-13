@@ -442,8 +442,8 @@
                         "bus" : "",
                         "inverted" : true,
                         "neutral-mode": "brake",
-                        "free-current-limit" : 20.0,
-                        "stall-current-limit" : 20.0
+                        "free-current-limit" : 60.0,
+                        "stall-current-limit" : 60.0
                     }
                 },
                 "encoder": {
@@ -494,8 +494,8 @@
                         "bus" : "",
                         "inverted" : false,
                         "neutral-mode": "brake",
-                        "free-current-limit" : 20.0,
-                        "stall-current-limit" : 20.0
+                        "free-current-limit" : 60.0,
+                        "stall-current-limit" : 60.0
                     }
                 },
                 "encoder": {
