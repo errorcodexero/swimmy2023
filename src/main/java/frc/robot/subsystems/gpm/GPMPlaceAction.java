@@ -65,9 +65,6 @@ public class GPMPlaceAction extends Action {
 
         title_ = armpos ;
         arm_extend_action_ = new ArmStaggeredGotoAction(sub_.getArm(), armpos + ":extend", false);
-        // if (loc == Location.Middle || loc == Location.Top) {
-        //     arm_extend_action_.useActual(true);
-        // }
         arm_retract_action_ = new ArmStaggeredGotoAction(sub_.getArm(), armpos + ":retract", false);
 
         double duration = sub.getSettingsValue("place-delay").getDouble();
