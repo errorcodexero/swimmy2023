@@ -11,6 +11,9 @@ public abstract class MotorController
     // The name of the motor
     private String name_ ;
 
+    // The PDP channel for the motor
+    private int pdp_channel_ ;
+
     /// \brief Property name for property used for motor power in a simulation
     public final static String SimPowerParamName = "Power" ;
 
@@ -43,6 +46,25 @@ public abstract class MotorController
     /// \param name the name of the motor controller
     MotorController(String name) {
         name_ = name ;
+        pdp_channel_ = -1 ;
+    }
+
+    protected void setPDPChannel(int channel) {
+        pdp_channel_ = channel ;
+    }
+
+    public int[] getPDPChannels() {
+        int [] ret  = new int[1] ;
+        ret[0] = pdp_channel_ ;
+        return ret;
+    }
+
+    public int getPDPChannel() {
+        return pdp_channel_ ;
+    }
+
+    public boolean hasPDPChannel() {
+        return pdp_channel_ != -1 ;
     }
 
     /// \brief Returns the name of the motor controller
