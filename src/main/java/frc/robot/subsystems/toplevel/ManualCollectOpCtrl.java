@@ -61,6 +61,7 @@ public class ManualCollectOpCtrl extends OperationCtrl {
 
             case WaitingForCollect:
                 stateWaitingForCollect() ;
+                break ;
 
             case DriveBack:
                 stateDriveBack() ;
