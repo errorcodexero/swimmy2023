@@ -117,8 +117,8 @@ public class SparkMaxMotorController extends MotorController
             code = controller_.setPeriodicFramePeriod(CANSparkMaxLowLevel.PeriodicFrame.kStatus3, 1000) ;
             if (code != REVLibError.kOk) {
                 throw new MotorRequestFailedException(this, "Failed to set periodic status frame 0 rate", code) ;
-            }            
-
+            }        
+            
             encoder_ = controller_.getEncoder() ;
         }
     }

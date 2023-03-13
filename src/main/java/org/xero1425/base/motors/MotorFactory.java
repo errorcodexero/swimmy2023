@@ -279,7 +279,49 @@ public class MotorFactory {
         if (nm != null)
             ctrl.setNeutralMode(nm);
 
+        double freelimit = getFreeCurrentLimit(id);
+        double stalllimit = getStallCurrentLimit(id) ;
+        if (!Double.isInfinite(freelimit) && !Double.isInfinite(stalllimit)) {
+            ctrl.setCurrentLimit(freelimit, stalllimit);
+        }      
+
         return ctrl ;
+    }
+
+    private double getFreeCurrentLimit(String id) throws BadParameterTypeException {
+        String pname = id + ":free-current-limit";
+        SettingsValue v = settings_.getOrNull(pname);
+        double ret = Double.POSITIVE_INFINITY ;
+
+        if (v != null) {
+            if (!v.isDouble() && !v.isInteger()) {
+                logger_.startMessage(MessageType.Error).add("parameter '").add(pname).add("'") ;
+                logger_.add(" - does not have a double or integer type") ;
+                throw new BadParameterTypeException(SettingsType.String, v.getType()) ;
+            }
+
+            ret = v.getDouble();
+        }
+
+        return ret;
+    }
+
+    private double getStallCurrentLimit(String id) throws BadParameterTypeException {
+        String pname = id + ":stall-current-limit";
+        SettingsValue v = settings_.getOrNull(pname);
+        double ret = Double.POSITIVE_INFINITY ;
+
+        if (v != null) {
+            if (!v.isDouble() && !v.isInteger()) {
+                logger_.startMessage(MessageType.Error).add("parameter '").add(pname).add("'") ;
+                logger_.add(" - does not have a double or integer type") ;
+                throw new BadParameterTypeException(SettingsType.String, v.getType()) ;
+            }
+
+            ret = v.getDouble();
+        }
+
+        return ret;
     }
 
     //
@@ -287,7 +329,7 @@ public class MotorFactory {
     //
     private MotorController.NeutralMode getNeutralMode(String id) throws BadParameterTypeException {
         SettingsValue v ;
-        String pname = id + ":neutral_mode" ;
+        String pname = id + ":neutral-mode" ;
         
         v = settings_.getOrNull(pname) ;
         if (v == null)

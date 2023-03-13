@@ -441,7 +441,9 @@
                         "canid": 1,
                         "bus" : "",
                         "inverted" : true,
-                        "neutral_mode": "brake"
+                        "neutral-mode": "brake",
+                        "free-current-limit" : 20.0,
+                        "stall-current-limit" : 20.0
                     }
                 },
                 "encoder": {
@@ -491,7 +493,9 @@
                         "canid": 2,
                         "bus" : "",
                         "inverted" : false,
-                        "neutral_mode": "brake"
+                        "neutral-mode": "brake",
+                        "free-current-limit" : 20.0,
+                        "stall-current-limit" : 20.0
                     }
                 },
                 "encoder": {
@@ -582,7 +586,7 @@
                         "canid": 4,
                         "bus" : "",
                         "inverted" : true,
-                        "neutral_mode": "brake"
+                        "neutral-mode": "brake"
                     }
                 },
                 "encoder": {
@@ -607,7 +611,7 @@
                         "canid": 3,
                         "bus" : "",
                         "inverted" : true,
-                        "neutral_mode": "brake"
+                        "neutral-mode": "brake"
                     }
                 },
                 "encoder": {
