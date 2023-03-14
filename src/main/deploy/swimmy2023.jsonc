@@ -28,7 +28,7 @@
             "grabber-motor-grab" : false
         },
         "plotting": {
-            "enabled" : true,
+            "enabled" : false,
             "version" : 3
         },
         "pneumatics": {
@@ -185,7 +185,7 @@
                                     "maxv" : 100000                // Max velocity for trapezoidal/scurve profile, lower arm
 
                                 },
-                                "delay" : 0.2,                      // Delay until we start lower arm
+                                "delay" : 0.4,                      // Delay until we start lower arm
                                 "target" : 96500
                             },
                             "upper" : {
