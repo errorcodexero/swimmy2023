@@ -73,7 +73,7 @@ public class SwerveHolonomicPathFollower extends SwerveHolonomicControllerAction
 
             MessageLogger logger = getSubsystem().getRobot().getMessageLogger() ;
             logger.startMessage(MessageType.Info) ;
-            logger.add("SwerveHolonomicPathFollower: Initial Pose ", pose.toString()) ;
+            logger.add("SwerveHolonomicPathFollower: Initial Pose ", getSubsystem().getPose());
             logger.endMessage();
         }
 
@@ -132,7 +132,14 @@ public class SwerveHolonomicPathFollower extends SwerveHolonomicControllerAction
                 getSubsystem().endPlot(plot_id_);
                 getSubsystem().drive(new ChassisSpeeds()) ;
                 getSubsystem().enableVision(true);
-                setDone();                
+                setDone();
+
+                MessageLogger logger = getMessageLogger() ;
+                logger.startMessage(MessageType.Info) ;
+                logger.add("finished path") ;
+                logger.addQuoted(pathname_);
+                logger.add("pose", getSubsystem().getPose());
+                logger.endMessage();
             }            
         }
     }

@@ -369,6 +369,17 @@ public final class MessageLogger
         return this;
     }
 
+    public MessageLogger add (final Pose2d pose) {
+        final ThreadData per = getPerThreadData();
+        per.message_.append(String.format(java.util.Locale.US, "%.3f", pose.getX()));
+        per.message_.append(" ") ;
+        per.message_.append(String.format(java.util.Locale.US, "%.3f", pose.getY()));
+        per.message_.append(" ") ;
+        per.message_.append(String.format(java.util.Locale.US, "%.1f", pose.getRotation().getDegrees()));
+
+        return this ;
+    }
+
     /// \brief add a name value pair to the message
     /// \param name the name to add
     /// \param value the value to add

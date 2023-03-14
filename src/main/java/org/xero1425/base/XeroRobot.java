@@ -131,6 +131,9 @@ public abstract class XeroRobot extends TimedRobot {
     // The april tag layout for this field
     private AprilTagFieldLayout layout_ ;
 
+    // If true, we have run autonomous already
+    private boolean autonomous_has_run_ ;
+
     /// \brief The "subsystem" name for the message logger for this class
     public static final String LoggerName = "xerorobot" ;
 
@@ -148,6 +151,8 @@ public abstract class XeroRobot extends TimedRobot {
 
         // Generate the paths to the various important places (logfile directory, settings file, path follow paths directoryh, etc.)
         robot_paths_ = new RobotPaths(RobotBase.isSimulation(), getName());
+
+        autonomous_has_run_ = false ;
 
         // Setup the mesasge logger to log messages
         start = getTime() ;
@@ -525,6 +530,8 @@ public abstract class XeroRobot extends TimedRobot {
         if (robot_subsystem_ == null)
             return;
 
+        autonomous_has_run_ = true ;
+
         updateAutoMode();
         logAutoModeState();
 
@@ -647,7 +654,9 @@ public abstract class XeroRobot extends TimedRobot {
         double initial_time = getTime();
         delta_time_ = initial_time - last_time_;
 
-        updateAutoMode();
+        if (!autonomous_has_run_) {
+            updateAutoMode();
+        }
 
         // server_.setRobotStatus("RobotStatus");
         // robot_subsystem_.publishStatus() ;
@@ -1015,8 +1024,13 @@ public abstract class XeroRobot extends TimedRobot {
             if (mode != null) {
                 Pose2d pose = mode.getInitialPose();
                 DriveBaseSubsystem db = robot_subsystem_.getDB() ;
+                Pose2d orig = db.getPose();
                 if (db != null) {
                     db.setPose(pose);
+                    logger_.startMessage(MessageType.Info) ;
+                    logger_.add("resetting db pose in updateAutomode() : ") ;
+                    logger_.add(orig).add(" -> ").add(pose);
+                    logger_.endMessage();
                 }
             }
         }
