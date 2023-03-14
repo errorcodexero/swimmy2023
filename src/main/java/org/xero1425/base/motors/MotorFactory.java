@@ -285,7 +285,29 @@ public class MotorFactory {
             ctrl.setCurrentLimit(freelimit, stalllimit);
         }      
 
+        int channel = getPDPChannel(id) ;
+        if (channel != Integer.MAX_VALUE)
+            ctrl.setPDPChannel(channel);
+
         return ctrl ;
+    }
+
+    private int getPDPChannel(String id) throws BadParameterTypeException {
+        String pname = id + ":pdp-channel";
+        SettingsValue v = settings_.getOrNull(pname);
+        int ret = Integer.MAX_VALUE;
+
+        if (v != null) {
+            if (!v.isDouble() && !v.isInteger()) {
+                logger_.startMessage(MessageType.Error).add("parameter '").add(pname).add("'") ;
+                logger_.add(" - does not have a double or integer type") ;
+                throw new BadParameterTypeException(SettingsType.String, v.getType()) ;
+            }
+
+            ret = v.getInteger();
+        }
+
+        return ret;
     }
 
     private double getFreeCurrentLimit(String id) throws BadParameterTypeException {

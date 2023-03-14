@@ -388,10 +388,10 @@ public abstract class XeroRobot extends TimedRobot {
         if (settings_.isDefined(PDPPropertyName)) {
             try {
                 String pdptype = settings_.get(PDPPropertyName).getString() ;
-                if (pdptype == "rev") {
-                    pdp_ = new PowerDistribution(0, ModuleType.kRev);
+                if (pdptype.equals("rev")) {
+                    pdp_ = new PowerDistribution(1, ModuleType.kRev);
                 }
-                else if (pdptype == "ctre") {
+                else if (pdptype.equals("ctre")) {
                     pdp_ = new PowerDistribution(0, ModuleType.kCTRE);
                 }
             }

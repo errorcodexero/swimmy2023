@@ -28,7 +28,7 @@
             "grabber-motor-grab" : false
         },
         "plotting": {
-            "enabled" : false,
+            "enabled" : true,
             "version" : 3
         },
         "pneumatics": {
@@ -185,7 +185,7 @@
                                     "maxv" : 100000                // Max velocity for trapezoidal/scurve profile, lower arm
 
                                 },
-                                "delay" : 0.4,                      // Delay until we start lower arm
+                                "delay" : 0.2,                      // Delay until we start lower arm
                                 "target" : 96500
                             },
                             "upper" : {
@@ -446,7 +446,8 @@
                         "inverted" : true,
                         "neutral-mode": "brake",
                         "free-current-limit" : 60.0,
-                        "stall-current-limit" : 60.0
+                        "stall-current-limit" : 60.0,
+                        "pdp-channel" : 4
                     }
                 },
                 "encoder": {
@@ -498,7 +499,8 @@
                         "inverted" : false,
                         "neutral-mode": "brake",
                         "free-current-limit" : 60.0,
-                        "stall-current-limit" : 60.0
+                        "stall-current-limit" : 60.0,
+                        "pdp-channel" : 5
                     }
                 },
                 "encoder": {
@@ -968,7 +970,7 @@
     },
     "testmode": {
         "enabled": true,
-        "which": 23,
+        "which": 75,
         "0": {
             "angle": 90,
             "power": 0.2

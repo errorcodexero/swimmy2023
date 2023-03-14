@@ -208,6 +208,12 @@ public class SwimmyTestAutoMode extends TestAutoMode {
             case 33:
                 addSubActionPair(gpm, new GPMCollectAction(gpm, RobotOperation.GamePiece.Cube, true), true);
                 break ;   
+                
+            case 75:
+                addSubActionPair(arm, new ArmStaggeredGotoAction(arm, "place:top:cone:extend", false), true);
+                addAction(new DelayAction(getAutoController().getRobot(), 2.0));
+                addSubActionPair(arm, new ArmStaggeredGotoAction(arm, "place:top:cone:retract", false), true);
+                break ;
 
             //
             // Test shooting cubes
