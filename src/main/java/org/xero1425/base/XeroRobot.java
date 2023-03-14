@@ -1002,7 +1002,7 @@ public abstract class XeroRobot extends TimedRobot {
 
             if (robot_subsystem_.getOI() != null) {
                 sel = getAutoModeSelection() ;
-                if (sel != automode_ || msg.equals(game_data_) || DriverStation.isFMSAttached() != fms_connection_ || auto_controller_.isTestMode())
+                if (sel != automode_ || !msg.equals(game_data_) || DriverStation.isFMSAttached() != fms_connection_ || auto_controller_.isTestMode())
                 {
                     automode_ = sel ;
                     game_data_ = msg ;
@@ -1018,20 +1018,6 @@ public abstract class XeroRobot extends TimedRobot {
             {
                 logger_.startMessage(MessageType.Error).add("Exception thrown in updateAutoMode - ").add(ex.getMessage()).endMessage();
                 logStackTrace(ex.getStackTrace());
-            }
-
-            AutoMode mode = auto_controller_.getAutoMode() ;
-            if (mode != null) {
-                Pose2d pose = mode.getInitialPose();
-                DriveBaseSubsystem db = robot_subsystem_.getDB() ;
-                Pose2d orig = db.getPose();
-                if (db != null) {
-                    db.setPose(pose);
-                    logger_.startMessage(MessageType.Info) ;
-                    logger_.add("resetting db pose in updateAutomode() : ") ;
-                    logger_.add(orig).add(" -> ").add(pose);
-                    logger_.endMessage();
-                }
             }
         }
     }
