@@ -969,7 +969,7 @@
         }
     },
     "testmode": {
-        "enabled": true,
+        "enabled": false,
         "which": 75,
         "0": {
             "angle": 90,
