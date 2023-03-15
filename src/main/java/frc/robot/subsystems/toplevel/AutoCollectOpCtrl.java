@@ -1,5 +1,6 @@
 package frc.robot.subsystems.toplevel;
 
+import org.xero1425.base.misc.XeroElapsedTimer;
 import org.xero1425.base.misc.XeroTimer;
 import org.xero1425.base.subsystems.swerve.common.SwerveDriveToPoseAction;
 import org.xero1425.misc.BadParameterTypeException;
@@ -38,6 +39,8 @@ public class AutoCollectOpCtrl extends OperationCtrl {
     private XeroTimer drive_back_timer_ ;
     private XeroTimer wait_for_vision_timer_ ;
 
+    private XeroElapsedTimer overall_timer_ ;   // Measure time since auto takes over
+
     private Pose2d target_pose_ ;
     
     public AutoCollectOpCtrl(Swimmy2023RobotSubsystem sub, RobotOperation oper) throws Exception {
@@ -53,6 +56,8 @@ public class AutoCollectOpCtrl extends OperationCtrl {
         drive_forward_timer_ = new XeroTimer(sub.getRobot(), "collect-forward-timer", 1.6);
         drive_back_timer_ = new XeroTimer(sub.getRobot(), "collect-back-timer", 0.5);
         wait_for_vision_timer_ = new XeroTimer(sub.getRobot(), "wait-for-vision-timer", 0.5);
+
+        overall_timer_ = new XeroElapsedTimer(sub.getRobot()) ;
     }
 
     @Override
@@ -148,6 +153,7 @@ public class AutoCollectOpCtrl extends OperationCtrl {
             getRobotSubsystem().getOI().getGamePad().rumble(1.0, 0.5);
             getRobotSubsystem().getSwerve().drive(new ChassisSpeeds()) ;
             getRobotSubsystem().getGPM().setAction(collect_action_);
+            overall_timer_.reset() ;
             wait_for_vision_timer_.start() ;
             state_ = State.WaitForVision ;
         }
@@ -200,6 +206,12 @@ public class AutoCollectOpCtrl extends OperationCtrl {
             getRobotSubsystem().getOI().getGamePad().rumble(1.0, 0.5);
             getRobotSubsystem().getSwerve().drive(new ChassisSpeeds()) ;
             getRobotSubsystem().getGPM().getArm().setAction(stow_arm_);
+
+            MessageLogger logger = getRobotSubsystem().getRobot().getMessageLogger() ;
+            logger.startMessage(MessageType.Debug, getRobotSubsystem().getLoggerID());
+            logger.add("AutoCollectOpCtrl duration: " + overall_timer_.elapsed());
+            logger.endMessage();
+
             state_ = State.Idle ;
             setDone() ;
         }

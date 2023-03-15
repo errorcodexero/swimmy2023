@@ -3,6 +3,7 @@ package frc.robot.subsystems.toplevel;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.xero1425.base.misc.XeroElapsedTimer;
 import org.xero1425.base.misc.XeroTimer;
 import org.xero1425.base.subsystems.motorsubsystem.MotorEncoderPowerAction;
 import org.xero1425.base.subsystems.swerve.common.SwerveDrivePathAction;
@@ -54,6 +55,8 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
     private XeroTimer forward_timer_ ;
     private XeroTimer settling_timer_ ;
     private XeroTimer wheels_timer_ ;
+
+    private XeroElapsedTimer overall_timer_ ;   // Measure time since auto takes over
     
     public AutoPlaceOpCtrl(Swimmy2023RobotSubsystem sub, RobotOperation oper) throws BadParameterTypeException, MissingParameterException {
         super(sub, oper) ;
@@ -80,6 +83,8 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
 
         forward_timer_ = new XeroTimer(sub.getRobot(), "forward", 0.7) ;
         wheels_timer_ = new XeroTimer(sub.getRobot(), "wheels", 0.1) ;
+
+        overall_timer_ = new XeroElapsedTimer(sub.getRobot()) ;
     }
 
     @Override
@@ -242,6 +247,7 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
                 getRobotSubsystem().getGPM().setAction(place_action_, true);
             }
 
+            overall_timer_.reset() ;
             state_ = State.WaitingOnVision ;
             vision_timer_.start() ;
         }
@@ -385,6 +391,12 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
                 getRobotSubsystem().getOI().enableGamepad();
                 getRobotSubsystem().getOI().getGamePad().rumble(1.0, 0.5);
             }
+
+            MessageLogger logger = getRobotSubsystem().getRobot().getMessageLogger() ;
+            logger.startMessage(MessageType.Debug, getRobotSubsystem().getLoggerID());
+            logger.add("AutoPlaceOpCtrl duration: " + overall_timer_.elapsed());
+            logger.endMessage();
+
             setDone();
         }
         else if (spit_cube_action_ != null && spit_cube_action_.isDone()) {
