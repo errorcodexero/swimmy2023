@@ -318,7 +318,7 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
     }
 
     private void stateAlignWheels() {
-        if (wheels_timer_.isExpired()) {
+        if (!AddAlignStep || wheels_timer_.isExpired()) {
             if (AddDriveForward) {
                 ChassisSpeeds speed ;            
                 double xspeed = 0.5 ;
