@@ -38,6 +38,7 @@ public class AutoCollectOpCtrl extends OperationCtrl {
     private XeroTimer drive_forward_timer_ ;
     private XeroTimer drive_back_timer_ ;
     private XeroTimer wait_for_vision_timer_ ;
+    private XeroTimer drive_forward_after_sensor_timer_ ;
 
     private XeroElapsedTimer overall_timer_ ;   // Measure time since auto takes over
 
@@ -53,10 +54,10 @@ public class AutoCollectOpCtrl extends OperationCtrl {
 
         stow_arm_ = new ArmStaggeredGotoAction(sub.getGPM().getArm(), "collect:retract-shelf", false);
 
-        drive_forward_timer_ = new XeroTimer(sub.getRobot(), "collect-forward-timer", 1.6);
-        drive_back_timer_ = new XeroTimer(sub.getRobot(), "collect-back-timer", 0.5);
-        wait_for_vision_timer_ = new XeroTimer(sub.getRobot(), "wait-for-vision-timer", 0.5);
-
+        drive_forward_timer_ = new XeroTimer(sub.getRobot(), "collect-forward-timer", 0.9);
+        drive_back_timer_ = new XeroTimer(sub.getRobot(), "collect-back-timer", 0.3);
+        wait_for_vision_timer_ = new XeroTimer(sub.getRobot(), "wait-for-vision-timer", 0.2);
+        drive_forward_after_sensor_timer_ = new XeroTimer(sub.getRobot(), "drive-forward-after-sensor-timer", 0.1);
         overall_timer_ = new XeroElapsedTimer(sub.getRobot()) ;
     }
 
@@ -163,7 +164,7 @@ public class AutoCollectOpCtrl extends OperationCtrl {
         if (wait_for_vision_timer_.isExpired()) {
             target_pose_ = getRobotSubsystem().getFieldData().getLoadingStationPose(Alliance.Invalid, getOper().getSlot());
             getRobotSubsystem().getSwerve().enableVision(false);
-            drive_to_action_ = new SwerveDriveToPoseAction(getRobotSubsystem().getSwerve(), target_pose_, 1.0, 1.0);
+            drive_to_action_ = new SwerveDriveToPoseAction(getRobotSubsystem().getSwerve(), target_pose_, 4.0, 2.5);
             getRobotSubsystem().getSwerve().setAction(drive_to_action_);
             state_ = State.DrivingToLocation ;
         }
@@ -179,7 +180,7 @@ public class AutoCollectOpCtrl extends OperationCtrl {
 
     private void stateDrivingToLocation() {
         if (drive_to_action_.isDone()) {
-            ChassisSpeeds speed = new ChassisSpeeds(0.7, 0.0, 0.0) ;
+            ChassisSpeeds speed = new ChassisSpeeds(1.0, 0.0, 0.0) ;
             getRobotSubsystem().getSwerve().drive(speed) ;
             drive_forward_timer_.start() ;
             state_ = State.DriveForward ;
@@ -188,6 +189,14 @@ public class AutoCollectOpCtrl extends OperationCtrl {
 
     private void stateDriveForward() {
         if (drive_forward_timer_.isExpired()) {
+            getRobotSubsystem().getSwerve().drive(new ChassisSpeeds()) ;
+        }
+
+        if (getRobotSubsystem().getGPM().getGrabber().sensor() && !drive_forward_after_sensor_timer_.isRunning()) {
+            drive_forward_after_sensor_timer_.start();
+        }
+
+        if (drive_forward_after_sensor_timer_.isExpired()) {
             getRobotSubsystem().getSwerve().drive(new ChassisSpeeds()) ;
         }
 

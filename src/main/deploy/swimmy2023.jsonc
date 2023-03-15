@@ -578,7 +578,7 @@
                         "cone" : 1400
                     },
                     "spin-power" : 0.4,
-                    "spin-delay" : 1.0
+                    "spin-delay" : 0.7
                 },
                 "hold-power" : 0.1
             }
