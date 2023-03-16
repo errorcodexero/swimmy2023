@@ -56,7 +56,8 @@ public class GPMCollectAction extends Action {
         else {
             arm_collect_action_ = new ArmStaggeredGotoAction(subsystem_.getArm(), "collect:extend-shelf", false);
             arm_retract_action_ = new ArmStaggeredGotoAction(subsystem_.getArm(), "collect:retract-shelf", false);
-            arm_lift_action_ = new ArmStaggeredGotoAction(subsystem.getArm(), "collect:lift-shelf", false) ;
+            //arm_lift_action_ = new ArmStaggeredGotoAction(subsystem.getArm(), "collect:lift-shelf", false) ;
+            arm_lift_action_ = null ;
         }       
 
         grabber_stop_collect_action_ = new GrabberGrabGampieceAction(subsystem.getGrabber(), gp, ground);
@@ -151,7 +152,7 @@ public class GPMCollectAction extends Action {
                 break ;
 
             case LiftArm:
-                if (arm_lift_action_.isDone()) {
+                if (arm_lift_action_ == null || arm_lift_action_.isDone()) {
                     state_ = State.Done ;
                     setDone() ;
                 }
@@ -192,6 +193,10 @@ public class GPMCollectAction extends Action {
                 state_ = State.LiftArm ;
             }
         }        
+    }
+
+    public boolean doneRaisingArm() {
+        return (state_ == State.WaitingForSensor || state_ == State.CloseGrabber);
     }
 
     @Override

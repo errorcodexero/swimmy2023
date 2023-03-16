@@ -23,6 +23,7 @@ public class AutoCollectOpCtrl extends OperationCtrl {
         LookingForTag,
         WaitForVision,
         DrivingToLocation,
+        SettlingDelay,
         DriveForward,
         DriveBack,
     }
@@ -38,6 +39,7 @@ public class AutoCollectOpCtrl extends OperationCtrl {
     private XeroTimer drive_forward_timer_ ;
     private XeroTimer drive_back_timer_ ;
     private XeroTimer wait_for_vision_timer_ ;
+    private XeroTimer settling_timer_ ;
     private XeroTimer drive_forward_after_sensor_timer_ ;
 
     private XeroElapsedTimer overall_timer_ ;   // Measure time since auto takes over
@@ -57,6 +59,7 @@ public class AutoCollectOpCtrl extends OperationCtrl {
         drive_forward_timer_ = new XeroTimer(sub.getRobot(), "collect-forward-timer", 0.9);
         drive_back_timer_ = new XeroTimer(sub.getRobot(), "collect-back-timer", 0.3);
         wait_for_vision_timer_ = new XeroTimer(sub.getRobot(), "wait-for-vision-timer", 0.2);
+        settling_timer_ = new XeroTimer(sub.getRobot(), "settling", 0.2) ;
         drive_forward_after_sensor_timer_ = new XeroTimer(sub.getRobot(), "drive-forward-after-sensor-timer", 0.1);
         overall_timer_ = new XeroElapsedTimer(sub.getRobot()) ;
     }
@@ -87,6 +90,10 @@ public class AutoCollectOpCtrl extends OperationCtrl {
 
             case DrivingToLocation:
                 stateDrivingToLocation() ;
+                break;
+
+            case SettlingDelay:
+                stateSettlingDelay() ;
                 break;
 
             case DriveForward:
@@ -124,7 +131,13 @@ public class AutoCollectOpCtrl extends OperationCtrl {
                 getRobotSubsystem().getSwerve().drive(new ChassisSpeeds());
                 drive_to_action_.cancel() ;
                 break ;        
-                
+
+            case SettlingDelay:
+                getRobotSubsystem().getOI().enableGamepad() ;
+                getRobotSubsystem().getSwerve().enableVision(true);
+                getRobotSubsystem().getSwerve().drive(new ChassisSpeeds());
+                break ;        
+            
             case DriveForward:
                 getRobotSubsystem().getOI().enableGamepad() ;
                 getRobotSubsystem().getSwerve().enableVision(true);
@@ -180,6 +193,15 @@ public class AutoCollectOpCtrl extends OperationCtrl {
 
     private void stateDrivingToLocation() {
         if (drive_to_action_.isDone()) {
+            getRobotSubsystem().getSwerve().drive(new ChassisSpeeds()) ;
+            settling_timer_.start() ;
+            state_ = State.SettlingDelay ;
+        }
+    }
+
+    // Allow settling time after driving to location + ensure arm deployed before driving forward
+    private void stateSettlingDelay() {
+        if (settling_timer_.isExpired() && collect_action_.doneRaisingArm()) {
             ChassisSpeeds speed = new ChassisSpeeds(1.0, 0.0, 0.0) ;
             getRobotSubsystem().getSwerve().drive(speed) ;
             drive_forward_timer_.start() ;

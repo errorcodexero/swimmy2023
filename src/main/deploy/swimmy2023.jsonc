@@ -570,7 +570,7 @@
                         "cone" : 1200
                     },
                     "spin-power" : 0.4,
-                    "spin-delay" : 0.8
+                    "spin-delay" : 0.5
                 },
                 "shelf" : {
                     "position" : {
@@ -578,7 +578,7 @@
                         "cone" : 1400
                     },
                     "spin-power" : 0.4,
-                    "spin-delay" : 0.7
+                    "spin-delay" : 0.5
                 },
                 "hold-power" : 0.1
             }

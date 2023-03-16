@@ -24,7 +24,7 @@ public class FieldLocationData {
     // we want the robot to drive to.  This offset gets adjusted for the red vs blue end
     // of the field.
     //
-    static final double LoadingStationXOffset = 0.620;
+    static final double LoadingStationXOffset = 0.670;
 
     //
     // This is the offset from the loading station April tag, to the position of we want the
