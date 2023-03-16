@@ -141,7 +141,7 @@
                             "maxv" : 150000                 // Max velocity for trapezoidal profile, lower arm
                         },
                         "delay" : 0.0,                      // Delay until we start lower arm
-                        "target" : 106000                   // Lower arm target position
+                        "target" : 104000                   // Lower arm target position
                     },
                     "upper" : {
                         "config" : {
@@ -637,7 +637,7 @@
             },
             "positions" : {
                 "open" : {
-                    "cube" : 750,
+                    "cube" : 650,
                     "cone" : 100
                 }
             }
