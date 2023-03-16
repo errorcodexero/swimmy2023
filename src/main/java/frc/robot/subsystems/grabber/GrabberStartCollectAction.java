@@ -45,6 +45,6 @@ public class GrabberStartCollectAction extends Action {
 
     @Override
     public String toString(int indent) {
-        return spaces(indent) + "GrabberStartCollectAction" ;
+        return spaces(indent) + "GrabberStartCollectAction: " + ((gp_ == GamePiece.Cone) ? "Cone" : "Cube");
     }
 }

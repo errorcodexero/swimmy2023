@@ -14,7 +14,7 @@ public class AutoCollectGroundOpCtrl extends OperationCtrl {
     public AutoCollectGroundOpCtrl(Swimmy2023RobotSubsystem sub, RobotOperation oper) throws Exception {
         super(sub, oper);
 
-        collect_action_ = new GPMCollectAction(sub.getGPM(), RobotOperation.GamePiece.Cone, true);
+        collect_action_ = new GPMCollectAction(sub.getGPM(), oper.getGamePiece(), true);
         abort_arm_action_ = new ArmStaggeredGotoAction(sub.getGPM().getArm(), "collect:retract-ground", false) ;
         abort_grabber_action_ = new GrabberStowAction(sub.getGPM().getGrabber()) ;
     }
