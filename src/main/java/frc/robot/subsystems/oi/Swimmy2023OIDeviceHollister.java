@@ -134,9 +134,9 @@ public class Swimmy2023OIDeviceHollister extends OIPanel {
         }
     }
 
-    private boolean driverLock(RobotOperation oper) {
+    private boolean driverGroundCollect() {
         Gamepad gp = getSubsystem().getGamePad();
-        return oper.getGround() && gp.isRTriggerPressed();
+        return gp.isRTriggerPressed();
     }
 
     private boolean isAbort() {
@@ -170,16 +170,17 @@ public class Swimmy2023OIDeviceHollister extends OIPanel {
             setDisplay(DisplayPattern.NONE);
         } else {
             RobotOperation operation = new RobotOperation();
+            boolean driver_ground_collect = driverGroundCollect();
 
-            operation.setAction(getValue(collect_v_place_gadget_) == 1 ? RobotOperation.Action.Place : RobotOperation.Action.Collect);
+            operation.setAction(getValue(collect_v_place_gadget_) == 1 && !driver_ground_collect ? RobotOperation.Action.Place : RobotOperation.Action.Collect);
             operation.setGamePiece(getGamePiece());
             operation.setAprilTag(getTag());
             operation.setManual(getValue(auto_v_manual_gadget_) == 0);
             operation.setSlot(getSlot());
             operation.setLocation(getHeight());
-            operation.setGround(getValue(station_ground_gadget_) == 1) ;
+            operation.setGround((getValue(station_ground_gadget_) == 1) || driver_ground_collect) ;
             
-            if (getValue(lock_gadget_) == 1 || driverLock(operation)) {
+            if (getValue(lock_gadget_) == 1 || driver_ground_collect) {
                 if (robotSubsystem.setOperation(operation)) {
                     if (operation.getGamePiece() == GamePiece.Cone) {
                         setDisplay(DisplayPattern.CONE);
