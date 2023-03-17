@@ -2,6 +2,7 @@ package frc.robot.subsystems.gpm;
 
 import org.xero1425.base.actions.Action;
 import org.xero1425.base.misc.XeroTimer;
+import org.xero1425.base.subsystems.motorsubsystem.MotorEncoderPowerAction;
 import org.xero1425.misc.BadParameterTypeException;
 import org.xero1425.misc.MessageLogger;
 import org.xero1425.misc.MessageType;
@@ -18,20 +19,28 @@ public class GPMPlaceAction extends Action {
         ExtendingArm,
         WaitingToDrop,
         DroppingGamepiece,
+        ShootingGamepiece,
         RetractingArm,
     }
+
+    private enum PlaceMethod {
+        Drop,
+        Shoot
+    }        
 
     private State state_ ;
     private GPMSubsystem sub_ ;
     private ArmStaggeredGotoAction arm_extend_action_ ;
     private ArmStaggeredGotoAction arm_retract_action_ ;
     private GrabberStowAction grabber_drop_item_ ;
+    private MotorEncoderPowerAction shoot_action_ ;
     private boolean ready_to_drop_ ;
     private boolean drop_game_piece_ ;
     private boolean force_drop_ ;
-    private XeroTimer timer_ ;
+    private XeroTimer drop_timer_ ;
     private String title_ ;
     private boolean is_dropped_ ;
+    private PlaceMethod place_method_ ;
 
     public GPMPlaceAction(GPMSubsystem sub, RobotOperation.Location loc, RobotOperation.GamePiece gp, boolean force) throws MissingParameterException, BadParameterTypeException {
         super(sub.getRobot().getMessageLogger());
@@ -39,8 +48,16 @@ public class GPMPlaceAction extends Action {
         state_ = State.Idle ;
         sub_ = sub ;
         force_drop_ = force;
+        boolean shoot_cubes = true;
 
-        String armpos = "place:" ;
+        String armpos ;
+        if (gp == RobotOperation.GamePiece.Cone || !shoot_cubes) {
+            place_method_ = PlaceMethod.Drop ;
+            armpos = "place:" ;
+        } else {
+            place_method_ = PlaceMethod.Shoot ;
+            armpos = "shoot:" ;
+        }
 
         switch(loc) {
             case Bottom:
@@ -63,12 +80,18 @@ public class GPMPlaceAction extends Action {
             armpos += ":cube" ;
         }
 
+        if (place_method_ == PlaceMethod.Shoot) {
+            double grabber_power = sub.getSettingsValue(armpos + ":grabber-power").getDouble();
+            double grabber_duration = sub.getSettingsValue(armpos + ":grabber-duration").getDouble();
+            shoot_action_ = new MotorEncoderPowerAction(sub_.getGrabber().getSpinSubsystem(), grabber_power, grabber_duration);
+        }
+
         title_ = armpos ;
         arm_extend_action_ = new ArmStaggeredGotoAction(sub_.getArm(), armpos + ":extend", false);
         arm_retract_action_ = new ArmStaggeredGotoAction(sub_.getArm(), armpos + ":retract", false);
 
-        double duration = sub.getSettingsValue("place-delay").getDouble();
-        timer_ = new XeroTimer(sub.getRobot(), "place", duration);
+        double drop_duration = sub.getSettingsValue("place-delay").getDouble();
+        drop_timer_ = new XeroTimer(sub.getRobot(), "place", drop_duration);
 
         grabber_drop_item_ = new GrabberStowAction(sub.getGrabber());
     }
@@ -115,15 +138,20 @@ public class GPMPlaceAction extends Action {
                 break;
 
             case WaitingToDrop:
-                if (drop_game_piece_ || force_drop_) {
-                    sub_.getGrabber().setAction(grabber_drop_item_, true);
-                    timer_.start();
-                    state_ = State.DroppingGamepiece;
+                if (place_method_ == PlaceMethod.Drop) {
+                    if (drop_game_piece_ || force_drop_) {
+                        sub_.getGrabber().setAction(grabber_drop_item_, true);
+                        drop_timer_.start();
+                        state_ = State.DroppingGamepiece;
+                    }
+                } else {
+                    sub_.getGrabber().getSpinSubsystem().setAction(shoot_action_) ;
+                    state_ = State.ShootingGamepiece;
                 }
                 break;
 
             case DroppingGamepiece:
-                if (timer_.isExpired()) {
+                if (drop_timer_.isExpired()) {
                     sub_.getArm().setAction(arm_retract_action_, true);
                     is_dropped_ = true ;
                     state_ = State.RetractingArm ;
@@ -131,6 +159,15 @@ public class GPMPlaceAction extends Action {
                     setDone() ;
                 }
                 break ;
+
+            case ShootingGamepiece:
+                if (shoot_action_.isDone()) {
+                    sub_.getArm().setAction(arm_retract_action_, true);
+                    is_dropped_ = true ;
+                    state_ = State.RetractingArm ;
+
+                    setDone() ;
+                }
 
             case RetractingArm:
                 if (arm_retract_action_.isDone()) {
