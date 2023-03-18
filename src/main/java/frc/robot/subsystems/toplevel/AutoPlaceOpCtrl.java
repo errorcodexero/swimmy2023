@@ -45,6 +45,8 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
     private double april_tag_action_threshold_ ;
     private State state_ ;
     private Pose2d target_pose_ ;
+    private boolean do_drive_forward_ ;
+    private boolean do_settling_delay_ ;
 
     private SwerveDrivePathAction drive_to_action_ ;
     private GPMPlaceAction place_action_ ;
@@ -81,7 +83,7 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
             place_action_ = new GPMPlaceAction(sub.getGPM(), oper.getLocation(), oper.getGamePiece(), false);
         }
 
-        forward_timer_ = new XeroTimer(sub.getRobot(), "forward", 0.7) ;
+        forward_timer_ = new XeroTimer(sub.getRobot(), "forward", 0.3) ;
         wheels_timer_ = new XeroTimer(sub.getRobot(), "wheels", 0.1) ;
 
         overall_timer_ = new XeroElapsedTimer(sub.getRobot()) ;
@@ -90,6 +92,12 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
     @Override
     public void start() throws BadParameterTypeException, MissingParameterException {
         super.start();
+        do_drive_forward_ = AddDriveForward ;
+        do_settling_delay_ = AddSettlingDelay ;
+        if (getOper().getGamePiece() == GamePiece.Cube) {
+            //do_drive_forward_ = false ;   // Comment out for now. Angle sometimes off without drive forward to align.
+            do_settling_delay_ = false ;
+        }
         state_ = State.Idle ;
     }
 
@@ -319,16 +327,16 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
 
     private void stateAlignWheels() {
         if (!AddAlignStep || wheels_timer_.isExpired()) {
-            if (AddDriveForward) {
+            if (do_drive_forward_) {
                 ChassisSpeeds speed ;            
-                double xspeed = 0.5 ;
+                double xspeed = 1.0 ;
                 speed = new ChassisSpeeds(xspeed, 0.0, 0.0) ;
                 getRobotSubsystem().getSwerve().drive(speed) ;
                 forward_timer_.start() ;
                 state_ = State.DriveForward;
             }
             else {
-                if (AddSettlingDelay) {
+                if (do_settling_delay_) {
                     getRobotSubsystem().getSwerve().drive(new ChassisSpeeds());
                     getRobotSubsystem().getSwerve().enableVision(true);
                     settling_timer_.start() ;

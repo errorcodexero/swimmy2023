@@ -68,7 +68,7 @@
                             "upper" : {
                                 "config" : {
                                     "maxj" : 1000000,               // Max accel for trapezoidal profile, upper arm
-                                    "maxa" : 300000,                // Max decel for trapezoidal profile, upper arm
+                                    "maxa" : 150000,                // Max decel for trapezoidal profile, upper arm
                                     "maxv" : 150000                 // Max velocity for trapezoidal profile, upper arm
                                 },
                                 "delay" : 0.0,                      // Delay until we start upper arm
@@ -112,7 +112,7 @@
                             "upper" : {
                                 "config" : {
                                     "maxj" : 1000000,               // Max accel for trapezoidal profile, upper arm
-                                    "maxa" : 600000,                // Max decel for trapezoidal profile, upper arm
+                                    "maxa" : 150000,                // Max decel for trapezoidal profile, upper arm
                                     "maxv" : 150000                 // Max velocity for trapezoidal profile, upper arm
                                 },
                                 "delay" : 0.0,                      // Delay until we start upper arm
@@ -1100,7 +1100,7 @@
     },
     "testmode": {
         "enabled": false,
-        "which": 81,
+        "which": 76,
         "0": {
             "angle": 90,
             "power": 0.2
