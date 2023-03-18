@@ -43,6 +43,7 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
     }
 
     private double april_tag_action_threshold_ ;
+    private double april_tag_arm_action_threshold_ ;
     private State state_ ;
     private Pose2d target_pose_ ;
     private boolean do_drive_forward_ ;
@@ -64,12 +65,13 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
         super(sub, oper) ;
 
         april_tag_action_threshold_ = sub.getSettingsValue("april-tag-place-action-threshold").getDouble() ;
+        april_tag_arm_action_threshold_ = sub.getSettingsValue("april-tag-place-arm-action-threshold").getDouble() ;
         state_ = State.Idle ;
 
         if (getRobotSubsystem().getRobot().isAutonomous())
             vision_timer_ = new XeroTimer(sub.getRobot(), "vision/timer", 0.3);
         else
-            vision_timer_ = new XeroTimer(sub.getRobot(), "vision/timer", 0.5);
+            vision_timer_ = new XeroTimer(sub.getRobot(), "vision/timer", 0.2);
 
         settling_timer_ = new XeroTimer(sub.getRobot(), "settling", 0.3) ;
         align_action_ = new SwerveLinearAlignAction(getRobotSubsystem().getSwerve(), getRobotSubsystem().getLimeLight()) ;
@@ -83,7 +85,7 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
             place_action_ = new GPMPlaceAction(sub.getGPM(), oper.getLocation(), oper.getGamePiece(), false);
         }
 
-        forward_timer_ = new XeroTimer(sub.getRobot(), "forward", 0.3) ;
+        forward_timer_ = new XeroTimer(sub.getRobot(), "forward", 0.2) ;
         wheels_timer_ = new XeroTimer(sub.getRobot(), "wheels", 0.1) ;
 
         overall_timer_ = new XeroElapsedTimer(sub.getRobot()) ;
@@ -95,7 +97,9 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
         do_drive_forward_ = AddDriveForward ;
         do_settling_delay_ = AddSettlingDelay ;
         if (getOper().getGamePiece() == GamePiece.Cube) {
-            //do_drive_forward_ = false ;   // Comment out for now. Angle sometimes off without drive forward to align.
+            if (getOper().getLocation() == Location.Middle) {
+                //do_drive_forward_ = false ;
+            }
             do_settling_delay_ = false ;
         }
         state_ = State.Idle ;
@@ -259,6 +263,11 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
             state_ = State.WaitingOnVision ;
             vision_timer_.start() ;
         }
+        else if (dist < april_tag_arm_action_threshold_ && getOper().getGamePiece() == GamePiece.Cube) {
+            if (place_action_ != null && getRobotSubsystem().getGPM().getAction() == null) {
+                getRobotSubsystem().getGPM().setAction(place_action_, true);
+            }
+        }
     }
 
     private void stateWaitingForVision() throws BadParameterTypeException, MissingParameterException {
@@ -271,9 +280,19 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
             getRobotSubsystem().getSwerve().enableVision(false);
             target_pose_ = getRobotSubsystem().getFieldData().getGridPose(Alliance.Invalid, getOper().getAprilTag(), getOper().getSlot());
 
+            double max_v;
+            double max_a;
+            if (getOper().getGamePiece() == GamePiece.Cone) {
+                max_v = 1.0;
+                max_a = 1.0;
+            } else {
+                max_v = 2.0;
+                max_a = 2.0;
+            }
+
             List<Pose2d> pts = computeDrivePathPoints(getRobotSubsystem().getSwerve().getPose(), target_pose_);
             List<Translation2d> interior = new ArrayList<Translation2d>() ;
-            drive_to_action_ = new SwerveDrivePathAction(getRobotSubsystem().getSwerve(), pts.get(0), interior, pts.get(1), target_pose_.getRotation(), 1.0, 1.0);
+            drive_to_action_ = new SwerveDrivePathAction(getRobotSubsystem().getSwerve(), pts.get(0), interior, pts.get(1), target_pose_.getRotation(), max_a, max_v);
 
             getRobotSubsystem().getSwerve().setAction(drive_to_action_, true);
 
@@ -329,7 +348,7 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
         if (!AddAlignStep || wheels_timer_.isExpired()) {
             if (do_drive_forward_) {
                 ChassisSpeeds speed ;            
-                double xspeed = 1.0 ;
+                double xspeed = 1.0;
                 speed = new ChassisSpeeds(xspeed, 0.0, 0.0) ;
                 getRobotSubsystem().getSwerve().drive(speed) ;
                 forward_timer_.start() ;

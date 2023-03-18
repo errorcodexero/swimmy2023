@@ -48,7 +48,7 @@ public class GPMPlaceAction extends Action {
         state_ = State.Idle ;
         sub_ = sub ;
         force_drop_ = force;
-        boolean shoot_cubes = true;
+        boolean shoot_cubes = false;
 
         String armpos ;
         if (gp == RobotOperation.GamePiece.Cone || !shoot_cubes) {
