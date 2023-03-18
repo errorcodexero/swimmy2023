@@ -243,11 +243,11 @@ public class TankDriveSubsystem extends DriveBaseSubsystem {
     /// \brief This method is called when the robot enters one of its specifc modes.
     /// The modes are Autonomous, Teleop, Test, or Disabled.  It is used to set the
     /// neutral mode specifically for the robot mode.
-    public void init(LoopType ltype) {
-        super.init(ltype);
+    public void init(LoopType prev, LoopType current) {
+        super.init(prev, current);
 
         try {
-            switch (ltype) {
+            switch (current) {
             case Autonomous:
                 left_motors_.setNeutralMode(automode_neutral_);
                 right_motors_.setNeutralMode(automode_neutral_);
@@ -274,6 +274,7 @@ public class TankDriveSubsystem extends DriveBaseSubsystem {
                 break;
 
             case Disabled:
+            case None:
                 left_motors_.setNeutralMode(disabled_neutral_);
                 right_motors_.setNeutralMode(disabled_neutral_);      
                 left_motors_.setEncoderUpdateFrequncy(EncoderUpdateFrequency.Infrequent, EncoderUpdateFrequency.Infrequent);

@@ -102,11 +102,11 @@ public class XeroSwerveDriveSubsystem extends SwerveBaseSubsystem {
     /// \brief This method is called when the robot enters one of its specifc modes.
     /// The modes are Autonomous, Teleop, Test, or Disabled. It is used to set the
     /// neutral mode specifically for the robot mode.
-    public void init(LoopType ltype) {
-        super.init(ltype);
+    public void init(LoopType prev, LoopType current) {
+        super.init(prev, current);
 
         MotorController.NeutralMode nm = MotorController.NeutralMode.Coast ;
-        switch(ltype) {
+        switch(current) {
             case Disabled:
                 nm = MotorController.NeutralMode.Coast ;
                 break ;            
@@ -118,7 +118,10 @@ public class XeroSwerveDriveSubsystem extends SwerveBaseSubsystem {
                 break ;
             case Test:
                 nm = MotorController.NeutralMode.Coast ;
-                break ;            
+                break ;  
+            case None:
+                nm = MotorController.NeutralMode.Coast;
+                break;          
         }
 
         for (int i = 0; i  < getModuleCount() ; i++) {

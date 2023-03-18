@@ -1,6 +1,9 @@
 package frc.robot.subsystems.arm;
 
 import org.xero1425.base.LoopType;
+import org.xero1425.base.motors.BadMotorRequestException;
+import org.xero1425.base.motors.MotorRequestFailedException;
+import org.xero1425.base.motors.MotorController.NeutralMode;
 import org.xero1425.base.subsystems.Subsystem;
 import org.xero1425.base.subsystems.motorsubsystem.MotorEncoderSubsystem;
 
@@ -32,16 +35,16 @@ public class ArmSubsystem extends Subsystem {
     }
 
     @Override
-    public void init(LoopType ltype) {
-        super.init(ltype) ;
+    public void init(LoopType prev, LoopType current) {
+        super.init(prev, current) ;
 
-        // if (ltype == LoopType.Disabled && !DriverStation.isFMSAttached()) {
-        //     try {
-        //         motor_upper_.getMotorController().setNeutralMode(NeutralMode.Coast);
-        //     }
-        //     catch(Exception ex) {
-        //     }
-        // }
+        if (prev != LoopType.Autonomous && current == LoopType.Disabled) {
+            try {
+                motor_upper_.getMotorController().setNeutralMode(NeutralMode.Coast);
+                motor_lower_.getMotorController().setNeutralMode(NeutralMode.Coast);
+            } catch (BadMotorRequestException | MotorRequestFailedException e) {
+            }
+        }
     }
 }
 

@@ -13,7 +13,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
-import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
@@ -39,7 +38,6 @@ import org.xero1425.misc.SimArgs;
 import org.xero1425.misc.XeroPathManager;
 import org.xero1425.misc.XeroPathType;
 import org.xero1425.base.motors.MotorFactory;
-import org.xero1425.base.subsystems.DriveBaseSubsystem;
 import org.xero1425.base.subsystems.RobotSubsystem;
 import org.xero1425.base.subsystems.Subsystem.DisplayType;
 import org.xero1425.base.subsystems.tankdrive.TankDrivePathFollowerAction;
@@ -132,7 +130,7 @@ public abstract class XeroRobot extends TimedRobot {
     private AprilTagFieldLayout layout_ ;
 
     // If true, we have run autonomous already
-    private boolean autonomous_has_run_ ;
+    private List<LoopType> loop_type_history_ ;
 
     /// \brief The "subsystem" name for the message logger for this class
     public static final String LoggerName = "xerorobot" ;
@@ -152,7 +150,8 @@ public abstract class XeroRobot extends TimedRobot {
         // Generate the paths to the various important places (logfile directory, settings file, path follow paths directoryh, etc.)
         robot_paths_ = new RobotPaths(RobotBase.isSimulation(), getName());
 
-        autonomous_has_run_ = false ;
+        loop_type_history_ = new ArrayList<LoopType>() ;
+        loop_type_history_.add(LoopType.None);
 
         // Setup the mesasge logger to log messages
         start = getTime() ;
@@ -523,14 +522,24 @@ public abstract class XeroRobot extends TimedRobot {
 
         return ret;
     }
+    
+    void changeLoopType(LoopType ltype) {
+        LoopType prev = loop_type_history_.get(loop_type_history_.size() - 1);
+        robot_subsystem_.init(prev, ltype);
+        loop_type_history_.add(ltype);
+        loop_count_ = 0 ;
+
+        logger_.startMessage(MessageType.Info);
+        logger_.add("changing robot loop type: ") ;
+        logger_.add(prev.toString() + " -> " + ltype.toString());
+        logger_.endMessage();
+    }
 
     /// \brief Called from the base class to indicate we are entering auto mode.
     @Override
     public void autonomousInit() {
         if (robot_subsystem_ == null)
             return;
-
-        autonomous_has_run_ = true ;
 
         updateAutoMode();
         logAutoModeState();
@@ -539,9 +548,7 @@ public abstract class XeroRobot extends TimedRobot {
         if (current_controller_ != null)
             current_controller_.init();
 
-        robot_subsystem_.init(LoopType.Autonomous);
-
-        loop_count_ = 0 ;
+        changeLoopType(LoopType.Autonomous);
     }
 
     /// \brief Called from the base class each robot loop while in autonmous
@@ -549,7 +556,6 @@ public abstract class XeroRobot extends TimedRobot {
     public void autonomousPeriodic() {
         if (robot_subsystem_ == null)
             return;
-
 
         robotLoop(LoopType.Autonomous);
 
@@ -562,21 +568,11 @@ public abstract class XeroRobot extends TimedRobot {
         if (robot_subsystem_ == null)
             return;
 
-        logger_.startMessage(MessageType.Info).add("Starting teleop mode").endMessage();
-        if (robot_subsystem_.getDB() != null) {
-            logger_.startMessage(MessageType.Info).add("Drivebase Pose", robot_subsystem_.getDB().getPose()).endMessage();
-        }
-        else {
-            logger_.startMessage(MessageType.Info).add("Drivebase Pose", "NONE").endMessage();
-        }
-
         current_controller_ = teleop_controller_;
         if (current_controller_ != null)
             current_controller_.init();
 
-        robot_subsystem_.init(LoopType.Teleop);
-
-        loop_count_ = 0 ;
+        changeLoopType(LoopType.Teleop);
     }
 
     /// \brief Called from the base class each robot loop while in teleop
@@ -602,9 +598,7 @@ public abstract class XeroRobot extends TimedRobot {
         if (current_controller_ != null)
             current_controller_.init();
 
-        robot_subsystem_.init(LoopType.Test);
-
-        loop_count_ = 0 ;
+        changeLoopType(LoopType.Test);
     }
 
     /// \brief Called from the base class each robot loop while in test mode
@@ -636,8 +630,7 @@ public abstract class XeroRobot extends TimedRobot {
         robot_subsystem_.reset();
 
         automode_ = -1;
-        robot_subsystem_.init(LoopType.Disabled);
-
+        changeLoopType(LoopType.Disabled);
         loop_count_ = 0 ;
     }
 
@@ -654,7 +647,7 @@ public abstract class XeroRobot extends TimedRobot {
         double initial_time = getTime();
         delta_time_ = initial_time - last_time_;
 
-        if (!autonomous_has_run_) {
+        if (!loop_type_history_.contains(LoopType.Autonomous)) {
             updateAutoMode();
         }
 

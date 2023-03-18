@@ -1,6 +1,5 @@
 package frc.robot.subsystems.grabber;
 
-import org.xero1425.base.LoopType;
 import org.xero1425.base.subsystems.Subsystem;
 import org.xero1425.base.subsystems.motorsubsystem.MotorEncoderSubsystem;
 
@@ -30,10 +29,6 @@ public class GrabberSubsystem extends Subsystem {
         sensor_lower_ = new DigitalInput(v);
         v = getSettingsValue("hw:sensor:upper").getInteger();
         sensor_upper_ = new DigitalInput(v);
-    }
-
-    @Override
-    public void init(LoopType lt) {
     }
 
     @Override

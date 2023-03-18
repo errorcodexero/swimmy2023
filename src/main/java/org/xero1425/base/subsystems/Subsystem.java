@@ -300,9 +300,9 @@ public class Subsystem {
     /// called at the start of autonomous (LoopType.Autonomous), teleop (LoopType.Teleop),
     /// and disabled (LoopType.Disabled).
     /// \param ltype the loop type we are running
-    public void init(LoopType ltype) {
+    public void init(LoopType prev, LoopType current) {
         for(Subsystem sub : children_)
-            sub.init(ltype);        
+            sub.init(prev, current);
     }
 
     /// \brief This method is called when the robot enters the disabled state.

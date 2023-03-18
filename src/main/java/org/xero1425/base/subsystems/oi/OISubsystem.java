@@ -147,9 +147,9 @@ public class OISubsystem extends Subsystem {
     /// \brief called when a new mode is initialized (e.g. teleop, auto, etc.).  
     /// Calls init() on each child device.
     @Override
-    public void init(LoopType ltype) {
+    public void init(LoopType prev, LoopType current) {
         for (OIDevice dev : devices_)
-            dev.init(ltype);
+            dev.init(current);
     }
 
     /// \brief Called each robot loop to compute the state of the OI device.  This method

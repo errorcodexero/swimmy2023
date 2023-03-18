@@ -1,6 +1,5 @@
 package org.xero1425.base.subsystems.motorsubsystem;
 
-import org.xero1425.base.LoopType;
 import org.xero1425.base.motors.BadMotorRequestException;
 import org.xero1425.base.motors.MotorRequestFailedException;
 import org.xero1425.base.subsystems.Subsystem;
@@ -50,23 +49,6 @@ public class MotorSubsystem extends Subsystem
     /// \returns true if the motor is running
     public boolean isRunning() {
         return Math.abs(power_) > epsilon ;
-    }
-
-    /// \brief Called when the robot changes into a new mode (auto, teleop, disabled, etc.).
-    /// This method is used to reapply the inverted status of the motor as some of the motor controllers
-    /// lose the inverstad status when they are disabled.
-    /// \param ltype the new mode for the robot.
-    @Override
-    public void init(LoopType ltype) {
-        super.init(ltype) ;
-        // try {
-        //     controller_.reapplyInverted();
-        // }
-        // catch(BadMotorRequestException | MotorRequestFailedException ex) {
-        //     MessageLogger logger = getRobot().getMessageLogger() ;
-        //     logger.startMessage(MessageType.Error) ;
-        //     logger.add("subsystem ").addQuoted(getName()).add(": cannot reapply inverted state -").add(ex.getMessage()).endMessage();
-        // }
     }
 
     /// \brief Set the motor power to 0 to ensure the motor does not start when the robot is enabled.
