@@ -11,6 +11,8 @@ import org.xero1425.misc.MissingParameterException;
 import frc.robot.subsystems.arm.ArmStaggeredGotoAction;
 import frc.robot.subsystems.grabber.GrabberStowAction;
 import frc.robot.subsystems.toplevel.RobotOperation;
+import frc.robot.subsystems.toplevel.RobotOperation.GamePiece;
+import frc.robot.subsystems.toplevel.RobotOperation.Location;
 
 public class GPMPlaceAction extends Action {
 
@@ -40,6 +42,7 @@ public class GPMPlaceAction extends Action {
     private XeroTimer drop_timer_ ;
     private String title_ ;
     private boolean is_dropped_ ;
+    private boolean extend_arm_ ;
     private PlaceMethod place_method_ ;
 
     public GPMPlaceAction(GPMSubsystem sub, RobotOperation.Location loc, RobotOperation.GamePiece gp, boolean force) throws MissingParameterException, BadParameterTypeException {
@@ -93,6 +96,12 @@ public class GPMPlaceAction extends Action {
         double drop_duration = sub.getSettingsValue("place-delay").getDouble();
         drop_timer_ = new XeroTimer(sub.getRobot(), "place", drop_duration);
 
+        if (gp == GamePiece.Cube && loc == Location.Bottom) {
+            extend_arm_ = false;
+        } else {
+            extend_arm_ = true;
+        }
+
         grabber_drop_item_ = new GrabberStowAction(sub.getGrabber());
     }
 
@@ -116,8 +125,13 @@ public class GPMPlaceAction extends Action {
         drop_game_piece_ = false ;
         is_dropped_ = false ;
 
-        sub_.getArm().setAction(arm_extend_action_, true) ;
-        state_ = State.ExtendingArm ;
+        if (extend_arm_) {
+            sub_.getArm().setAction(arm_extend_action_, true) ;
+            state_ = State.ExtendingArm ;
+        } else {
+            state_ = State.WaitingToDrop ;
+            ready_to_drop_ = true ;
+        }
     }
 
     @Override

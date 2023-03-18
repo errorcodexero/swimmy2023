@@ -46,11 +46,7 @@
             "april-tag-place-action-threshold" : 1.5,
             "april-tag-place-arm-action-threshold" : 2.0,  // Allow deploying arm before we take over, but fully deployed arm makes it run into cone nodes. Use only for cubes.
             "tape-align-threshold" : 0.1016,
-            "drive-forward-distance" : 0.1524,
-            "spit-cube" : {
-                "power" : -0.3,
-                "duration" : 0.3
-            }
+            "drive-forward-distance" : 0.1524
         },
         "arm" : {
             "shoot" : {

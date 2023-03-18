@@ -51,7 +51,6 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
 
     private SwerveDrivePathAction drive_to_action_ ;
     private GPMPlaceAction place_action_ ;
-    private MotorEncoderPowerAction spit_cube_action_ ;
     private SwerveLinearAlignAction align_action_ ;
 
     private XeroTimer vision_timer_ ;
@@ -76,14 +75,7 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
         settling_timer_ = new XeroTimer(sub.getRobot(), "settling", 0.3) ;
         align_action_ = new SwerveLinearAlignAction(getRobotSubsystem().getSwerve(), getRobotSubsystem().getLimeLight()) ;
 
-        if (oper.getAction() == Action.Place && oper.getGamePiece() == GamePiece.Cube && oper.getLocation() == Location.Bottom) {
-            double power = getRobotSubsystem().getSettingsValue("spit-cube:power").getDouble();
-            double duration = getRobotSubsystem().getSettingsValue("spit-cube:duration").getDouble();
-            spit_cube_action_ = new MotorEncoderPowerAction(getRobotSubsystem().getGPM().getGrabber().getSpinSubsystem(), power, duration);
-        }
-        else {
-            place_action_ = new GPMPlaceAction(sub.getGPM(), oper.getLocation(), oper.getGamePiece(), false);
-        }
+        place_action_ = new GPMPlaceAction(sub.getGPM(), oper.getLocation(), oper.getGamePiece(), false);
 
         forward_timer_ = new XeroTimer(sub.getRobot(), "forward", 0.2) ;
         wheels_timer_ = new XeroTimer(sub.getRobot(), "wheels", 0.1) ;
@@ -208,9 +200,7 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
 
             case DroppingPiece:
                 getRobotSubsystem().getOI().enableGamepad() ;
-                if (place_action_ != null) {
-                    place_action_.cancel();
-                }
+                place_action_.cancel();
                 break;
         }
 
@@ -255,16 +245,14 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
             getRobotSubsystem().getOI().disableGamepad();
             getRobotSubsystem().getOI().getGamePad().rumble(1.0, 0.5);
 
-            if (place_action_ != null) {
-                getRobotSubsystem().getGPM().setAction(place_action_, true);
-            }
+            getRobotSubsystem().getGPM().setAction(place_action_, true);
 
             overall_timer_.reset() ;
             state_ = State.WaitingOnVision ;
             vision_timer_.start() ;
         }
         else if (dist < april_tag_arm_action_threshold_ && getOper().getGamePiece() == GamePiece.Cube) {
-            if (place_action_ != null && getRobotSubsystem().getGPM().getAction() == null) {
+            if (getRobotSubsystem().getGPM().getAction() == null) {
                 getRobotSubsystem().getGPM().setAction(place_action_, true);
             }
         }
@@ -394,7 +382,7 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
         logger.add("Waiting On Arm") ;
         logger.endMessage();
 
-        if (place_action_ != null && place_action_.isReadyToDrop()) {
+        if (place_action_.isReadyToDrop()) {
 
             logger.startMessage(MessageType.Info) ;
             logger.add("Dropping game piece") ;
@@ -404,14 +392,10 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
             place_action_.dropGamePiece();
             state_ = State.DroppingPiece ;
         }
-        else if (spit_cube_action_ != null) {
-            getRobotSubsystem().getGPM().getGrabber().getSpinSubsystem().setAction(spit_cube_action_, true);
-            state_ = State.DroppingPiece ;
-        }
     }
 
     private void stateDroppingPiece() {
-        if (place_action_ != null && place_action_.isDone()) {
+        if (place_action_.isDone()) {
             state_ = State.Idle ;
 
             if (place_action_.isDropComplete()) {
@@ -424,12 +408,6 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
             logger.add("AutoPlaceOpCtrl duration: " + overall_timer_.elapsed());
             logger.endMessage();
 
-            setDone();
-        }
-        else if (spit_cube_action_ != null && spit_cube_action_.isDone()) {
-            state_ = State.Idle ;
-            getRobotSubsystem().getOI().enableGamepad();
-            getRobotSubsystem().getOI().getGamePad().rumble(1.0, 0.5);
             setDone();
         }
     }
