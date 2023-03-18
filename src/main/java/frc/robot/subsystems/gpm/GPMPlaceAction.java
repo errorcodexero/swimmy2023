@@ -145,8 +145,10 @@ public class GPMPlaceAction extends Action {
                         state_ = State.DroppingGamepiece;
                     }
                 } else {
-                    sub_.getGrabber().getSpinSubsystem().setAction(shoot_action_) ;
-                    state_ = State.ShootingGamepiece;
+                    if (drop_game_piece_ || force_drop_) {
+                        sub_.getGrabber().getSpinSubsystem().setAction(shoot_action_, true) ;
+                        state_ = State.ShootingGamepiece;
+                    }
                 }
                 break;
 
@@ -163,6 +165,7 @@ public class GPMPlaceAction extends Action {
             case ShootingGamepiece:
                 if (shoot_action_.isDone()) {
                     sub_.getArm().setAction(arm_retract_action_, true);
+                    sub_.getGrabber().setAction(grabber_drop_item_, true);
                     is_dropped_ = true ;
                     state_ = State.RetractingArm ;
 
