@@ -4,7 +4,7 @@ import org.xero1425.swervelib.Mk4ModuleConfiguration;
 import org.xero1425.swervelib.Mk4iSwerveModuleHelper;
 import org.xero1425.swervelib.SDSModuleGlobalConfig;
 import org.xero1425.swervelib.SwerveModule;
-
+import org.xero1425.base.misc.XeroTimer;
 import org.xero1425.base.subsystems.Subsystem;
 import org.xero1425.base.subsystems.swerve.common.SwerveBaseSubsystem;
 import org.xero1425.misc.BadParameterTypeException;
@@ -44,6 +44,9 @@ public class SDSSwerveDriveSubsystem extends SwerveBaseSubsystem {
 
     private double nominal_voltage_ ;
 
+    private boolean module_encoders_inited_ ;
+    private XeroTimer module_init_timer_ ;
+    
     public SDSSwerveDriveSubsystem(Subsystem parent, String name) throws Exception {
         super(parent, name) ;
 
@@ -126,6 +129,9 @@ public class SDSSwerveDriveSubsystem extends SwerveBaseSubsystem {
             br_ = Mk4iSwerveModuleHelper.createFalcon500(config, Mk4iSwerveModuleHelper.GearRatio.L2, drive, steer, encoder, offset) ;        
 
         createOdometry(); 
+
+        module_init_timer_ = new XeroTimer(parent.getRobot(), "swerve-init", 1.0);
+        module_encoders_inited_ = false ;
     }
 
     private PIDCtrl createPIDCtrl(String name) throws MissingParameterException, BadParameterTypeException {
@@ -216,12 +222,13 @@ public class SDSSwerveDriveSubsystem extends SwerveBaseSubsystem {
     public void computeMyState() throws Exception {
         super.computeMyState();
 
-        if (getRobot().isDisabled())
-        {
-            fl_.set(0.0, 0.0) ;
-            fr_.set(0.0, 0.0) ;
-            bl_.set(0.0, 0.0) ;
-            br_.set(0.0, 0.0) ;
+        if (module_init_timer_.isExpired() && !module_encoders_inited_) {
+            fl_.synchronizeEncoders();
+            fr_.synchronizeEncoders();
+            bl_.synchronizeEncoders();
+            br_.synchronizeEncoders();
+
+            module_encoders_inited_ = true ;
         }
     }
 
@@ -265,9 +272,11 @@ public class SDSSwerveDriveSubsystem extends SwerveBaseSubsystem {
             powers_[BR] = pid_ctrls_[BR].getOutput(speeds_[BR], getModuleState(BR).speedMetersPerSecond, getRobot().getDeltaTime()) ;
         }
 
-        fl_.set(powers_[FL] * nominal_voltage_, Math.toRadians(angles_[FL])) ;
-        fr_.set(powers_[FR] * nominal_voltage_, Math.toRadians(angles_[FR])) ;
-        bl_.set(powers_[BL] * nominal_voltage_, Math.toRadians(angles_[BL])) ;
-        br_.set(powers_[BR] * nominal_voltage_, Math.toRadians(angles_[BR])) ;                      
+        if (module_encoders_inited_) {
+            fl_.set(powers_[FL] * nominal_voltage_, Math.toRadians(angles_[FL])) ;
+            fr_.set(powers_[FR] * nominal_voltage_, Math.toRadians(angles_[FR])) ;
+            bl_.set(powers_[BL] * nominal_voltage_, Math.toRadians(angles_[BL])) ;
+            br_.set(powers_[BR] * nominal_voltage_, Math.toRadians(angles_[BR])) ;
+        }
     }
 }
