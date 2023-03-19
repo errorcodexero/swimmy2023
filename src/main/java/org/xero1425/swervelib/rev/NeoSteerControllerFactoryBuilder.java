@@ -119,6 +119,13 @@ public final class NeoSteerControllerFactoryBuilder {
         }
 
         @Override
+        public double synchronizeEncoders() {
+            double absoluteAngle = absoluteEncoder.getAbsoluteAngle();
+            motorEncoder.setPosition(absoluteAngle);
+            return absoluteAngle;
+        }
+
+        @Override
         public double getReferenceAngle() {
             return referenceAngleRadians;
         }
@@ -133,9 +140,7 @@ public final class NeoSteerControllerFactoryBuilder {
             if (motorEncoder.getVelocity() < ENCODER_RESET_MAX_ANGULAR_VELOCITY) {
                 if (++resetIteration >= ENCODER_RESET_ITERATIONS) {
                     resetIteration = 0;
-                    double absoluteAngle = absoluteEncoder.getAbsoluteAngle();
-                    motorEncoder.setPosition(absoluteAngle);
-                    currentAngleRadians = absoluteAngle;
+                    currentAngleRadians = synchronizeEncoders() ;
                 }
             } else {
                 resetIteration = 0;

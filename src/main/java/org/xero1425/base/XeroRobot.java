@@ -13,7 +13,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
-import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
@@ -39,7 +38,6 @@ import org.xero1425.misc.SimArgs;
 import org.xero1425.misc.XeroPathManager;
 import org.xero1425.misc.XeroPathType;
 import org.xero1425.base.motors.MotorFactory;
-import org.xero1425.base.subsystems.DriveBaseSubsystem;
 import org.xero1425.base.subsystems.RobotSubsystem;
 import org.xero1425.base.subsystems.Subsystem.DisplayType;
 import org.xero1425.base.subsystems.tankdrive.TankDrivePathFollowerAction;
