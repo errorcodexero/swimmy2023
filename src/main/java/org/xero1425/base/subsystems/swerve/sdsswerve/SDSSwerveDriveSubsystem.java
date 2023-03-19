@@ -8,6 +8,8 @@ import org.xero1425.base.misc.XeroTimer;
 import org.xero1425.base.subsystems.Subsystem;
 import org.xero1425.base.subsystems.swerve.common.SwerveBaseSubsystem;
 import org.xero1425.misc.BadParameterTypeException;
+import org.xero1425.misc.MessageLogger;
+import org.xero1425.misc.MessageType;
 import org.xero1425.misc.MissingParameterException;
 import org.xero1425.misc.PIDCtrl;
 
@@ -132,6 +134,8 @@ public class SDSSwerveDriveSubsystem extends SwerveBaseSubsystem {
 
         module_init_timer_ = new XeroTimer(parent.getRobot(), "swerve-init", 1.0);
         module_encoders_inited_ = false ;
+
+        module_init_timer_.start() ;
     }
 
     private PIDCtrl createPIDCtrl(String name) throws MissingParameterException, BadParameterTypeException {
@@ -277,6 +281,21 @@ public class SDSSwerveDriveSubsystem extends SwerveBaseSubsystem {
             fr_.set(powers_[FR] * nominal_voltage_, Math.toRadians(angles_[FR])) ;
             bl_.set(powers_[BL] * nominal_voltage_, Math.toRadians(angles_[BL])) ;
             br_.set(powers_[BR] * nominal_voltage_, Math.toRadians(angles_[BR])) ;
+
+            // MessageLogger logger = getRobot().getMessageLogger();
+            // logger.startMessage(MessageType.Info);
+            // logger.add("swerve driving: ") ;
+            // logger.add("fl", angles_[FL]);
+            // logger.add("fr", angles_[FR]);
+            // logger.add("bl", angles_[BL]);
+            // logger.add("br", angles_[BR]);
+            // logger.endMessage();
+        }
+        else {
+            MessageLogger logger = getRobot().getMessageLogger();
+            logger.startMessage(MessageType.Info);
+            logger.add("SDSSwerveDriveSubsystem: waiting on timer to init angles from encoders") ;
+            logger.endMessage();
         }
     }
 }

@@ -40,8 +40,8 @@ public class ArmSubsystem extends Subsystem {
 
         if (prev != LoopType.Autonomous && current == LoopType.Disabled) {
             try {
-                motor_upper_.getMotorController().setNeutralMode(NeutralMode.Coast);
-                motor_lower_.getMotorController().setNeutralMode(NeutralMode.Coast);
+                motor_upper_.getMotorController().setNeutralMode(NeutralMode.Brake);
+                motor_lower_.getMotorController().setNeutralMode(NeutralMode.Brake);
             } catch (BadMotorRequestException | MotorRequestFailedException e) {
             }
         }

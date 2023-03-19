@@ -1,5 +1,7 @@
 package frc.robot.subsystems.grabber;
 
+import org.xero1425.base.LoopType;
+import org.xero1425.base.motors.MotorController.NeutralMode;
 import org.xero1425.base.subsystems.Subsystem;
 import org.xero1425.base.subsystems.motorsubsystem.MotorEncoderSubsystem;
 
@@ -29,6 +31,17 @@ public class GrabberSubsystem extends Subsystem {
         sensor_lower_ = new DigitalInput(v);
         v = getSettingsValue("hw:sensor:upper").getInteger();
         sensor_upper_ = new DigitalInput(v);
+    }
+
+    @Override
+    public void init(LoopType prev, LoopType current) {
+        if (current == LoopType.Disabled && prev != LoopType.Autonomous) {
+            try {
+                motor_grab_.getMotorController().setNeutralMode(NeutralMode.Coast);
+            }
+            catch(Exception ex) {
+            }
+        }
     }
 
     @Override

@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
 
@@ -391,6 +392,18 @@ public final class MessageLogger
             per.message_.append(name) ;
             per.message_.append(" = ") ;
             per.message_.append(String.format(java.util.Locale.US, "%.4g", value)) ;
+        }
+
+        return this;        
+    }
+
+    public MessageLogger add(final String name, final Rotation2d value) {
+        final ThreadData per = getPerThreadData();
+        if (per.enabled_&& per.in_message_) {
+            per.message_.append(" ") ;
+            per.message_.append(name) ;
+            per.message_.append(" = ") ;
+            per.message_.append(String.format(java.util.Locale.US, "%.4g deg", value.getDegrees()));
         }
 
         return this;        
