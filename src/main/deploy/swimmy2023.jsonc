@@ -28,7 +28,7 @@
             "grabber-motor-grab" : false
         },
         "plotting": {
-            "enabled" : false,
+            "enabled" : true,
             "version" : 3
         },
         "pneumatics": {
@@ -315,8 +315,8 @@
                             "lower" : {
                                 "config" : {
                                     "maxj" : 1000000,                // Max accel for trapezoidal profile, upper arm
-                                    "maxa" : 100000,               // Max decel for trapezoidal profile, upper arm
-                                    "maxv" : 100000                 // Max velocity for trapezoidal profile, upper arm
+                                    "maxa" : 350000,               // Max decel for trapezoidal profile, upper arm
+                                    "maxv" : 195000                 // Max velocity for trapezoidal profile, upper arm
                                 },
                                 "delay" : 0.0,                      // Delay until we start lower arm
                                 "target" : 2000                        // Lower arm target position
@@ -324,8 +324,8 @@
                             "upper" : {
                                 "config" : {
                                     "maxj" : 1000000,                // Max accel for trapezoidal profile, upper arm
-                                    "maxa" : 100000,               // Max decel for trapezoidal profile, upper arm
-                                    "maxv" : 100000                 // Max velocity for trapezoidal profile, upper arm
+                                    "maxa" : 400000,               // Max decel for trapezoidal profile, upper arm
+                                    "maxv" : 195000                 // Max velocity for trapezoidal profile, upper arm
                                 },
                                 "delay" : 0.0,                      // Delay until we start upper arm
                                 "target" : 0                       // Upper arm target position
@@ -769,7 +769,7 @@
                         "y": 0.1
                     }
                 },
-                "power": 1.5
+                "power": 2.0
             },
             "panel" : {
                 "index" : 2,
@@ -1097,7 +1097,7 @@
     },
     "testmode": {
         "enabled": false,
-        "which": 76,
+        "which": 4,
         "0": {
             "angle": 90,
             "power": 0.2
@@ -1117,7 +1117,7 @@
             "duration": 3.0
         },
         "4": {
-            "name": "Sample-Path2m2m"
+            "name": "Middle1Red-Path1"
         },
         "5": {
             "angle": 0.0,

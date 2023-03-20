@@ -38,12 +38,19 @@ public class ArmSubsystem extends Subsystem {
     public void init(LoopType prev, LoopType current) {
         super.init(prev, current) ;
 
-        if (prev != LoopType.Autonomous && current == LoopType.Disabled) {
+        if (prev == LoopType.Autonomous && current == LoopType.Disabled) {
             try {
                 motor_upper_.getMotorController().setNeutralMode(NeutralMode.Brake);
                 motor_lower_.getMotorController().setNeutralMode(NeutralMode.Brake);
             } catch (BadMotorRequestException | MotorRequestFailedException e) {
             }
+        }
+        else if (current == LoopType.Disabled) {
+            try {
+                motor_upper_.getMotorController().setNeutralMode(NeutralMode.Coast);
+                motor_lower_.getMotorController().setNeutralMode(NeutralMode.Coast);
+            } catch (BadMotorRequestException | MotorRequestFailedException e) {
+            }            
         }
     }
 }

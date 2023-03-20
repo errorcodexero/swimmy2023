@@ -132,7 +132,7 @@ public class SDSSwerveDriveSubsystem extends SwerveBaseSubsystem {
 
         createOdometry(); 
 
-        module_init_timer_ = new XeroTimer(parent.getRobot(), "swerve-init", 1.0);
+        module_init_timer_ = new XeroTimer(parent.getRobot(), "swerve-init", 3.0);
         module_encoders_inited_ = false ;
 
         module_init_timer_.start() ;
