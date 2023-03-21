@@ -218,14 +218,14 @@ public abstract class XeroRobot extends TimedRobot {
         }
 
         if (ver == 4) {
-            plot_mgr_ = new PlotManagerNT4("/XeroPlot") ;
+            plot_mgr_ = new PlotManagerNT4(this, "/XeroPlot") ;
         }
         else {
             //
             // In all cases fall back to the proven plotting unless the version
             // is explictly 4
             //
-            plot_mgr_ = new PlotManager("/XeroPlot");
+            plot_mgr_ = new PlotManager(this, "/XeroPlot");
         }
 
         // Store the initial time
@@ -923,6 +923,10 @@ public abstract class XeroRobot extends TimedRobot {
         return layout_ ;
     }
 
+    public boolean shutdownDebug() {
+        return DriverStation.isFMSAttached() || DriverStation.getLocation() == 3 ;
+    }
+
     private void logAutoModeState() {
         logger_.startMessage(MessageType.Info) ;
         logger_.add("Entering Autonomous Mode").endMessage();
@@ -976,10 +980,11 @@ public abstract class XeroRobot extends TimedRobot {
         logger_.add("    MatchTime: ").add(DriverStation.getMatchTime()).endMessage();
 
         str = "NO" ;
-        if (DriverStation.isFMSAttached())
+        if (DriverStation.isFMSAttached()) {
             str = "YES" ;
-            logger_.startMessage(MessageType.Info) ;
-            logger_.add("    FMS Attached: ").add(str).endMessage();
+        }
+        logger_.startMessage(MessageType.Info) ;
+        logger_.add("    FMS Attached: ").add(str).endMessage();
     }
 
     private void displayAutoModeState() {

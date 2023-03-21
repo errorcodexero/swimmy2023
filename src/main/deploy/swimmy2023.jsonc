@@ -28,7 +28,7 @@
             "grabber-motor-grab" : false
         },
         "plotting": {
-            "enabled" : true,
+            "enabled" : false,
             "version" : 3
         },
         "pneumatics": {
@@ -882,7 +882,7 @@
             "estimator" : {
                 "advanced-rejection" : false,                   // If true, the advanced rejection of vision samples is used, see the code for more details
                 "vision-reject-threshold" : 100.0,              // Reject vision samples that are more than this distance from the current robot pose
-                "single-threshold" : 3.0,                      // When we see a single target, and we are greater than this distance, use the single-far std devs
+                "single-threshold" : 3.0,                       // When we see a single target, and we are greater than this distance, use the single-far std devs
                                                                 // Otherwise use the single-near std devs
                 "multi-threshold" : 4.0,                        // When we see multiple targets, and we are greater than this distance, use the multi-far std devs
                                                                 // Otherwise use the multi-near std devs

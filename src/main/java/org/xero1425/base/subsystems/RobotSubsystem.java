@@ -1,7 +1,6 @@
 package org.xero1425.base.subsystems;
 
 import org.xero1425.base.XeroRobot;
-import org.xero1425.base.subsystems.alarms.AlarmSubsystem;
 import org.xero1425.base.subsystems.oi.OISubsystem;
 
 /// \file
@@ -16,9 +15,6 @@ public class RobotSubsystem extends Subsystem
     // The tankdrive for the robot
     private DriveBaseSubsystem db_ ;
 
-    // The alarms subsystem for the robot
-    private AlarmSubsystem alarms_;
-
     /// \brief Create the robot subsystem
     /// \param robot the robot object
     /// \param name the name of the subsystem
@@ -27,9 +23,6 @@ public class RobotSubsystem extends Subsystem
 
         oi_ = null ;
         db_ = null ;
-
-        alarms_ = new AlarmSubsystem(this) ;
-        addChild(alarms_) ;
     }
 
     /// \brief Add a child subsystem to this subsystem.  If the child is a drivebase
@@ -64,11 +57,5 @@ public class RobotSubsystem extends Subsystem
     /// \returns the tankdrive subsystme for the robot
     public DriveBaseSubsystem getDB() {
         return db_ ;
-    }
-
-    /// \brief Return the alarms subsystem for the robot
-    /// \returns the alarms subsystem for the robot
-    public AlarmSubsystem getAlarms() {
-        return alarms_ ;
     }
 } ;

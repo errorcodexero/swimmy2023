@@ -1,6 +1,5 @@
 package org.xero1425.base ;
 
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.NetworkTableEntry ;
@@ -24,15 +23,17 @@ public class PlotManager implements IPlotManager
     static private String DataEntry = "data" ;
     static private String VersionEntry = "version" ;
     
-    int next_plot_id_ ;
-    String plot_table_ ;
-    Map<Integer, PlotInfo> plots_ ;
-    boolean enabled_ ;
+    private int next_plot_id_ ;
+    private String plot_table_ ;
+    private Map<Integer, PlotInfo> plots_ ;
+    private boolean enabled_ ;
+    private XeroRobot robot_ ;
 
     /// \brief create a new plot manager
     /// \param key the name of the key in the network table to hold plot data
-    public PlotManager(String key)
+    public PlotManager(XeroRobot robot, String key)
     {
+        robot_ = robot ;
         plots_ = new HashMap<Integer, PlotInfo>() ;
         next_plot_id_ = 0 ;
         plot_table_ = key ;
@@ -47,7 +48,7 @@ public class PlotManager implements IPlotManager
 
     public int initPlot(String name)
     {
-        if (!enabled_ || DriverStation.isFMSAttached())
+        if (!enabled_ || robot_.shutdownDebug())
             return -1 ;
 
         for(int key : plots_.keySet())
@@ -64,7 +65,7 @@ public class PlotManager implements IPlotManager
 
     public void startPlot(int id, String[] cols)
     {
-        if (!enabled_ || DriverStation.isFMSAttached() || !plots_.containsKey(id))
+        if (!enabled_ || robot_.shutdownDebug() || !plots_.containsKey(id))
             return ;
         
         PlotInfo info = plots_.get(id) ;
@@ -92,7 +93,7 @@ public class PlotManager implements IPlotManager
 
     public void addPlotData(int id, Double[] data)
     {
-        if (!enabled_ || DriverStation.isFMSAttached() || !plots_.containsKey(id))
+        if (!enabled_ || robot_.shutdownDebug() || !plots_.containsKey(id))
             return ;
             
         PlotInfo info = plots_.get(id) ;
@@ -110,7 +111,7 @@ public class PlotManager implements IPlotManager
 
     public void endPlot(int id)
     {
-        if (!enabled_ || DriverStation.isFMSAttached() || !plots_.containsKey(id))
+        if (!enabled_ || robot_.shutdownDebug() || !plots_.containsKey(id))
             return ;
             
         NetworkTableInstance inst = NetworkTableInstance.getDefault() ;

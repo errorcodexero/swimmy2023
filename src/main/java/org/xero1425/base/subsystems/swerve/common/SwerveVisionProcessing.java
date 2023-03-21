@@ -3,7 +3,6 @@ package org.xero1425.base.subsystems.swerve.common;
 import org.xero1425.base.IVisionLocalization;
 import org.xero1425.base.IVisionLocalization.LocationData;
 import org.xero1425.base.subsystems.Subsystem;
-import org.xero1425.base.subsystems.Subsystem.DisplayType;
 import org.xero1425.misc.BadParameterTypeException;
 import org.xero1425.misc.MessageLogger;
 import org.xero1425.misc.MessageType;
@@ -149,13 +148,6 @@ public class SwerveVisionProcessing {
             logger.add("vsheading", vision_pose_.getRotation().getDegrees());
         }
         logger.endMessage();
-
-        if (vision_pose_ != null)
-            sub_.putDashboard("VisionPose", DisplayType.Always, vision_pose_.toString()) ;
-        else
-            sub_.putDashboard("VisionPose", DisplayType.Always, "N/A") ;
-            
-        sub_.putDashboard("DBPose", DisplayType.Always, sub_.getPose().toString()) ;
     }
 
     private void setVisionParams(VisionParamsType vtype)

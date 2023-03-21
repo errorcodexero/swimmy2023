@@ -1,6 +1,5 @@
 package org.xero1425.base ;
 
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.networktables.BooleanPublisher;
 import edu.wpi.first.networktables.BooleanTopic;
 import edu.wpi.first.networktables.DoublePublisher;
@@ -60,19 +59,21 @@ public class PlotManagerNT4 implements IPlotManager
     static private final String CountEntry = "count" ;
     static private final String VersionEntry = "version" ;
     
-    int next_plot_id_ ;
-    String plot_table_ ;
-    Map<Integer, PlotTable> plots_ ;
-    boolean enabled_ ;
+    private int next_plot_id_ ;
+    private String plot_table_ ;
+    private Map<Integer, PlotTable> plots_ ;
+    private boolean enabled_ ;
+    private XeroRobot robot_ ;
 
     /// \brief create a new plot manager
     /// \param key the name of the key in the network table to hold plot data
-    public PlotManagerNT4(String key)
+    public PlotManagerNT4(XeroRobot robot, String key)
     {
         plots_ = new HashMap<Integer, PlotTable>() ;
         next_plot_id_ = 0 ;
         plot_table_ = key ;
         enabled_ = false ;
+        robot_ = robot ;
     }
 
     /// \brief enable or disable the storage of plotting data in the network tables
@@ -83,7 +84,7 @@ public class PlotManagerNT4 implements IPlotManager
 
     public int initPlot(String name)
     {
-        if (!enabled_ || DriverStation.isFMSAttached())
+        if (!enabled_ || robot_.shutdownDebug())
             return -1 ;
 
         for(int key : plots_.keySet())
@@ -112,7 +113,7 @@ public class PlotManagerNT4 implements IPlotManager
 
     public void startPlot(int id, String[] cols)
     {
-        if (!enabled_ || DriverStation.isFMSAttached() || !plots_.containsKey(id))
+        if (!enabled_ || robot_.shutdownDebug() || !plots_.containsKey(id))
             return ;
       
         NetworkTableInstance inst = NetworkTableInstance.getDefault() ;
@@ -148,7 +149,7 @@ public class PlotManagerNT4 implements IPlotManager
 
     public void addPlotData(int id, Double[] data)
     {
-        if (!enabled_ || DriverStation.isFMSAttached() || !plots_.containsKey(id))
+        if (!enabled_ || robot_.shutdownDebug() || !plots_.containsKey(id))
             return ;
 
         PlotTable p = plots_.get(id) ;
@@ -171,7 +172,7 @@ public class PlotManagerNT4 implements IPlotManager
 
     public void endPlot(int id)
     {
-        if (!enabled_ || DriverStation.isFMSAttached() || !plots_.containsKey(id))
+        if (!enabled_ || robot_.shutdownDebug() || !plots_.containsKey(id))
             return ;
 
         PlotTable p = plots_.get(id) ;

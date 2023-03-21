@@ -2,7 +2,6 @@ package org.xero1425.base.controllers;
 
 import java.util.ArrayList;
 import java.util.List;
-import edu.wpi.first.wpilibj.DriverStation;
 import org.xero1425.base.XeroRobot;
 import org.xero1425.misc.BadParameterTypeException;
 import org.xero1425.misc.ISettingsSupplier;
@@ -100,7 +99,7 @@ public abstract class AutoController extends BaseController {
     /// set mode setting "testmode:enabled" is true and the robot is NOT connected to an FMS system.
     /// \returns true if we are in the test mode
     public boolean isTestMode() {
-        if (DriverStation.isFMSAttached())
+        if (getRobot().shutdownDebug())
             return false ;
 
         return test_mode_ ;
