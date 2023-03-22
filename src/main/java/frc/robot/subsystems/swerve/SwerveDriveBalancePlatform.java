@@ -9,6 +9,8 @@ import org.xero1425.misc.MessageType;
 import org.xero1425.misc.MissingParameterException;
 import org.xero1425.misc.PIDCtrl;
 
+import java.lang.Math;
+
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 
 public class SwerveDriveBalancePlatform extends SwerveDriveAction {
@@ -19,6 +21,7 @@ public class SwerveDriveBalancePlatform extends SwerveDriveAction {
 
     private PIDCtrl pid_ ;
     private XYDirection dir_ ;
+    private double threshold;
 
     public SwerveDriveBalancePlatform(SwerveBaseSubsystem sub, XYDirection dir) throws MissingParameterException, BadParameterTypeException {
         super(sub);
@@ -26,6 +29,7 @@ public class SwerveDriveBalancePlatform extends SwerveDriveAction {
         dir_ = dir;
         String name = "subsystems:" + sub.getName() + ":balance-pid" ;
         pid_ = new PIDCtrl(sub.getRobot().getSettingsSupplier(), name, false);
+        threshold = sub.getSettingsValue("threshold").getDouble();
     }
 
     @Override
@@ -37,19 +41,24 @@ public class SwerveDriveBalancePlatform extends SwerveDriveAction {
     public void run() throws Exception {
         super.run() ;
 
-        double out ;
+        double out = 0;
         ChassisSpeeds speed ;
         double value = 0.0 ;
+        speed = new ChassisSpeeds(0, 0.0, 0.0);
 
         if (dir_ == XYDirection.XDirection) {
-            value = getSubsystem().getPitch() ;
-            out = pid_.getOutput(0.0, value, getSubsystem().getRobot().getDeltaTime());
-            speed = new ChassisSpeeds(out, 0.0, 0.0);
+            value = getSubsystem().getPitch() ; //degrees
+            if(Math.abs(value) > threshold){
+                out = pid_.getOutput(0.0, value, getSubsystem().getRobot().getDeltaTime());
+                speed = new ChassisSpeeds(out, 0.0, 0.0);
+            }
         }
         else {
-            value = getSubsystem().getRoll() ;
-            out = pid_.getOutput(0.0, value, getSubsystem().getRobot().getDeltaTime());
-            speed = new ChassisSpeeds(0.0, out, 0.0);
+            value = getSubsystem().getRoll() ; //degrees
+            if(Math.abs(value) > threshold){
+                out = pid_.getOutput(0.0, value, getSubsystem().getRobot().getDeltaTime());
+                speed = new ChassisSpeeds(0.0, out, 0.0);
+            }
         }
 
         MessageLogger logger = getSubsystem().getRobot().getMessageLogger();
