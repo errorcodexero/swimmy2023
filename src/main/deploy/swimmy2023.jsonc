@@ -28,7 +28,7 @@
             "grabber-motor-grab" : false
         },
         "plotting": {
-            "enabled" : false,
+            "enabled" : true,
             "version" : 3
         },
         "pneumatics": {
@@ -926,12 +926,12 @@
             //
             "pid": {                        
                 "xctrl": {
-                    "kp": 8.0,
+                    "kp": 10.0,
                     "ki": 0,
                     "kd": 0
                 },
                 "yctrl": {
-                    "kp": 6.0,
+                    "kp": 10.0,
                     "ki": 0,
                     "kd": 0
                 },
@@ -1036,7 +1036,7 @@
             "balance-pid" : {
                 "kp" : 0.035,
                 "ki" : 0.0,
-                "kd" : 0.0,
+                "kd" : 0.0,        //  0.000001,
                 "kf" : 0.0,
                 "max" : 0.5,           // Meters Per Second
                 "min" : -0.5,          //Meters Per Second
@@ -1096,7 +1096,7 @@
         }
     },
     "testmode": {
-        "enabled": false,
+        "enabled": true,
         "which": 4,
         "0": {
             "angle": 90,
@@ -1188,7 +1188,7 @@
             //
             // The duration to run the spinner motors backwards 
             //
-            "duration" : 0.2,
+            "duration" : 0.2
         },
         "79" : {
             "position" : 0,

@@ -8,6 +8,9 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardContainer;
 
 import static org.xero1425.swervelib.ctre.CtreUtils.checkCtreError;
 
+import org.xero1425.misc.MessageLogger;
+import org.xero1425.misc.MessageType;
+
 public final class Falcon500SteerControllerFactoryBuilder {
     private static final int CAN_TIMEOUT_MS = 250;
     private static final int STATUS_FRAME_GENERAL_PERIOD_MS = 250;
@@ -172,9 +175,24 @@ public final class Falcon500SteerControllerFactoryBuilder {
         }
 
         @Override
-        public double synchronizeEncoders() {
+        public void heartBeat(MessageLogger logger, String which) {
+            double absoluteAngle = absoluteEncoder.getAbsoluteAngle();
+            logger.startMessage(MessageType.Info);
+            logger.add("heartBeat:");
+            logger.add(which);
+            logger.add("angle", Math.toDegrees(absoluteAngle));
+            logger.endMessage();
+        }
+
+        @Override
+        public double synchronizeEncoders(MessageLogger logger, String which) {
             double absoluteAngle = absoluteEncoder.getAbsoluteAngle();
             motor.setSelectedSensorPosition(absoluteAngle / motorEncoderPositionCoefficient);
+            // logger.startMessage(MessageType.Info);
+            // logger.add("synchronizeEncoders:");
+            // logger.add(which);
+            // logger.add("angle", Math.toDegrees(absoluteAngle));
+            // logger.endMessage();
             return absoluteAngle;            
         }
 
@@ -193,7 +211,7 @@ public final class Falcon500SteerControllerFactoryBuilder {
             if (motor.getSelectedSensorVelocity() * motorEncoderVelocityCoefficient < ENCODER_RESET_MAX_ANGULAR_VELOCITY) {
                 if (++resetIteration >= ENCODER_RESET_ITERATIONS) {
                     resetIteration = 0;
-                    currentAngleRadians = synchronizeEncoders();
+                    currentAngleRadians = synchronizeEncoders(null, null);
                 }
             } else {
                 resetIteration = 0;

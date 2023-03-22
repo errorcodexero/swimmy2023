@@ -8,6 +8,8 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardContainer;
 
 import static org.xero1425.swervelib.rev.RevUtils.checkNeoError;
 
+import org.xero1425.misc.MessageLogger;
+
 public final class NeoSteerControllerFactoryBuilder {
     // PID configuration
     private double pidProportional = Double.NaN;
@@ -119,7 +121,11 @@ public final class NeoSteerControllerFactoryBuilder {
         }
 
         @Override
-        public double synchronizeEncoders() {
+        public void heartBeat(MessageLogger logger, String which) {
+        }
+
+        @Override
+        public double synchronizeEncoders(MessageLogger logger, String which) {
             double absoluteAngle = absoluteEncoder.getAbsoluteAngle();
             motorEncoder.setPosition(absoluteAngle);
             return absoluteAngle;
@@ -137,14 +143,14 @@ public final class NeoSteerControllerFactoryBuilder {
             // Reset the NEO's encoder periodically when the module is not rotating.
             // Sometimes (~5% of the time) when we initialize, the absolute encoder isn't fully set up, and we don't
             // end up getting a good reading. If we reset periodically this won't matter anymore.
-            if (motorEncoder.getVelocity() < ENCODER_RESET_MAX_ANGULAR_VELOCITY) {
-                if (++resetIteration >= ENCODER_RESET_ITERATIONS) {
-                    resetIteration = 0;
-                    currentAngleRadians = synchronizeEncoders() ;
-                }
-            } else {
-                resetIteration = 0;
-            }
+            // if (motorEncoder.getVelocity() < ENCODER_RESET_MAX_ANGULAR_VELOCITY) {
+            //     if (++resetIteration >= ENCODER_RESET_ITERATIONS) {
+            //         resetIteration = 0;
+            //         currentAngleRadians = synchronizeEncoders() ;
+            //     }
+            // } else {
+            //     resetIteration = 0;
+            // }
 
             double currentAngleRadiansMod = currentAngleRadians % (2.0 * Math.PI);
             if (currentAngleRadiansMod < 0.0) {

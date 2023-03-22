@@ -1,5 +1,7 @@
 package org.xero1425.base.misc;
 
+import static org.junit.Assert.fail;
+
 import org.xero1425.base.XeroRobot;
 import org.xero1425.misc.MessageLogger;
 import org.xero1425.misc.MessageType;
@@ -61,11 +63,22 @@ public class XeroTimer {
     public boolean isExpired() {
         boolean ret = false ;
 
+        if (running_ == false)
+            return true ;
+
         if (running_ && robot_.getTime() > endtime_) {
             running_ = false ;
             ret = true ;
         }
 
         return ret ;
+    }
+
+    public String toString() {
+        String ret = "XeroTimer " + name_ ;
+        ret += " running " + (running_ ? "true" : "false");
+        ret += " endtime " + endtime_ ;
+        ret += " currenttime " + robot_.getTime() ;
+        return ret;
     }
 }

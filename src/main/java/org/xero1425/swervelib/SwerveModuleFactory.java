@@ -1,5 +1,7 @@
 package org.xero1425.swervelib;
 
+import org.xero1425.misc.MessageLogger;
+
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 
 public class SwerveModuleFactory<DriveConfiguration, SteerConfiguration> {
@@ -47,8 +49,13 @@ public class SwerveModuleFactory<DriveConfiguration, SteerConfiguration> {
         }
 
         @Override
-        public void synchronizeEncoders() {
-            steerController.synchronizeEncoders();
+        public void synchronizeEncoders(MessageLogger logger, String which) {
+            steerController.synchronizeEncoders(logger, which);
+        }
+
+        @Override
+        public void heartBeat(MessageLogger logger, String which) {
+            steerController.heartBeat(logger, which);
         }
 
         @Override

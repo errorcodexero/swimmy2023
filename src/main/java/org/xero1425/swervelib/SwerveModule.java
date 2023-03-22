@@ -1,5 +1,7 @@
 package org.xero1425.swervelib;
 
+import org.xero1425.misc.MessageLogger;
+
 public interface SwerveModule {
     double getDistance() ;
 
@@ -9,5 +11,7 @@ public interface SwerveModule {
 
     void set(double driveVoltage, double steerAngle);
 
-    void synchronizeEncoders() ;
+    void synchronizeEncoders(MessageLogger logger, String which) ;
+
+    void heartBeat(MessageLogger logger, String which);
 }

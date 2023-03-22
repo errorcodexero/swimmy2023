@@ -60,7 +60,7 @@ public class AutoCollectOpCtrl extends OperationCtrl {
         drive_back_timer_ = new XeroTimer(sub.getRobot(), "collect-back-timer", 0.3);
         wait_for_vision_timer_ = new XeroTimer(sub.getRobot(), "wait-for-vision-timer", 0.2);
         settling_timer_ = new XeroTimer(sub.getRobot(), "settling", 0.2) ;
-        drive_forward_after_sensor_timer_ = new XeroTimer(sub.getRobot(), "drive-forward-after-sensor-timer", 0.1);
+        drive_forward_after_sensor_timer_ = new XeroTimer(sub.getRobot(), "drive-forward-after-sensor-timer", 0.2);
         overall_timer_ = new XeroElapsedTimer(sub.getRobot()) ;
     }
 
@@ -196,16 +196,35 @@ public class AutoCollectOpCtrl extends OperationCtrl {
             getRobotSubsystem().getSwerve().drive(new ChassisSpeeds()) ;
             settling_timer_.start() ;
             state_ = State.SettlingDelay ;
+
+            MessageLogger logger = getRobotSubsystem().getRobot().getMessageLogger() ;
+            logger.startMessage(MessageType.Debug, getRobotSubsystem().getLoggerID());
+            logger.add("starting settling timer") ;
+            logger.add("duration", settling_timer_.getDuration());
+            logger.endMessage();
         }
     }
 
     // Allow settling time after driving to location + ensure arm deployed before driving forward
     private void stateSettlingDelay() {
+        MessageLogger logger = getRobotSubsystem().getRobot().getMessageLogger() ;
+        logger.startMessage(MessageType.Debug, getRobotSubsystem().getLoggerID());
+        logger.add("settling_timer_status") ;
+        logger.add(" ").add(settling_timer_.toString());
+        logger.endMessage();
+
         if (settling_timer_.isExpired() && collect_action_.doneRaisingArm()) {
             ChassisSpeeds speed = new ChassisSpeeds(1.0, 0.0, 0.0) ;
             getRobotSubsystem().getSwerve().drive(speed) ;
             drive_forward_timer_.start() ;
             state_ = State.DriveForward ;
+        }
+        else {
+            logger.startMessage(MessageType.Debug, getRobotSubsystem().getLoggerID());
+            logger.add("in settling delay") ;
+            logger.add("settling_timer", settling_timer_.isExpired());
+            logger.add("collect_action", collect_action_.doneRaisingArm());
+            logger.endMessage();
         }
     }
 

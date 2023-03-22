@@ -132,9 +132,8 @@ public class SDSSwerveDriveSubsystem extends SwerveBaseSubsystem {
 
         createOdometry(); 
 
-        module_init_timer_ = new XeroTimer(parent.getRobot(), "swerve-init", 3.0);
-        module_encoders_inited_ = false ;
-
+        module_init_timer_ = new XeroTimer(parent.getRobot(), "swerve-init", 15.0);
+        module_encoders_inited_ = true ;
         module_init_timer_.start() ;
     }
 
@@ -226,13 +225,25 @@ public class SDSSwerveDriveSubsystem extends SwerveBaseSubsystem {
     public void computeMyState() throws Exception {
         super.computeMyState();
 
+        // fl_.heartBeat(getRobot().getMessageLogger(), "FL");
+        // fr_.heartBeat(getRobot().getMessageLogger(), "FR");
+        // bl_.heartBeat(getRobot().getMessageLogger(), "BL");
+        // br_.heartBeat(getRobot().getMessageLogger(), "BR");
+
         if (module_init_timer_.isExpired() && !module_encoders_inited_) {
-            fl_.synchronizeEncoders();
-            fr_.synchronizeEncoders();
-            bl_.synchronizeEncoders();
-            br_.synchronizeEncoders();
+            fl_.synchronizeEncoders(getRobot().getMessageLogger(), "FL");
+            fr_.synchronizeEncoders(getRobot().getMessageLogger(), "FR");
+            bl_.synchronizeEncoders(getRobot().getMessageLogger(), "BL");
+            br_.synchronizeEncoders(getRobot().getMessageLogger(), "BR");
 
             module_encoders_inited_ = true ;
+        }
+
+        if (getRobot().isDisabled()) {
+            fl_.set(0.0, 0.0);
+            fr_.set(0.0, 0.0);
+            bl_.set(0.0, 0.0);
+            br_.set(0.0, 0.0);
         }
     }
 
