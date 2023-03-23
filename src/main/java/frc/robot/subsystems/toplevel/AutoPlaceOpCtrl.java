@@ -75,7 +75,7 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
 
         place_action_ = new GPMPlaceAction(sub.getGPM(), oper.getLocation(), oper.getGamePiece(), false);
 
-        forward_timer_ = new XeroTimer(sub.getRobot(), "forward", 0.2) ;
+        forward_timer_ = new XeroTimer(sub.getRobot(), "forward", 0.3) ;
         wheels_timer_ = new XeroTimer(sub.getRobot(), "wheels", 0.1) ;
 
         overall_timer_ = new XeroElapsedTimer(sub.getRobot()) ;

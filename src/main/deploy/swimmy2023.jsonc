@@ -28,7 +28,7 @@
             "grabber-motor-grab" : false
         },
         "plotting": {
-            "enabled" : true,
+            "enabled" : false,
             "version" : 3
         },
         "pneumatics": {
@@ -203,7 +203,7 @@
                             "maxv" : 150000                 // Max velocity for trapezoidal profile, upper arm
                         },
                         "delay" : 0.0,                      // Delay until we start upper arm
-                        "target" : 91000                   // Upper arm target position
+                        "target" : 92000                   // Upper arm target position
                     }
                 },
                 "lift-shelf" : {
@@ -385,7 +385,7 @@
                                     "maxv" : 100000                 // Max velocity for trapezoidal profile, upper arm
                                 },
                                 "delay" : 0.4,                      // Delay until we start lower arm
-                                "target" : 46000                    // Lower arm target position
+                                "target" : 47000                    // Lower arm target position
                             },
                             "upper" : {
                                 "config" : {
@@ -1096,7 +1096,7 @@
         }
     },
     "testmode": {
-        "enabled": true,
+        "enabled": false,
         "which": 4,
         "0": {
             "angle": 90,

@@ -44,6 +44,8 @@ public class AutoCollectOpCtrl extends OperationCtrl {
 
     private XeroElapsedTimer overall_timer_ ;   // Measure time since auto takes over
 
+    private boolean done_driving_forward_ ;
+
     private Pose2d target_pose_ ;
     
     public AutoCollectOpCtrl(Swimmy2023RobotSubsystem sub, RobotOperation oper) throws Exception {
@@ -218,6 +220,7 @@ public class AutoCollectOpCtrl extends OperationCtrl {
             getRobotSubsystem().getSwerve().drive(speed) ;
             drive_forward_timer_.start() ;
             state_ = State.DriveForward ;
+            done_driving_forward_ = false ;
         }
         else {
             logger.startMessage(MessageType.Debug, getRobotSubsystem().getLoggerID());
@@ -231,14 +234,19 @@ public class AutoCollectOpCtrl extends OperationCtrl {
     private void stateDriveForward() {
         if (drive_forward_timer_.isExpired()) {
             getRobotSubsystem().getSwerve().drive(new ChassisSpeeds()) ;
+            done_driving_forward_ = true ;
         }
 
-        if (getRobotSubsystem().getGPM().getGrabber().sensor() && !drive_forward_after_sensor_timer_.isRunning()) {
+        if (getRobotSubsystem().getGPM().getGrabber().sensor() && 
+            !drive_forward_after_sensor_timer_.isRunning() && 
+            !done_driving_forward_) 
+        {
             drive_forward_after_sensor_timer_.start();
         }
 
-        if (drive_forward_after_sensor_timer_.isExpired()) {
+        if (drive_forward_after_sensor_timer_.isRunning() && drive_forward_after_sensor_timer_.isExpired()) {
             getRobotSubsystem().getSwerve().drive(new ChassisSpeeds()) ;
+            done_driving_forward_ = true ;
         }
 
         if (collect_action_.isDone()) {
