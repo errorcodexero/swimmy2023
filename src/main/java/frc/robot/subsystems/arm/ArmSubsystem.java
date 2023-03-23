@@ -45,7 +45,7 @@ public class ArmSubsystem extends Subsystem {
             } catch (BadMotorRequestException | MotorRequestFailedException e) {
             }
         }
-        else if (current == LoopType.Disabled) {
+        else if (prev == LoopType.Teleop && current == LoopType.Disabled) {
             try {
                 motor_upper_.getMotorController().setNeutralMode(NeutralMode.Coast);
                 motor_lower_.getMotorController().setNeutralMode(NeutralMode.Coast);

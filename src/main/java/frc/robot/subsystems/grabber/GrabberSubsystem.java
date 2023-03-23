@@ -35,7 +35,7 @@ public class GrabberSubsystem extends Subsystem {
 
     @Override
     public void init(LoopType prev, LoopType current) {
-        if (current == LoopType.Disabled && prev != LoopType.Autonomous) {
+        if (current == LoopType.Disabled && prev == LoopType.Teleop) {
             try {
                 motor_grab_.getMotorController().setNeutralMode(NeutralMode.Coast);
             }
