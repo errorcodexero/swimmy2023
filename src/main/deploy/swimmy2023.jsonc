@@ -299,7 +299,7 @@
 
                                 },
                                 "delay" : 0.4,                      // Delay until we start lower arm
-                                "target" : 96500
+                                "target" : 98000
                             },
                             "upper" : {
                                 "config" : {
@@ -385,7 +385,7 @@
                                     "maxv" : 100000                 // Max velocity for trapezoidal profile, upper arm
                                 },
                                 "delay" : 0.4,                      // Delay until we start lower arm
-                                "target" : 47000                    // Lower arm target position
+                                "target" : 48500                    // Lower arm target position
                             },
                             "upper" : {
                                 "config" : {
@@ -1097,7 +1097,7 @@
     },
     "testmode": {
         "enabled": false,
-        "which": 4,
+        "which": 81,
         "0": {
             "angle": 90,
             "power": 0.2

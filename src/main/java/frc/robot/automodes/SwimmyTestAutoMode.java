@@ -154,7 +154,7 @@ public class SwimmyTestAutoMode extends TestAutoMode {
                 break ;
 
             case 19:
-                addSubActionPair(arm, new ArmStaggeredGotoAction(arm, "place:top:cone:extend", false), true) ;
+                addSubActionPair(arm, new ArmStaggeredGotoAction(arm, "place:middle:cone:extend", false), true) ;
                 break ;
 
             case 20:
@@ -284,9 +284,9 @@ public class SwimmyTestAutoMode extends TestAutoMode {
 
             case 81:
                 {
-                    addSubActionPair(grabber, new GrabberGrabGampieceAction(grabber, GamePiece.Cube, false), true);
+                    addSubActionPair(grabber, new GrabberGrabGampieceAction(grabber, GamePiece.Cone, false), true);
                     addAction(new DelayAction(gpm.getRobot(), getDouble("delay")));
-                    addSubActionPair(gpm, new GPMPlaceAction(gpm, Location.Middle, GamePiece.Cube, true), true);
+                    addSubActionPair(gpm, new GPMPlaceAction(gpm, Location.Top, GamePiece.Cone, true), true);
                 }
                 break;
 
