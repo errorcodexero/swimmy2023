@@ -68,14 +68,14 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
         if (getRobotSubsystem().getRobot().isAutonomous())
             vision_timer_ = new XeroTimer(sub.getRobot(), "vision/timer", 0.3);
         else
-            vision_timer_ = new XeroTimer(sub.getRobot(), "vision/timer", 0.2);
+            vision_timer_ = new XeroTimer(sub.getRobot(), "vision/timer", 0.3);
 
         settling_timer_ = new XeroTimer(sub.getRobot(), "settling", 0.3) ;
         align_action_ = new SwerveLinearAlignAction(getRobotSubsystem().getSwerve(), getRobotSubsystem().getLimeLight()) ;
 
         place_action_ = new GPMPlaceAction(sub.getGPM(), oper.getLocation(), oper.getGamePiece(), false);
 
-        forward_timer_ = new XeroTimer(sub.getRobot(), "forward", 0.3) ;
+        forward_timer_ = new XeroTimer(sub.getRobot(), "forward", 0.7) ;
         wheels_timer_ = new XeroTimer(sub.getRobot(), "wheels", 0.1) ;
 
         overall_timer_ = new XeroElapsedTimer(sub.getRobot()) ;
@@ -334,7 +334,7 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
         if (!AddAlignStep || wheels_timer_.isExpired()) {
             if (do_drive_forward_) {
                 ChassisSpeeds speed ;            
-                double xspeed = 1.0;
+                double xspeed = 0.5;
                 speed = new ChassisSpeeds(xspeed, 0.0, 0.0) ;
                 getRobotSubsystem().getSwerve().drive(speed) ;
                 forward_timer_.start() ;
