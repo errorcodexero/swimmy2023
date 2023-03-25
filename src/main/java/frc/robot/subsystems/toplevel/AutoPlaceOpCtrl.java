@@ -52,6 +52,7 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
     private SwerveLinearAlignAction align_action_ ;
 
     private XeroTimer vision_timer_ ;
+    private double forward_power_ ;
     private XeroTimer forward_timer_ ;
     private XeroTimer settling_timer_ ;
     private XeroTimer wheels_timer_ ;

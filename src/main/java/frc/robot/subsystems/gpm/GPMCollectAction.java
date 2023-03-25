@@ -41,12 +41,14 @@ public class GPMCollectAction extends Action {
 
     private State state_ ;
     private boolean ground_ ;
+    private boolean timer_has_started_ ;
 
     public GPMCollectAction(GPMSubsystem subsystem, RobotOperation.GamePiece gp, boolean ground) throws Exception {
         super(subsystem.getRobot().getMessageLogger());
 
         subsystem_ = subsystem;
         ground_ = ground ;
+        timer_has_started_ = false ;
 
         if (ground) {
             arm_collect_action_ = new ArmStaggeredGotoAction(subsystem_.getArm(), "collect:extend-ground", false);
@@ -82,7 +84,6 @@ public class GPMCollectAction extends Action {
             subsystem_.getGrabber().setAction(grabber_start_collect_action_, true);
         }
         catch(Exception ex) {
-
         }
     }
 
@@ -105,7 +106,7 @@ public class GPMCollectAction extends Action {
             ret = true ;
             logger.startMessage(MessageType.Info).add("GPMCollectAction - sensor detected").endMessage();
         }
-        else if (timer_ != null && timer_.isExpired()) {
+        else if (timer_ != null && timer_has_started_ && timer_.isExpired()) {
             ret = true ;
             logger.startMessage(MessageType.Info).add("GPMCollectAction - timer timed out").endMessage();
         }
@@ -119,6 +120,7 @@ public class GPMCollectAction extends Action {
         
         if (act_ != null && act_.isDone() && timer_active_ == false) {
             timer_.start() ;
+            timer_has_started_ = true ;
             timer_active_ = true ;
         }
 
