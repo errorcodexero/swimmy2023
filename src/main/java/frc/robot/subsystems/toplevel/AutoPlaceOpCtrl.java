@@ -19,7 +19,9 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import frc.robot.subsystems.gpm.GPMPlaceAction;
 import frc.robot.subsystems.swerve.SwerveLinearAlignAction;
 import frc.robot.subsystems.toplevel.RobotOperation.GamePiece;
+import frc.robot.subsystems.toplevel.RobotOperation.GridTagPosition;
 import frc.robot.subsystems.toplevel.RobotOperation.Location;
+import frc.robot.subsystems.toplevel.RobotOperation.Slot;
 
 public class AutoPlaceOpCtrl extends OperationCtrl {
 
@@ -76,7 +78,15 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
 
         place_action_ = new GPMPlaceAction(sub.getGPM(), oper.getLocation(), oper.getGamePiece(), false);
 
-        forward_timer_ = new XeroTimer(sub.getRobot(), "forward", 0.7) ;
+        double forward_time = 0.3 ;
+        forward_power_ = 1.0 ;
+        if ((oper.getAprilTag() == GridTagPosition.Right && oper.getSlot() == Slot.Right) ||
+            (oper.getAprilTag() == GridTagPosition.Left && oper.getSlot() == Slot.Left)) {
+            forward_power_ = 0.5 ;
+            forward_time = 0.7 ;
+        }
+
+        forward_timer_ = new XeroTimer(sub.getRobot(), "forward", forward_time) ;
         wheels_timer_ = new XeroTimer(sub.getRobot(), "wheels", 0.1) ;
 
         overall_timer_ = new XeroElapsedTimer(sub.getRobot()) ;
@@ -334,9 +344,8 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
     private void stateAlignWheels() {
         if (!AddAlignStep || wheels_timer_.isExpired()) {
             if (do_drive_forward_) {
-                ChassisSpeeds speed ;            
-                double xspeed = 0.5;
-                speed = new ChassisSpeeds(xspeed, 0.0, 0.0) ;
+                ChassisSpeeds speed ;
+                speed = new ChassisSpeeds(forward_power_, 0.0, 0.0) ;
                 getRobotSubsystem().getSwerve().drive(speed) ;
                 forward_timer_.start() ;
                 state_ = State.DriveForward;
