@@ -1,5 +1,6 @@
 package frc.robot.subsystems.toplevel;
 
+import org.xero1425.base.LoopType;
 import org.xero1425.base.XeroRobot;
 import org.xero1425.base.subsystems.RobotSubsystem;
 import org.xero1425.base.subsystems.oi.Gamepad;
@@ -171,6 +172,15 @@ public class Swimmy2023RobotSubsystem extends RobotSubsystem {
         }
 
         return ret ;
+    }
+
+    @Override
+    public void init(LoopType prev, LoopType current) {
+        super.init(prev, current) ;
+        
+        if (prev == LoopType.Disabled && current == LoopType.Teleop) {
+            abort() ;
+        }
     }
 
     @Override

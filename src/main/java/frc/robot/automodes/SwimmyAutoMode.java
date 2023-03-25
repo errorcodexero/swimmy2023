@@ -58,7 +58,7 @@ public class SwimmyAutoMode extends AutoMode {
         //
         SequenceAction delaycollect = new SequenceAction(getMessageLogger());
         delaycollect.addAction(new DelayAction(getAutoController().getRobot(), collectdelay));
-        delaycollect.addSubActionPair(robot.getGPM(), new GPMCollectAction(robot.getGPM(), what, true, act, grabdelay), true);
+        delaycollect.addSubActionPair(robot.getGPM(), new GPMCollectAction(robot.getGPM(), what, true), true);
         action.addAction(delaycollect);
 
         addAction(action);
