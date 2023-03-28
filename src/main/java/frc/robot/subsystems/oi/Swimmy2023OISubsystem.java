@@ -63,4 +63,8 @@ public class Swimmy2023OISubsystem extends OISubsystem {
             swgp.setSwerveXButtons(xActionButtons);
         }
     }
+
+    public boolean isCollectButtonPressed() {
+        return oipanel_.isCollectButtonPressed();
+    }
 }

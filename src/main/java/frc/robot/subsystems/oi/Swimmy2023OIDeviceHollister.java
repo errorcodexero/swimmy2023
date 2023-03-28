@@ -55,6 +55,7 @@ public class Swimmy2023OIDeviceHollister extends OIPanel {
     private int lock_gadget_;
     private int abort_gadget_;
     private int turtle_gadget_;
+    private int collect_gadget_ ;
 
     private int cone_v_cube_1_gadget_;
     private int cone_v_cube_2_gadget_;
@@ -83,6 +84,10 @@ public class Swimmy2023OIDeviceHollister extends OIPanel {
     @Override
     public void computeState() throws Exception {
         super.computeState();
+    }
+
+    public boolean isCollectButtonPressed() {
+        return getValue(collect_gadget_) == 1 ;
     }
        
     @Override
@@ -257,6 +262,9 @@ public class Swimmy2023OIDeviceHollister extends OIPanel {
 
         num = getSubsystem().getSettingsValue("panel:gadgets:turtle").getInteger();
         turtle_gadget_ = mapButton(num, ButtonType.LowToHigh);
+
+        num = getSubsystem().getSettingsValue("panel:gadgets:collect").getInteger();
+        collect_gadget_ = mapButton(num, ButtonType.LowToHigh);
 
         num = getSubsystem().getSettingsValue("panel:gadgets:cone_v_cube:1").getInteger();
         cone_v_cube_1_gadget_ = mapButton(num, ButtonType.Level);
