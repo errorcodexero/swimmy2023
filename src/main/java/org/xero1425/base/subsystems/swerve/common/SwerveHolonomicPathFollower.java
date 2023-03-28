@@ -43,7 +43,7 @@ public class SwerveHolonomicPathFollower extends SwerveHolonomicControllerAction
         setpose_ = setpose ;
 
         plot_data_ = new Double[columns_.length] ;
-        plot_id_ = getSubsystem().initPlot("holonomic" + pathname_) ;
+        plot_id_ = getSubsystem().initPlot(pathname_) ;
 
         end_timer_ = new XeroTimer(sub.getRobot(), "holonomicpath", endtime);
         disable_vision_ = true ;

@@ -15,7 +15,7 @@ import java.util.HashMap ;
 /// the plot is ednabled.  A plot is defined by a name and a set of named columns.  Each named
 /// column has a value for each robot loop.
 /// This data can be processed by the xerotune toon located here <a href="https://www.mewserver.org/xeroprogs/" here </a>
-public class PlotManager implements IPlotManager
+public class PlotManager extends PlotManagerBase
 {
     static private String CompleteEntry = "complete" ;
     static private String PointsEntry = "points" ;
@@ -26,29 +26,21 @@ public class PlotManager implements IPlotManager
     private int next_plot_id_ ;
     private String plot_table_ ;
     private Map<Integer, PlotInfo> plots_ ;
-    private boolean enabled_ ;
-    private XeroRobot robot_ ;
 
     /// \brief create a new plot manager
     /// \param key the name of the key in the network table to hold plot data
     public PlotManager(XeroRobot robot, String key)
     {
-        robot_ = robot ;
+        super(robot) ;
+
         plots_ = new HashMap<Integer, PlotInfo>() ;
         next_plot_id_ = 0 ;
         plot_table_ = key ;
-        enabled_ = false ;
-    }
-
-    /// \brief enable or disable the storage of plotting data in the network tables
-    /// \param b if true, enable plotting, otherwise disable
-    public void enable(boolean b) {
-        enabled_ = b ;
     }
 
     public int initPlot(String name)
     {
-        if (!enabled_ || robot_.shutdownDebug())
+        if (!isPlotEnabled(name))
             return -1 ;
 
         for(int key : plots_.keySet())
@@ -65,10 +57,10 @@ public class PlotManager implements IPlotManager
 
     public void startPlot(int id, String[] cols)
     {
-        if (!enabled_ || robot_.shutdownDebug() || !plots_.containsKey(id))
-            return ;
-        
         PlotInfo info = plots_.get(id) ;
+        if (!isPlotEnabled(info.name_))
+            return ;
+
         info.cols_ = cols.length ;
         info.index_ = 0 ;
 
@@ -93,10 +85,10 @@ public class PlotManager implements IPlotManager
 
     public void addPlotData(int id, Double[] data)
     {
-        if (!enabled_ || robot_.shutdownDebug() || !plots_.containsKey(id))
+        PlotInfo info = plots_.get(id) ;
+        if (!isPlotEnabled(info.name_))
             return ;
             
-        PlotInfo info = plots_.get(id) ;
         if (data.length == info.cols_)
         {
             NetworkTableInstance inst = NetworkTableInstance.getDefault() ;
@@ -111,7 +103,8 @@ public class PlotManager implements IPlotManager
 
     public void endPlot(int id)
     {
-        if (!enabled_ || robot_.shutdownDebug() || !plots_.containsKey(id))
+        PlotInfo info = plots_.get(id) ;
+        if (!isPlotEnabled(info.name_))
             return ;
             
         NetworkTableInstance inst = NetworkTableInstance.getDefault() ;

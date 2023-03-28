@@ -73,7 +73,7 @@ public abstract class XeroRobot extends TimedRobot {
     private ISettingsSupplier settings_ ;
 
     // The plot manager for the robot
-    private IPlotManager plot_mgr_ ;
+    private PlotManagerBase plot_mgr_ ;
 
     // The path following paths
     private XeroPathManager paths_ ;
@@ -721,7 +721,7 @@ public abstract class XeroRobot extends TimedRobot {
 
     /// \brief Returns the mesasge logger
     /// \returns the message logger
-    public IPlotManager getPlotManager() {
+    public PlotManagerBase getPlotManager() {
         return plot_mgr_;
     }
 
