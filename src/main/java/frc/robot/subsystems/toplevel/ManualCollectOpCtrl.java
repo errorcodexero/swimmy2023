@@ -44,6 +44,7 @@ public class ManualCollectOpCtrl extends OperationCtrl {
         }
         else if (state_ == State.WaitingForGamePiece) {
             if (collect_action_.isDone()) {
+                getRobotSubsystem().getOI().disableGamepad();
                 ChassisSpeeds speed = new ChassisSpeeds(-3.0, 0.0, 0.0) ;
                 getRobotSubsystem().getSwerve().drive(speed) ;
                 drive_back_timer_.start() ;
