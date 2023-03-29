@@ -11,12 +11,12 @@ import org.xero1425.misc.MissingParameterException;
 
 import frc.robot.SwimmyRobot2023;
 import frc.robot.subsystems.gpm.GPMStowAction;
-import frc.robot.subsystems.toplevel.OperationCtrl;
 import frc.robot.subsystems.toplevel.RobotOperation;
 import frc.robot.subsystems.toplevel.Swimmy2023RobotSubsystem;
 import frc.robot.subsystems.toplevel.RobotOperation.Action;
 import frc.robot.subsystems.toplevel.RobotOperation.GamePiece;
 import frc.robot.subsystems.toplevel.RobotOperation.GridTagPosition;
+import frc.robot.subsystems.toplevel.RobotOperation.Location;
 import frc.robot.subsystems.toplevel.RobotOperation.Slot;
 
 //
@@ -50,9 +50,7 @@ public class Swimmy2023OIDeviceHollister extends OIPanel {
         }  
     } ;
 
-    private DisplayPattern current_pattern_ ;
     private int collect_v_place_gadget_;
-    private int auto_v_manual_gadget_;
     private int lock_gadget_;
     private int abort_gadget_;
     private int turtle_gadget_;
@@ -73,13 +71,15 @@ public class Swimmy2023OIDeviceHollister extends OIPanel {
     private OILed state_output1_ ;
     private OILed state_output2_ ;
 
-    private int station_ground_gadget_ ;
-
     private GPMStowAction turtle_action_ ;
+
+    private DisplayPattern current_display_ ;
 
     public Swimmy2023OIDeviceHollister(OISubsystem sub, String name, int index)
             throws BadParameterTypeException, MissingParameterException {
         super(sub, name, index);
+
+        current_display_ = DisplayPattern.NONE ;
     }
 
     @Override
@@ -130,19 +130,32 @@ public class Swimmy2023OIDeviceHollister extends OIPanel {
         }
     }
     
-    private RobotOperation.Location getHeight() {
+    private RobotOperation.Location getLocation() {
         if (getValue(height_1_gadget_) == 0 && getValue(height_2_gadget_) == 0) {
-            return RobotOperation.Location.Middle;
+            return Location.Middle;
         } else if (getValue(height_1_gadget_) == 1 && getValue(height_2_gadget_) == 0) {
-            return RobotOperation.Location.Top;
+            return Location.Top;
         } else {
-            return RobotOperation.Location.Bottom;
+            return Location.Bottom;
         }
     }
 
-    private boolean driverGroundCollect() {
+    private RobotOperation.Action getAction() {
+        RobotOperation.Action act = Action.Collect ;
+        if (getValue(collect_v_place_gadget_) == 1) {
+            act = Action.Place ;
+        }
+        return act ;
+    }
+
+    private boolean isDriverGroundCollect() {
         Gamepad gp = getSubsystem().getGamePad();
         return gp.isRTriggerPressed();
+    }
+
+    private boolean isDriverManualStationCollect() {
+        Gamepad gp = getSubsystem().getGamePad();
+        return gp.isRBackButtonPressed();
     }
 
     private boolean isAbort() {
@@ -162,8 +175,12 @@ public class Swimmy2023OIDeviceHollister extends OIPanel {
 
         SwimmyRobot2023 robot = ((SwimmyRobot2023)getSubsystem().getRobot());
         Swimmy2023RobotSubsystem robotSubsystem = ((Swimmy2023RobotSubsystem)robot.getRobotSubsystem());
+        RobotOperation operation = null ;
+        GamePiece gp = getGamePiece() ;
 
-        if (robotSubsystem.isOperationComplete() == true && current_pattern_ != DisplayPattern.ERROR) {
+        robotSubsystem.setDisplayState(gp);
+
+        if (robotSubsystem.getRunningController() == null && current_display_ != DisplayPattern.NONE) {
             setDisplay(DisplayPattern.NONE);
         }
 
@@ -173,53 +190,42 @@ public class Swimmy2023OIDeviceHollister extends OIPanel {
         }
         else if (isAbort()) {
             robotSubsystem.abort();
+            robotSubsystem.cancelAction();
             setDisplay(DisplayPattern.NONE);
-        } else {
-            RobotOperation operation = new RobotOperation();
-            boolean driver_ground_collect = driverGroundCollect();
-
-            operation.setAction(getValue(collect_v_place_gadget_) == 1 && !driver_ground_collect ? RobotOperation.Action.Place : RobotOperation.Action.Collect);
-            operation.setGamePiece(getGamePiece());
+        } else if (isDriverGroundCollect()) {
+            operation = new RobotOperation(gp, true);
+        }
+        else if (isDriverManualStationCollect()) {
+            operation = new RobotOperation(gp, false);
+        }
+        else if (getValue(lock_gadget_) == 1) {
+            operation = new RobotOperation();
+            operation.setAction(getAction());
+            operation.setGamePiece(gp);
             operation.setAprilTag(getTag());
-            if (operation.getAction() == Action.Collect)
-                operation.setManual(getValue(auto_v_manual_gadget_) == 0);
-            else
-                operation.setManual(false);
             operation.setSlot(getSlot());
-            operation.setLocation(getHeight());
-            operation.setGround(driver_ground_collect) ;
-            
-            if (getValue(lock_gadget_) == 1 || driver_ground_collect) {
-                if (robotSubsystem.setOperation(operation)) {
-                    if (operation.getGamePiece() == GamePiece.Cone) {
-                        setDisplay(DisplayPattern.CONE);
-                    }
-                    else {
-                        setDisplay(DisplayPattern.CUBE);                        
-                    }
-                } else {
-                    setDisplay(DisplayPattern.ERROR);
-                }
-            }
-            else {
-                OperationCtrl running = robotSubsystem.getRunningController();
+            operation.setLocation(getLocation());
+            operation.setGround(false);
+            operation.setManual(false);
+        }
 
-                if (running != null && running.getOper().getGround()) {
-                    //
-                    // We are actively running a ground operation
-                    //
-                    if (operation.getGamePiece() != running.getOper().getGamePiece() && operation.getGamePiece() != GamePiece.None) {
-                        running.updateGamePiece(operation.getGamePiece());
-                    }
-                }
+        if (operation != null) {
+            if (!robotSubsystem.setOperation(operation)) {
+                setDisplay(DisplayPattern.ERROR);
+            }
+            else if (gp == GamePiece.Cone) {
+                setDisplay(DisplayPattern.CONE);
+            }
+            else if (gp == GamePiece.Cube) {
+                setDisplay(DisplayPattern.CUBE);
             }
         }
     }
 
     private void setDisplay(DisplayPattern pattern) {
-        current_pattern_ = pattern ;
-        int value = pattern.value ;
+        current_display_ = pattern ;
 
+        int value = pattern.value ;
         if ((value & 1) == 0) {
             state_output1_.setState(State.OFF);
         }
@@ -254,9 +260,6 @@ public class Swimmy2023OIDeviceHollister extends OIPanel {
 
         num = getSubsystem().getSettingsValue("panel:gadgets:collect_v_place").getInteger();
         collect_v_place_gadget_ = mapButton(num, ButtonType.Level);
-
-        num = getSubsystem().getSettingsValue("panel:gadgets:auto_v_manual").getInteger();
-        auto_v_manual_gadget_ = mapButton(num, ButtonType.Level);
 
         num = getSubsystem().getSettingsValue("panel:gadgets:lock").getInteger();
         lock_gadget_ = mapButton(num, ButtonType.LowToHigh);
@@ -293,8 +296,5 @@ public class Swimmy2023OIDeviceHollister extends OIPanel {
         
         num = getSubsystem().getSettingsValue("panel:gadgets:height:2").getInteger();
         height_2_gadget_ = mapButton(num, ButtonType.Level);
-
-        num = getSubsystem().getSettingsValue("panel:gadgets:station_v_ground").getInteger();
-        station_ground_gadget_ = mapButton(num, ButtonType.Level);
     }
 }

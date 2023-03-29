@@ -235,8 +235,6 @@ public class Swimmy2023RobotSubsystem extends RobotSubsystem {
         logger.endMessage();
 
         try {
-            setDisplayState(oper.getGamePiece());
-            
             if (oper.getGround()) {
                 ctrl_ = new AutoCollectGroundOpCtrl(this, oper);
             }
@@ -261,7 +259,6 @@ public class Swimmy2023RobotSubsystem extends RobotSubsystem {
             logger.endMessage();
             getOI().enableGamepad();
             getSwerve().enableVision(true);
-            setDisplayState(GamePiece.None);
             ctrl_ = null;
 
             return false;
@@ -276,7 +273,6 @@ public class Swimmy2023RobotSubsystem extends RobotSubsystem {
             logger.endMessage();
             getOI().enableGamepad();
             getSwerve().enableVision(true);
-            setDisplayState(GamePiece.None);
             ctrl_ = null;
 
             return false;
@@ -309,7 +305,6 @@ public class Swimmy2023RobotSubsystem extends RobotSubsystem {
             abort() ;
             getOI().enableGamepad();
             getSwerve().enableVision(true);
-            setDisplayState(GamePiece.None);
         }
 
         if (ctrl_ != null) {
@@ -321,7 +316,6 @@ public class Swimmy2023RobotSubsystem extends RobotSubsystem {
                 logger.endMessage();
                 getOI().enableGamepad();
                 getSwerve().enableVision(true);
-                setDisplayState(GamePiece.None);
                 ctrl_ = null;
             }
         }

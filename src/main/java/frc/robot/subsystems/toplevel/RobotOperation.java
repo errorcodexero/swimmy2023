@@ -67,6 +67,16 @@ public class RobotOperation {
         ground_ = oper.getGround();
     }
 
+    public RobotOperation(GamePiece gp, boolean ground) {
+        action_ = Action.Collect ;
+        gp_ = gp ;
+        tag_ = GridTagPosition.Middle;
+        slot_ = Slot.Middle;
+        loc_ = Location.Middle;
+        manual_ = true ;
+        ground_ = ground ;
+    }
+
     public RobotOperation(Action a, GamePiece gp, GridTagPosition t, Slot s, Location l, boolean m, boolean g) {
         action_ = a ;
         gp_ = gp;
