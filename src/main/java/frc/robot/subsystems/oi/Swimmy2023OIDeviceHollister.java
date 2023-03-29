@@ -22,17 +22,15 @@ import frc.robot.subsystems.toplevel.RobotOperation.Slot;
 //
 // Switches, purpose, and types
 //
-// Auto vs Manual       Single Toggle (1 DIO)
 // Collect vs Place     Single Toggle (1 DIO)
-// Cone vs Cube         Single Toggle (1 DIO)
 // Lock                 Button (1 DIO)
 // Abort                Button (1 DIO)
+// Turtle               Button (1 DIO)
+// Collect              Button (1 DIO)
+// Cone vs Cube         Single Toggle (1 DIO)
 // April Tag            Three way toggle (2 DIOs)
 // Slot                 Three way toggle (2 DIOs)
 // Height               Three way toggle (2 DIOs)
-// EndGame              Single Toggle (1 DIO)
-// Turtle               Button (1 DIO)
-// Action               Button (1 DIO)
 //
 
 public class Swimmy2023OIDeviceHollister extends OIPanel {
@@ -178,9 +176,15 @@ public class Swimmy2023OIDeviceHollister extends OIPanel {
         RobotOperation operation = null ;
         GamePiece gp = getGamePiece() ;
 
+        //
+        // Robot always reflects the state of the cube/cone switch on the OI
+        //
         robotSubsystem.setDisplayState(gp);
 
         if (robotSubsystem.getRunningController() == null && current_display_ != DisplayPattern.NONE) {
+            //
+            // If the robot subsystem has finished a controller, blank the OI display
+            //
             setDisplay(DisplayPattern.NONE);
         }
 
