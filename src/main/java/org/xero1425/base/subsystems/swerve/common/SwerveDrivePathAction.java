@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.xero1425.base.misc.XeroTimer;
 import org.xero1425.misc.BadParameterTypeException;
+import org.xero1425.misc.MessageLogger;
+import org.xero1425.misc.MessageType;
 import org.xero1425.misc.MissingParameterException;
 
 import edu.wpi.first.math.geometry.Pose2d;
@@ -113,15 +115,26 @@ public class SwerveDrivePathAction extends SwerveHolonomicControllerAction {
             timer_.start();
         }
 
+        MessageLogger logger = getSubsystem().getRobot().getMessageLogger();
         if (deltat >= trajectory_.getTotalTimeSeconds() && controller().atReference()) {
             getSubsystem().endPlot(plot_id_);
             setDone() ;
             getSubsystem().drive(new ChassisSpeeds());
+
+            logger.startMessage(MessageType.Info);
+            logger.add("SwerveDrivePathAction: complete due robot at endpoint");
+            logger.add("target pose", end_);
+            logger.add("actual pose", getSubsystem().getPose());
+            logger.endMessage();
         }
         else if (deltat >= trajectory_.getTotalTimeSeconds() && timer_.isExpired()) {
             getSubsystem().endPlot(plot_id_);
             setDone() ;
             getSubsystem().drive(new ChassisSpeeds());
+
+            logger.startMessage(MessageType.Info);
+            logger.add("SwerveDrivePathAction: complete due to timer expiration");
+            logger.endMessage();
         }
     }
 

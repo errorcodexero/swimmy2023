@@ -59,6 +59,8 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
     private XeroTimer settling_timer_ ;
     private XeroTimer wheels_timer_ ;
 
+    private double arm_wait_start_time_ ;
+
     private XeroElapsedTimer overall_timer_ ;   // Measure time since auto takes over
     
     public AutoPlaceOpCtrl(Swimmy2023RobotSubsystem sub, RobotOperation oper) throws BadParameterTypeException, MissingParameterException {
@@ -365,6 +367,7 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
                     state_ = State.SettlingDelay ;
                 }
                 else {
+                    arm_wait_start_time_ = getRobotSubsystem().getRobot().getTime();
                     state_ = State.WaitingOnArm;                    
                 }
             }
@@ -373,6 +376,12 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
 
     private void stateDriveForward() {
         if (forward_timer_.isExpired()) {
+            MessageLogger logger = getRobotSubsystem().getRobot().getMessageLogger();
+            logger.startMessage(MessageType.Info);
+            logger.add("DriveForward:");
+            logger.add("pose", getRobotSubsystem().getSwerve().getPose());
+            logger.endMessage();
+
             if (AddSettlingDelay) {
                 getRobotSubsystem().getSwerve().drive(new ChassisSpeeds());
                 getRobotSubsystem().getSwerve().enableVision(true);
@@ -380,6 +389,7 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
                 state_ = State.SettlingDelay ;
             }
             else {
+                arm_wait_start_time_ = getRobotSubsystem().getRobot().getTime();
                 state_ = State.WaitingOnArm;
             }
         }
@@ -387,20 +397,17 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
 
     private void stateSettlingDelay() {
         if (settling_timer_.isExpired()) {
+            arm_wait_start_time_ = getRobotSubsystem().getRobot().getTime();
             state_ = State.WaitingOnArm;
         }
     }
 
     private void stateWaitingOnArm() {
-        MessageLogger logger = getRobotSubsystem().getRobot().getMessageLogger() ;
-        logger.startMessage(MessageType.Debug, getRobotSubsystem().getLoggerID());
-        logger.add("Waiting On Arm") ;
-        logger.endMessage();
-
         if (place_action_.isReadyToDrop()) {
-
+            MessageLogger logger = getRobotSubsystem().getRobot().getMessageLogger() ;
             logger.startMessage(MessageType.Info) ;
             logger.add("Dropping game piece") ;
+            logger.add("wait time", getRobotSubsystem().getRobot().getTime() - arm_wait_start_time_);
             logger.add("uppper arm", getRobotSubsystem().getGPM().getArm().getUpperSubsystem().getPosition());
             logger.add("lower arm", getRobotSubsystem().getGPM().getArm().getLowerSubsystem().getPosition());
             logger.endMessage();
