@@ -245,7 +245,12 @@ public class Swimmy2023RobotSubsystem extends RobotSubsystem {
                     ctrl_ = new AutoPlaceOpCtrl(this, oper);
                 }
                 else {
-                    ctrl_ = new AutoCollectOpCtrl(this, oper);
+                    if (oper.getManual()) {
+                        ctrl_ = new ManualCollectOpCtrl(this, oper);
+                    }
+                    else {
+                        ctrl_ = new AutoCollectOpCtrl(this, oper);
+                    }
                 }
             }
         }

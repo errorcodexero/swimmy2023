@@ -50,7 +50,7 @@ public class FieldLocationData {
     // According to the game manual, this shouild be 0.859964 but we have adjusted slightly based on
     // emperical experiments.
     //
-    static final double GridYOffset = 0.59000;
+    static final double GridYOffset = 0.57000;
 
     public class FieldItem
     {

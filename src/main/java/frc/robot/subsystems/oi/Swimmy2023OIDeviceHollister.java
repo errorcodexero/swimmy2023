@@ -14,6 +14,7 @@ import frc.robot.subsystems.gpm.GPMStowAction;
 import frc.robot.subsystems.toplevel.OperationCtrl;
 import frc.robot.subsystems.toplevel.RobotOperation;
 import frc.robot.subsystems.toplevel.Swimmy2023RobotSubsystem;
+import frc.robot.subsystems.toplevel.RobotOperation.Action;
 import frc.robot.subsystems.toplevel.RobotOperation.GamePiece;
 import frc.robot.subsystems.toplevel.RobotOperation.GridTagPosition;
 import frc.robot.subsystems.toplevel.RobotOperation.Slot;
@@ -180,10 +181,13 @@ public class Swimmy2023OIDeviceHollister extends OIPanel {
             operation.setAction(getValue(collect_v_place_gadget_) == 1 && !driver_ground_collect ? RobotOperation.Action.Place : RobotOperation.Action.Collect);
             operation.setGamePiece(getGamePiece());
             operation.setAprilTag(getTag());
-            operation.setManual(getValue(auto_v_manual_gadget_) == 0);
+            if (operation.getAction() == Action.Collect)
+                operation.setManual(getValue(auto_v_manual_gadget_) == 0);
+            else
+                operation.setManual(false);
             operation.setSlot(getSlot());
             operation.setLocation(getHeight());
-            operation.setGround((getValue(station_ground_gadget_) == 1) || driver_ground_collect) ;
+            operation.setGround(driver_ground_collect) ;
             
             if (getValue(lock_gadget_) == 1 || driver_ground_collect) {
                 if (robotSubsystem.setOperation(operation)) {

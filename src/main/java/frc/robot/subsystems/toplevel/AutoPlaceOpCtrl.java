@@ -73,7 +73,7 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
         else
             vision_timer_ = new XeroTimer(sub.getRobot(), "vision/timer", 0.3);
 
-        settling_timer_ = new XeroTimer(sub.getRobot(), "settling", 0.3) ;
+        settling_timer_ = new XeroTimer(sub.getRobot(), "settling",0.3) ;
         align_action_ = new SwerveLinearAlignAction(getRobotSubsystem().getSwerve(), getRobotSubsystem().getLimeLight()) ;
 
         place_action_ = new GPMPlaceAction(sub.getGPM(), oper.getLocation(), oper.getGamePiece(), false);
@@ -82,14 +82,21 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
         forward_power_ = 1.0 ;
         if ((oper.getAprilTag() == GridTagPosition.Right && oper.getSlot() == Slot.Right) ||
             (oper.getAprilTag() == GridTagPosition.Left && oper.getSlot() == Slot.Left)) {
-            forward_power_ = 0.5 ;
-            forward_time = 0.7 ;
+            forward_power_ = 0.25 ;
+            forward_time = 1.0 ;
         }
 
         forward_timer_ = new XeroTimer(sub.getRobot(), "forward", forward_time) ;
         wheels_timer_ = new XeroTimer(sub.getRobot(), "wheels", 0.1) ;
 
         overall_timer_ = new XeroElapsedTimer(sub.getRobot()) ;
+        
+        MessageLogger logger = getRobotSubsystem().getRobot().getMessageLogger();
+        logger.startMessage(MessageType.Info);
+        logger.add("AutoPlaceOpCtrl: DriveForward") ;
+        logger.add("power", forward_power_) ;
+        logger.add("time", forward_time);
+        logger.endMessage();
     }
 
     @Override

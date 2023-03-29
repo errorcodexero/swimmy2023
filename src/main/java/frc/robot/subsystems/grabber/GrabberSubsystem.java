@@ -24,7 +24,7 @@ public class GrabberSubsystem extends Subsystem {
         addChild(motor_grab_);
         
         motor_spin_ = new MotorEncoderSubsystem(this, "grabber-motor-spin", false);
-        motor_spin_.getMotorController().setCurrentLimit(60.0, 20.0);
+        motor_spin_.getMotorController().setCurrentLimit(60.0, 15.0);
         addChild(motor_spin_);
 
         int v = getSettingsValue("hw:sensor:lower").getInteger();

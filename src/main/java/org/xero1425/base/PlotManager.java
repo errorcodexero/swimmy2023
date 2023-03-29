@@ -58,7 +58,7 @@ public class PlotManager extends PlotManagerBase
     public void startPlot(int id, String[] cols)
     {
         PlotInfo info = plots_.get(id) ;
-        if (!isPlotEnabled(info.name_))
+        if (info == null || !isPlotEnabled(info.name_))
             return ;
 
         info.cols_ = cols.length ;
@@ -86,7 +86,7 @@ public class PlotManager extends PlotManagerBase
     public void addPlotData(int id, Double[] data)
     {
         PlotInfo info = plots_.get(id) ;
-        if (!isPlotEnabled(info.name_))
+        if (info == null || !isPlotEnabled(info.name_))
             return ;
             
         if (data.length == info.cols_)
@@ -104,7 +104,7 @@ public class PlotManager extends PlotManagerBase
     public void endPlot(int id)
     {
         PlotInfo info = plots_.get(id) ;
-        if (!isPlotEnabled(info.name_))
+        if (info == null || !isPlotEnabled(info.name_))
             return ;
             
         NetworkTableInstance inst = NetworkTableInstance.getDefault() ;
