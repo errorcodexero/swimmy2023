@@ -49,6 +49,10 @@ public class SwerveHolonomicPathFollower extends SwerveHolonomicControllerAction
         disable_vision_ = true ;
     }
 
+    public String getPathName() {
+        return pathname_ ;
+    }
+
     public void disableVision(boolean b) {
         disable_vision_ = b ;
     }

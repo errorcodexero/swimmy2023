@@ -262,9 +262,12 @@ public class LimeLightSubsystem extends Subsystem implements IVisionLocalization
     //
     ///////////////////////////////////////////////////////
 
+    public int getPipeLine() {
+        return pipeline_ ;
+    }
 
     public void setPipeline(int which) {
-        if (which != pipeline_)
+        if (which != pipeline_ && which != -1)
         {
             nt_.getEntry(PipelineKeyName).setNumber(which) ;
             pipeline_ = which ;
