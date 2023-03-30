@@ -37,10 +37,8 @@ public class ManualCollectOpCtrl extends OperationCtrl {
     @Override
     public void run() {
         if (state_ == State.WaitForCollectButton) {
-            if (getRobotSubsystem().getOI().isCollectButtonPressed()) {
-                getRobotSubsystem().getGPM().setAction(collect_action_);
-                state_ = State.WaitingForGamePiece ;
-            }
+            getRobotSubsystem().getGPM().setAction(collect_action_);
+            state_ = State.WaitingForGamePiece ;
         }
         else if (state_ == State.WaitingForGamePiece) {
             if (collect_action_.isDone()) {
@@ -65,5 +63,17 @@ public class ManualCollectOpCtrl extends OperationCtrl {
 
     @Override
     public void abort() {
+        switch(state_) {
+            case Idle:
+            case WaitForCollectButton:
+                break;
+
+            case WaitingForGamePiece:
+                getRobotSubsystem().getGPM().getGrabber().getSpinSubsystem().setPower(0.0);
+                break;
+
+            case DrivingBack:
+                break;
+        }
     }
 }

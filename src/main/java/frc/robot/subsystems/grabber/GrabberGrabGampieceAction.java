@@ -51,7 +51,7 @@ public class GrabberGrabGampieceAction extends Action {
         power_action_ = new MotorEncoderPowerAction(sub.getGrabSubsystem(), sub.getSettingsValue("close:hold-power").getDouble());
         start_spinner_action_ = new MotorEncoderPowerAction(sub.getSpinSubsystem(), spinpower);
 
-        stop_spinner_action_ = new MotorEncoderPowerAction(sub.getSpinSubsystem(), 0.2);
+        stop_spinner_action_ = new MotorEncoderPowerAction(sub.getSpinSubsystem(), 0.1);
 
         timer_ = new XeroTimer(sub.getRobot(), "grabbergp", spindelay);
     }

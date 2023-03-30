@@ -77,7 +77,7 @@ public class Swimmy2023OIDeviceHollister extends OIPanel {
             throws BadParameterTypeException, MissingParameterException {
         super(sub, name, index);
 
-        current_display_ = DisplayPattern.NONE ;
+        setDisplay(DisplayPattern.NONE);
     }
 
     @Override
@@ -181,7 +181,7 @@ public class Swimmy2023OIDeviceHollister extends OIPanel {
         //
         robotSubsystem.setDisplayState(gp);
 
-        if (robotSubsystem.getRunningController() == null && current_display_ != DisplayPattern.NONE) {
+        if (robotSubsystem.getRunningController() == null && current_display_ != DisplayPattern.ERROR) {
             //
             // If the robot subsystem has finished a controller, blank the OI display until the next
             // controller is activated
@@ -207,9 +207,13 @@ public class Swimmy2023OIDeviceHollister extends OIPanel {
             operation = new RobotOperation();
             operation.setAction(getAction());
             operation.setGamePiece(gp);
-            operation.setAprilTag(getTag());
-            operation.setSlot(getSlot());
             operation.setLocation(getLocation());
+            operation.setAprilTag(getTag());
+            if (gp == GamePiece.Cube && operation.getLocation() != Location.Bottom)
+                operation.setSlot(Slot.Middle);
+            else
+                operation.setSlot(getSlot());
+
             operation.setGround(false);
             operation.setManual(false);
         }

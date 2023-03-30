@@ -107,9 +107,7 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
         do_drive_forward_ = AddDriveForward ;
         do_settling_delay_ = AddSettlingDelay ;
         if (getOper().getGamePiece() == GamePiece.Cube) {
-            if (getOper().getLocation() == Location.Middle) {
-                //do_drive_forward_ = false ;
-            }
+            do_drive_forward_ = false ;
             do_settling_delay_ = false ;
         }
         state_ = State.Idle ;

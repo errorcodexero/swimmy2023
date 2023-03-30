@@ -199,8 +199,8 @@
                     "upper" : {
                         "config" : {
                             "maxj" : 1000000,               // Max accel for trapezoidal profile, upper arm
-                            "maxa" : 150000,                // Max decel for trapezoidal profile, upper arm
-                            "maxv" : 150000                 // Max velocity for trapezoidal profile, upper arm
+                            "maxa" : 400000,                // Max decel for trapezoidal profile, upper arm
+                            "maxv" : 190000                 // Max velocity for trapezoidal profile, upper arm
                         },
                         "delay" : 0.0,                      // Delay until we start upper arm
                         "target" : 92000                   // Upper arm target position
@@ -717,7 +717,7 @@
             "power" : {
                 "spin" : {
                     "cone": 0.4,
-                    "cube" : 0.4
+                    "cube" : 1.0
                 }
             }
         },
@@ -750,7 +750,7 @@
             },
             "positions" : {
                 "open" : {
-                    "cube" : 650,
+                    "cube" : 400,
                     "cone" : 100
                 }
             }
