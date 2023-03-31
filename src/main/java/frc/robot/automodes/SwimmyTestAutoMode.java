@@ -1,5 +1,7 @@
 package frc.robot.automodes;
 
+import java.util.function.Supplier;
+
 import org.xero1425.base.actions.DelayAction;
 import org.xero1425.base.actions.InvalidActionRequest;
 import org.xero1425.base.controllers.AutoController;
@@ -28,6 +30,7 @@ import frc.robot.subsystems.grabber.GrabberGrabGampieceAction;
 import frc.robot.subsystems.grabber.GrabberStartCollectAction;
 import frc.robot.subsystems.grabber.GrabberSubsystem;
 import frc.robot.subsystems.swerve.SwerveDriveBalancePlatform;
+import frc.robot.subsystems.swerve.SwerveDrivePathToGamePiece;
 import frc.robot.subsystems.swerve.SwerveDriveBalancePlatform.XYDirection;
 import frc.robot.subsystems.toplevel.RobotOperation;
 import frc.robot.subsystems.toplevel.Swimmy2023RobotSubsystem;
@@ -113,6 +116,14 @@ public class SwimmyTestAutoMode extends TestAutoMode {
             case 7:
                 addSubActionPair(swerve, new SwerveHolonomicPathFollower(swerve, getString("name"), true, 1.0), true) ;
                 break ;
+
+            case 8:
+                {
+                    String path = getString("name");
+                    Supplier<Boolean> fun = () -> { return robotsys.getGPM().getGrabber().getSensor() ; } ;
+                    addSubActionPair(swerve, new SwerveDrivePathToGamePiece(robotsys.getLimeLight(), 3, swerve, path, true, 0.1, fun), true);
+                }
+                break;
                 
             //
             // ARM test modes

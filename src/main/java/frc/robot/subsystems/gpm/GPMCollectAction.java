@@ -102,7 +102,7 @@ public class GPMCollectAction extends Action {
         MessageLogger logger = subsystem_.getRobot().getMessageLogger();
         boolean ret = false;
 
-        if (subsystem_.getGrabber().sensor()) {
+        if (subsystem_.getGrabber().getSensor()) {
             ret = true ;
             logger.startMessage(MessageType.Info).add("GPMCollectAction - sensor detected").endMessage();
         }

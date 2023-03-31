@@ -237,7 +237,7 @@ public class AutoCollectOpCtrl extends OperationCtrl {
             done_driving_forward_ = true ;
         }
 
-        if (getRobotSubsystem().getGPM().getGrabber().sensor() && 
+        if (getRobotSubsystem().getGPM().getGrabber().getSensor() && 
             !drive_forward_after_sensor_timer_.isRunning() && 
             !done_driving_forward_) 
         {

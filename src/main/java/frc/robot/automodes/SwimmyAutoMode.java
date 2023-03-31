@@ -1,5 +1,8 @@
 package frc.robot.automodes;
 
+import java.util.function.Supplier;
+
+import org.xero1425.base.actions.Action;
 import org.xero1425.base.actions.DelayAction;
 import org.xero1425.base.actions.InvalidActionRequest;
 import org.xero1425.base.actions.ParallelAction;
@@ -10,7 +13,6 @@ import org.xero1425.base.controllers.AutoMode;
 import org.xero1425.base.subsystems.swerve.common.SwerveHolonomicPathFollower;
 import org.xero1425.misc.BadParameterTypeException;
 import org.xero1425.misc.MissingParameterException;
-import org.xero1425.simulator.models.LimeLightModel;
 
 import frc.robot.subsystems.gpm.GPMCollectAction;
 import frc.robot.subsystems.gpm.GPMPlaceAction;
@@ -19,7 +21,6 @@ import frc.robot.subsystems.swerve.SwerveDrivePathToGamePiece;
 import frc.robot.subsystems.toplevel.AutoGamePieceAction;
 import frc.robot.subsystems.toplevel.RobotOperation;
 import frc.robot.subsystems.toplevel.Swimmy2023RobotSubsystem;
-import frc.robot.subsystems.toplevel.RobotOperation.Action;
 import frc.robot.subsystems.toplevel.RobotOperation.GamePiece;
 import frc.robot.subsystems.toplevel.RobotOperation.GridTagPosition;
 import frc.robot.subsystems.toplevel.RobotOperation.Location;
@@ -52,12 +53,15 @@ public class SwimmyAutoMode extends AutoMode {
         //
         // Drive path 1, across the platform to find another game piece.
         //
+        Action act ;
         if (tensor) {
+            Supplier<Boolean> fun = () -> { return robot.getGPM().getGrabber().getSensor() ; } ;
+            act = new SwerveDrivePathToGamePiece(robot.getLimeLight(), 3, robot.getSwerve(), path, setpose, 0.1, fun );
         }
         else {
-            SwerveHolonomicPathFollower act = new SwerveHolonomicPathFollower(robot.getSwerve(), path, setpose, 0.2);
-            action.addSubActionPair(robot.getSwerve(), act , true);
+            act = new SwerveHolonomicPathFollower(robot.getSwerve(), path, setpose, 0.2);
         }
+        action.addSubActionPair(robot.getSwerve(), act , true);
 
         //
         // In parallel with path 1 above, delay a fixed amount of time and then enter a ground collect operation
@@ -73,7 +77,7 @@ public class SwimmyAutoMode extends AutoMode {
     protected void driveAndPlace(String path, GridTagPosition tpos, Slot slot, Location loc, GamePiece what) throws InvalidActionRequest, BadParameterTypeException, MissingParameterException {
         Swimmy2023RobotSubsystem robot = (Swimmy2023RobotSubsystem)getAutoController().getRobot().getRobotSubsystem();
 
-        RobotOperation oper = new RobotOperation(Action.Place, what, tpos, slot, loc);
+        RobotOperation oper = new RobotOperation(RobotOperation.Action.Place, what, tpos, slot, loc);
         addSubActionPair(robot, new AutoGamePieceAction(robot, oper, path, 1.0), true);
     }
 

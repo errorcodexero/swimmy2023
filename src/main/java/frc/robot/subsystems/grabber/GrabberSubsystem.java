@@ -52,7 +52,7 @@ public class GrabberSubsystem extends Subsystem {
         putDashboard("s-lower", DisplayType.Verbose, sensor_lower_value_);
     }
 
-    public boolean sensor() {
+    public boolean getSensor() {
         return sensor_upper_value_ || sensor_lower_value_;
     }
 
