@@ -3,7 +3,9 @@ package frc.robot.automodes;
 import java.util.function.Supplier;
 
 import org.xero1425.base.actions.Action;
+import org.xero1425.base.actions.ConditionalAction;
 import org.xero1425.base.actions.DelayAction;
+import org.xero1425.base.actions.DispatchAction;
 import org.xero1425.base.actions.InvalidActionRequest;
 import org.xero1425.base.actions.ParallelAction;
 import org.xero1425.base.actions.SequenceAction;
@@ -78,15 +80,16 @@ public class SwimmyAutoMode extends AutoMode {
         Swimmy2023RobotSubsystem robot = (Swimmy2023RobotSubsystem)getAutoController().getRobot().getRobotSubsystem();
 
         RobotOperation oper = new RobotOperation(RobotOperation.Action.Place, what, tpos, slot, loc);
-        addSubActionPair(robot, new AutoGamePieceAction(robot, oper, path, 1.0), true);
+
+        Supplier<Boolean> hasGP = () -> { return robot.getGPM().getGrabber().getSensor() ; } ;
+        DispatchAction act = new DispatchAction(robot, new AutoGamePieceAction(robot, oper, path, 1.0), true);
+        ConditionalAction cond = new ConditionalAction(robot.getRobot().getMessageLogger(), hasGP, act) ;
+        addAction(cond);
     }
 
     protected void drivePath(String path, boolean setpose) throws Exception {
         Swimmy2023RobotSubsystem robot = (Swimmy2023RobotSubsystem)getAutoController().getRobot().getRobotSubsystem();
 
-        //
-        // Drive path 1, across the platform to find another game piece.
-        //
         SwerveHolonomicPathFollower act = new SwerveHolonomicPathFollower(robot.getSwerve(), path, setpose, 1.0);
         addSubActionPair(robot.getSwerve(), act , true);
     }    
