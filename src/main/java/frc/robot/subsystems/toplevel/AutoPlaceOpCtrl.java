@@ -83,7 +83,7 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
 
         align_action_ = new SwerveLinearAlignAction(getRobotSubsystem().getSwerve(), getRobotSubsystem().getLimeLight()) ;
 
-        place_action_ = new GPMPlaceAction(sub.getGPM(), oper.getLocation(), oper.getGamePiece(), false);
+        place_action_ = new GPMPlaceAction(sub.getGPM(), oper.getLocation(), oper.getGamePiece(), false, false);
 
         double forward_time = 0.3 ;
         forward_power_ = 1.0 ;

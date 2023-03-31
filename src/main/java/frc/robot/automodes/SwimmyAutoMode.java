@@ -42,7 +42,7 @@ public class SwimmyAutoMode extends AutoMode {
         //
         // Place the game piece onto the placement location
         //
-        addSubActionPair(robot.getGPM(), new GPMPlaceAction(robot.getGPM(), where, what, true), true);
+        addSubActionPair(robot.getGPM(), new GPMPlaceAction(robot.getGPM(), where, what, true, true), true);
     }
 
     protected void driveAndCollect(String path, boolean setpose, double collectdelay, double grabdelay, GamePiece what, boolean tensor) throws Exception {

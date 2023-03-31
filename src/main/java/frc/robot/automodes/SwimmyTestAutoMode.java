@@ -289,7 +289,7 @@ public class SwimmyTestAutoMode extends TestAutoMode {
                 {
                     addSubActionPair(grabber, new GrabberGrabGampieceAction(grabber, GamePiece.Cone, false), true);
                     addAction(new DelayAction(gpm.getRobot(), getDouble("delay")));
-                    addSubActionPair(gpm, new GPMPlaceAction(gpm, Location.Middle, GamePiece.Cone, true), true);
+                    addSubActionPair(gpm, new GPMPlaceAction(gpm, Location.Middle, GamePiece.Cone, true, true), true);
                 }
                 break;
 
@@ -297,7 +297,7 @@ public class SwimmyTestAutoMode extends TestAutoMode {
                 {
                     addSubActionPair(grabber, new GrabberGrabGampieceAction(grabber, GamePiece.Cone, false), true);
                     addAction(new DelayAction(gpm.getRobot(), getDouble("delay")));
-                    addSubActionPair(gpm, new GPMPlaceAction(gpm, Location.Top, GamePiece.Cone, true), true);
+                    addSubActionPair(gpm, new GPMPlaceAction(gpm, Location.Top, GamePiece.Cone, true, true), true);
                 }
                 break;
 

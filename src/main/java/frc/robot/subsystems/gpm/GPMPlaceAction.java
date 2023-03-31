@@ -45,21 +45,20 @@ public class GPMPlaceAction extends Action {
     private boolean extend_arm_ ;
     private PlaceMethod place_method_ ;
 
-    public GPMPlaceAction(GPMSubsystem sub, RobotOperation.Location loc, RobotOperation.GamePiece gp, boolean force) throws MissingParameterException, BadParameterTypeException {
+    public GPMPlaceAction(GPMSubsystem sub, RobotOperation.Location loc, RobotOperation.GamePiece gp, boolean force, boolean still) throws MissingParameterException, BadParameterTypeException {
         super(sub.getRobot().getMessageLogger());
 
         state_ = State.Idle ;
         sub_ = sub ;
         force_drop_ = force;
-        boolean shoot_cubes = false;
-
         String armpos ;
-        if (gp == RobotOperation.GamePiece.Cone || !shoot_cubes) {
-            place_method_ = PlaceMethod.Drop ;
+
+        place_method_ = PlaceMethod.Drop ;
+        if (still) {
+            armpos = "place-still:" ;
+        }
+        else {
             armpos = "place:" ;
-        } else {
-            place_method_ = PlaceMethod.Shoot ;
-            armpos = "shoot:" ;
         }
 
         switch(loc) {
@@ -81,12 +80,6 @@ public class GPMPlaceAction extends Action {
         }
         else {
             armpos += ":cube" ;
-        }
-
-        if (place_method_ == PlaceMethod.Shoot) {
-            double grabber_power = sub.getSettingsValue(armpos + ":grabber-power").getDouble();
-            double grabber_duration = sub.getSettingsValue(armpos + ":grabber-duration").getDouble();
-            shoot_action_ = new MotorEncoderPowerAction(sub_.getGrabber().getSpinSubsystem(), grabber_power, grabber_duration);
         }
 
         title_ = armpos ;
