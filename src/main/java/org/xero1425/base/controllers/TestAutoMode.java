@@ -40,6 +40,10 @@ public class TestAutoMode extends AutoMode {
         parameters_ = new HashMap<>() ;
 
         for(String key : parser.getAllKeys(TestModeKey)) {
+
+            if (key.equals("enabled") || key.equals("which"))
+                continue ;
+                
             int testno ;
 
             try {

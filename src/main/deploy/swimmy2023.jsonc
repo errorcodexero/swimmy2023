@@ -28,7 +28,7 @@
             "grabber-motor-grab" : false
         },
         "plotting": {
-            "enabled" : false,
+            "enabled" : true,
             "version" : 3
         },
         "pneumatics": {
@@ -298,8 +298,8 @@
                                     "maxv" : 100000                // Max velocity for trapezoidal/scurve profile, lower arm
 
                                 },
-                                "delay" : 0.4,                      // Delay until we start lower arm
-                                "target" : 98500
+                                "delay" : 0.3,                      // Delay until we start lower arm
+                                "target" : 97000
                             },
                             "upper" : {
                                 "config" : {
@@ -308,7 +308,7 @@
                                     "maxv" : 150000                 // Max velocity for trapezoidal profile, upper arm
                                 },
                                 "delay" : 0.0,                      // Delay until we start upper arm
-                                "target" : 211215
+                                "target" : 208000
                             }
                         },
                         "retract" : {
@@ -394,7 +394,7 @@
                                     "maxv" : 150000                 // Max velocity for trapezoidal profile, upper arm
                                 },
                                 "delay" : 0.0,                      // Delay until we start upper arm
-                                "target" : 116000                    // Upper arm target position
+                                "target" : 115000                    // Upper arm target position
                             }
                         },
                         "retract" : {
@@ -571,12 +571,12 @@
                 }
             },
             "hold": {
-                "kp": 0.000006,
+                "kp": 0.00004,
                 "ki": 0,
                 "kd": 0,
                 "kf": 0,
-                "min": -0.30,
-                "max": 0.30,
+                "min": -1.0,
+                "max": 1.0,
                 "imax": 0
             },
             "goto": {
@@ -926,12 +926,12 @@
             //
             "pid": {                        
                 "xctrl": {
-                    "kp": 10.0,
+                    "kp": 8.0,
                     "ki": 0,
                     "kd": 0
                 },
                 "yctrl": {
-                    "kp": 10.0,
+                    "kp": 8.0,
                     "ki": 0,
                     "kd": 0
                 },
@@ -1090,8 +1090,12 @@
             "before-collect-delay" : 5.0,
             "grab-delay" : 0.1
         },
-        "edges" : {
+        "Middle1" : {
             "before-collect-delay" : 1.2,
+            "grab-delay" : 0.1
+        },
+        "Edge1" : {
+            "before-collect-delay" : 2.4,
             "grab-delay" : 0.1
         }
     },

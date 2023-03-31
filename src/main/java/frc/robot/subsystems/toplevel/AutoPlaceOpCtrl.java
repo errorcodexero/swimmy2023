@@ -55,6 +55,7 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
 
     private XeroTimer vision_timer_ ;
     private double forward_power_ ;
+    private double forward_holding_ ;
     private XeroTimer forward_timer_ ;
     private XeroTimer settling_timer_ ;
     private XeroTimer wheels_timer_ ;
@@ -75,17 +76,22 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
         else
             vision_timer_ = new XeroTimer(sub.getRobot(), "vision/timer", 0.3);
 
-        settling_timer_ = new XeroTimer(sub.getRobot(), "settling",0.3) ;
+        if (oper.getLocation() == Location.Middle)
+            settling_timer_ = new XeroTimer(sub.getRobot(), "settling", 0.5) ;
+        else
+            settling_timer_ = new XeroTimer(sub.getRobot(), "settling", 0.0) ;
+
         align_action_ = new SwerveLinearAlignAction(getRobotSubsystem().getSwerve(), getRobotSubsystem().getLimeLight()) ;
 
         place_action_ = new GPMPlaceAction(sub.getGPM(), oper.getLocation(), oper.getGamePiece(), false);
 
         double forward_time = 0.3 ;
         forward_power_ = 1.0 ;
+        forward_holding_ = 0.3 ;
         if ((oper.getAprilTag() == GridTagPosition.Right && oper.getSlot() == Slot.Right) ||
             (oper.getAprilTag() == GridTagPosition.Left && oper.getSlot() == Slot.Left)) {
-            forward_power_ = 0.25 ;
-            forward_time = 1.0 ;
+            forward_power_ = 0.5 ;      // -0.25
+            forward_time = 0.7 ;        // 1.0
         }
 
         forward_timer_ = new XeroTimer(sub.getRobot(), "forward", forward_time) ;
@@ -379,6 +385,9 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
             logger.add("DriveForward:");
             logger.add("pose", getRobotSubsystem().getSwerve().getPose());
             logger.endMessage();
+
+            ChassisSpeeds spd = new ChassisSpeeds(forward_holding_, 0.0, 0.0) ;
+            getRobotSubsystem().getSwerve().drive(spd);
 
             if (AddSettlingDelay) {
                 getRobotSubsystem().getSwerve().drive(new ChassisSpeeds());

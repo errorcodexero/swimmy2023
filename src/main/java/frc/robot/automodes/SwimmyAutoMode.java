@@ -10,10 +10,12 @@ import org.xero1425.base.controllers.AutoMode;
 import org.xero1425.base.subsystems.swerve.common.SwerveHolonomicPathFollower;
 import org.xero1425.misc.BadParameterTypeException;
 import org.xero1425.misc.MissingParameterException;
+import org.xero1425.simulator.models.LimeLightModel;
 
 import frc.robot.subsystems.gpm.GPMCollectAction;
 import frc.robot.subsystems.gpm.GPMPlaceAction;
 import frc.robot.subsystems.grabber.GrabberGrabLoadedGamepieceAction;
+import frc.robot.subsystems.swerve.SwerveDrivePathToGamePiece;
 import frc.robot.subsystems.toplevel.AutoGamePieceAction;
 import frc.robot.subsystems.toplevel.RobotOperation;
 import frc.robot.subsystems.toplevel.Swimmy2023RobotSubsystem;
@@ -42,7 +44,7 @@ public class SwimmyAutoMode extends AutoMode {
         addSubActionPair(robot.getGPM(), new GPMPlaceAction(robot.getGPM(), where, what, true), true);
     }
 
-    protected void driveAndCollect(String path, boolean setpose, double collectdelay, double grabdelay, GamePiece what) throws Exception {
+    protected void driveAndCollect(String path, boolean setpose, double collectdelay, double grabdelay, GamePiece what, boolean tensor) throws Exception {
         Swimmy2023RobotSubsystem robot = (Swimmy2023RobotSubsystem)getAutoController().getRobot().getRobotSubsystem();
 
         ParallelAction action = new ParallelAction(getMessageLogger(), DonePolicy.All) ;
@@ -50,8 +52,12 @@ public class SwimmyAutoMode extends AutoMode {
         //
         // Drive path 1, across the platform to find another game piece.
         //
-        SwerveHolonomicPathFollower act = new SwerveHolonomicPathFollower(robot.getSwerve(), path, setpose, 1.0);
-        action.addSubActionPair(robot.getSwerve(), act , true);
+        if (tensor) {
+        }
+        else {
+            SwerveHolonomicPathFollower act = new SwerveHolonomicPathFollower(robot.getSwerve(), path, setpose, 0.2);
+            action.addSubActionPair(robot.getSwerve(), act , true);
+        }
 
         //
         // In parallel with path 1 above, delay a fixed amount of time and then enter a ground collect operation

@@ -63,16 +63,16 @@ public class SwimmyRobot2023 extends XeroRobot {
     Swimmy2023RobotSubsystem robot = new Swimmy2023RobotSubsystem(this);
     setRobotSubsystem(robot);
 
-    getPlotManager().enable("SwerveDrivePathAction");
-    getPlotManager().enable("DriveToPose");
-    getPlotManager().enable("Middle1Blue-Path1");
-    getPlotManager().enable("Middle1Blue-Path2");
-    getPlotManager().enable("Middle1Red-Path1");
-    getPlotManager().enable("Middle1Red-Path2");
-    getPlotManager().enable("Edge1Blue-Path1");
-    getPlotManager().enable("Edge1Blue-Path2");
-    getPlotManager().enable("Edge1Red-Path1");
-    getPlotManager().enable("Edge1Red-Path2");
+    // getPlotManager().enable("SwerveDrivePathAction");
+    // getPlotManager().enable("DriveToPose");
+    // getPlotManager().enable("Middle1Blue-Path1");
+    // getPlotManager().enable("Middle1Blue-Path2");
+    // getPlotManager().enable("Middle1Red-Path1");
+    // getPlotManager().enable("Middle1Red-Path2");
+    // getPlotManager().enable("Edge1Blue-Path1");
+    // getPlotManager().enable("Edge1Blue-Path2");
+    // getPlotManager().enable("Edge1Red-Path1");
+    // getPlotManager().enable("Edge1Red-Path2");
   }
 
   @Override

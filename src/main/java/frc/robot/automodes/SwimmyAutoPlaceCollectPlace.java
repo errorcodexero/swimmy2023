@@ -9,7 +9,7 @@ import frc.robot.subsystems.toplevel.RobotOperation.Slot;
 
 public class SwimmyAutoPlaceCollectPlace extends SwimmyAutoMode  {
     public SwimmyAutoPlaceCollectPlace(AutoController ctrl, String name, String side, String color, Location loc1, GamePiece what1,
-            GridTagPosition grid2, Slot slot2, Location loc2, GamePiece what2) throws Exception {
+            GridTagPosition grid2, Slot slot2, Location loc2, GamePiece what2, boolean tensor) throws Exception {
         super(ctrl, name) ;
 
         //
@@ -20,9 +20,9 @@ public class SwimmyAutoPlaceCollectPlace extends SwimmyAutoMode  {
         //
         // Drive a path across the charging station collecting on the other side
         //
-        double beforedelay = ctrl.getRobot().getSettingsSupplier().get("automodes:edges:before-collect-delay").getDouble() ;
-        double grabdelay = ctrl.getRobot().getSettingsSupplier().get("automodes:edges:grab-delay").getDouble() ;
-        driveAndCollect(side + color + "-Path1", true, beforedelay, grabdelay, what2);
+        double beforedelay = ctrl.getRobot().getSettingsSupplier().get("automodes:" + side + ":before-collect-delay").getDouble() ;
+        double grabdelay = ctrl.getRobot().getSettingsSupplier().get("automodes:" + side + ":grab-delay").getDouble() ;
+        driveAndCollect(side + color + "-Path1", true, beforedelay, grabdelay, what2, tensor);
 
         //
         // Drive back to place second cube
