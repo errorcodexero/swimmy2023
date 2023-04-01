@@ -58,7 +58,6 @@ public class GPMCollectAction extends Action {
         else {
             arm_collect_action_ = new ArmStaggeredGotoAction(subsystem_.getArm(), "collect:extend-shelf", false);
             arm_retract_action_ = new ArmStaggeredGotoAction(subsystem_.getArm(), "collect:retract-shelf", false);
-            //arm_lift_action_ = new ArmStaggeredGotoAction(subsystem.getArm(), "collect:lift-shelf", false) ;
             arm_lift_action_ = null ;
         }       
 
@@ -66,7 +65,7 @@ public class GPMCollectAction extends Action {
         grabber_start_collect_action_ = new GrabberStartCollectAction(subsystem_.getGrabber(), gp);
         grabber_stow_action_ = new GrabberStowAction(subsystem_.getGrabber());
 
-        ground_done_timer_ = new XeroTimer(subsystem.getRobot(), "groundtimer", 0.1);
+        ground_done_timer_ = new XeroTimer(subsystem.getRobot(), "groundtimer", 0.02);
 
         timer_ = null ;
         state_ = State.Idle ;
@@ -131,9 +130,6 @@ public class GPMCollectAction extends Action {
 
             case WaitingForDeploy:
                 if (arm_collect_action_.isDone() && grabber_start_collect_action_.isDone()) {
-                    if (timer_ != null && act_ == null) {
-                        timer_.start() ;
-                    }
                     state_ = State.WaitingForSensor ;
                 }
                 break ;

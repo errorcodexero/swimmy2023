@@ -2,7 +2,6 @@ package frc.robot.automodes;
 
 import java.util.function.Supplier;
 
-import org.xero1425.base.actions.Action;
 import org.xero1425.base.actions.ConditionalAction;
 import org.xero1425.base.actions.DelayAction;
 import org.xero1425.base.actions.DispatchAction;
@@ -12,14 +11,16 @@ import org.xero1425.base.actions.SequenceAction;
 import org.xero1425.base.actions.ParallelAction.DonePolicy;
 import org.xero1425.base.controllers.AutoController;
 import org.xero1425.base.controllers.AutoMode;
+import org.xero1425.base.subsystems.swerve.common.SwerveDriveSpeedAction;
 import org.xero1425.base.subsystems.swerve.common.SwerveHolonomicPathFollower;
 import org.xero1425.misc.BadParameterTypeException;
 import org.xero1425.misc.MissingParameterException;
+import org.xero1425.misc.Speedometer;
 
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import frc.robot.subsystems.gpm.GPMCollectAction;
 import frc.robot.subsystems.gpm.GPMPlaceAction;
 import frc.robot.subsystems.grabber.GrabberGrabLoadedGamepieceAction;
-import frc.robot.subsystems.swerve.SwerveDrivePathToGamePiece;
 import frc.robot.subsystems.toplevel.AutoGamePieceAction;
 import frc.robot.subsystems.toplevel.RobotOperation;
 import frc.robot.subsystems.toplevel.Swimmy2023RobotSubsystem;
@@ -47,43 +48,47 @@ public class SwimmyAutoMode extends AutoMode {
         addSubActionPair(robot.getGPM(), new GPMPlaceAction(robot.getGPM(), where, what, true, true), true);
     }
 
-    protected void driveAndCollect(String path, boolean setpose, double collectdelay, double grabdelay, GamePiece what, boolean tensor) throws Exception {
+    protected void driveAndCollect(String path, boolean setpose, double collectdelay, double grabdelay, GamePiece what) throws Exception {
         Swimmy2023RobotSubsystem robot = (Swimmy2023RobotSubsystem)getAutoController().getRobot().getRobotSubsystem();
 
+        SwerveHolonomicPathFollower pathact = new SwerveHolonomicPathFollower(robot.getSwerve(), path, setpose, 0.2);
+        GPMCollectAction collect = new GPMCollectAction(robot.getGPM(), what, true, pathact, grabdelay) ;
         ParallelAction action = new ParallelAction(getMessageLogger(), DonePolicy.All) ;
 
         //
         // Drive path 1, across the platform to find another game piece.
         //
-        Action act ;
-        if (tensor) {
-            Supplier<Boolean> fun = () -> { return robot.getGPM().getGrabber().getSensor() ; } ;
-            act = new SwerveDrivePathToGamePiece(robot.getLimeLight(), 3, robot.getSwerve(), path, setpose, 0.1, fun );
-        }
-        else {
-            act = new SwerveHolonomicPathFollower(robot.getSwerve(), path, setpose, 0.2);
-        }
-        action.addSubActionPair(robot.getSwerve(), act , true);
+        SequenceAction seq = new SequenceAction(robot.getRobot().getMessageLogger()) ;
+        seq.addSubActionPair(robot.getSwerve(), pathact , true);
+
+        ChassisSpeeds speed = new ChassisSpeeds(0.5, 0.0, 0.0) ;
+        SwerveDriveSpeedAction forward = new SwerveDriveSpeedAction(robot.getSwerve(), speed, 0.5);
+        Supplier<Boolean> isdone = () -> { return !collect.isDone() ; } ;
+        ConditionalAction cond = new ConditionalAction(robot.getRobot().getMessageLogger(), isdone, forward, null);
+        seq.addAction(cond);
+        
+        action.addAction(seq);
 
         //
         // In parallel with path 1 above, delay a fixed amount of time and then enter a ground collect operation
         //
         SequenceAction delaycollect = new SequenceAction(getMessageLogger());
         delaycollect.addAction(new DelayAction(getAutoController().getRobot(), collectdelay));
-        delaycollect.addSubActionPair(robot.getGPM(), new GPMCollectAction(robot.getGPM(), what, true, act, grabdelay), true);
+        delaycollect.addSubActionPair(robot.getGPM(), collect , true);
         action.addAction(delaycollect);
 
         addAction(action);
     }
     
-    protected void driveAndPlace(String path, GridTagPosition tpos, Slot slot, Location loc, GamePiece what) throws InvalidActionRequest, BadParameterTypeException, MissingParameterException {
+    protected void driveAndPlace(String path, GridTagPosition tpos, Slot slot, Location loc, GamePiece what) throws Exception {
         Swimmy2023RobotSubsystem robot = (Swimmy2023RobotSubsystem)getAutoController().getRobot().getRobotSubsystem();
 
         RobotOperation oper = new RobotOperation(RobotOperation.Action.Place, what, tpos, slot, loc);
 
         Supplier<Boolean> hasGP = () -> { return robot.getGPM().getGrabber().getSensor() ; } ;
-        DispatchAction act = new DispatchAction(robot, new AutoGamePieceAction(robot, oper, path, 1.0), true);
-        ConditionalAction cond = new ConditionalAction(robot.getRobot().getMessageLogger(), hasGP, act) ;
+        DispatchAction trueact = new DispatchAction(robot, new AutoGamePieceAction(robot, oper, path, 1.0), true);
+        GPMCollectAction falseact = new GPMCollectAction(robot.getGPM(), GamePiece.Cone, true) ;
+        ConditionalAction cond = new ConditionalAction(robot.getRobot().getMessageLogger(), hasGP, trueact, falseact) ;
         addAction(cond);
     }
 

@@ -14,18 +14,18 @@
 
             // Subsystem related messages
             "vision": false,
-            "swerve" : false,
+            "swerve" : true,
             "swimmy2023oi" : false,
             "Swimmy2023RobotSubsystem" : true,
             "limelight" : false,
             "arm-motor-lower" : false,
             "arm-motor-upper" : false,
-            "gpm" : false
+            "gpm" : true
         },
         "verbose": {
             "swerve" : true,
             "arm-motor-upper" : false,
-            "grabber-motor-grab" : false
+            "grabber-motor-grab" : true
         },
         "plotting": {
             "enabled" : true,
@@ -244,6 +244,26 @@
                         },
                         "delay" : 0.0,                      // Delay until we start upper arm
                         "target" : 40000                    // Upper arm target position
+                    }
+                },
+                "pre-extend-ground" : {
+                    "lower" : {
+                        "config" : {
+                            "maxa" : 150000,                // Max accel for trapezoidal profile, lower arm
+                            "maxd" : -150000,               // Max decel for trapezoidal profile, lower arm
+                            "maxv" : 150000                 // Max velocity for trapezoidal profile, lower arm
+                        },
+                        "delay" : 0.0,                      // Delay until we start lower arm
+                        "target" : 60000                   // Lower arm target position
+                    },
+                    "upper" : {
+                        "config" : {
+                            "maxj" : 1500000,                // Max accel for trapezoidal profile, upper arm
+                            "maxa" : 150000,               // Max decel for trapezoidal profile, upper arm
+                            "maxv" : 150000                 // Max velocity for trapezoidal profile, upper arm
+                        },
+                        "delay" : 0.0,                      // Delay until we start upper arm
+                        "target" : 20741                    // Upper arm target position
                     }
                 },
                 "extend-ground" : {
@@ -559,7 +579,7 @@
                                     "maxv" : 100000                // Max velocity for trapezoidal/scurve profile, lower arm
 
                                 },
-                                "delay" : 0.3,                      // Delay until we start lower arm
+                                "delay" : 0.4,                      // Delay until we start lower arm
                                 "target" : 98500
                             },
                             "upper" : {
@@ -730,7 +750,7 @@
                         "cone" : 1200
                     },
                     "spin-power" : 0.4,
-                    "spin-delay" : 0.5
+                    "spin-delay" : 0.2
                 },
                 "shelf" : {
                     "position" : {
@@ -738,7 +758,7 @@
                         "cone" : 1400
                     },
                     "spin-power" : 0.4,
-                    "spin-delay" : 0.5
+                    "spin-delay" : 0.2
                 },
                 "hold-power" : 0.1
             }
@@ -973,17 +993,17 @@
             //
             "pid": {                        
                 "xctrl": {
-                    "kp": 8.0,
+                    "kp": 10.0,
                     "ki": 0,
                     "kd": 0
                 },
                 "yctrl": {
-                    "kp": 8.0,
+                    "kp": 10.0,
                     "ki": 0,
                     "kd": 0
                 },
                 "rotation": {
-                    "kp": 11.0,
+                    "kp": 13.0,
                     "ki": 0,
                     "kd": 0
                 }
@@ -1135,20 +1155,20 @@
     "automodes" : {
         "center1" : {
             "before-collect-delay" : 5.0,
-            "grab-delay" : 0.1
+            "grab-delay" : 0.02
         },
         "Middle1" : {
             "before-collect-delay" : 1.2,
-            "grab-delay" : 0.1
+            "grab-delay" : 0.02
         },
         "Edge1" : {
             "before-collect-delay" : 2.4,
-            "grab-delay" : 0.1
+            "grab-delay" : 0.02
         }
     },
     "testmode": {
-        "enabled": false,
-        "which": 81,
+        "enabled": true,
+        "which": 4,
         "0": {
             "angle": 90,
             "power": 0.2
@@ -1168,7 +1188,7 @@
             "duration": 3.0
         },
         "4": {
-            "name": "Middle1Red-Path1"
+            "name": "Edge1Blue-Path1"
         },
         "5": {
             "angle": 0.0,

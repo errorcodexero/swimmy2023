@@ -6,14 +6,18 @@ import org.xero1425.misc.MessageLogger;
 
 public class ConditionalAction extends Action {
     private Supplier<Boolean> condition_ ;
-    private Action child_ ;
+    private Action iftrue_ ;
+    private Action iffalse_ ;
     private boolean running_ ;
+    private boolean state_ ;
 
-    public ConditionalAction(MessageLogger logger, Supplier<Boolean> condition, Action child) {
+    public ConditionalAction(MessageLogger logger, Supplier<Boolean> condition, Action iftrue, Action iffalse) {
         super(logger);
 
+        state_ = false ;
         condition_ = condition ;
-        child_ = child ;
+        iftrue_ = iftrue ;
+        iffalse_ = iffalse ;
         running_ = false ;
     }
 
@@ -21,12 +25,19 @@ public class ConditionalAction extends Action {
     public void start() throws Exception {
         super.start() ;
 
-        if (condition_.get()) {
-            child_.start() ;
+        state_ = condition_.get();
+        if (state_) {
+            iftrue_.start() ;
             running_ = true ;
         }
         else {
-            setDone() ;
+            if (iffalse_ != null) {
+                iffalse_.start() ;
+                running_ = true ;
+            }
+            else {
+                setDone() ;
+            }
         }
     }
 
@@ -34,20 +45,33 @@ public class ConditionalAction extends Action {
     public void run() throws Exception {
         super.run() ;
 
-        if (child_.isDone()) {
+        if (state_ && iftrue_.isDone()) {
+            setDone() ;
+        }
+        else if (!state_ && iffalse_.isDone()) {
             setDone();
         }
     }
 
     @Override
     public void cancel() {
-        if (running_ && !child_.isDone()) {
-            child_.cancel();
+        if (state_) {
+            iftrue_.cancel() ;
+        }
+        else {
+            iffalse_.cancel() ;
         }
     }
 
     @Override
     public String toString(int indent) {
-        return spaces(indent) + "ConditionalAction [" + child_.toString(0) + "]" ;
+        String ret  = spaces(indent) + "ConditionalAction [" ;
+        ret += iftrue_.toString(0) ;
+        if (iffalse_ != null) {
+            ret += ", " ;
+            ret += iffalse_.toString(0) ;
+        }
+        ret += "]" ;
+        return ret;
     }
 }

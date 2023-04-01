@@ -31,7 +31,7 @@ public class SwerveHolonomicPathFollower extends SwerveHolonomicControllerAction
     private boolean disable_vision_ ;
 
     private static final String [] columns_ = {
-        "time",
+        "time", "index",
         "tx (m)", "ty (m)", "ta (deg)",
         "ax (m)", "ay (m)", "aa (deg)"
     } ;
@@ -86,65 +86,68 @@ public class SwerveHolonomicPathFollower extends SwerveHolonomicControllerAction
 
     @Override
     public void run() throws BadMotorRequestException, MotorRequestFailedException {
+        double velocity ;
+        Pose2d target ;
 
         if (index_ < path_.getTrajectoryEntryCount())
         {
-            Pose2d target = getPoseFromPath(index_);
-            double velocity = getVelocityFromPath(index_) ;
-
-            MessageLogger logger = getSubsystem().getRobot().getMessageLogger() ;
-            logger.startMessage(MessageType.Debug, getSubsystem().getLoggerID()) ;
-            logger.add("SwerveHolonomicPathFollower Target:").add("index", index_) ;
-            logger.add(", target ") ;
-            logger.add(target.getX()).add(" ").add(target.getY()) ;
-            logger.add(" ").add(target.getRotation().getDegrees()) ;
-
-            Pose2d actual = getSubsystem().getPose() ;
-            logger.add(",actual ") ;
-            logger.add(actual.getX()).add(" ").add(actual.getY()) ;
-            logger.add(" ").add(actual.getRotation().getDegrees()) ;
-
-            logger.endMessage();
-
-            int i = 0 ;
-            plot_data_[i++] = getSubsystem().getRobot().getTime() - start_ ;
-            plot_data_[i++] = target.getX() ;
-            plot_data_[i++] = target.getY() ;
-            plot_data_[i++] = target.getRotation().getDegrees() ;
-            plot_data_[i++] = actual.getX() ;
-            plot_data_[i++] = actual.getY() ;
-            plot_data_[i++] = actual.getRotation().getDegrees() ;
-            getSubsystem().addPlotData(plot_id_, plot_data_) ;
-
-            ChassisSpeeds speed = controller().calculate(getSubsystem().getPose(), target, velocity, target.getRotation()) ;
-            getSubsystem().drive(speed) ;
-            index_++ ;
+            target = getPoseFromPath(index_);
+            velocity = getVelocityFromPath(index_) ;
         }
-        else if (index_ == path_.getTrajectoryEntryCount()) {
-            //
-            // The idea here is that after the path is done, we may not be at the path
-            // end location, especially if we are running the path very fast.  This gives
-            // time for the robot to use the Holonomic Controller to keep trying to reach
-            // the end destination up to a given timeout.
-            //
+        else {
+            target = getPoseFromPath(index_ - 1);
+            velocity = 0.0 ;
+        }
+
+        ChassisSpeeds speed = controller().calculate(getSubsystem().getPose(), target, velocity, target.getRotation()) ;
+        getSubsystem().drive(speed) ;
+
+        MessageLogger logger = getSubsystem().getRobot().getMessageLogger() ;
+        logger.startMessage(MessageType.Debug, getSubsystem().getLoggerID()) ;
+        logger.add("SwerveHolonomicPathFollower Target:").add("index", index_) ;
+        logger.add(", target ") ;
+        logger.add(target.getX()).add(" ").add(target.getY()) ;
+        logger.add(" ").add(target.getRotation().getDegrees()) ;
+
+        Pose2d actual = getSubsystem().getPose() ;
+        logger.add(",actual ") ;
+        logger.add(actual.getX()).add(" ").add(actual.getY()) ;
+        logger.add(" ").add(actual.getRotation().getDegrees()) ;
+
+        logger.endMessage();
+
+        int i = 0 ;
+        plot_data_[i++] = getSubsystem().getRobot().getTime() - start_ ;
+        plot_data_[i++] = (double)index_ ;
+        plot_data_[i++] = target.getX() ;
+        plot_data_[i++] = target.getY() ;
+        plot_data_[i++] = target.getRotation().getDegrees() ;
+        plot_data_[i++] = actual.getX() ;
+        plot_data_[i++] = actual.getY() ;
+        plot_data_[i++] = actual.getRotation().getDegrees() ;
+        getSubsystem().addPlotData(plot_id_, plot_data_) ;   
+        
+        if (index_ < path_.getTrajectoryEntryCount()) {
+            index_++ ;            
+        }
+        else {
             if (!end_phase_) {
                 end_phase_ = true ;
                 end_timer_.start() ;
             }
 
-            if (controller().atReference() || end_timer_.isExpired()) {
+            if (index_ == path_.getTrajectoryEntryCount() && (controller().atReference() || end_timer_.isExpired())) {
                 getSubsystem().endPlot(plot_id_);
                 getSubsystem().drive(new ChassisSpeeds()) ;
                 getSubsystem().enableVision(true);
                 setDone();
 
-                MessageLogger logger = getMessageLogger() ;
                 logger.startMessage(MessageType.Info) ;
                 logger.add("finished path") ;
                 logger.addQuoted(pathname_);
-                logger.add("pose", getSubsystem().getPose());
+                logger.add("pose", actual);
                 logger.endMessage();
-            }            
+            }
         }
     }
 
