@@ -42,10 +42,12 @@ public class GPMCollectAction extends Action {
     private State state_ ;
     private boolean ground_ ;
     private boolean timer_has_started_ ;
+    private boolean force_closed_ ;
 
     public GPMCollectAction(GPMSubsystem subsystem, RobotOperation.GamePiece gp, boolean ground) throws Exception {
         super(subsystem.getRobot().getMessageLogger());
 
+        force_closed_ = false ;
         subsystem_ = subsystem;
         ground_ = ground ;
         timer_has_started_ = false ;
@@ -75,6 +77,10 @@ public class GPMCollectAction extends Action {
         this(subsystem, gp, ground) ;
         act_ = act ;
         timer_ = new XeroTimer(subsystem.getRobot(), "collect-overall", timeout);
+    }
+
+    public void forcedClosed() {
+        force_closed_ = true ;
     }
 
     public void setGamePiece(GamePiece gp) {
@@ -108,6 +114,10 @@ public class GPMCollectAction extends Action {
         else if (timer_ != null && timer_has_started_ && timer_.isExpired()) {
             ret = true ;
             logger.startMessage(MessageType.Info).add("GPMCollectAction - timer timed out").endMessage();
+        }
+        else if (force_closed_) {
+            ret = true ;
+            logger.startMessage(MessageType.Info).add("GPMCollectAction - forced close").endMessage();
         }
 
         return ret ;

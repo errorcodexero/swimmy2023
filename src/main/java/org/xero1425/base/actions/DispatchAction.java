@@ -31,6 +31,14 @@ public class DispatchAction extends ActionGroup {
         block_ = block;
     }
 
+    @Override
+    public boolean isDone() {
+        if (super.isDone())
+            return true ;
+
+        return act_.isDone();
+    }
+
     /// \brief start the DispatchAction by assigning the child action to the target subsystem
     @Override
     public void start() throws Exception {

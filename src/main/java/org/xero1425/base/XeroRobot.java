@@ -1000,17 +1000,19 @@ public abstract class XeroRobot extends TimedRobot {
 
             if (robot_subsystem_.getOI() != null) {
                 sel = getAutoModeSelection() ;
-                if (sel != automode_ || !msg.equals(game_data_) || DriverStation.isFMSAttached() != fms_connection_ || auto_controller_.isTestMode())
+                boolean dbg = shutdownDebug() ;
+                if (sel != automode_ || !msg.equals(game_data_) || dbg != fms_connection_ || auto_controller_.isTestMode())
                 {
                     automode_ = sel ;
                     game_data_ = msg ;
-                    fms_connection_ = DriverStation.isFMSAttached() ;
-                    displayAutoModeState() ;
+                    fms_connection_ = dbg;
+
                 }
             }
 
             try {
                 auto_controller_.updateAutoMode(automode_, game_data_) ;
+                displayAutoModeState() ;
             }
             catch(Exception ex)
             {

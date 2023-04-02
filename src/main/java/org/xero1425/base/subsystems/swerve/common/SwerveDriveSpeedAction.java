@@ -8,11 +8,13 @@ public class SwerveDriveSpeedAction extends SwerveDriveAction {
 
     private ChassisSpeeds speed_ ;
     private XeroTimer timer_ ;
+    private double time_ ;
 
     public SwerveDriveSpeedAction(SwerveBaseSubsystem sub, ChassisSpeeds speed, double time) {
         super(sub) ;
         speed_ = speed ;
         timer_ = new XeroTimer(sub.getRobot(), "DriveSpeedAction", time);
+        time_ = time;
     }
 
     @Override
@@ -25,6 +27,8 @@ public class SwerveDriveSpeedAction extends SwerveDriveAction {
 
     @Override
     public void run() throws Exception {
+        super.run() ;
+        
         if (timer_.isExpired()) {
             setDone() ;
             getSubsystem().drive(new ChassisSpeeds());
@@ -33,6 +37,6 @@ public class SwerveDriveSpeedAction extends SwerveDriveAction {
 
     @Override
     public String toString(int indent) {
-        return spaces(indent) + "SwerveDriveSpeedAction " + speed_.toString() ;
+        return spaces(indent) + "SwerveDriveSpeedAction " + speed_.toString() + ", time " + time_;
     }
 }

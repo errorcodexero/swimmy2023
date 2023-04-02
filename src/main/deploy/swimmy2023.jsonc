@@ -14,7 +14,7 @@
 
             // Subsystem related messages
             "vision": false,
-            "swerve" : true,
+            "swerve" : false,
             "swimmy2023oi" : false,
             "Swimmy2023RobotSubsystem" : true,
             "limelight" : false,
@@ -575,8 +575,8 @@
                             "lower" : {
                                 "config" : {
                                     "maxj" : 1000000,                 // Max jerk for scurve profile, lower arm
-                                    "maxa" : 100000,                // Max accel for trapezoidal/scurve profile, lower arm
-                                    "maxv" : 100000                // Max velocity for trapezoidal/scurve profile, lower arm
+                                    "maxa" : 200000,                // Max accel for trapezoidal/scurve profile, lower arm
+                                    "maxv" : 190000                // Max velocity for trapezoidal/scurve profile, lower arm
 
                                 },
                                 "delay" : 0.4,                      // Delay until we start lower arm
@@ -585,11 +585,11 @@
                             "upper" : {
                                 "config" : {
                                     "maxj" : 1000000,                // Max accel for trapezoidal profile, upper arm
-                                    "maxa" : 150000,               // Max decel for trapezoidal profile, upper arm
-                                    "maxv" : 150000                 // Max velocity for trapezoidal profile, upper arm
+                                    "maxa" : 250000,               // Max decel for trapezoidal profile, upper arm
+                                    "maxv" : 190000                 // Max velocity for trapezoidal profile, upper arm
                                 },
                                 "delay" : 0.0,                      // Delay until we start upper arm
-                                "target" : 211215
+                                "target" : 213000
                             }
                         },
                         "retract" : {
@@ -783,7 +783,7 @@
             },
             "power" : {
                 "spin" : {
-                    "cone": 0.4,
+                    "cone": 1.0,
                     "cube" : 1.0
                 }
             }
@@ -993,12 +993,12 @@
             //
             "pid": {                        
                 "xctrl": {
-                    "kp": 10.0,
+                    "kp": 12.0,
                     "ki": 0,
                     "kd": 0
                 },
                 "yctrl": {
-                    "kp": 10.0,
+                    "kp": 12.0,
                     "ki": 0,
                     "kd": 0
                 },
@@ -1167,8 +1167,8 @@
         }
     },
     "testmode": {
-        "enabled": true,
-        "which": 4,
+        "enabled": false,
+        "which": 80,
         "0": {
             "angle": 90,
             "power": 0.2
@@ -1215,9 +1215,9 @@
             "target" : 100000
         },
         "18" : {
-            "profile1" : "escape:1",
+            "profile1" : "place-still:top:cone:extend",
             "delay" : 3.0,
-            "profile2" : "escape:2"
+            "profile2" : "place-still:top:cone:retract"
         },
         "20" : {
             "power" : 0.1,

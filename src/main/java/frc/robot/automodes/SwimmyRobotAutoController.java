@@ -27,11 +27,11 @@ public class SwimmyRobotAutoController extends AutoController {
                 addAutoMode(new SwimmyAutoModeCenter1(this, "Red Balance", "Red", Location.Top, GamePiece.Cone));
                 addAutoMode(new SwimmyAutoModeCenter1(this, "Blue Balance", "Blue", Location.Top, GamePiece.Cone));
 
-                addAutoMode(new SwimmyAutoPlaceCollectPlace(this, "Red Two Center", "Middle1", "Red", Location.Top, GamePiece.Cone, GridTagPosition.Right, Slot.Left, Location.Top, GamePiece.Cone));
-                addAutoMode(new SwimmyAutoPlaceCollectPlace(this, "Blue Two Center", "Middle1", "Blue", Location.Top, GamePiece.Cone, GridTagPosition.Left, Slot.Right, Location.Top, GamePiece.Cone));
+                addAutoMode(new SwimmyAutoPlaceCollectPlace(this, "Red Two Center", "Middle1", "Red", Location.Top, GamePiece.Cone, GridTagPosition.Right, Slot.Left, Location.Top, GamePiece.Cone, 4.6));
+                addAutoMode(new SwimmyAutoPlaceCollectPlace(this, "Blue Two Center", "Middle1", "Blue", Location.Top, GamePiece.Cone, GridTagPosition.Left, Slot.Right, Location.Top, GamePiece.Cone, 4.6));
 
-                addAutoMode(new SwimmyAutoPlaceCollectPlace(this, "Red Two Edge", "Edge1", "Red", Location.Top, GamePiece.Cone, GridTagPosition.Left, Slot.Right, Location.Top, GamePiece.Cone));
-                addAutoMode(new SwimmyAutoPlaceCollectPlace(this, "Blue Two Edge", "Edge1", "Blue", Location.Top, GamePiece.Cone, GridTagPosition.Right, Slot.Left, Location.Top, GamePiece.Cone));
+                addAutoMode(new SwimmyAutoPlaceCollectPlace(this, "Red Two Edge", "Edge1", "Red", Location.Top, GamePiece.Cone, GridTagPosition.Left, Slot.Right, Location.Top, GamePiece.Cone, 4.7));
+                addAutoMode(new SwimmyAutoPlaceCollectPlace(this, "Blue Two Edge", "Edge1", "Blue", Location.Top, GamePiece.Cone, GridTagPosition.Right, Slot.Left, Location.Top, GamePiece.Cone, 4.7));
             }
             catch(Exception ex) {
                 MessageLogger logger = robot.getMessageLogger() ;

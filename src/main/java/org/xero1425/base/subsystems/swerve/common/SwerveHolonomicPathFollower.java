@@ -1,5 +1,6 @@
 package org.xero1425.base.subsystems.swerve.common;
 
+import org.xero1425.base.actions.Action;
 import org.xero1425.base.misc.XeroTimer;
 import org.xero1425.base.motors.BadMotorRequestException;
 import org.xero1425.base.motors.MotorRequestFailedException;
@@ -16,6 +17,10 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 
 public class SwerveHolonomicPathFollower extends SwerveHolonomicControllerAction {
 
+    public interface todoLambda {
+        void doit() ;
+    }
+
     private String pathname_ ;
     private XeroPath path_;
     private int index_ ;
@@ -29,6 +34,9 @@ public class SwerveHolonomicPathFollower extends SwerveHolonomicControllerAction
     private XeroTimer end_timer_;
 
     private boolean disable_vision_ ;
+
+    private todoLambda lambda_ ;
+    private double distance_ ;
 
     private static final String [] columns_ = {
         "time", "index",
@@ -47,6 +55,11 @@ public class SwerveHolonomicPathFollower extends SwerveHolonomicControllerAction
 
         end_timer_ = new XeroTimer(sub.getRobot(), "holonomicpath", endtime);
         disable_vision_ = true ;
+    }
+
+    public void setLambda(todoLambda lambda, double dist) {
+        lambda_ = lambda ;
+        distance_ = dist ;
     }
 
     public String getPathName() {
@@ -93,11 +106,25 @@ public class SwerveHolonomicPathFollower extends SwerveHolonomicControllerAction
         {
             target = getPoseFromPath(index_);
             velocity = getVelocityFromPath(index_) ;
+            
+            double dist = getDistanceFromPath(index_);
+            if (lambda_ != null && dist > distance_) {
+                MessageLogger logger = getSubsystem().getRobot().getMessageLogger() ;
+                logger.startMessage(MessageType.Info);
+                logger.add("PathFollowing executing lambda") ;
+                logger.add("target", distance_);
+                logger.add("actual", dist) ;
+                logger.endMessage();
+
+                lambda_.doit() ;
+                lambda_ = null ;
+            }
         }
         else {
             target = getPoseFromPath(index_ - 1);
             velocity = 0.0 ;
         }
+
 
         ChassisSpeeds speed = controller().calculate(getSubsystem().getPose(), target, velocity, target.getRotation()) ;
         getSubsystem().drive(speed) ;
@@ -159,6 +186,11 @@ public class SwerveHolonomicPathFollower extends SwerveHolonomicControllerAction
     @Override
     public String toString(int indent) {
         return spaces(indent) + "SwerveHolonomicPathFollower " + pathname_ ;
+    }
+
+    private double getDistanceFromPath(int index) {
+        XeroPathSegment main = path_.getSegment(0, index) ;
+        return main.getPosition();
     }
 
     private Pose2d getPoseFromPath(int index) {

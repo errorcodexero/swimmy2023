@@ -38,24 +38,24 @@ public class GPMPlaceAction extends Action {
     private MotorEncoderPowerAction shoot_action_ ;
     private boolean ready_to_drop_ ;
     private boolean drop_game_piece_ ;
-    private boolean force_drop_ ;
     private XeroTimer drop_timer_ ;
     private String title_ ;
     private boolean is_dropped_ ;
     private boolean extend_arm_ ;
     private PlaceMethod place_method_ ;
+    private XeroTimer force_drop_timer_ ;
 
     public GPMPlaceAction(GPMSubsystem sub, RobotOperation.Location loc, RobotOperation.GamePiece gp, boolean force, boolean still) throws MissingParameterException, BadParameterTypeException {
         super(sub.getRobot().getMessageLogger());
 
         state_ = State.Idle ;
         sub_ = sub ;
-        force_drop_ = force;
         String armpos ;
 
         place_method_ = PlaceMethod.Drop ;
         if (still) {
             armpos = "place-still:" ;
+            force_drop_timer_ = new XeroTimer(sub_.getRobot(), "still-place-settling", 0.5) ;
         }
         else {
             armpos = "place:" ;
@@ -141,20 +141,18 @@ public class GPMPlaceAction extends Action {
                 if (arm_extend_action_.isDone()) {
                     state_ = State.WaitingToDrop;
                     ready_to_drop_ = true ;
+                    if (force_drop_timer_ != null) {
+                        force_drop_timer_.start() ;
+                    }
                 }
                 break;
 
             case WaitingToDrop:
                 if (place_method_ == PlaceMethod.Drop) {
-                    if (drop_game_piece_ || force_drop_) {
+                    if (drop_game_piece_ || (force_drop_timer_ != null && force_drop_timer_.isExpired())) {
                         sub_.getGrabber().setAction(grabber_drop_item_, true);
                         drop_timer_.start();
                         state_ = State.DroppingGamepiece;
-                    }
-                } else {
-                    if (drop_game_piece_ || force_drop_) {
-                        sub_.getGrabber().getSpinSubsystem().setAction(shoot_action_, true) ;
-                        state_ = State.ShootingGamepiece;
                     }
                 }
                 break;

@@ -15,7 +15,6 @@ import org.xero1425.base.subsystems.swerve.common.SwerveDriveSpeedAction;
 import org.xero1425.base.subsystems.swerve.common.SwerveHolonomicPathFollower;
 import org.xero1425.misc.BadParameterTypeException;
 import org.xero1425.misc.MissingParameterException;
-import org.xero1425.misc.Speedometer;
 
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import frc.robot.subsystems.gpm.GPMCollectAction;
@@ -48,11 +47,14 @@ public class SwimmyAutoMode extends AutoMode {
         addSubActionPair(robot.getGPM(), new GPMPlaceAction(robot.getGPM(), where, what, true, true), true);
     }
 
-    protected void driveAndCollect(String path, boolean setpose, double collectdelay, double grabdelay, GamePiece what) throws Exception {
+    protected void driveAndCollect(String path, boolean setpose, double collectdelay, double grabdelay, GamePiece what, double lambdist) throws Exception {
         Swimmy2023RobotSubsystem robot = (Swimmy2023RobotSubsystem)getAutoController().getRobot().getRobotSubsystem();
 
         SwerveHolonomicPathFollower pathact = new SwerveHolonomicPathFollower(robot.getSwerve(), path, setpose, 0.2);
-        GPMCollectAction collect = new GPMCollectAction(robot.getGPM(), what, true, pathact, grabdelay) ;
+        GPMCollectAction collect = new GPMCollectAction(robot.getGPM(), what, true) ;
+
+        pathact.setLambda(()-> { collect.forcedClosed();}, lambdist);
+
         ParallelAction action = new ParallelAction(getMessageLogger(), DonePolicy.All) ;
 
         //
@@ -61,12 +63,6 @@ public class SwimmyAutoMode extends AutoMode {
         SequenceAction seq = new SequenceAction(robot.getRobot().getMessageLogger()) ;
         seq.addSubActionPair(robot.getSwerve(), pathact , true);
 
-        ChassisSpeeds speed = new ChassisSpeeds(0.5, 0.0, 0.0) ;
-        SwerveDriveSpeedAction forward = new SwerveDriveSpeedAction(robot.getSwerve(), speed, 0.5);
-        Supplier<Boolean> isdone = () -> { return !collect.isDone() ; } ;
-        ConditionalAction cond = new ConditionalAction(robot.getRobot().getMessageLogger(), isdone, forward, null);
-        seq.addAction(cond);
-        
         action.addAction(seq);
 
         //
