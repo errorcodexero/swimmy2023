@@ -54,7 +54,7 @@ public class ManualCollectOpCtrl extends OperationCtrl {
                 getRobotSubsystem().getOI().enableGamepad();
                 getRobotSubsystem().getOI().getGamePad().rumble(1.0, 0.5);
                 getRobotSubsystem().getSwerve().drive(new ChassisSpeeds()) ;
-                getRobotSubsystem().getGPM().getArm().setAction(stow_arm_);
+                getRobotSubsystem().getGPM().getArm().setAction(stow_arm_, true);
                 state_ = State.Idle ;
                 setDone() ;
             }            
