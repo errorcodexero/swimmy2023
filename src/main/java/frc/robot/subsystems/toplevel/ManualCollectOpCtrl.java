@@ -26,7 +26,7 @@ public class ManualCollectOpCtrl extends OperationCtrl {
         state_ = State.Idle;
         collect_action_ = new GPMCollectAction(sub.getGPM(), oper.getGamePiece(), false);
         stow_arm_ = new ArmStaggeredGotoAction(sub.getGPM().getArm(), "collect:retract-shelf", false);
-        drive_back_timer_ = new XeroTimer(sub.getRobot(), "collect-back-timer", 0.3);
+        drive_back_timer_ = new XeroTimer(sub.getRobot(), "collect-back-timer", 0.5);
     }
 
     @Override
