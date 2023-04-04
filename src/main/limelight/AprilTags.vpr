@@ -1,4 +1,4 @@
-area_max:100
+area_max:8.1924750625
 area_min:0.07059117610000001
 area_similarity:0
 aspect_max:20.000000
@@ -33,12 +33,14 @@ dilation_steps:0
 direction_filter:0
 dual_close_sort_origin:0
 erosion_steps:0
-exposure:1250
+exposure:1169
 fiducial_decoder_strictness:strict
 fiducial_denoise:0.000000
 fiducial_idfilters:
 fiducial_locfilters:
+fiducial_method:sqpnp
 fiducial_qualitythreshold:10
+fiducial_refine:1
 fiducial_resdiv:4
 fiducial_size:152.4
 fiducial_skip3d:0
@@ -53,12 +55,12 @@ image_source:0
 img_to_show:0
 intersection_filter:0
 invert_hue:0
-lcgain:6.000000
+lcgain:15.5
 multigroup_max:7
 multigroup_min:1
 multigroup_rejector:0
-pipeline_led_enabled:0
-pipeline_led_power:100
+pipeline_led_enabled:1
+pipeline_led_power:20
 pipeline_res:2
 pipeline_type:3
 red_balance:1200
