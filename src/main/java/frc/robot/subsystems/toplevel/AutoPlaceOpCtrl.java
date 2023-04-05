@@ -273,11 +273,15 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
             state_ = State.WaitingOnVision ;
             vision_timer_.start() ;
         }
+        /*
+        // TODO: Temporarily disabled early arm deployment for cubes. GPM place action dispatched here gets replaced
+        // when we get to take-over threshold without first checking if the place action is already executing. 
         else if (dist < april_tag_arm_action_threshold_ && getOper().getGamePiece() == GamePiece.Cube) {
             if (getRobotSubsystem().getGPM().getAction() == null) {
                 getRobotSubsystem().getGPM().setAction(place_action_, true);
             }
         }
+        */
     }
 
     private void stateWaitingForVision() throws BadParameterTypeException, MissingParameterException {
