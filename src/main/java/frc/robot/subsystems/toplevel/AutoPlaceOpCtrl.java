@@ -90,8 +90,8 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
         forward_holding_ = 0.3 ;
         if ((oper.getAprilTag() == GridTagPosition.Right && oper.getSlot() == Slot.Right) ||
             (oper.getAprilTag() == GridTagPosition.Left && oper.getSlot() == Slot.Left)) {
-            forward_power_ = 0.5 ;      // -0.25
-            forward_time = 0.7 ;        // 1.0
+            forward_power_ = 0.25 ;
+            forward_time = 1.0 ;
         }
 
         forward_timer_ = new XeroTimer(sub.getRobot(), "forward", forward_time) ;
