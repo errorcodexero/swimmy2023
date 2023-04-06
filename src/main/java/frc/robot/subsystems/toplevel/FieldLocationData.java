@@ -57,7 +57,7 @@ public class FieldLocationData {
     // Placement success not high when bumper only contacts one side due to either slight turn-in or
     // lack of alignment.
     //
-    static final double GridExtraYOffsetOuterSlots = 0.015;
+    static final double GridExtraYOffsetOuterSlots = 0.02;
 
     public class FieldItem
     {
