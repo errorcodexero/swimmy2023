@@ -124,10 +124,10 @@
                             "velocity": 1.5
                         },
                         {
-                            "after": 4.5,
+                            "after": 4.3,
                             "before": 5.5,
                             "type": "distancevelocity",
-                            "velocity": 0.75
+                            "velocity": 1
                         }
                     ],
                     "endvelocity": 0,
@@ -246,10 +246,10 @@
                             "velocity": 1.5
                         },
                         {
-                            "after": 4.5,
+                            "after": 4.3,
                             "before": 5.5,
                             "type": "distancevelocity",
-                            "velocity": 0.75
+                            "velocity": 1
                         }
                     ],
                     "endvelocity": 0,
@@ -555,6 +555,6 @@
             ]
         }
     ],
-    "outdir": "C:/cygwin64/home/butch/robottools/robots/swimmy2023/src/main/deploy/paths",
+    "outdir": "C:/cygwin64/home/mkassab/team1425_repos/swimmy2023/src/main/deploy/paths",
     "units": "m"
 }
