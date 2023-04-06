@@ -52,6 +52,13 @@ public class FieldLocationData {
     //
     static final double GridYOffset = 0.56000;
 
+    //
+    // For the output slots where the gap is wider, allow extra Y offset so bumpers touch both sides reliably.
+    // Placement success not high when bumper only contacts one side due to either slight turn-in or
+    // lack of alignment.
+    //
+    static final double GridExtraYOffsetOuterSlots = 0.015;
+
     public class FieldItem
     {
         private int tag_ ;
@@ -511,7 +518,7 @@ public class FieldLocationData {
         tag = getGridTag(a, GridTagPosition.Left);
         tagpose = layout_.getTagPose(tag).get().toPose2d();
         fi = new FieldItem(tag);
-        p2d = new Pose2d(tagpose.getX() - sign * GridXOffset, tagpose.getY() - sign * GridYOffset, rotate180(tagpose.getRotation()));
+        p2d = new Pose2d(tagpose.getX() - sign * GridXOffset, tagpose.getY() - sign * (GridYOffset + GridExtraYOffsetOuterSlots), rotate180(tagpose.getRotation()));
         fi.addPose("left", p2d);
         p2d = new Pose2d(tagpose.getX() - sign * GridXOffset, tagpose.getY(), rotate180(tagpose.getRotation()));
         fi.addPose("middle", p2d);
@@ -537,7 +544,7 @@ public class FieldLocationData {
         fi.addPose("left", p2d);
         p2d = new Pose2d(tagpose.getX() - sign * GridXOffset, tagpose.getY(), rotate180(tagpose.getRotation()));
         fi.addPose("middle", p2d);
-        p2d = new Pose2d(tagpose.getX() - sign * GridXOffset, tagpose.getY() + sign * GridYOffset, rotate180(tagpose.getRotation()));
+        p2d = new Pose2d(tagpose.getX() - sign * GridXOffset, tagpose.getY() + sign * (GridYOffset + GridExtraYOffsetOuterSlots), rotate180(tagpose.getRotation()));
         fi.addPose("right", p2d);
         ret.setGridRight(fi);
 
