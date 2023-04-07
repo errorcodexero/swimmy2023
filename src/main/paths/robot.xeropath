@@ -9,8 +9,8 @@
                     "constraints": [
                     ],
                     "endvelocity": 0,
-                    "maxacceleration": 1.5,
-                    "maxvelocity": 1.5,
+                    "maxacceleration": 2,
+                    "maxvelocity": 2,
                     "name": "Path1",
                     "points": [
                         {
@@ -34,8 +34,8 @@
                     "constraints": [
                     ],
                     "endvelocity": 0,
-                    "maxacceleration": 1.5,
-                    "maxvelocity": 1.5,
+                    "maxacceleration": 2,
+                    "maxvelocity": 2,
                     "name": "Path2",
                     "points": [
                         {
@@ -64,8 +64,8 @@
                     "constraints": [
                     ],
                     "endvelocity": 0,
-                    "maxacceleration": 1.5,
-                    "maxvelocity": 1.5,
+                    "maxacceleration": 2,
+                    "maxvelocity": 2,
                     "name": "Path1",
                     "points": [
                         {
@@ -89,8 +89,8 @@
                     "constraints": [
                     ],
                     "endvelocity": 0,
-                    "maxacceleration": 1.5,
-                    "maxvelocity": 1.5,
+                    "maxacceleration": 2,
+                    "maxvelocity": 2,
                     "name": "Path2",
                     "points": [
                         {

@@ -1,5 +1,6 @@
 package frc.robot.automodes;
 
+import org.xero1425.base.actions.DelayAction;
 import org.xero1425.base.controllers.AutoController;
 
 import frc.robot.subsystems.swerve.SwerveDriveBalancePlatform;
@@ -23,6 +24,8 @@ public class SwimmyAutoModeCenter1 extends SwimmyAutoMode  {
         // Drive a path across the charging station collecting on the other side
         //
         drivePath("Center1" + color + "-Path1", true) ;
+
+        addAction(new DelayAction(getAutoController().getRobot(), 0.5));
 
         drivePath("Center1" + color + "-Path2", false) ;
 
