@@ -160,8 +160,8 @@ public class SwimmyTestAutoMode extends TestAutoMode {
 
             case 18:
                 addSubActionPair(arm, new ArmStaggeredGotoAction(arm, getString("profile1"), true), true);
-                // addAction(new DelayAction(arm.getRobot(), getDouble("delay")));
-                // addSubActionPair(arm, new ArmStaggeredGotoAction(arm, getString("profile2"), true), true);
+                addAction(new DelayAction(arm.getRobot(), getDouble("delay")));
+                addSubActionPair(arm, new ArmStaggeredGotoAction(arm, getString("profile2"), false), true);
                 break ;
 
             case 19:
