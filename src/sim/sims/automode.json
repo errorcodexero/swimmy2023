@@ -12,10 +12,10 @@
                     {
                         "comment" : "automode must be set to the correct testmode in settings file",
                         "start" : 0.2,
-                        "autonomous" : 5.0,
-                        "between" : 1.0,
-                        "teleop" : 5.0,
-                        "fms" : true
+                        "autonomous" : 2.0,
+                        "between" : 0.0,
+                        "teleop" : 0.0,
+                        "fms" : false
                     }
                 }
             ]

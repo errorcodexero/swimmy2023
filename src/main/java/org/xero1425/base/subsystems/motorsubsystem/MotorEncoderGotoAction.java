@@ -1,10 +1,8 @@
 package org.xero1425.base.subsystems.motorsubsystem;
 
 import org.xero1425.base.XeroRobot;
-import org.xero1425.misc.BadParameterTypeException;
 import org.xero1425.misc.IMotionProfile;
 import org.xero1425.misc.ISettingsSupplier;
-import org.xero1425.misc.MissingParameterException;
 import org.xero1425.misc.PIDACtrl;
 import org.xero1425.misc.SCurveConfig;
 import org.xero1425.misc.SCurveProfile;
@@ -221,7 +219,7 @@ public class MotorEncoderGotoAction extends MotorAction {
         use_actual_ = b ;
     }
 
-    public void setTarget(double target) throws BadParameterTypeException, MissingParameterException {
+    public void setTarget(double target) throws Exception {
         target_ = target ;
         setTarget() ;
     }
@@ -298,7 +296,7 @@ public class MotorEncoderGotoAction extends MotorAction {
         return pos ;
     }
 
-    private void setTarget() throws BadParameterTypeException, MissingParameterException {
+    private void setTarget() throws Exception {
         MotorEncoderSubsystem sub = (MotorEncoderSubsystem)getSubsystem() ;
 
         // If addhold_ is true, set the default action that will be run when this action
@@ -331,7 +329,9 @@ public class MotorEncoderGotoAction extends MotorAction {
                 ctrl_ = new PIDACtrl(settings, config + ":up", sub.isAngular()) ;
 
             // Update the trapezoidal profile based on when we are starting.
-            profile_.update(dist, 0, 0) ;
+            if (!profile_.update(dist, 0, 0)) {
+                throw new Exception("cannot compute motion profile for requested distance");
+            }
             start_time_ = sub.getRobot().getTime() ;
             start_position_ = sub.getPosition() ;
         }
