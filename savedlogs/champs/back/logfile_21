@@ -1,0 +1,163 @@
+001.5155:1: Info: global: ============================================================
+001.5331:1: Info: global: robot code starting
+001.5795:1: Info: global:  enableMessageLogger time = 0.3117
+001.5802:1: Info: global: ============================================================
+001.6149:1: Info: global: Mac Address: 00:80:2F:34:38:37
+001.6160:1: Info: global:  getMacAddress time = 0.03457
+001.6212:1: Info: global: reading params for bot 'COMPETITION'
+001.6238:1: Info: global: reading JSON robots setting file '/home/lvuser/deploy/swimmy2023.jsonc'
+001.8372:1: Info: global:  readParamsFile time = 0.2203
+001.8467:1: Info: global:  enableMessagesFromSettingsFile time = 0.008307
+002.4071:1: Info: global:  loadPathsFiles time = 0.5593
+002.4437:1: Info: global: initializing robot - no FMS
+002.5101:1: Info: global:  plotMgrInit time = 0.0002790
+005.0255:1: Debug: global: ================================================================================================================
+005.0261:1: Debug: global: Data Type: Computed
+005.0267:1: Debug: global: Alliance Color: Red
+005.0302:1: Debug: global: LoadingStation: tag = 5 position = X: 0.362 Y: 6.750 Z: 0.695
+005.0353:1: Debug: global:      left = 1.192 5.930 180.0 difference = X: -0.830 Y: 0.820
+005.0377:1: Debug: global:      right = 1.192 7.570 180.0 difference = X: -0.830 Y: -0.820
+005.0412:1: Debug: global: Grid: tagname = Left tag = 1 position = X: 15.514 Y: 1.072 Z: 0.463
+005.0438:1: Debug: global:      left = 14.534 0.512 -0.0 difference = X: 0.980 Y: 0.560
+005.0461:1: Debug: global:      middle = 14.534 1.072 -0.0 difference = X: 0.980 Y: 0.000
+005.0489:1: Debug: global:      right = 14.534 1.632 -0.0 difference = X: 0.980 Y: -0.560
+005.0522:1: Debug: global: Grid: tagname = Right tag = 3 position = X: 15.514 Y: 4.424 Z: 0.463
+005.0553:1: Debug: global:      left = 14.534 3.864 -0.0 difference = X: 0.980 Y: 0.560
+005.0579:1: Debug: global:      middle = 14.534 4.424 -0.0 difference = X: 0.980 Y: 0.000
+005.0602:1: Debug: global:      right = 14.534 4.984 -0.0 difference = X: 0.980 Y: -0.560
+005.0634:1: Debug: global: Grid: tagname = Middle tag = 2 position = X: 15.514 Y: 2.748 Z: 0.463
+005.0659:1: Debug: global:      left = 14.534 2.188 -0.0 difference = X: 0.980 Y: 0.560
+005.0685:1: Debug: global:      middle = 14.534 2.748 -0.0 difference = X: 0.980 Y: 0.000
+005.0713:1: Debug: global:      right = 14.534 3.308 -0.0 difference = X: 0.980 Y: -0.560
+005.0719:1: Debug: global: Alliance Color: Blue
+005.0744:1: Debug: global: LoadingStation: tag = 4 position = X: 16.179 Y: 6.750 Z: 0.695
+005.0767:1: Debug: global:      left = 15.349 7.570 -0.0 difference = X: 0.830 Y: -0.820
+005.0789:1: Debug: global:      right = 15.349 5.930 -0.0 difference = X: 0.830 Y: 0.820
+005.0817:1: Debug: global: Grid: tagname = Left tag = 6 position = X: 1.027 Y: 4.424 Z: 0.463
+005.0840:1: Debug: global:      left = 2.007 4.984 180.0 difference = X: -0.980 Y: -0.560
+005.0864:1: Debug: global:      middle = 2.007 4.424 180.0 difference = X: -0.980 Y: 0.000
+005.0885:1: Debug: global:      right = 2.007 3.864 180.0 difference = X: -0.980 Y: 0.560
+005.0914:1: Debug: global: Grid: tagname = Right tag = 8 position = X: 1.027 Y: 1.072 Z: 0.463
+005.0934:1: Debug: global:      left = 2.007 1.632 180.0 difference = X: -0.980 Y: -0.560
+005.0956:1: Debug: global:      middle = 2.007 1.072 180.0 difference = X: -0.980 Y: 0.000
+005.0977:1: Debug: global:      right = 2.007 0.512 180.0 difference = X: -0.980 Y: 0.560
+005.1008:1: Debug: global: Grid: tagname = Middle tag = 7 position = X: 1.027 Y: 2.748 Z: 0.463
+005.1032:1: Debug: global:      left = 2.007 3.308 180.0 difference = X: -0.980 Y: -0.560
+005.1055:1: Debug: global:      middle = 2.007 2.748 180.0 difference = X: -0.980 Y: 0.000
+005.1078:1: Debug: global:      right = 2.007 2.188 180.0 difference = X: -0.980 Y: 0.560
+005.1083:1: Debug: global: ================================================================================================================
+006.4636:1: Info: global: created OI panel with 13 panel gadgets and 2 leds
+006.5780:1: Info: global: created: subsystems:arm-motor-lower:hw:motors:1
+006.6143:1: Info: global: created: subsystems:arm-motor-upper:hw:motors:1
+006.7299:1: Info: global: created: subsystems:grabber-motor-grab:hw:motors:1
+006.7501:1: Info: global: created: subsystems:grabber-motor-spin:hw:motors:1
+006.8357:1: Info: global:  hardwareInit time = 4.324
+007.1449:1: Info: global: Changed vision parameters to Single Near
+007.2046:1: Info: global:  computeInitalState time = 0.3669
+007.2506:1: Info: global:  postHWInit time = 0.04467
+007.4559:1: Info: global: changing robot loop type: None -> Disabled
+019.2492:1: Info: global: using swerve gamepad control
+019.2740:1: Debug: actions: starting action: SwerveDriveChassisSpeedAction(ChassisSpeeds(Vx: 0.00 m/s, Vy: 0.00 m/s, Omega: 0.00 rad/s))
+230.7047:1: Info: global: Changed vision parameters to Single Far
+230.7441:1: Info: global: Changed vision parameters to Single Near
+448.2421:1: Info: global: Entering Autonomous Mode
+448.2427:1: Info: global:     Automode Number: 1
+448.2436:1: Info: global:     Automode Name: Blue Balance
+448.2440:1: Info: global:     Alliance: BLUE
+448.2444:1: Info: global:     Location: 3
+448.2446:1: Info: global:     GameData: ''
+448.2451:1: Info: global:     EventName: 
+448.2495:1: Info: global:     MatchType: NONE
+448.2500:1: Info: global:     MatchNumber: 0
+448.2510:1: Info: global:     MatchTime: 14.9810
+448.2513:1: Info: global:     FMS Attached: NO
+448.2517:1: Info: global: changing robot loop type: Disabled -> Autonomous
+448.2573:1: Debug: actions: starting action: 
+                   actions: 39: Sequence [
+                   actions:     44: DispatchAction, grabber, BLOCKING  [
+                   actions:         GrabberGrabLoadedGamepieceAction
+                   actions:     ],
+                   actions:     51: DispatchAction, gpm, BLOCKING  [
+                   actions:         GPMPlaceAction(place-still:top:cone)
+                   actions:     ],
+                   actions:     53: DispatchAction, swerve, BLOCKING  [
+                   actions:         SwerveHolonomicPathFollower Center1Blue-Path1
+                   actions:     ],
+                   actions:     55: DispatchAction, swerve, BLOCKING  [
+                   actions:         SwerveHolonomicPathFollower Center1Blue-Path2
+                   actions:     ],
+                   actions:     57: DispatchAction, swerve, BLOCKING  [
+                   actions:         SwerveDriveBalancePlatform
+                   actions:     ]
+                   actions: ]
+448.2605:1: Debug: actions: starting action: 
+                   actions: 44: DispatchAction, grabber, BLOCKING  [
+                   actions:     GrabberGrabLoadedGamepieceAction
+                   actions: ]
+448.2616:1: Debug: actions: starting action: 41: MotorEncoderHoldAction (grabber-motor-grab), explicit, target=1400.0
+448.4847:1: Debug: actions: canceling action: 41: MotorEncoderHoldAction (grabber-motor-grab), explicit, target=1400.0
+448.4856:1: Debug: actions: starting action: 43: MotorPowerAction, grabber-motor-grab , power=0.1
+448.4864:1: Debug: actions: completing action: 43: MotorPowerAction, grabber-motor-grab , power=0.1
+448.4876:1: Debug: actions: starting action: 42: MotorPowerAction, grabber-motor-spin , power=0.1
+448.4883:1: Debug: actions: completing action: 42: MotorPowerAction, grabber-motor-spin , power=0.1
+448.4891:1: Debug: actions: completing action: GrabberGrabLoadedGamepieceAction
+448.5039:1: Debug: actions: completing action: 
+                   actions: 44: DispatchAction, grabber, BLOCKING  [
+                   actions:     GrabberGrabLoadedGamepieceAction
+                   actions: ]
+448.5053:1: Debug: actions: starting action: 
+                   actions: 51: DispatchAction, gpm, BLOCKING  [
+                   actions:     GPMPlaceAction(place-still:top:cone)
+                   actions: ]
+448.5061:1: Debug: actions: starting action: GPMPlaceAction(place-still:top:cone)
+448.5065:1: Debug: actions: starting action: ArmStaggeredGotoAction(place-still:top:cone:extend)
+448.5145:1: Debug: actions: starting action: 268: MotorEncoderGotoAction,arm-motor-upper,213000.0
+448.9247:1: Debug: actions: starting action: 270: MotorEncoderGotoAction,arm-motor-lower,98500.0
+450.3444:1: Debug: actions: completing action: 270: MotorEncoderGotoAction,arm-motor-lower,98500.0
+450.3455:1: Debug: actions: starting action: 271: MotorEncoderHoldAction (arm-motor-lower), explicit, target=98500.0
+450.4054:1: Debug: actions: completing action: 268: MotorEncoderGotoAction,arm-motor-upper,213000.0
+450.4060:1: Debug: actions: starting action: 269: MotorEncoderHoldAction (arm-motor-upper), explicit, target=213000.0
+450.4237:1: Debug: actions: completing action: ArmStaggeredGotoAction(place-still:top:cone:extend)
+450.4441:1: Debug: gpm: GPM - ExtendingArm -> WaitingToDrop
+450.9448:1: Debug: actions: starting action: GrabberStowAction
+450.9454:1: Debug: actions: starting action: 49: MotorEncoderHoldAction (grabber-motor-grab), explicit, target=0.0
+450.9458:1: Debug: actions: starting action: 50: MotorPowerAction, grabber-motor-spin , power=0.0
+450.9462:1: Debug: actions: completing action: 50: MotorPowerAction, grabber-motor-spin , power=0.0
+450.9475:1: Debug: actions: completing action: GrabberStowAction
+450.9479:1: Debug: gpm: GPM - WaitingToDrop -> DroppingGamepiece
+451.0645:1: Debug: actions: canceling action: 271: MotorEncoderHoldAction (arm-motor-lower), explicit, target=98500.0
+451.0654:1: Debug: actions: canceling action: 269: MotorEncoderHoldAction (arm-motor-upper), explicit, target=213000.0
+451.0659:1: Debug: actions: starting action: ArmStaggeredGotoAction(place-still:top:cone:retract)
+451.0662:1: Debug: actions: completing action: GPMPlaceAction(place-still:top:cone)
+451.0665:1: Debug: gpm: GPM - DroppingGamepiece -> RetractingArm
+451.0669:1: Debug: actions: starting action: 272: MotorEncoderGotoAction,arm-motor-upper,0.0
+451.0748:1: Debug: actions: starting action: 274: MotorEncoderGotoAction,arm-motor-lower,2000.0
+451.0837:1: Debug: actions: completing action: 
+                   actions: 51: DispatchAction, gpm, BLOCKING  [
+                   actions:     GPMPlaceAction(place-still:top:cone)
+                   actions: ]
+451.0847:1: Debug: actions: starting action: 
+                   actions: 53: DispatchAction, swerve, BLOCKING  [
+                   actions:     SwerveHolonomicPathFollower Center1Blue-Path1
+                   actions: ]
+451.0894:1: Debug: actions: canceling action: SwerveDriveChassisSpeedAction(ChassisSpeeds(Vx: 0.00 m/s, Vy: 0.00 m/s, Omega: 0.00 rad/s))
+451.0899:1: Debug: actions: starting action: SwerveHolonomicPathFollower Center1Blue-Path1
+451.0923:1: Info: global:  SwerveHolonomicPathFollower: Initial Pose  = 1.804 2.259 180.0
+452.1449:1: Debug: actions: completing action: 274: MotorEncoderGotoAction,arm-motor-lower,2000.0
+452.1459:1: Debug: actions: starting action: 275: MotorEncoderHoldAction (arm-motor-lower), explicit, target=2000.0
+452.6664:1: Debug: actions: completing action: 272: MotorEncoderGotoAction,arm-motor-upper,0.0
+452.6670:1: Debug: actions: starting action: 273: MotorEncoderHoldAction (arm-motor-upper), explicit, target=0.0
+452.6860:1: Debug: actions: completing action: ArmStaggeredGotoAction(place-still:top:cone:retract)
+455.0040:1: Debug: actions: completing action: SwerveHolonomicPathFollower Center1Blue-Path1
+455.0056:1: Info: global: finished path'Center1Blue-Path1' pose = 6.162 2.287 180.0
+455.0235:1: Debug: actions: completing action: 
+                   actions: 53: DispatchAction, swerve, BLOCKING  [
+                   actions:     SwerveHolonomicPathFollower Center1Blue-Path1
+                   actions: ]
+455.0245:1: Debug: actions: starting action: 
+                   actions: 55: DispatchAction, swerve, BLOCKING  [
+                   actions:     SwerveHolonomicPathFollower Center1Blue-Path2
+                   actions: ]
+455.0255:1: Debug: actions: starting action: SwerveHolonomicPathFollower Center1Blue-Path2
+457.0251:1: Info: global: changing robot loop type: Autonomous -> Disabled
+581.4892:1: Debug: actions: starting action: SwerveDriveChassisSpeedAction(ChassisSpeeds(Vx: 0.00 m/s, Vy: 0.00 m/s, Omega: 0.00 rad/s))

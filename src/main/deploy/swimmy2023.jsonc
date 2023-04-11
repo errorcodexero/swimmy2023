@@ -1167,8 +1167,8 @@
         }
     },
     "testmode": {
-        "enabled": false,
-        "which": 80,
+        "enabled": true,
+        "which": 20,
         "0": {
             "angle": 90,
             "power": 0.2
@@ -1220,8 +1220,8 @@
             "profile2" : "place-still:top:cone:retract"
         },
         "20" : {
-            "power" : 0.1,
-            "duration" : 2.0          
+            "power" : 0.2,
+            "duration" : 1.0          
         },
         "21" : {
             "power" : 0.6,

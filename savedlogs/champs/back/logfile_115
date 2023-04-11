@@ -1,0 +1,13 @@
+001.3213:1: Info: global: ============================================================
+001.3465:1: Info: global: robot code starting
+001.4293:1: Info: global:  enableMessageLogger time = 0.3319
+001.4300:1: Info: global: ============================================================
+001.4796:1: Info: global: Mac Address: 00:80:2F:34:38:37
+001.4810:1: Info: global:  getMacAddress time = 0.04794
+001.4906:1: Info: global: reading params for bot 'COMPETITION'
+001.4919:1: Info: global: reading JSON robots setting file '/home/lvuser/deploy/swimmy2023.jsonc'
+001.8183:1: Info: global:  readParamsFile time = 0.3340
+001.8329:1: Info: global:  enableMessagesFromSettingsFile time = 0.01317
+002.4992:1: Info: global:  loadPathsFiles time = 0.6649
+002.5363:1: Info: global: initializing robot - no FMS
+002.6364:1: Info: global:  plotMgrInit time = 0.0002920

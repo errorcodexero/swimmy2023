@@ -1,0 +1,621 @@
+001.1350:1: Info: global: ============================================================
+001.1660:1: Info: global: robot code starting
+001.2230:1: Info: global:  enableMessageLogger time = 0.2909
+001.2237:1: Info: global: ============================================================
+001.2544:1: Info: global: Mac Address: 00:80:2F:34:38:37
+001.2558:1: Info: global:  getMacAddress time = 0.03058
+001.2620:1: Info: global: reading params for bot 'COMPETITION'
+001.2637:1: Info: global: reading JSON robots setting file '/home/lvuser/deploy/swimmy2023.jsonc'
+001.5029:1: Info: global:  readParamsFile time = 0.2455
+001.5138:1: Info: global:  enableMessagesFromSettingsFile time = 0.009480
+002.1765:1: Info: global:  loadPathsFiles time = 0.6612
+002.2192:1: Info: global: initializing robot - no FMS
+002.3434:1: Info: global:  plotMgrInit time = 0.0009800
+005.4420:1: Debug: global: ================================================================================================================
+005.4430:1: Debug: global: Data Type: Computed
+005.4436:1: Debug: global: Alliance Color: Red
+005.4472:1: Debug: global: LoadingStation: tag = 5 position = X: 0.362 Y: 6.750 Z: 0.695
+005.4518:1: Debug: global:      left = 1.192 5.930 180.0 difference = X: -0.830 Y: 0.820
+005.4543:1: Debug: global:      right = 1.192 7.570 180.0 difference = X: -0.830 Y: -0.820
+005.4726:1: Debug: global: Grid: tagname = Left tag = 1 position = X: 15.514 Y: 1.072 Z: 0.463
+005.4757:1: Debug: global:      left = 14.534 0.492 -0.0 difference = X: 0.980 Y: 0.580
+005.4781:1: Debug: global:      middle = 14.534 1.072 -0.0 difference = X: 0.980 Y: 0.000
+005.4810:1: Debug: global:      right = 14.534 1.632 -0.0 difference = X: 0.980 Y: -0.560
+005.4852:1: Debug: global: Grid: tagname = Right tag = 3 position = X: 15.514 Y: 4.424 Z: 0.463
+005.4882:1: Debug: global:      left = 14.534 3.864 -0.0 difference = X: 0.980 Y: 0.560
+005.4911:1: Debug: global:      middle = 14.534 4.424 -0.0 difference = X: 0.980 Y: 0.000
+005.4939:1: Debug: global:      right = 14.534 5.004 -0.0 difference = X: 0.980 Y: -0.580
+005.4970:1: Debug: global: Grid: tagname = Middle tag = 2 position = X: 15.514 Y: 2.748 Z: 0.463
+005.4998:1: Debug: global:      left = 14.534 2.188 -0.0 difference = X: 0.980 Y: 0.560
+005.5029:1: Debug: global:      middle = 14.534 2.748 -0.0 difference = X: 0.980 Y: 0.000
+005.5058:1: Debug: global:      right = 14.534 3.308 -0.0 difference = X: 0.980 Y: -0.560
+005.5064:1: Debug: global: Alliance Color: Blue
+005.5090:1: Debug: global: LoadingStation: tag = 4 position = X: 16.179 Y: 6.750 Z: 0.695
+005.5114:1: Debug: global:      left = 15.349 7.570 -0.0 difference = X: 0.830 Y: -0.820
+005.5140:1: Debug: global:      right = 15.349 5.930 -0.0 difference = X: 0.830 Y: 0.820
+005.5167:1: Debug: global: Grid: tagname = Left tag = 6 position = X: 1.027 Y: 4.424 Z: 0.463
+005.5192:1: Debug: global:      left = 2.007 5.004 180.0 difference = X: -0.980 Y: -0.580
+005.5216:1: Debug: global:      middle = 2.007 4.424 180.0 difference = X: -0.980 Y: 0.000
+005.5243:1: Debug: global:      right = 2.007 3.864 180.0 difference = X: -0.980 Y: 0.560
+005.5272:1: Debug: global: Grid: tagname = Right tag = 8 position = X: 1.027 Y: 1.072 Z: 0.463
+005.5293:1: Debug: global:      left = 2.007 1.632 180.0 difference = X: -0.980 Y: -0.560
+005.5315:1: Debug: global:      middle = 2.007 1.072 180.0 difference = X: -0.980 Y: 0.000
+005.5339:1: Debug: global:      right = 2.007 0.492 180.0 difference = X: -0.980 Y: 0.580
+005.5368:1: Debug: global: Grid: tagname = Middle tag = 7 position = X: 1.027 Y: 2.748 Z: 0.463
+005.5395:1: Debug: global:      left = 2.007 3.308 180.0 difference = X: -0.980 Y: -0.560
+005.5418:1: Debug: global:      middle = 2.007 2.748 180.0 difference = X: -0.980 Y: 0.000
+005.5446:1: Debug: global:      right = 2.007 2.188 180.0 difference = X: -0.980 Y: 0.560
+005.5451:1: Debug: global: ================================================================================================================
+006.6798:1: Info: global: using swerve gamepad control
+006.7008:1: Info: global: created OI panel with 13 panel gadgets and 2 leds
+006.7629:1: Info: global: created: subsystems:arm-motor-lower:hw:motors:1
+006.7852:1: Info: global: created: subsystems:arm-motor-upper:hw:motors:1
+006.8942:1: Info: global: created: subsystems:grabber-motor-grab:hw:motors:1
+006.9162:1: Info: global: created: subsystems:grabber-motor-spin:hw:motors:1
+006.9457:1: Info: global:  hardwareInit time = 4.601
+007.0098:1: Info: global: Changed vision parameters to Single Near
+007.0417:1: Info: global:  computeInitalState time = 0.09470
+007.0701:1: Info: global:  postHWInit time = 0.02737
+007.3036:1: Info: global: changing robot loop type: None -> Disabled
+018.7383:1: Info: global: Entering Autonomous Mode
+018.7389:1: Info: global:     Automode Number: 0
+018.7394:1: Info: global:     Automode Name: Red Balance
+018.7399:1: Info: global:     Alliance: RED
+018.7404:1: Info: global:     Location: 1
+018.7408:1: Info: global:     GameData: ''
+018.7413:1: Info: global:     EventName: PNCMP
+018.7468:1: Info: global:     MatchType: NONE
+018.7473:1: Info: global:     MatchNumber: 0
+018.7488:1: Info: global:     MatchTime: -1.0000
+018.7493:1: Info: global:     FMS Attached: NO
+018.7497:1: Info: global: changing robot loop type: Disabled -> Autonomous
+018.7545:1: Debug: actions: starting action: 
+                   actions: 22: Sequence [
+                   actions:     27: DispatchAction, grabber, BLOCKING  [
+                   actions:         GrabberGrabLoadedGamepieceAction
+                   actions:     ],
+                   actions:     34: DispatchAction, gpm, BLOCKING  [
+                   actions:         GPMPlaceAction(place-still:top:cone)
+                   actions:     ],
+                   actions:     36: DispatchAction, swerve, BLOCKING  [
+                   actions:         SwerveHolonomicPathFollower Center1Red-Path1
+                   actions:     ],
+                   actions:     38: DispatchAction, swerve, BLOCKING  [
+                   actions:         SwerveHolonomicPathFollower Center1Red-Path2
+                   actions:     ],
+                   actions:     40: DispatchAction, swerve, BLOCKING  [
+                   actions:         SwerveDriveBalancePlatform
+                   actions:     ]
+                   actions: ]
+018.7590:1: Debug: actions: starting action: 
+                   actions: 27: DispatchAction, grabber, BLOCKING  [
+                   actions:     GrabberGrabLoadedGamepieceAction
+                   actions: ]
+018.7688:1: Debug: actions: starting action: 24: MotorEncoderHoldAction (grabber-motor-grab), explicit, target=1400.0
+018.9810:1: Debug: actions: canceling action: 24: MotorEncoderHoldAction (grabber-motor-grab), explicit, target=1400.0
+018.9820:1: Debug: actions: starting action: 26: MotorPowerAction, grabber-motor-grab , power=0.1
+018.9834:1: Debug: actions: completing action: 26: MotorPowerAction, grabber-motor-grab , power=0.1
+018.9849:1: Debug: actions: starting action: 25: MotorPowerAction, grabber-motor-spin , power=0.1
+018.9858:1: Debug: actions: completing action: 25: MotorPowerAction, grabber-motor-spin , power=0.1
+018.9867:1: Debug: actions: completing action: GrabberGrabLoadedGamepieceAction
+019.0015:1: Debug: actions: completing action: 
+                   actions: 27: DispatchAction, grabber, BLOCKING  [
+                   actions:     GrabberGrabLoadedGamepieceAction
+                   actions: ]
+019.0027:1: Debug: actions: starting action: 
+                   actions: 34: DispatchAction, gpm, BLOCKING  [
+                   actions:     GPMPlaceAction(place-still:top:cone)
+                   actions: ]
+019.0037:1: Debug: actions: starting action: GPMPlaceAction(place-still:top:cone)
+019.0044:1: Debug: actions: starting action: ArmStaggeredGotoAction(place-still:top:cone:extend)
+019.0124:1: Debug: actions: starting action: 268: MotorEncoderGotoAction,arm-motor-upper,213000.0
+019.4216:1: Debug: actions: starting action: 270: MotorEncoderGotoAction,arm-motor-lower,98500.0
+020.8449:1: Debug: actions: completing action: 270: MotorEncoderGotoAction,arm-motor-lower,98500.0
+020.8462:1: Debug: actions: starting action: 271: MotorEncoderHoldAction (arm-motor-lower), explicit, target=98500.0
+020.9015:1: Debug: actions: completing action: 268: MotorEncoderGotoAction,arm-motor-upper,213000.0
+020.9039:1: Debug: actions: starting action: 269: MotorEncoderHoldAction (arm-motor-upper), explicit, target=213000.0
+020.9206:1: Debug: actions: completing action: ArmStaggeredGotoAction(place-still:top:cone:extend)
+020.9406:1: Debug: gpm: GPM - ExtendingArm -> WaitingToDrop
+021.4606:1: Debug: actions: starting action: GrabberStowAction
+021.4614:1: Debug: actions: starting action: 32: MotorEncoderHoldAction (grabber-motor-grab), explicit, target=0.0
+021.4624:1: Debug: actions: starting action: 33: MotorPowerAction, grabber-motor-spin , power=0.0
+021.4630:1: Debug: actions: completing action: 33: MotorPowerAction, grabber-motor-spin , power=0.0
+021.4641:1: Debug: actions: completing action: GrabberStowAction
+021.4647:1: Debug: gpm: GPM - WaitingToDrop -> DroppingGamepiece
+021.5804:1: Debug: actions: canceling action: 271: MotorEncoderHoldAction (arm-motor-lower), explicit, target=98500.0
+021.5815:1: Debug: actions: canceling action: 269: MotorEncoderHoldAction (arm-motor-upper), explicit, target=213000.0
+021.5832:1: Debug: actions: starting action: ArmStaggeredGotoAction(place-still:top:cone:retract)
+021.5838:1: Debug: actions: completing action: GPMPlaceAction(place-still:top:cone)
+021.5843:1: Debug: gpm: GPM - DroppingGamepiece -> RetractingArm
+021.5850:1: Debug: actions: starting action: 272: MotorEncoderGotoAction,arm-motor-upper,0.0
+021.5873:1: Debug: actions: starting action: 274: MotorEncoderGotoAction,arm-motor-lower,2000.0
+021.6148:1: Debug: actions: completing action: 
+                   actions: 34: DispatchAction, gpm, BLOCKING  [
+                   actions:     GPMPlaceAction(place-still:top:cone)
+                   actions: ]
+021.6301:1: Debug: actions: starting action: 
+                   actions: 36: DispatchAction, swerve, BLOCKING  [
+                   actions:     SwerveHolonomicPathFollower Center1Red-Path1
+                   actions: ]
+021.6333:1: Debug: actions: starting action: SwerveHolonomicPathFollower Center1Red-Path1
+021.6485:1: Info: global:  SwerveHolonomicPathFollower: Initial Pose  = 14.762 3.372 0.0
+022.6437:1: Debug: actions: completing action: 274: MotorEncoderGotoAction,arm-motor-lower,2000.0
+022.6449:1: Debug: actions: starting action: 275: MotorEncoderHoldAction (arm-motor-lower), explicit, target=2000.0
+023.1719:1: Debug: actions: completing action: 272: MotorEncoderGotoAction,arm-motor-upper,0.0
+023.1731:1: Debug: actions: starting action: 273: MotorEncoderHoldAction (arm-motor-upper), explicit, target=0.0
+023.1913:1: Debug: actions: completing action: ArmStaggeredGotoAction(place-still:top:cone:retract)
+024.9025:1: Debug: actions: completing action: SwerveHolonomicPathFollower Center1Red-Path1
+024.9052:1: Info: global: finished path'Center1Red-Path1' pose = 10.206 3.488 -0.2
+024.9205:1: Debug: actions: completing action: 
+                   actions: 36: DispatchAction, swerve, BLOCKING  [
+                   actions:     SwerveHolonomicPathFollower Center1Red-Path1
+                   actions: ]
+024.9216:1: Debug: actions: starting action: 
+                   actions: 38: DispatchAction, swerve, BLOCKING  [
+                   actions:     SwerveHolonomicPathFollower Center1Red-Path2
+                   actions: ]
+024.9229:1: Debug: actions: starting action: SwerveHolonomicPathFollower Center1Red-Path2
+026.9809:1: Debug: actions: completing action: SwerveHolonomicPathFollower Center1Red-Path2
+026.9834:1: Info: global: finished path'Center1Red-Path2' pose = 12.248 3.388 0.1
+027.0000:1: Debug: actions: completing action: 
+                   actions: 38: DispatchAction, swerve, BLOCKING  [
+                   actions:     SwerveHolonomicPathFollower Center1Red-Path2
+                   actions: ]
+027.0010:1: Debug: actions: starting action: 
+                   actions: 40: DispatchAction, swerve, BLOCKING  [
+                   actions:     SwerveDriveBalancePlatform
+                   actions: ]
+027.0016:1: Debug: actions: starting action: SwerveDriveBalancePlatform
+027.0042:1: Debug: global: AutoBalance:  angle = -12.47 power = 0.3990
+027.0216:1: Debug: global: AutoBalance:  angle = -12.48 power = 0.3994
+027.0506:1: Debug: global: AutoBalance:  angle = -12.53 power = 0.4010
+027.0655:1: Debug: global: AutoBalance:  angle = -12.56 power = 0.4019
+027.0811:1: Debug: global: AutoBalance:  angle = -12.46 power = 0.3987
+027.1013:1: Debug: global: AutoBalance:  angle = -12.27 power = 0.3926
+027.1210:1: Debug: global: AutoBalance:  angle = -12.24 power = 0.3917
+027.1440:1: Debug: global: AutoBalance:  angle = -12.19 power = 0.3901
+027.1605:1: Debug: global: AutoBalance:  angle = -12.05 power = 0.3856
+027.1808:1: Debug: global: AutoBalance:  angle = -11.75 power = 0.3760
+027.2007:1: Debug: global: AutoBalance:  angle = -11.75 power = 0.3760
+027.2214:1: Debug: global: AutoBalance:  angle = -11.88 power = 0.3802
+027.2408:1: Debug: global: AutoBalance:  angle = -12.12 power = 0.3878
+027.2614:1: Debug: global: AutoBalance:  angle = -12.14 power = 0.3885
+027.2813:1: Debug: global: AutoBalance:  angle = -12.09 power = 0.3869
+027.3016:1: Debug: global: AutoBalance:  angle = -12.11 power = 0.3875
+027.3274:1: Debug: global: AutoBalance:  angle = -12.18 power = 0.3898
+027.3408:1: Debug: global: AutoBalance:  angle = -12.23 power = 0.3914
+027.3608:1: Debug: global: AutoBalance:  angle = -12.32 power = 0.3942
+027.3807:1: Debug: global: AutoBalance:  angle = -12.29 power = 0.3933
+027.4010:1: Debug: global: AutoBalance:  angle = -12.24 power = 0.3917
+027.4212:1: Debug: global: AutoBalance:  angle = -12.17 power = 0.3894
+027.4408:1: Debug: global: AutoBalance:  angle = -12.04 power = 0.3853
+027.4611:1: Debug: global: AutoBalance:  angle = -11.99 power = 0.3837
+027.4814:1: Debug: global: AutoBalance:  angle = -11.94 power = 0.3821
+027.5007:1: Debug: global: AutoBalance:  angle = -11.96 power = 0.3827
+027.5208:1: Debug: global: AutoBalance:  angle = -12.02 power = 0.3846
+027.5410:1: Debug: global: AutoBalance:  angle = -12.11 power = 0.3875
+027.5604:1: Debug: global: AutoBalance:  angle = -12.13 power = 0.3882
+027.5805:1: Debug: global: AutoBalance:  angle = -12.15 power = 0.3888
+027.6074:1: Debug: global: AutoBalance:  angle = -12.16 power = 0.3891
+027.6213:1: Debug: global: AutoBalance:  angle = -12.17 power = 0.3894
+027.6410:1: Debug: global: AutoBalance:  angle = -12.20 power = 0.3904
+027.6614:1: Debug: global: AutoBalance:  angle = -12.19 power = 0.3901
+027.6810:1: Debug: global: AutoBalance:  angle = -12.15 power = 0.3888
+027.7007:1: Debug: global: AutoBalance:  angle = -12.11 power = 0.3875
+027.7212:1: Debug: global: AutoBalance:  angle = -12.05 power = 0.3856
+027.7474:1: Debug: global: AutoBalance:  angle = -12.06 power = 0.3859
+027.7655:1: Debug: global: AutoBalance:  angle = -12.10 power = 0.3872
+027.7816:1: Debug: global: AutoBalance:  angle = -12.10 power = 0.3872
+027.8007:1: Debug: global: AutoBalance:  angle = -12.09 power = 0.3869
+027.8217:1: Debug: global: AutoBalance:  angle = -12.07 power = 0.3862
+027.8423:1: Debug: global: AutoBalance:  angle = -12.09 power = 0.3869
+027.8607:1: Debug: global: AutoBalance:  angle = -12.12 power = 0.3878
+027.8878:1: Debug: global: AutoBalance:  angle = -12.14 power = 0.3885
+027.9017:1: Debug: global: AutoBalance:  angle = -12.14 power = 0.3885
+027.9215:1: Debug: global: AutoBalance:  angle = -12.11 power = 0.3875
+027.9406:1: Debug: global: AutoBalance:  angle = -12.12 power = 0.3878
+027.9615:1: Debug: global: AutoBalance:  angle = -12.15 power = 0.3888
+027.9811:1: Debug: global: AutoBalance:  angle = -12.18 power = 0.3898
+028.0009:1: Debug: global: AutoBalance:  angle = -12.19 power = 0.3901
+028.0219:1: Debug: global: AutoBalance:  angle = -12.17 power = 0.3894
+028.0410:1: Debug: global: AutoBalance:  angle = -12.13 power = 0.3882
+028.0611:1: Debug: global: AutoBalance:  angle = -12.13 power = 0.3882
+028.0809:1: Debug: global: AutoBalance:  angle = -12.14 power = 0.3885
+028.1013:1: Debug: global: AutoBalance:  angle = -12.14 power = 0.3885
+028.1221:1: Debug: global: AutoBalance:  angle = -12.12 power = 0.3878
+028.1410:1: Debug: global: AutoBalance:  angle = -12.09 power = 0.3869
+028.1614:1: Debug: global: AutoBalance:  angle = -12.11 power = 0.3875
+028.1875:1: Debug: global: AutoBalance:  angle = -12.11 power = 0.3875
+028.2003:1: Debug: global: AutoBalance:  angle = -12.10 power = 0.3872
+028.2211:1: Debug: global: AutoBalance:  angle = -12.08 power = 0.3866
+028.2408:1: Debug: global: AutoBalance:  angle = -12.08 power = 0.3866
+028.2638:1: Debug: global: AutoBalance:  angle = -12.10 power = 0.3872
+028.2828:1: Debug: global: AutoBalance:  angle = -12.11 power = 0.3875
+028.3007:1: Debug: global: AutoBalance:  angle = -12.12 power = 0.3878
+028.3214:1: Debug: global: AutoBalance:  angle = -12.11 power = 0.3875
+028.3411:1: Debug: global: AutoBalance:  angle = -12.11 power = 0.3875
+028.3609:1: Debug: global: AutoBalance:  angle = -12.13 power = 0.3882
+028.3844:1: Debug: global: AutoBalance:  angle = -12.13 power = 0.3882
+028.4006:1: Debug: global: AutoBalance:  angle = -12.12 power = 0.3878
+028.4215:1: Debug: global: AutoBalance:  angle = -12.12 power = 0.3878
+028.4410:1: Debug: global: AutoBalance:  angle = -12.12 power = 0.3878
+028.4680:1: Debug: global: AutoBalance:  angle = -12.13 power = 0.3882
+028.4808:1: Debug: global: AutoBalance:  angle = -12.13 power = 0.3882
+028.5034:1: Debug: global: AutoBalance:  angle = -12.12 power = 0.3878
+028.5209:1: Debug: global: AutoBalance:  angle = -12.13 power = 0.3882
+028.5405:1: Debug: global: AutoBalance:  angle = -12.13 power = 0.3882
+028.5617:1: Debug: global: AutoBalance:  angle = -12.15 power = 0.3888
+028.5815:1: Debug: global: AutoBalance:  angle = -12.15 power = 0.3888
+028.6015:1: Debug: global: AutoBalance:  angle = -12.16 power = 0.3891
+028.6213:1: Debug: global: AutoBalance:  angle = -12.16 power = 0.3891
+028.6412:1: Debug: global: AutoBalance:  angle = -12.18 power = 0.3898
+028.6608:1: Debug: global: AutoBalance:  angle = -12.18 power = 0.3898
+028.6806:1: Debug: global: AutoBalance:  angle = -12.19 power = 0.3901
+028.7006:1: Debug: global: AutoBalance:  angle = -12.19 power = 0.3901
+028.7207:1: Debug: global: AutoBalance:  angle = -12.19 power = 0.3901
+028.7465:1: Debug: global: AutoBalance:  angle = -12.18 power = 0.3898
+028.7607:1: Debug: global: AutoBalance:  angle = -12.18 power = 0.3898
+028.7806:1: Debug: global: AutoBalance:  angle = -12.17 power = 0.3894
+028.8007:1: Debug: global: AutoBalance:  angle = -12.18 power = 0.3898
+028.8210:1: Debug: global: AutoBalance:  angle = -12.17 power = 0.3894
+028.8450:1: Debug: global: AutoBalance:  angle = -12.17 power = 0.3894
+028.8611:1: Debug: global: AutoBalance:  angle = -12.15 power = 0.3888
+028.8809:1: Debug: global: AutoBalance:  angle = -12.13 power = 0.3882
+028.9022:1: Debug: global: AutoBalance:  angle = -12.14 power = 0.3885
+028.9209:1: Debug: global: AutoBalance:  angle = -12.14 power = 0.3885
+028.9408:1: Debug: global: AutoBalance:  angle = -12.14 power = 0.3885
+028.9610:1: Debug: global: AutoBalance:  angle = -12.15 power = 0.3888
+028.9812:1: Debug: global: AutoBalance:  angle = -12.15 power = 0.3888
+029.0043:1: Debug: global: AutoBalance:  angle = -12.13 power = 0.3882
+029.0241:1: Debug: global: AutoBalance:  angle = -12.12 power = 0.3878
+029.0512:1: Debug: global: AutoBalance:  angle = -12.12 power = 0.3878
+029.0705:1: Debug: global: AutoBalance:  angle = -12.10 power = 0.3872
+029.0851:1: Debug: global: AutoBalance:  angle = -12.09 power = 0.3869
+029.1009:1: Debug: global: AutoBalance:  angle = -12.09 power = 0.3869
+029.1213:1: Debug: global: AutoBalance:  angle = -12.07 power = 0.3862
+029.1418:1: Debug: global: AutoBalance:  angle = -12.06 power = 0.3859
+029.1608:1: Debug: global: AutoBalance:  angle = -12.04 power = 0.3853
+029.1804:1: Debug: global: AutoBalance:  angle = -12.03 power = 0.3850
+029.2008:1: Debug: global: AutoBalance:  angle = -12.02 power = 0.3846
+029.2213:1: Debug: global: AutoBalance:  angle = -12.01 power = 0.3843
+029.2433:1: Debug: global: AutoBalance:  angle = -12.01 power = 0.3843
+029.2653:1: Debug: global: AutoBalance:  angle = -12.02 power = 0.3846
+029.2807:1: Debug: global: AutoBalance:  angle = -11.99 power = 0.3837
+029.3009:1: Debug: global: AutoBalance:  angle = -11.98 power = 0.3834
+029.3269:1: Debug: global: AutoBalance:  angle = -11.97 power = 0.3830
+029.3422:1: Debug: global: AutoBalance:  angle = -11.96 power = 0.3827
+029.3603:1: Debug: global: AutoBalance:  angle = -11.96 power = 0.3827
+029.3807:1: Debug: global: AutoBalance:  angle = -11.94 power = 0.3821
+029.4009:1: Debug: global: AutoBalance:  angle = -11.87 power = 0.3798
+029.4235:1: Debug: global: AutoBalance:  angle = -11.86 power = 0.3795
+029.4407:1: Debug: global: AutoBalance:  angle = -11.86 power = 0.3795
+029.4618:1: Debug: global: AutoBalance:  angle = -11.81 power = 0.3779
+029.4817:1: Debug: global: AutoBalance:  angle = -11.79 power = 0.3773
+029.5009:1: Debug: global: AutoBalance:  angle = -11.77 power = 0.3766
+029.5215:1: Debug: global: AutoBalance:  angle = -11.73 power = 0.3754
+029.5402:1: Debug: global: AutoBalance:  angle = -11.73 power = 0.3754
+029.5608:1: Debug: global: AutoBalance:  angle = -11.71 power = 0.3747
+029.5811:1: Debug: global: AutoBalance:  angle = -11.66 power = 0.3731
+029.6082:1: Debug: global: AutoBalance:  angle = -11.65 power = 0.3728
+029.6207:1: Debug: global: AutoBalance:  angle = -11.63 power = 0.3722
+029.6413:1: Debug: global: AutoBalance:  angle = -11.62 power = 0.3718
+029.6606:1: Debug: global: AutoBalance:  angle = -11.59 power = 0.3709
+029.6810:1: Debug: global: AutoBalance:  angle = -11.56 power = 0.3699
+029.7023:1: Debug: global: AutoBalance:  angle = -11.53 power = 0.3690
+029.7209:1: Debug: global: AutoBalance:  angle = -11.47 power = 0.3670
+029.7410:1: Debug: global: AutoBalance:  angle = -11.40 power = 0.3648
+029.7613:1: Debug: global: AutoBalance:  angle = -11.36 power = 0.3635
+029.7824:1: Debug: global: AutoBalance:  angle = -11.31 power = 0.3619
+029.8007:1: Debug: global: AutoBalance:  angle = -11.20 power = 0.3584
+029.8205:1: Debug: global: AutoBalance:  angle = -11.13 power = 0.3562
+029.8432:1: Debug: global: AutoBalance:  angle = -10.99 power = 0.3517
+029.8604:1: Debug: global: AutoBalance:  angle = -10.92 power = 0.3494
+029.8884:1: Debug: global: AutoBalance:  angle = -10.83 power = 0.3466
+029.9004:1: Debug: global: AutoBalance:  angle = -10.74 power = 0.3437
+029.9207:1: Debug: global: AutoBalance:  angle = -10.52 power = 0.3366
+029.9417:1: Debug: global: AutoBalance:  angle = -10.40 power = 0.3328
+029.9604:1: Debug: global: AutoBalance:  angle = -10.28 power = 0.3290
+029.9807:1: Debug: global: AutoBalance:  angle = -10.00 power = 0.3200
+030.0006:1: Debug: global: AutoBalance:  angle = -9.850 power = 0.3152
+030.0202:1: Debug: global: AutoBalance:  angle = -9.510 power = 0.3043
+030.0417:1: Debug: global: AutoBalance:  angle = -9.130 power = 0.2922
+030.0609:1: Debug: global: AutoBalance:  angle = -8.920 power = 0.2854
+030.0814:1: Debug: global: AutoBalance:  angle = -8.700 power = 0.2784
+030.1006:1: Debug: global: AutoBalance:  angle = -8.260 power = 0.2643
+030.1206:1: Debug: global: AutoBalance:  angle = -8.050 power = 0.2576
+030.1408:1: Debug: global: AutoBalance:  angle = -7.850 power = 0.2512
+030.1608:1: Debug: global: AutoBalance:  angle = -7.470 power = 0.2390
+030.1880:1: Debug: global: AutoBalance:  angle = -7.230 power = 0.2314
+030.2005:1: Debug: global: AutoBalance:  angle = -6.970 power = 0.2230
+030.2208:1: Debug: global: AutoBalance:  angle = -6.430 power = 0.2058
+030.2409:1: Debug: global: AutoBalance:  angle = -6.150 power = 0.1968
+030.2610:1: Debug: global: AutoBalance:  angle = -5.890 power = 0.1885
+030.2813:1: Debug: global: AutoBalance:  angle = -5.270 power = 0.1686
+030.3013:1: Debug: global: AutoBalance:  angle = -4.900 power = 0.1568
+030.3215:1: Debug: global: AutoBalance:  angle = -4.500 power = 0.1440
+030.3415:1: Debug: global: AutoBalance:  angle = -3.730 power = 0.1194
+030.3613:1: Debug: global: AutoBalance:  angle = -3.320 power = 0.1062
+030.3805:1: Debug: global: AutoBalance:  angle = -2.850 power = 0.09120
+030.4013:1: Debug: global: AutoBalance:  angle = -1.870 power = 0.05984
+030.4214:1: Debug: global: AutoBalance:  angle = -1.360 power = 0.04352
+030.4417:1: Debug: global: AutoBalance:  angle = -0.8400 power = 0.02688
+030.4661:1: Debug: global: AutoBalance:  angle = 0.8200 power = -0.02624
+030.4803:1: Debug: global: AutoBalance:  angle = 1.410 power = -0.04512
+030.5003:1: Debug: global: AutoBalance:  angle = 2.030 power = -0.06496
+030.5210:1: Debug: global: AutoBalance:  angle = 3.120 power = -0.09984
+030.5427:1: Debug: global: AutoBalance:  angle = 3.450 power = -0.1104
+030.5635:1: Info: global: Changed vision parameters to Multi Far
+030.5933:1: Debug: global: AutoBalance:  angle = 4.070 power = -0.1302
+030.6163:1: Debug: global: AutoBalance:  angle = 4.470 power = -0.1430
+030.6258:1: Debug: global: AutoBalance:  angle = 4.470 power = -0.1430
+030.6344:1: Debug: global: AutoBalance:  angle = 4.440 power = -0.1421
+030.6496:1: Debug: global: AutoBalance:  angle = 4.440 power = -0.1421
+030.6693:1: Debug: global: AutoBalance:  angle = 4.290 power = -0.1373
+030.6857:1: Debug: global: AutoBalance:  angle = 4.120 power = -0.1318
+030.7035:1: Debug: global: AutoBalance:  angle = 3.970 power = -0.1270
+030.7271:1: Debug: global: AutoBalance:  angle = 3.800 power = -0.1216
+030.7439:1: Debug: global: AutoBalance:  angle = 3.570 power = -0.1142
+030.7635:1: Debug: global: AutoBalance:  angle = 3.000 power = -0.09600
+030.7824:1: Debug: global: AutoBalance:  angle = 2.650 power = -0.08480
+030.8086:1: Debug: global: AutoBalance:  angle = 2.260 power = -0.07232
+030.8212:1: Debug: global: AutoBalance:  angle = 1.470 power = -0.04704
+030.8388:1: Info: global: Changed vision parameters to Single Near
+030.8424:1: Debug: global: AutoBalance:  angle = 0.8700 power = -0.02784
+030.8601:1: Debug: global: AutoBalance:  angle = 0.6200 power = -0.01984
+030.8805:1: Debug: global: AutoBalance:  angle = 0.4100 power = -0.01312
+030.9017:1: Debug: global: AutoBalance:  angle = 0.1200 power = -0.003840
+030.9212:1: Debug: global: AutoBalance:  angle = 0.03000 power = -0.0009600
+030.9432:1: Debug: global: AutoBalance:  angle = 0.03000 power = -0.0009600
+030.9602:1: Debug: global: AutoBalance:  angle = 0.1100 power = -0.003520
+030.9804:1: Debug: global: AutoBalance:  angle = 0.1200 power = -0.003840
+031.0005:1: Debug: global: AutoBalance:  angle = 0.1600 power = -0.005120
+031.0207:1: Debug: global: AutoBalance:  angle = 0.3600 power = -0.01152
+031.0407:1: Debug: global: AutoBalance:  angle = 0.5100 power = -0.01632
+031.0605:1: Debug: global: AutoBalance:  angle = 0.6900 power = -0.02208
+031.0816:1: Debug: global: AutoBalance:  angle = 0.8600 power = -0.02752
+031.1011:1: Debug: global: AutoBalance:  angle = 1.430 power = -0.04576
+031.1204:1: Debug: global: AutoBalance:  angle = 1.680 power = -0.05376
+031.1436:1: Debug: global: AutoBalance:  angle = 1.900 power = -0.06080
+031.1611:1: Debug: global: AutoBalance:  angle = 2.190 power = -0.07008
+031.1810:1: Debug: global: AutoBalance:  angle = 2.250 power = -0.07200
+031.2000:1: Debug: global: AutoBalance:  angle = 2.250 power = -0.07200
+031.2206:1: Debug: global: AutoBalance:  angle = 2.060 power = -0.06592
+031.2414:1: Debug: global: AutoBalance:  angle = 1.980 power = -0.06336
+031.2604:1: Debug: global: AutoBalance:  angle = 1.900 power = -0.06080
+031.2803:1: Debug: global: AutoBalance:  angle = 1.620 power = -0.05184
+031.3001:1: Debug: global: AutoBalance:  angle = 1.520 power = -0.04864
+031.3207:1: Debug: global: AutoBalance:  angle = 1.480 power = -0.04736
+031.3404:1: Debug: global: AutoBalance:  angle = 1.480 power = -0.04736
+031.3666:1: Debug: global: AutoBalance:  angle = 1.500 power = -0.04800
+031.3807:1: Debug: global: AutoBalance:  angle = 1.530 power = -0.04896
+031.4008:1: Debug: global: AutoBalance:  angle = 1.630 power = -0.05216
+031.4205:1: Debug: global: AutoBalance:  angle = 1.650 power = -0.05280
+031.4408:1: Debug: global: AutoBalance:  angle = 1.660 power = -0.05312
+031.4606:1: Debug: global: AutoBalance:  angle = 1.670 power = -0.05344
+031.4806:1: Debug: global: AutoBalance:  angle = 1.650 power = -0.05280
+031.5004:1: Debug: global: AutoBalance:  angle = 1.640 power = -0.05248
+031.5207:1: Debug: global: AutoBalance:  angle = 1.650 power = -0.05280
+031.5405:1: Debug: global: AutoBalance:  angle = 1.660 power = -0.05312
+031.5695:1: Debug: global: AutoBalance:  angle = 1.660 power = -0.05312
+031.5853:1: Debug: global: AutoBalance:  angle = 1.650 power = -0.05280
+031.6028:1: Debug: global: AutoBalance:  angle = 1.650 power = -0.05280
+031.6221:1: Debug: global: AutoBalance:  angle = 1.650 power = -0.05280
+031.6468:1: Debug: global: AutoBalance:  angle = 1.660 power = -0.05312
+031.6609:1: Debug: global: AutoBalance:  angle = 1.660 power = -0.05312
+031.6810:1: Debug: global: AutoBalance:  angle = 1.650 power = -0.05280
+031.7016:1: Debug: global: AutoBalance:  angle = 1.660 power = -0.05312
+031.7215:1: Debug: global: AutoBalance:  angle = 1.660 power = -0.05312
+031.7409:1: Debug: global: AutoBalance:  angle = 1.660 power = -0.05312
+031.7606:1: Debug: global: AutoBalance:  angle = 1.660 power = -0.05312
+031.7811:1: Debug: global: AutoBalance:  angle = 1.660 power = -0.05312
+031.8071:1: Debug: global: AutoBalance:  angle = 1.660 power = -0.05312
+031.8245:1: Debug: global: AutoBalance:  angle = 1.660 power = -0.05312
+031.8433:1: Debug: global: AutoBalance:  angle = 1.660 power = -0.05312
+031.8617:1: Debug: global: AutoBalance:  angle = 1.660 power = -0.05312
+031.8806:1: Debug: global: AutoBalance:  angle = 1.670 power = -0.05344
+031.9011:1: Debug: global: AutoBalance:  angle = 1.670 power = -0.05344
+031.9273:1: Debug: global: AutoBalance:  angle = 1.670 power = -0.05344
+031.9410:1: Debug: global: AutoBalance:  angle = 1.670 power = -0.05344
+031.9614:1: Debug: global: AutoBalance:  angle = 1.670 power = -0.05344
+031.9815:1: Debug: global: AutoBalance:  angle = 1.670 power = -0.05344
+032.0008:1: Debug: global: AutoBalance:  angle = 1.670 power = -0.05344
+032.0208:1: Debug: global: AutoBalance:  angle = 1.670 power = -0.05344
+032.0413:1: Debug: global: AutoBalance:  angle = 1.670 power = -0.05344
+032.0610:1: Debug: global: AutoBalance:  angle = 1.670 power = -0.05344
+032.0811:1: Debug: global: AutoBalance:  angle = 1.670 power = -0.05344
+032.1014:1: Debug: global: AutoBalance:  angle = 1.680 power = -0.05376
+032.1209:1: Debug: global: AutoBalance:  angle = 1.680 power = -0.05376
+032.1409:1: Debug: global: AutoBalance:  angle = 1.680 power = -0.05376
+032.1603:1: Debug: global: AutoBalance:  angle = 1.680 power = -0.05376
+032.1811:1: Debug: global: AutoBalance:  angle = 1.680 power = -0.05376
+032.2063:1: Debug: global: AutoBalance:  angle = 1.680 power = -0.05376
+032.2217:1: Debug: global: AutoBalance:  angle = 1.680 power = -0.05376
+032.2408:1: Debug: global: AutoBalance:  angle = 1.680 power = -0.05376
+032.2606:1: Debug: global: AutoBalance:  angle = 1.680 power = -0.05376
+032.2810:1: Debug: global: AutoBalance:  angle = 1.680 power = -0.05376
+032.3008:1: Debug: global: AutoBalance:  angle = 1.680 power = -0.05376
+032.3243:1: Debug: global: AutoBalance:  angle = 1.680 power = -0.05376
+032.3419:1: Debug: global: AutoBalance:  angle = 1.680 power = -0.05376
+032.3609:1: Debug: global: AutoBalance:  angle = 1.680 power = -0.05376
+032.3809:1: Debug: global: AutoBalance:  angle = 1.680 power = -0.05376
+032.4047:1: Debug: global: AutoBalance:  angle = 1.680 power = -0.05376
+032.4219:1: Debug: global: AutoBalance:  angle = 1.690 power = -0.05408
+032.4417:1: Debug: global: AutoBalance:  angle = 1.690 power = -0.05408
+032.4607:1: Debug: global: AutoBalance:  angle = 1.690 power = -0.05408
+032.4811:1: Debug: global: AutoBalance:  angle = 1.690 power = -0.05408
+032.5067:1: Debug: global: AutoBalance:  angle = 1.690 power = -0.05408
+032.5208:1: Debug: global: AutoBalance:  angle = 1.690 power = -0.05408
+032.5413:1: Debug: global: AutoBalance:  angle = 1.690 power = -0.05408
+032.5608:1: Debug: global: AutoBalance:  angle = 1.700 power = -0.05440
+032.5813:1: Debug: global: AutoBalance:  angle = 1.700 power = -0.05440
+032.6010:1: Debug: global: AutoBalance:  angle = 1.700 power = -0.05440
+032.6207:1: Debug: global: AutoBalance:  angle = 1.700 power = -0.05440
+032.6408:1: Debug: global: AutoBalance:  angle = 1.700 power = -0.05440
+032.6607:1: Debug: global: AutoBalance:  angle = 1.700 power = -0.05440
+032.6808:1: Debug: global: AutoBalance:  angle = 1.700 power = -0.05440
+032.7005:1: Debug: global: AutoBalance:  angle = 1.700 power = -0.05440
+032.7211:1: Debug: global: AutoBalance:  angle = 1.700 power = -0.05440
+032.7407:1: Debug: global: AutoBalance:  angle = 1.700 power = -0.05440
+032.7607:1: Debug: global: AutoBalance:  angle = 1.700 power = -0.05440
+032.7876:1: Debug: global: AutoBalance:  angle = 1.700 power = -0.05440
+032.8014:1: Debug: global: AutoBalance:  angle = 1.700 power = -0.05440
+032.8219:1: Debug: global: AutoBalance:  angle = 1.710 power = -0.05472
+032.8441:1: Debug: global: AutoBalance:  angle = 1.710 power = -0.05472
+032.8609:1: Debug: global: AutoBalance:  angle = 1.710 power = -0.05472
+032.8806:1: Debug: global: AutoBalance:  angle = 1.710 power = -0.05472
+032.9008:1: Debug: global: AutoBalance:  angle = 1.710 power = -0.05472
+032.9212:1: Debug: global: AutoBalance:  angle = 1.710 power = -0.05472
+032.9409:1: Debug: global: AutoBalance:  angle = 1.700 power = -0.05440
+032.9603:1: Debug: global: AutoBalance:  angle = 1.700 power = -0.05440
+032.9819:1: Debug: global: AutoBalance:  angle = 1.710 power = -0.05472
+033.0004:1: Debug: global: AutoBalance:  angle = 1.710 power = -0.05472
+033.0207:1: Debug: global: AutoBalance:  angle = 1.710 power = -0.05472
+033.0411:1: Debug: global: AutoBalance:  angle = 1.710 power = -0.05472
+033.0684:1: Debug: global: AutoBalance:  angle = 1.710 power = -0.05472
+033.0808:1: Debug: global: AutoBalance:  angle = 1.710 power = -0.05472
+033.1009:1: Debug: global: AutoBalance:  angle = 1.710 power = -0.05472
+033.1206:1: Debug: global: AutoBalance:  angle = 1.710 power = -0.05472
+033.1408:1: Debug: global: AutoBalance:  angle = 1.710 power = -0.05472
+033.1608:1: Debug: global: AutoBalance:  angle = 1.710 power = -0.05472
+033.1804:1: Debug: global: AutoBalance:  angle = 1.710 power = -0.05472
+033.2007:1: Debug: global: AutoBalance:  angle = 1.710 power = -0.05472
+033.2211:1: Debug: global: AutoBalance:  angle = 1.710 power = -0.05472
+033.2405:1: Debug: global: AutoBalance:  angle = 1.710 power = -0.05472
+033.2603:1: Debug: global: AutoBalance:  angle = 1.710 power = -0.05472
+033.2814:1: Debug: global: AutoBalance:  angle = 1.710 power = -0.05472
+033.3011:1: Debug: global: AutoBalance:  angle = 1.710 power = -0.05472
+033.3205:1: Debug: global: AutoBalance:  angle = 1.710 power = -0.05472
+033.3411:1: Debug: global: AutoBalance:  angle = 1.710 power = -0.05472
+033.3658:1: Debug: global: AutoBalance:  angle = 1.710 power = -0.05472
+033.3808:1: Debug: global: AutoBalance:  angle = 1.710 power = -0.05472
+033.4007:1: Debug: global: AutoBalance:  angle = 1.720 power = -0.05504
+033.4207:1: Debug: global: AutoBalance:  angle = 1.720 power = -0.05504
+033.4406:1: Debug: global: AutoBalance:  angle = 1.720 power = -0.05504
+033.4637:1: Debug: global: AutoBalance:  angle = 1.720 power = -0.05504
+033.4807:1: Debug: global: AutoBalance:  angle = 1.720 power = -0.05504
+033.5009:1: Debug: global: AutoBalance:  angle = 1.720 power = -0.05504
+033.5209:1: Debug: global: AutoBalance:  angle = 1.720 power = -0.05504
+033.5416:1: Debug: global: AutoBalance:  angle = 1.720 power = -0.05504
+033.5604:1: Debug: global: AutoBalance:  angle = 1.720 power = -0.05504
+033.5814:1: Debug: global: AutoBalance:  angle = 1.720 power = -0.05504
+033.6008:1: Debug: global: AutoBalance:  angle = 1.720 power = -0.05504
+033.6209:1: Debug: global: AutoBalance:  angle = 1.720 power = -0.05504
+033.6461:1: Debug: global: AutoBalance:  angle = 1.720 power = -0.05504
+033.6615:1: Debug: global: AutoBalance:  angle = 1.720 power = -0.05504
+033.6808:1: Debug: global: AutoBalance:  angle = 1.720 power = -0.05504
+033.7004:1: Debug: global: AutoBalance:  angle = 1.720 power = -0.05504
+033.7210:1: Debug: global: AutoBalance:  angle = 1.720 power = -0.05504
+033.7411:1: Debug: global: AutoBalance:  angle = 1.720 power = -0.05504
+033.7605:1: Debug: global: AutoBalance:  angle = 1.720 power = -0.05504
+033.7814:1: Debug: global: AutoBalance:  angle = 1.720 power = -0.05504
+033.8006:1: Debug: global: AutoBalance:  angle = 1.720 power = -0.05504
+033.8208:1: Debug: global: AutoBalance:  angle = 1.720 power = -0.05504
+033.8416:1: Debug: global: AutoBalance:  angle = 1.720 power = -0.05504
+033.8604:1: Debug: global: AutoBalance:  angle = 1.720 power = -0.05504
+033.8811:1: Debug: global: AutoBalance:  angle = 1.720 power = -0.05504
+033.9007:1: Debug: global: AutoBalance:  angle = 1.720 power = -0.05504
+033.9259:1: Debug: global: AutoBalance:  angle = 1.720 power = -0.05504
+033.9409:1: Debug: global: AutoBalance:  angle = 1.720 power = -0.05504
+033.9605:1: Debug: global: AutoBalance:  angle = 1.730 power = -0.05536
+033.9820:1: Debug: global: AutoBalance:  angle = 1.730 power = -0.05536
+034.0005:1: Debug: global: AutoBalance:  angle = 1.730 power = -0.05536
+034.0220:1: Debug: global: AutoBalance:  angle = 1.730 power = -0.05536
+034.0407:1: Debug: global: AutoBalance:  angle = 1.730 power = -0.05536
+034.0605:1: Debug: global: AutoBalance:  angle = 1.730 power = -0.05536
+034.0845:1: Debug: global: AutoBalance:  angle = 1.730 power = -0.05536
+034.1009:1: Debug: global: AutoBalance:  angle = 1.730 power = -0.05536
+034.1300:1: Debug: global: AutoBalance:  angle = 1.730 power = -0.05536
+034.1417:1: Debug: global: AutoBalance:  angle = 1.730 power = -0.05536
+034.1661:1: Debug: global: AutoBalance:  angle = 1.730 power = -0.05536
+034.1838:1: Debug: global: AutoBalance:  angle = 1.730 power = -0.05536
+034.2009:1: Debug: global: AutoBalance:  angle = 1.730 power = -0.05536
+034.2253:1: Debug: global: AutoBalance:  angle = 1.730 power = -0.05536
+034.2409:1: Debug: global: AutoBalance:  angle = 1.730 power = -0.05536
+034.2623:1: Debug: global: AutoBalance:  angle = 1.730 power = -0.05536
+034.2805:1: Debug: global: AutoBalance:  angle = 1.730 power = -0.05536
+034.3003:1: Debug: global: AutoBalance:  angle = 1.730 power = -0.05536
+034.3210:1: Debug: global: AutoBalance:  angle = 1.730 power = -0.05536
+034.3408:1: Debug: global: AutoBalance:  angle = 1.730 power = -0.05536
+034.3606:1: Debug: global: AutoBalance:  angle = 1.730 power = -0.05536
+034.3807:1: Debug: global: AutoBalance:  angle = 1.730 power = -0.05536
+034.4006:1: Debug: global: AutoBalance:  angle = 1.730 power = -0.05536
+034.4208:1: Debug: global: AutoBalance:  angle = 1.730 power = -0.05536
+034.4408:1: Debug: global: AutoBalance:  angle = 1.730 power = -0.05536
+034.4608:1: Debug: global: AutoBalance:  angle = 1.740 power = -0.05568
+034.4807:1: Debug: global: AutoBalance:  angle = 1.740 power = -0.05568
+034.5078:1: Debug: global: AutoBalance:  angle = 1.740 power = -0.05568
+034.5208:1: Debug: global: AutoBalance:  angle = 1.740 power = -0.05568
+034.5409:1: Debug: global: AutoBalance:  angle = 1.740 power = -0.05568
+034.5606:1: Debug: global: AutoBalance:  angle = 1.740 power = -0.05568
+034.5805:1: Debug: global: AutoBalance:  angle = 1.740 power = -0.05568
+034.6010:1: Debug: global: AutoBalance:  angle = 1.740 power = -0.05568
+034.6210:1: Debug: global: AutoBalance:  angle = 1.740 power = -0.05568
+034.6407:1: Debug: global: AutoBalance:  angle = 1.740 power = -0.05568
+034.6608:1: Debug: global: AutoBalance:  angle = 1.740 power = -0.05568
+034.6810:1: Debug: global: AutoBalance:  angle = 1.740 power = -0.05568
+034.7040:1: Debug: global: AutoBalance:  angle = 1.740 power = -0.05568
+034.7230:1: Debug: global: AutoBalance:  angle = 1.740 power = -0.05568
+034.7420:1: Debug: global: AutoBalance:  angle = 1.740 power = -0.05568
+034.7611:1: Debug: global: AutoBalance:  angle = 1.740 power = -0.05568
+034.7872:1: Debug: global: AutoBalance:  angle = 1.740 power = -0.05568
+034.8006:1: Debug: global: AutoBalance:  angle = 1.740 power = -0.05568
+034.8210:1: Debug: global: AutoBalance:  angle = 1.740 power = -0.05568
+034.8418:1: Debug: global: AutoBalance:  angle = 1.740 power = -0.05568
+034.8607:1: Debug: global: AutoBalance:  angle = 1.750 power = -0.05600
+034.8809:1: Debug: global: AutoBalance:  angle = 1.750 power = -0.05600
+034.9010:1: Debug: global: AutoBalance:  angle = 1.750 power = -0.05600
+034.9205:1: Debug: global: AutoBalance:  angle = 1.750 power = -0.05600
+034.9407:1: Debug: global: AutoBalance:  angle = 1.750 power = -0.05600
+034.9605:1: Debug: global: AutoBalance:  angle = 1.750 power = -0.05600
+034.9816:1: Debug: global: AutoBalance:  angle = 1.750 power = -0.05600
+035.0007:1: Debug: global: AutoBalance:  angle = 1.750 power = -0.05600
+035.0206:1: Debug: global: AutoBalance:  angle = 1.750 power = -0.05600
+035.0409:1: Debug: global: AutoBalance:  angle = 1.750 power = -0.05600
+035.0676:1: Debug: global: AutoBalance:  angle = 1.750 power = -0.05600
+035.0832:1: Debug: global: AutoBalance:  angle = 1.750 power = -0.05600
+035.1009:1: Debug: global: AutoBalance:  angle = 1.750 power = -0.05600
+035.1210:1: Debug: global: AutoBalance:  angle = 1.750 power = -0.05600
+035.1410:1: Debug: global: AutoBalance:  angle = 1.750 power = -0.05600
+035.1605:1: Debug: global: AutoBalance:  angle = 1.750 power = -0.05600
+035.1807:1: Debug: global: AutoBalance:  angle = 1.750 power = -0.05600
+035.2010:1: Debug: global: AutoBalance:  angle = 1.750 power = -0.05600
+035.2215:1: Debug: global: AutoBalance:  angle = 1.750 power = -0.05600
+035.2408:1: Debug: global: AutoBalance:  angle = 1.750 power = -0.05600
+035.2605:1: Debug: global: AutoBalance:  angle = 1.750 power = -0.05600
+035.2809:1: Debug: global: AutoBalance:  angle = 1.750 power = -0.05600
+035.3007:1: Debug: global: AutoBalance:  angle = 1.750 power = -0.05600
+035.3214:1: Debug: global: AutoBalance:  angle = 1.750 power = -0.05600
+035.3411:1: Debug: global: AutoBalance:  angle = 1.750 power = -0.05600
+035.3665:1: Debug: global: AutoBalance:  angle = 1.750 power = -0.05600
+035.3808:1: Debug: global: AutoBalance:  angle = 1.750 power = -0.05600
+035.4007:1: Debug: global: AutoBalance:  angle = 1.750 power = -0.05600
+035.4207:1: Debug: global: AutoBalance:  angle = 1.750 power = -0.05600
+035.4410:1: Debug: global: AutoBalance:  angle = 1.750 power = -0.05600
+035.4612:1: Debug: global: AutoBalance:  angle = 1.750 power = -0.05600
+035.4807:1: Debug: global: AutoBalance:  angle = 1.750 power = -0.05600
+035.5006:1: Debug: global: AutoBalance:  angle = 1.750 power = -0.05600
+035.5203:1: Debug: global: AutoBalance:  angle = 1.750 power = -0.05600
+035.5386:1: Info: global: changing robot loop type: Autonomous -> Disabled
+041.6194:1: Debug: actions: canceling action: SwerveDriveBalancePlatform
+041.6244:1: Debug: actions: starting action: SwerveDriveChassisSpeedAction(ChassisSpeeds(Vx: 0.00 m/s, Vy: 0.00 m/s, Omega: 0.00 rad/s))
+043.8580:1: Info: global: changing robot loop type: Disabled -> Teleop
+049.3008:1: Debug: Swimmy2023RobotSubsystem: Subsystem cancelAction() called with no active action
+049.9206:1: Info: global: changing robot loop type: Teleop -> Disabled
+066.7978:1: Info: global: changing robot loop type: Disabled -> Teleop
+067.1409:1: Debug: Swimmy2023RobotSubsystem: Subsystem cancelAction() called with no active action
+068.9002:1: Debug: Swimmy2023RobotSubsystem: Subsystem cancelAction() called with no active action
+069.3195:1: Info: global: changing robot loop type: Teleop -> Disabled
+072.0588:1: Info: global: Changed vision parameters to Single Far
+072.0784:1: Info: global: Changed vision parameters to Single Near
+072.9780:1: Info: global: changing robot loop type: Disabled -> Teleop
+077.3992:1: Info: global: Changed vision parameters to Multi Far
+077.4382:1: Info: global: Changed vision parameters to Single Near
+078.0584:1: Info: global: Changed vision parameters to Single Far
+078.1182:1: Info: global: Changed vision parameters to Multi Far
+078.1385:1: Info: global: Changed vision parameters to Single Far
+078.4384:1: Info: global: Changed vision parameters to Multi Far
+078.4782:1: Info: global: Changed vision parameters to Single Far
+078.6784:1: Info: global: Changed vision parameters to Single Near
+078.7382:1: Info: global: Changed vision parameters to Single Far
+079.5582:1: Info: global: Changed vision parameters to Single Near
+092.3993:1: Info: global: changing robot loop type: Teleop -> Disabled

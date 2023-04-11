@@ -1,0 +1,129 @@
+001.5499:1: Info: global: ============================================================
+001.5704:1: Info: global: robot code starting
+001.6232:1: Info: global:  enableMessageLogger time = 0.3490
+001.6240:1: Info: global: ============================================================
+001.6606:1: Info: global: Mac Address: 00:80:2F:34:38:37
+001.6617:1: Info: global:  getMacAddress time = 0.03659
+001.6668:1: Info: global: reading params for bot 'COMPETITION'
+001.6690:1: Info: global: reading JSON robots setting file '/home/lvuser/deploy/swimmy2023.jsonc'
+001.8806:1: Info: global:  readParamsFile time = 0.2179
+001.8897:1: Info: global:  enableMessagesFromSettingsFile time = 0.008117
+003.1454:1: Info: global:  loadPathsFiles time = 1.255
+003.1758:1: Info: global: initializing robot - no FMS
+003.2506:1: Info: global:  plotMgrInit time = 0.0002750
+005.7667:1: Debug: global: ================================================================================================================
+005.7673:1: Debug: global: Data Type: Computed
+005.7679:1: Debug: global: Alliance Color: Red
+005.7713:1: Debug: global: LoadingStation: tag = 5 position = X: 0.362 Y: 6.750 Z: 0.695
+005.7914:1: Debug: global:      left = 1.192 5.930 180.0 difference = X: -0.830 Y: 0.820
+005.7941:1: Debug: global:      right = 1.192 7.570 180.0 difference = X: -0.830 Y: -0.820
+005.7977:1: Debug: global: Grid: tagname = Left tag = 1 position = X: 15.514 Y: 1.072 Z: 0.463
+005.8003:1: Debug: global:      left = 14.534 0.492 -0.0 difference = X: 0.980 Y: 0.580
+005.8028:1: Debug: global:      middle = 14.534 1.072 -0.0 difference = X: 0.980 Y: 0.000
+005.8057:1: Debug: global:      right = 14.534 1.632 -0.0 difference = X: 0.980 Y: -0.560
+005.8096:1: Debug: global: Grid: tagname = Right tag = 3 position = X: 15.514 Y: 4.424 Z: 0.463
+005.8128:1: Debug: global:      left = 14.534 3.864 -0.0 difference = X: 0.980 Y: 0.560
+005.8158:1: Debug: global:      middle = 14.534 4.424 -0.0 difference = X: 0.980 Y: 0.000
+005.8182:1: Debug: global:      right = 14.534 5.004 -0.0 difference = X: 0.980 Y: -0.580
+005.8211:1: Debug: global: Grid: tagname = Middle tag = 2 position = X: 15.514 Y: 2.748 Z: 0.463
+005.8236:1: Debug: global:      left = 14.534 2.188 -0.0 difference = X: 0.980 Y: 0.560
+005.8263:1: Debug: global:      middle = 14.534 2.748 -0.0 difference = X: 0.980 Y: 0.000
+005.8295:1: Debug: global:      right = 14.534 3.308 -0.0 difference = X: 0.980 Y: -0.560
+005.8301:1: Debug: global: Alliance Color: Blue
+005.8325:1: Debug: global: LoadingStation: tag = 4 position = X: 16.179 Y: 6.750 Z: 0.695
+005.8350:1: Debug: global:      left = 15.349 7.570 -0.0 difference = X: 0.830 Y: -0.820
+005.8373:1: Debug: global:      right = 15.349 5.930 -0.0 difference = X: 0.830 Y: 0.820
+005.8398:1: Debug: global: Grid: tagname = Left tag = 6 position = X: 1.027 Y: 4.424 Z: 0.463
+005.8421:1: Debug: global:      left = 2.007 5.004 180.0 difference = X: -0.980 Y: -0.580
+005.8448:1: Debug: global:      middle = 2.007 4.424 180.0 difference = X: -0.980 Y: 0.000
+005.8470:1: Debug: global:      right = 2.007 3.864 180.0 difference = X: -0.980 Y: 0.560
+005.8503:1: Debug: global: Grid: tagname = Right tag = 8 position = X: 1.027 Y: 1.072 Z: 0.463
+005.8523:1: Debug: global:      left = 2.007 1.632 180.0 difference = X: -0.980 Y: -0.560
+005.8546:1: Debug: global:      middle = 2.007 1.072 180.0 difference = X: -0.980 Y: 0.000
+005.8568:1: Debug: global:      right = 2.007 0.492 180.0 difference = X: -0.980 Y: 0.580
+005.8595:1: Debug: global: Grid: tagname = Middle tag = 7 position = X: 1.027 Y: 2.748 Z: 0.463
+005.8620:1: Debug: global:      left = 2.007 3.308 180.0 difference = X: -0.980 Y: -0.560
+005.8647:1: Debug: global:      middle = 2.007 2.748 180.0 difference = X: -0.980 Y: 0.000
+005.8670:1: Debug: global:      right = 2.007 2.188 180.0 difference = X: -0.980 Y: 0.560
+005.8675:1: Debug: global: ================================================================================================================
+007.2010:1: Info: global: created OI panel with 13 panel gadgets and 2 leds
+007.2792:1: Info: global: created: subsystems:arm-motor-lower:hw:motors:1
+007.3322:1: Info: global: created: subsystems:arm-motor-upper:hw:motors:1
+007.8180:1: Info: global: created: subsystems:grabber-motor-grab:hw:motors:1
+007.8434:1: Info: global: created: subsystems:grabber-motor-spin:hw:motors:1
+008.4626:1: Info: global:  hardwareInit time = 5.211
+008.6743:1: Info: global: Changed vision parameters to Single Near
+008.7454:1: Info: global:  computeInitalState time = 0.2816
+008.7712:1: Info: global:  postHWInit time = 0.02445
+009.0082:1: Info: global: changing robot loop type: None -> Disabled
+009.0187:1: Info: global: using swerve gamepad control
+009.0482:1: Debug: actions: starting action: SwerveDriveChassisSpeedAction(ChassisSpeeds(Vx: 0.00 m/s, Vy: 0.00 m/s, Omega: 0.00 rad/s))
+509.1834:1: Info: global: changing robot loop type: Disabled -> Teleop
+521.0306:1: Debug: Swimmy2023RobotSubsystem: Swimmy2023RobotSubsystem: starting: [manual, Collect, Cone, Tag Middle, Slot Middle, Loc Middle, ground]
+521.0344:1: Debug: actions: starting action: GPMCollectAction(ground)
+521.0350:1: Debug: actions: starting action: GrabberStartCollectAction: Cone
+521.0358:1: Debug: actions: starting action: 279: MotorEncoderHoldAction (grabber-motor-grab), explicit, target=100.0
+521.0364:1: Debug: actions: starting action: 280: MotorPowerAction, grabber-motor-spin , power=1.0
+521.0372:1: Debug: actions: completing action: 280: MotorPowerAction, grabber-motor-spin , power=1.0
+521.0383:1: Debug: actions: completing action: GrabberStartCollectAction: Cone
+521.0387:1: Debug: actions: starting action: ArmStaggeredGotoAction(collect:extend-ground)
+521.0496:1: Debug: actions: starting action: 288: MotorEncoderGotoAction,arm-motor-upper,20741.0
+521.0540:1: Debug: actions: starting action: 290: MotorEncoderGotoAction,arm-motor-lower,104000.0
+521.8061:1: Debug: actions: completing action: 288: MotorEncoderGotoAction,arm-motor-upper,20741.0
+521.8076:1: Debug: actions: starting action: 289: MotorEncoderHoldAction (arm-motor-upper), explicit, target=20741.0
+522.7254:1: Debug: actions: completing action: 290: MotorEncoderGotoAction,arm-motor-lower,104000.0
+522.7260:1: Debug: actions: starting action: 291: MotorEncoderHoldAction (arm-motor-lower), explicit, target=104000.0
+522.7451:1: Debug: actions: completing action: ArmStaggeredGotoAction(collect:extend-ground)
+522.7652:1: Debug: gpm: State Changed WaitingForDeploy -> WaitingForSensor
+524.1252:1: Debug: actions: canceling action: GPMCollectAction(ground)
+524.1259:1: Debug: actions: canceling action: 291: MotorEncoderHoldAction (arm-motor-lower), explicit, target=104000.0
+524.1264:1: Debug: actions: canceling action: 289: MotorEncoderHoldAction (arm-motor-upper), explicit, target=20741.0
+524.1268:1: Debug: actions: starting action: ArmStaggeredGotoAction(collect:retract-ground)
+524.1274:1: Debug: actions: canceling action: 279: MotorEncoderHoldAction (grabber-motor-grab), explicit, target=100.0
+524.1280:1: Debug: actions: starting action: GrabberStowAction
+524.1287:1: Debug: actions: starting action: 286: MotorEncoderHoldAction (grabber-motor-grab), explicit, target=0.0
+524.1294:1: Debug: actions: starting action: 287: MotorPowerAction, grabber-motor-spin , power=0.0
+524.1299:1: Debug: actions: completing action: 287: MotorPowerAction, grabber-motor-spin , power=0.0
+524.1306:1: Debug: actions: completing action: GrabberStowAction
+524.1310:1: Debug: Swimmy2023RobotSubsystem: Subsystem cancelAction() called with no active action
+524.1319:1: Debug: actions: starting action: 292: MotorEncoderGotoAction,arm-motor-upper,40000.0
+524.1334:1: Debug: actions: starting action: 294: MotorEncoderGotoAction,arm-motor-lower,2000.0
+524.1351:1: Debug: Swimmy2023RobotSubsystem: Swimmy2023RobotSubsystem: completed: [manual, Collect, Cone, Tag Middle, Slot Middle, Loc Middle, ground]
+524.8499:1: Debug: actions: completing action: 292: MotorEncoderGotoAction,arm-motor-upper,40000.0
+524.8518:1: Debug: actions: starting action: 293: MotorEncoderHoldAction (arm-motor-upper), explicit, target=40000.0
+525.7856:1: Debug: actions: completing action: 294: MotorEncoderGotoAction,arm-motor-lower,2000.0
+525.7864:1: Debug: actions: starting action: 295: MotorEncoderHoldAction (arm-motor-lower), explicit, target=2000.0
+525.8067:1: Debug: actions: completing action: ArmStaggeredGotoAction(collect:retract-ground)
+526.6251:1: Debug: Swimmy2023RobotSubsystem: Swimmy2023RobotSubsystem: starting: [manual, Collect, Cube, Tag Middle, Slot Middle, Loc Middle, ground]
+526.6281:1: Debug: actions: canceling action: 295: MotorEncoderHoldAction (arm-motor-lower), explicit, target=2000.0
+526.6325:1: Debug: actions: canceling action: 293: MotorEncoderHoldAction (arm-motor-upper), explicit, target=40000.0
+526.6331:1: Debug: actions: canceling action: 286: MotorEncoderHoldAction (grabber-motor-grab), explicit, target=0.0
+526.6336:1: Debug: actions: starting action: GPMCollectAction(ground)
+526.6339:1: Debug: actions: starting action: GrabberStartCollectAction: Cube
+526.6342:1: Debug: actions: starting action: 305: MotorEncoderHoldAction (grabber-motor-grab), explicit, target=400.0
+526.6345:1: Debug: actions: starting action: 306: MotorPowerAction, grabber-motor-spin , power=1.0
+526.6350:1: Debug: actions: completing action: 306: MotorPowerAction, grabber-motor-spin , power=1.0
+526.6354:1: Debug: actions: completing action: GrabberStartCollectAction: Cube
+526.6357:1: Debug: actions: starting action: ArmStaggeredGotoAction(collect:extend-ground)
+526.6366:1: Debug: actions: starting action: 314: MotorEncoderGotoAction,arm-motor-upper,20741.0
+526.6378:1: Debug: actions: starting action: 316: MotorEncoderGotoAction,arm-motor-lower,104000.0
+527.3660:1: Debug: actions: completing action: 314: MotorEncoderGotoAction,arm-motor-upper,20741.0
+527.3666:1: Debug: actions: starting action: 315: MotorEncoderHoldAction (arm-motor-upper), explicit, target=20741.0
+528.3052:1: Debug: actions: completing action: 316: MotorEncoderGotoAction,arm-motor-lower,104000.0
+528.3059:1: Debug: actions: starting action: 317: MotorEncoderHoldAction (arm-motor-lower), explicit, target=104000.0
+528.3257:1: Debug: actions: completing action: ArmStaggeredGotoAction(collect:extend-ground)
+528.3462:1: Debug: gpm: State Changed WaitingForDeploy -> WaitingForSensor
+529.7246:1: Debug: actions: canceling action: GPMCollectAction(ground)
+529.7251:1: Debug: actions: canceling action: 317: MotorEncoderHoldAction (arm-motor-lower), explicit, target=104000.0
+529.7257:1: Debug: actions: canceling action: 315: MotorEncoderHoldAction (arm-motor-upper), explicit, target=20741.0
+529.7261:1: Debug: actions: starting action: ArmStaggeredGotoAction(collect:retract-ground)
+529.7265:1: Debug: actions: canceling action: 305: MotorEncoderHoldAction (grabber-motor-grab), explicit, target=400.0
+529.7272:1: Debug: actions: starting action: GrabberStowAction
+529.7278:1: Debug: actions: starting action: 312: MotorEncoderHoldAction (grabber-motor-grab), explicit, target=0.0
+529.7281:1: Debug: actions: starting action: 313: MotorPowerAction, grabber-motor-spin , power=0.0
+529.7287:1: Debug: actions: completing action: 313: MotorPowerAction, grabber-motor-spin , power=0.0
+529.7298:1: Debug: actions: completing action: GrabberStowAction
+529.7302:1: Debug: Swimmy2023RobotSubsystem: Subsystem cancelAction() called with no active action
+529.7314:1: Debug: actions: starting action: 318: MotorEncoderGotoAction,arm-motor-upper,40000.0
+529.7327:1: Debug: actions: starting action: 320: MotorEncoderGotoAction,arm-motor-lower,2000.0
+529.7345:1: Debug: Swimmy2023RobotSubsystem: Swimmy2023RobotSubsystem: completed: [manual, Collect, Cube, Tag Middle, Slot Middle, Loc Middle, ground]

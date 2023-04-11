@@ -1,0 +1,58 @@
+001.9087:1: Info: global: ============================================================
+001.9272:1: Info: global: robot code starting
+001.9763:1: Info: global:  enableMessageLogger time = 0.7605
+001.9770:1: Info: global: ============================================================
+002.0128:1: Info: global: Mac Address: 00:80:2F:34:38:37
+002.0143:1: Info: global:  getMacAddress time = 0.03618
+002.0198:1: Info: global: reading params for bot 'COMPETITION'
+002.0220:1: Info: global: reading JSON robots setting file '/home/lvuser/deploy/swimmy2023.jsonc'
+002.2369:1: Info: global:  readParamsFile time = 0.2216
+002.2470:1: Info: global:  enableMessagesFromSettingsFile time = 0.008870
+002.7824:1: Info: global:  loadPathsFiles time = 0.5343
+002.8217:1: Info: global: initializing robot - no FMS
+002.8899:1: Info: global:  plotMgrInit time = 0.0003780
+005.8446:1: Debug: global: ================================================================================================================
+005.8452:1: Debug: global: Data Type: Computed
+005.8460:1: Debug: global: Alliance Color: Red
+005.8494:1: Debug: global: LoadingStation: tag = 5 position = X: 0.362 Y: 6.750 Z: 0.695
+005.8539:1: Debug: global:      left = 1.192 5.930 180.0 difference = X: -0.830 Y: 0.820
+005.8569:1: Debug: global:      right = 1.192 7.570 180.0 difference = X: -0.830 Y: -0.820
+005.8605:1: Debug: global: Grid: tagname = Left tag = 1 position = X: 15.514 Y: 1.072 Z: 0.463
+005.8631:1: Debug: global:      left = 14.534 0.512 -0.0 difference = X: 0.980 Y: 0.560
+005.8656:1: Debug: global:      middle = 14.534 1.072 -0.0 difference = X: 0.980 Y: 0.000
+005.8686:1: Debug: global:      right = 14.534 1.632 -0.0 difference = X: 0.980 Y: -0.560
+005.8717:1: Debug: global: Grid: tagname = Right tag = 3 position = X: 15.514 Y: 4.424 Z: 0.463
+005.8750:1: Debug: global:      left = 14.534 3.864 -0.0 difference = X: 0.980 Y: 0.560
+005.8782:1: Debug: global:      middle = 14.534 4.424 -0.0 difference = X: 0.980 Y: 0.000
+005.8809:1: Debug: global:      right = 14.534 4.984 -0.0 difference = X: 0.980 Y: -0.560
+005.8839:1: Debug: global: Grid: tagname = Middle tag = 2 position = X: 15.514 Y: 2.748 Z: 0.463
+005.8863:1: Debug: global:      left = 14.534 2.188 -0.0 difference = X: 0.980 Y: 0.560
+005.8890:1: Debug: global:      middle = 14.534 2.748 -0.0 difference = X: 0.980 Y: 0.000
+005.8919:1: Debug: global:      right = 14.534 3.308 -0.0 difference = X: 0.980 Y: -0.560
+005.8927:1: Debug: global: Alliance Color: Blue
+005.8953:1: Debug: global: LoadingStation: tag = 4 position = X: 16.179 Y: 6.750 Z: 0.695
+005.8981:1: Debug: global:      left = 15.349 7.570 -0.0 difference = X: 0.830 Y: -0.820
+005.9007:1: Debug: global:      right = 15.349 5.930 -0.0 difference = X: 0.830 Y: 0.820
+005.9035:1: Debug: global: Grid: tagname = Left tag = 6 position = X: 1.027 Y: 4.424 Z: 0.463
+005.9060:1: Debug: global:      left = 2.007 4.984 180.0 difference = X: -0.980 Y: -0.560
+005.9084:1: Debug: global:      middle = 2.007 4.424 180.0 difference = X: -0.980 Y: 0.000
+005.9106:1: Debug: global:      right = 2.007 3.864 180.0 difference = X: -0.980 Y: 0.560
+005.9133:1: Debug: global: Grid: tagname = Right tag = 8 position = X: 1.027 Y: 1.072 Z: 0.463
+005.9154:1: Debug: global:      left = 2.007 1.632 180.0 difference = X: -0.980 Y: -0.560
+005.9184:1: Debug: global:      middle = 2.007 1.072 180.0 difference = X: -0.980 Y: 0.000
+005.9209:1: Debug: global:      right = 2.007 0.512 180.0 difference = X: -0.980 Y: 0.560
+005.9238:1: Debug: global: Grid: tagname = Middle tag = 7 position = X: 1.027 Y: 2.748 Z: 0.463
+005.9263:1: Debug: global:      left = 2.007 3.308 180.0 difference = X: -0.980 Y: -0.560
+005.9285:1: Debug: global:      middle = 2.007 2.748 180.0 difference = X: -0.980 Y: 0.000
+005.9309:1: Debug: global:      right = 2.007 2.188 180.0 difference = X: -0.980 Y: 0.560
+005.9314:1: Debug: global: ================================================================================================================
+007.2353:1: Info: global: created OI panel with 13 panel gadgets and 2 leds
+007.3438:1: Info: global: created: subsystems:arm-motor-lower:hw:motors:1
+007.3826:1: Info: global: created: subsystems:arm-motor-upper:hw:motors:1
+007.6160:1: Info: global: created: subsystems:grabber-motor-grab:hw:motors:1
+007.6385:1: Info: global: created: subsystems:grabber-motor-spin:hw:motors:1
+007.6869:1: Info: global:  hardwareInit time = 4.795
+008.0966:1: Info: global: Changed vision parameters to Single Near
+008.1703:1: Info: global:  computeInitalState time = 0.4816
+008.2165:1: Info: global:  postHWInit time = 0.04529
+008.4214:1: Info: global: changing robot loop type: None -> Disabled
