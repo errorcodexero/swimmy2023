@@ -1,5 +1,7 @@
 package org.xero1425.base.motors ;
 
+import com.ctre.phoenix.motorcontrol.can.TalonFX;
+
 /// \file
 
 /// \brief This class is an abstract base class that defines a contract that all supported motors
@@ -186,4 +188,6 @@ public abstract class MotorController
     public double TicksPerRevolution() throws BadMotorRequestException {
         throw new BadMotorRequestException(this, "this motor does not support an embedded encoder")  ;
     }
+
+    public abstract TalonFX getTalonFX() throws BadMotorRequestException ;
 }

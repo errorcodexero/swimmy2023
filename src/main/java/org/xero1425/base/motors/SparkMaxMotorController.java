@@ -3,6 +3,7 @@ package org.xero1425.base.motors;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.REVLibError;
+import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
 import com.revrobotics.CANSparkMax.IdleMode;
@@ -430,4 +431,8 @@ public class SparkMaxMotorController extends MotorController
         controller_.setPeriodicFramePeriod(CANSparkMaxLowLevel.PeriodicFrame.kStatus1, p1) ;
         controller_.setPeriodicFramePeriod(CANSparkMaxLowLevel.PeriodicFrame.kStatus2, p2) ;    
     }    
+
+    public TalonFX getTalonFX() throws BadMotorRequestException {
+        return null ;
+    }
 } ;

@@ -368,4 +368,8 @@ public class TalonFXMotorController extends MotorController
             controller_.setStatusFramePeriod(StatusFrameEnhanced.Status_21_FeedbackIntegrated, interval) ;
         }
     }
+
+    public TalonFX getTalonFX() throws BadMotorRequestException {
+        return controller_ ;
+    }
 } ;

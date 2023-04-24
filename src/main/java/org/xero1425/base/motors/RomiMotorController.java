@@ -1,5 +1,7 @@
 package org.xero1425.base.motors;
 
+import com.ctre.phoenix.motorcontrol.can.TalonFX;
+
 import edu.wpi.first.wpilibj.motorcontrol.Spark;
 
 /// \file
@@ -134,5 +136,9 @@ public class RomiMotorController extends MotorController {
     /// \param freq the frequency to update the encoder values     
     public void setEncoderUpdateFrequncy(EncoderUpdateFrequency pos, EncoderUpdateFrequency vel) throws BadMotorRequestException {
         throw new BadMotorRequestException(this, "this motor does not contains integrated encoders") ;
+    }
+
+    public TalonFX getTalonFX() throws BadMotorRequestException {
+        return null ;
     }
 }
