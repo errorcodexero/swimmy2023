@@ -147,10 +147,10 @@ public class SparkMaxMotorController extends MotorController
 
     /// \brief Returns true if the motor controller supports PID loops on the controller
     /// \returns true if the motor controller supports PID loops on the controller
-    public boolean hasPID() throws BadMotorRequestException {
-        if (RobotBase.isSimulation())
-            return false ;
-            
+    public boolean hasPID(PidType type) throws BadMotorRequestException {
+        if (type == PidType.Magic) {
+            return false;
+        }
         return true ;
     }
 

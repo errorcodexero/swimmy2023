@@ -25,7 +25,6 @@ import frc.robot.subsystems.toplevel.RobotOperation.Slot;
 
 public class AutoPlaceOpCtrl extends OperationCtrl {
 
-    private final boolean AddAlignStep = false ;
     private final boolean AddDriveForward = true ;
     private final boolean AddSettlingDelay = true ;
 
@@ -43,7 +42,6 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
     }
 
     private double april_tag_action_threshold_ ;
-    private double april_tag_arm_action_threshold_ ;
     private State state_ ;
     private Pose2d target_pose_ ;
     private boolean do_drive_forward_ ;
@@ -68,7 +66,6 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
         super(sub, oper) ;
 
         april_tag_action_threshold_ = sub.getSettingsValue("april-tag-place-action-threshold").getDouble() ;
-        april_tag_arm_action_threshold_ = sub.getSettingsValue("april-tag-place-arm-action-threshold").getDouble() ;
         state_ = State.Idle ;
 
         if (getRobotSubsystem().getRobot().isAutonomous())
@@ -273,15 +270,6 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
             state_ = State.WaitingOnVision ;
             vision_timer_.start() ;
         }
-        /*
-        // TODO: Temporarily disabled early arm deployment for cubes. GPM place action dispatched here gets replaced
-        // when we get to take-over threshold without first checking if the place action is already executing. 
-        else if (dist < april_tag_arm_action_threshold_ && getOper().getGamePiece() == GamePiece.Cube) {
-            if (getRobotSubsystem().getGPM().getAction() == null) {
-                getRobotSubsystem().getGPM().setAction(place_action_, true);
-            }
-        }
-        */
     }
 
     private void stateWaitingForVision() throws BadParameterTypeException, MissingParameterException {
@@ -309,11 +297,6 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
             drive_to_action_ = new SwerveDrivePathAction(getRobotSubsystem().getSwerve(), pts.get(0), interior, pts.get(1), target_pose_.getRotation(), max_a, max_v);
 
             getRobotSubsystem().getSwerve().setAction(drive_to_action_, true);
-
-
-            if (AddAlignStep) {
-                getRobotSubsystem().getLimeLight().setPipeline(1);
-            }
             state_ = State.DrivingToLocation ;
         }
         else {
@@ -329,19 +312,14 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
 
     private void stateDrivingToLocation() {
         if (drive_to_action_.isDone()) {
-            if (AddAlignStep) {
-                getRobotSubsystem().getSwerve().setAction(align_action_, true) ;
-                state_ = State.AlignRobot ;
-            } else {
-                double [] angles = new double[] { 0.0, 0.0, 0.0, 0.0} ;
-                double [] power = new double[] { 0.0, 0.0, 0.0, 0.0} ;
-    
-                getRobotSubsystem().getLimeLight().setPipeline(0);
-    
-                getRobotSubsystem().getSwerve().setRawTargets(true, angles, power) ;
-                state_ = State.AlignWheels ;
-                wheels_timer_.start() ;
-            }
+            double [] angles = new double[] { 0.0, 0.0, 0.0, 0.0} ;
+            double [] power = new double[] { 0.0, 0.0, 0.0, 0.0} ;
+
+            getRobotSubsystem().getLimeLight().setPipeline(0);
+
+            getRobotSubsystem().getSwerve().setRawTargets(true, angles, power) ;
+            state_ = State.AlignWheels ;
+            wheels_timer_.start() ;
         }
     }
 
@@ -359,7 +337,7 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
     }
 
     private void stateAlignWheels() {
-        if (!AddAlignStep || wheels_timer_.isExpired()) {
+        if (wheels_timer_.isExpired()) {
             if (do_drive_forward_) {
                 ChassisSpeeds speed ;
                 speed = new ChassisSpeeds(forward_power_, 0.0, 0.0) ;

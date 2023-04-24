@@ -83,7 +83,7 @@ public class RomiMotorController extends MotorController {
     /// \brief Returns true if the motor controller supports PID loops on the controller.  Note
     /// always returns false for the Romi motor controller
     /// \returns true if the motor controller supports PID loops on the controller    
-    public boolean hasPID() throws BadMotorRequestException {
+    public boolean hasPID(PidType type) throws BadMotorRequestException {
         return false ;
     }
 

@@ -1,6 +1,5 @@
 package org.xero1425.base.subsystems.swerve.common;
 
-import org.xero1425.base.actions.Action;
 import org.xero1425.base.misc.XeroTimer;
 import org.xero1425.base.motors.BadMotorRequestException;
 import org.xero1425.base.motors.MotorRequestFailedException;

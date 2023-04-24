@@ -907,7 +907,7 @@
                         "canid": 23,
                         "offset": {
                             "PRACTICE" : -259.89,
-                            "COMPETITION" : -22
+                            "COMPETITION" : -295.5
                         }
                     }
                 },
@@ -1167,8 +1167,8 @@
         }
     },
     "testmode": {
-        "enabled": false,
-        "which": 18,
+        "enabled": true,
+        "which": 20,
         "0": {
             "angle": 90,
             "power": 0.2
@@ -1216,7 +1216,7 @@
         },
         "18" : {
             "profile1" : "place-still:top:cone:extend",
-            "delay" : 60.0,
+            "delay" : 3.0,
             "profile2" : "place-still:top:cone:retract"
         },
         "20" : {

@@ -92,11 +92,11 @@ public class MotorGroupController extends MotorController
 
     /// \brief Returns true if the motor controller supports PID loops on the controller
     /// \returns true if the motor controller supports PID loops on the controller    
-    public boolean hasPID() throws BadMotorRequestException, MotorRequestFailedException {
+    public boolean hasPID(PidType type) throws BadMotorRequestException, MotorRequestFailedException {
         if (motors_.size() == 0)
             throw new BadMotorRequestException(this, "request made to empty MotorGroupController") ;
 
-        return motors_.get(0).hasPID() ;
+        return motors_.get(0).hasPID(type) ;
     }
 
     /// \brief Set the target if running a PID loop on the motor controller

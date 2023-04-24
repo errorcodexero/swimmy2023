@@ -226,8 +226,8 @@
                             "heading": -3.947785604877789e-14,
                             "swrot": -3.947785604877789e-14,
                             "swrotvel": 0,
-                            "x": 14.338150145872596,
-                            "y": 0.9996652294219892
+                            "x": 13.997775109876597,
+                            "y": 0.8842083587159841
                         }
                     ],
                     "startvelocity": 0
@@ -348,8 +348,8 @@
                             "heading": 179.99999999999997,
                             "swrot": 179.99999999999997,
                             "swrotvel": 0,
-                            "x": 2.3223724257737386,
-                            "y": 0.892221613444951
+                            "x": 2.5439642007877468,
+                            "y": 0.8842083587159841
                         }
                     ],
                     "startvelocity": 0
@@ -555,6 +555,6 @@
             ]
         }
     ],
-    "outdir": "C:/cygwin64/home/team1425/robots/swimmy2023/src/main/deploy/paths",
+    "outdir": "C:/cygwin64/home/mkassab/team1425_repos/swimmy2023/src/main/deploy/paths",
     "units": "m"
 }

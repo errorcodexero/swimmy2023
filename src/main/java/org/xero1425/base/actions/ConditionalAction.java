@@ -1,10 +1,7 @@
 package org.xero1425.base.actions;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.function.Supplier;
 import org.xero1425.misc.MessageLogger;
-import org.xero1425.misc.MessageType;
 
 public class ConditionalAction extends Action {
     private Supplier<Boolean> condition_ ;

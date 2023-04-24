@@ -3,6 +3,7 @@ package org.xero1425.base.subsystems.motorsubsystem;
 import org.xero1425.base.XeroRobot;
 import org.xero1425.base.motors.BadMotorRequestException;
 import org.xero1425.base.motors.MotorRequestFailedException;
+import org.xero1425.base.motors.MotorController.PidType;
 import org.xero1425.base.subsystems.Subsystem;
 import org.xero1425.misc.MessageLogger;
 import org.xero1425.misc.MessageType;
@@ -147,6 +148,10 @@ public class MotorEncoderSubsystem extends MotorSubsystem
         dump_currents_ = false ;        
     }
 
+    public XeroEncoder getEncoder() {
+        return encoder_ ;
+    }
+
     public void setDumpCurrents(boolean b) {
         dump_currents_ = b ;
     }
@@ -165,11 +170,11 @@ public class MotorEncoderSubsystem extends MotorSubsystem
 
     /// \brief Returns true if the motor has a hardware PID loop in the motor controller
     /// \returns true if the motor has a hardware PID loop in the motor controller
-    public boolean hasHWPID() {
+    public boolean hasHWPID(PidType type) {
         boolean ret = false ;
 
         try {
-            ret = getMotorController().hasPID() ;
+            ret = getMotorController().hasPID(type) ;
         }
         catch(Exception ex) {
             ret = false ;
@@ -189,7 +194,6 @@ public class MotorEncoderSubsystem extends MotorSubsystem
     public double getPosition() {
         return speedometer_.getDistance() ;
     }
-
     
     public double velocityToController(double vel) {
         return encoder_.mapVelocityToMotor(vel) ;
