@@ -8,8 +8,10 @@ import org.xero1425.base.controllers.AutoController;
 import org.xero1425.base.controllers.TestAutoMode;
 import org.xero1425.base.subsystems.motorsubsystem.MotorEncoderGotoAction;
 import org.xero1425.base.subsystems.motorsubsystem.MotorEncoderHoldAction;
+import org.xero1425.base.subsystems.motorsubsystem.MotorEncoderMotionMagicActon;
 import org.xero1425.base.subsystems.motorsubsystem.MotorEncoderPowerAction;
 import org.xero1425.base.subsystems.motorsubsystem.MotorEncoderSubsystem;
+import org.xero1425.base.subsystems.motorsubsystem.MotorEncoderMotionMagicActon.HoldType;
 import org.xero1425.base.subsystems.swerve.common.SwerveAlignDriveBaseAction;
 import org.xero1425.base.subsystems.swerve.common.SwerveBaseSubsystem;
 import org.xero1425.base.subsystems.swerve.common.SwerveHolonomicPathFollower;
@@ -45,6 +47,7 @@ public class SwimmyTestAutoMode extends TestAutoMode {
             throws InvalidActionRequest, Exception {
         super(ctrl, "Swimmy-Test-Mode");
 
+        TrapezoidalProfileConfig cfg = null ;
         Swimmy2023RobotSubsystem robotsys = (Swimmy2023RobotSubsystem) ctrl.getRobot().getRobotSubsystem();
         LimeLightSubsystem limelight = robotsys.getLimeLight();
         SwerveBaseSubsystem swerve = (SwerveBaseSubsystem) robotsys.getDB();
@@ -138,18 +141,14 @@ public class SwimmyTestAutoMode extends TestAutoMode {
                 break ;                
 
             case 12:
-                {
-                    TrapezoidalProfileConfig cfg = new TrapezoidalProfileConfig(100000, -100000, 100000) ;
-                    addSubActionPair(armUpper, new MotorEncoderGotoAction(armUpper, getDouble("target"), cfg, true), true) ;
-                }
+                cfg = new TrapezoidalProfileConfig(100000, -100000, 100000) ;
+                addSubActionPair(armUpper, new MotorEncoderGotoAction(armUpper, getDouble("target"), cfg, true), true) ;
                 break ;
 
             case 13:
-                {
-                    TrapezoidalProfileConfig cfg = new TrapezoidalProfileConfig(100000, -100000, 100000) ;
-                    addSubActionPair(armUpper, new MotorEncoderGotoAction(armUpper, getDouble("height"), cfg, true), true) ;
-                    addSubActionPair(armLower, new MotorEncoderGotoAction(armLower, getDouble("target"), cfg, true), true) ;
-                }
+                cfg = new TrapezoidalProfileConfig(100000, -100000, 100000) ;
+                addSubActionPair(armUpper, new MotorEncoderGotoAction(armUpper, getDouble("height"), cfg, true), true) ;
+                addSubActionPair(armLower, new MotorEncoderGotoAction(armLower, getDouble("target"), cfg, true), true) ;
                 break ;
             
             case 17:
@@ -165,7 +164,7 @@ public class SwimmyTestAutoMode extends TestAutoMode {
                 break ;
 
             case 19:
-                addSubActionPair(arm, new ArmStaggeredGotoAction(arm, "place:middle:cone:extend", false), true) ;
+                addSubActionPair(arm, new ArmStaggeredGotoAction(arm, "place:top:cone:extend", false), true) ;
                 break ;
 
             case 20:
@@ -315,7 +314,23 @@ public class SwimmyTestAutoMode extends TestAutoMode {
                 
             case 85:
                 addSubActionPair(gpm, new GPMCollectAction(gpm, GamePiece.Cube, true), true);
-                break;                    
+                break;     
+                
+            case 100:
+                cfg = new TrapezoidalProfileConfig(100000, -100000, 100000) ;
+                addSubActionPair(armUpper, new MotorEncoderGotoAction(armUpper, getDouble("target"), cfg, true), true) ;
+                break ;
+
+            case 101:
+                {
+                    double delay = getDouble("delay") ;
+                    double target = getDouble("target") ;
+                    double maxa = getDouble("maxa") ;
+                    double maxv = getDouble("maxv") ;
+                    int strength = getInteger("strength") ;
+                    addSubActionPair(armUpper, new MotorEncoderMotionMagicActon(armUpper, delay , target, maxa, maxv, strength, HoldType.AtCurrentPosition), true) ;
+                }
+                break ;
         }
     }
 

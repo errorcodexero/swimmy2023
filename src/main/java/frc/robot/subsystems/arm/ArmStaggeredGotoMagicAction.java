@@ -86,7 +86,7 @@ public class ArmStaggeredGotoMagicAction extends Action {
             l2_done_ = true ;
         }
 
-        if (l1_action_.isComplete() &&  l2_action_.isComplete()) {
+        if (l1_done_ && l2_done_) {
             setDone() ;
         }
     }

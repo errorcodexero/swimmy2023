@@ -1,6 +1,8 @@
 package org.xero1425.base.subsystems.motorsubsystem;
 
 import org.xero1425.base.motors.BadMotorRequestException;
+import org.xero1425.misc.MessageLogger;
+import org.xero1425.misc.MessageType;
 
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
@@ -39,6 +41,7 @@ public class MotorEncoderMotionMagicActon extends MotorAction {
         maxa_ = maxa ;
         maxv_ = maxv ;
         strength_ = strength ;
+        delay_ = delay ;
 
         TalonFX talon = getSubsystem().getMotorController().getTalonFX() ;
         if (talon == null) {
@@ -54,6 +57,11 @@ public class MotorEncoderMotionMagicActon extends MotorAction {
         talon.config_kI(0, ki);
         talon.config_kD(0, kd);
         talon.config_kF(0, kf);
+
+        MessageLogger logger = getSubsystem().getRobot().getMessageLogger();
+        logger.startMessage(MessageType.Info) ;
+        logger.add("MotionMagic: ").add("kp", kp).add("ki", ki)
+                    .add("kd", kd).add("kf", kf).endMessage() ;
     }
 
     public boolean isWaiting() {
@@ -77,9 +85,17 @@ public class MotorEncoderMotionMagicActon extends MotorAction {
 
     @Override
     public void run() throws Exception  {
+        MessageLogger logger = getSubsystem().getRobot().getMessageLogger();
+        State old = state_ ;
+
         tryStart();
 
         MotorEncoderSubsystem me = (MotorEncoderSubsystem)getSubsystem();
+        if (state_ == State.Running) {
+            logger.startMessage(MessageType.Info) ;
+            logger.add("MotionMagic Pos").add("target", target_).add("actual", me.getPosition()) ;
+            logger.endMessage();
+        }
         if (state_ == State.Running && Math.abs(target_ - me.getPosition()) < NearEndpoint) {
             state_ = State.Complete ;
             switch(hold_) {
@@ -98,7 +114,17 @@ public class MotorEncoderMotionMagicActon extends MotorAction {
                     }
                     break ;
             }
+            logger.startMessage(MessageType.Info) ;
+            logger.add("Motion magic duration ") ;
+            logger.add(getSubsystem().getRobot().getTime() - start_) ;
+            logger.endMessage();
             setDone() ;
+        }
+
+        if (state_ != old) {
+
+            logger.startMessage(MessageType.Info) ;
+            logger.add("Motion Magic: ").add(old.toString()).add(" -> ").add(state_.toString()).endMessage();
         }
     }
 
@@ -117,8 +143,12 @@ public class MotorEncoderMotionMagicActon extends MotorAction {
                 talon.configMotionSCurveStrength(strength_);
                 talon.set(TalonFXControlMode.MotionMagic, target_);
                 state_ = State.Running ;
+
+                MessageLogger logger = getSubsystem().getRobot().getMessageLogger();
+                logger.startMessage(MessageType.Info) ;
+                logger.add("MotionMagic: ").add("accel", maxa_).add("velocity", maxv_)
+                        .add("strength", strength_).add("target", target_).endMessage() ;
             }
         }
     }
-
 }
