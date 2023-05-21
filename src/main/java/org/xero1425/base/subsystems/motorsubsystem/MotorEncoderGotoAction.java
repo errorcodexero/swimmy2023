@@ -118,7 +118,7 @@ public class MotorEncoderGotoAction extends MotorAction {
 
         ISettingsSupplier settings = sub.getRobot().getSettingsSupplier() ;
         profile_ = new TrapezoidalProfile(settings, "subsystems:" + sub.getName() + ":goto") ;
-        plot_id_ = sub.initPlot(sub.getName() + "-" + toString(plot_id_++)) ;
+        plot_id_ = sub.initPlot(sub.getName() + "-" + toString(0)) ;
     }
 
     /// \brief Create the action
@@ -157,7 +157,7 @@ public class MotorEncoderGotoAction extends MotorAction {
         use_actual_ = false ;
 
         profile_ = new TrapezoidalProfile(c) ;
-        plot_id_ = sub.initPlot(sub.getName() + "-" + toString(plot_id_++)) ;
+        plot_id_ = sub.initPlot(sub.getName() + "-" + toString(0)) ;
     }
 
     /// \brief Create the action
@@ -195,7 +195,7 @@ public class MotorEncoderGotoAction extends MotorAction {
         use_actual_ = false ;
 
         profile_ = new SCurveProfile(c) ;
-        plot_id_ = sub.initPlot(sub.getName() + "-" + toString(plot_id_++)) ;
+        plot_id_ = sub.initPlot(sub.getName() + "-" + toString(0)) ;
     }
 
     /// \brief Create the action

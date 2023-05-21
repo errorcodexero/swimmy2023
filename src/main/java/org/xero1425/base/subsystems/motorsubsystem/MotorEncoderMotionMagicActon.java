@@ -9,6 +9,19 @@ import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
 public class MotorEncoderMotionMagicActon extends MotorAction {
 
+    // The plot ID for plotting the motion
+    int plot_id_ ;
+
+    static int name_id_ = 0 ;
+
+    // The columns to plot
+    private String [] plot_columns_ = 
+    { 
+        "time (sec)", 
+        "tpos (%%units%%)", "apos (%%units%%)", 
+    } ;
+
+
     private enum State {
         Waiting,
         Running,
@@ -58,10 +71,7 @@ public class MotorEncoderMotionMagicActon extends MotorAction {
         talon.config_kD(0, kd);
         talon.config_kF(0, kf);
 
-        MessageLogger logger = getSubsystem().getRobot().getMessageLogger();
-        logger.startMessage(MessageType.Info) ;
-        logger.add("MotionMagic: ").add("kp", kp).add("ki", ki)
-                    .add("kd", kd).add("kf", kf).endMessage() ;
+        plot_id_ = sub.initPlot(sub.getName() + "-" + toString(plot_id_++)) ;
     }
 
     public boolean isWaiting() {
@@ -78,6 +88,9 @@ public class MotorEncoderMotionMagicActon extends MotorAction {
 
     @Override
     public void start() throws Exception {
+        MotorEncoderSubsystem sub = (MotorEncoderSubsystem)getSubsystem();
+        getSubsystem().startPlot(plot_id_, convertUnits(plot_columns_, sub.getUnits()));
+
         start_ = getSubsystem().getRobot().getTime() ;
         state_ = State.Waiting ;
         tryStart() ;
@@ -118,8 +131,15 @@ public class MotorEncoderMotionMagicActon extends MotorAction {
             logger.add("Motion magic duration ") ;
             logger.add(getSubsystem().getRobot().getTime() - start_) ;
             logger.endMessage();
+            me.endPlot(plot_id_);
             setDone() ;
         }
+
+        Double[] data = new Double[plot_columns_.length] ;
+        data[0] = getSubsystem().getRobot().getTime() - start_ ;
+        data[1] = target_ ;
+        data[2] = me.getPosition() ;
+        me.addPlotData(plot_id_, data);
 
         if (state_ != old) {
 
