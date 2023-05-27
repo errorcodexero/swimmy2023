@@ -23,12 +23,12 @@
             "gpm" : true
         },
         "verbose": {
-            "swerve" : true,
+            "swerve" : false,
             "arm-motor-upper" : false,
-            "grabber-motor-grab" : true
+            "grabber-motor-grab" : false
         },
         "plotting": {
-            "enabled" : true,
+            "enabled" : false,
             "version" : 3
         },
         "pneumatics": {
