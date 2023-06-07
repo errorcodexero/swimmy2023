@@ -11,21 +11,22 @@ public class ArmStaggeredGotoMagicAction extends Action {
     private ArmSubsystem sub_ ;
     private String key_ ;
 
-    private double l1_target_ ;
-    private double l1_maxa_ ;
-    private double l1_maxv_ ;
-    private int l1_strength_ ;
-    private double l1_delay_ ;
-    private MotorEncoderMotionMagicActon l1_action_ ;
-    private boolean l1_done_ ;
+    private double lower_target_ ;
+    private double lower_maxa_ ;
+    private double lower_maxv_ ;
+    private int lower_strength_ ;
+    private MotorEncoderMotionMagicActon lower_action_ ;
+    private boolean lower_done_ ;
+    private boolean lower_started_ ;
 
-    private double l2_target_ ;
-    private double l2_maxa_ ;
-    private double l2_maxv_ ;
-    private int l2_strength_ ;
-    private double l2_delay_ ;
-    private boolean l2_done_ ;
-    private MotorEncoderMotionMagicActon l2_action_ ;
+    private double upper_target_ ;
+    private double upper_maxa_ ;
+    private double upper_maxv_ ;
+    private int upper_strength_ ;
+    private boolean upper_done_ ;
+    private MotorEncoderMotionMagicActon upper_action_ ;
+
+    private double trigger_distance_ ;
 
     public ArmStaggeredGotoMagicAction(ArmSubsystem sub, String key) throws Exception {
         super(sub.getRobot().getMessageLogger());
@@ -33,60 +34,66 @@ public class ArmStaggeredGotoMagicAction extends Action {
         sub_ = sub ;
         key_ = key ;
 
-        l1_target_ = sub_.getSettingsValue(key + ":lower:target").getDouble();
-        l1_maxa_ = sub_.getSettingsValue(key + ":lower:config:maxa").getDouble();
-        l1_maxv_ = sub_.getSettingsValue(key + ":lower:config:maxv").getDouble();
-        l1_delay_ = sub_.getSettingsValue(key + ":lower:delay").getDouble();
+        lower_target_ = sub_.getSettingsValue(key + ":lower:target").getDouble();
+        lower_maxa_ = sub_.getSettingsValue(key + ":lower:config:maxa").getDouble();
+        lower_maxv_ = sub_.getSettingsValue(key + ":lower:config:maxv").getDouble();
 
         if (sub_.isSettingDefined(key + ":lower:strength")) {
-            l1_strength_ = sub_.getSettingsValue(key + ":lower:strength").getInteger() ;
+            lower_strength_ = sub_.getSettingsValue(key + ":lower:strength").getInteger() ;
         } else {
-            l1_strength_ = 8 ;
+            lower_strength_ = 8 ;
         }
 
-        l2_target_ = sub_.getSettingsValue(key + ":upper:target").getDouble();
-        l2_maxa_ = sub_.getSettingsValue(key + ":upper:config:maxa").getDouble();
-        l2_maxa_ = sub_.getSettingsValue(key + ":upper:config:maxv").getDouble();
-        l1_delay_ = sub_.getSettingsValue(key + ":upper:delay").getDouble();
+        upper_target_ = sub_.getSettingsValue(key + ":upper:target").getDouble();
+        upper_maxa_ = sub_.getSettingsValue(key + ":upper:config:maxa").getDouble();
+        upper_maxa_ = sub_.getSettingsValue(key + ":upper:config:maxv").getDouble();
 
         if (sub_.isSettingDefined(key + ":upper:strength")) {
-            l2_strength_ = sub_.getSettingsValue(key + ":upper:strength").getInteger() ;
+            upper_strength_ = sub_.getSettingsValue(key + ":upper:strength").getInteger() ;
         } else {
-            l2_strength_ = 8 ;
+            upper_strength_ = 8 ;
         }
 
-        l1_action_ = new MotorEncoderMotionMagicActon(sub.getLowerSubsystem(), l1_delay_, l1_target_, l1_maxa_, l1_maxv_, l1_strength_, HoldType.AtCurrentPosition);
-        l2_action_ = new MotorEncoderMotionMagicActon(sub.getUpperSubsystem(), l2_delay_, l2_target_, l2_maxa_, l2_maxv_, l2_strength_, HoldType.AtCurrentPosition);
+        trigger_distance_ = sub_.getSettingsValue(key + ":upper:trigger").getDouble();
+
+        lower_action_ = new MotorEncoderMotionMagicActon(sub.getLowerSubsystem(), lower_target_, lower_maxa_, lower_maxv_, lower_strength_, HoldType.AtCurrentPosition);
+        upper_action_ = new MotorEncoderMotionMagicActon(sub.getUpperSubsystem(), upper_target_, upper_maxa_, upper_maxv_, upper_strength_, HoldType.AtCurrentPosition);
     }
 
     @Override
     public void start() throws Exception {
-        l1_done_ = false ;
-        l2_done_ = false ;
+        lower_done_ = false ;
+        lower_started_ = false ;
+        upper_done_ = false ;
 
-        sub_.getLowerSubsystem().setAction(l1_action_);
-        sub_.getUpperSubsystem().setAction(l2_action_);
+        sub_.getUpperSubsystem().setAction(upper_action_);
     }
     
     @Override
     public void run() throws Exception {
-        if (!l1_done_ && l1_action_.isComplete()) {
-            MessageLogger logger = sub_.getRobot().getMessageLogger();
-            logger.startMessage(MessageType.Info) ;
-            logger.add("ArmStaggeredGotoMagicAction: L1 action complete @ ", sub_.getRobot().getTime()) ;
-            logger.endMessage();
-            l1_done_ = true ;
+
+        if (!lower_started_ && upper_action_.getDistance() > trigger_distance_) {
+            lower_started_ = true ;
+            sub_.getLowerSubsystem().setAction(lower_action_);
         }
 
-        if (!l2_done_ && l2_action_.isComplete()) {
+        if (lower_started_ && !lower_done_ && lower_action_.isComplete()) {
             MessageLogger logger = sub_.getRobot().getMessageLogger();
             logger.startMessage(MessageType.Info) ;
-            logger.add("ArmStaggeredGotoMagicAction: L2 action complete @ ", sub_.getRobot().getTime()) ;
+            logger.add("ArmStaggeredGotoMagicAction: lower action complete @ ", sub_.getRobot().getTime()) ;
             logger.endMessage();
-            l2_done_ = true ;
+            lower_done_ = true ;
         }
 
-        if (l1_done_ && l2_done_) {
+        if (!upper_done_ && upper_action_.isComplete()) {
+            MessageLogger logger = sub_.getRobot().getMessageLogger();
+            logger.startMessage(MessageType.Info) ;
+            logger.add("ArmStaggeredGotoMagicAction: upper action complete @ ", sub_.getRobot().getTime()) ;
+            logger.endMessage();
+            upper_done_ = true ;
+        }
+
+        if (lower_done_ && upper_done_) {
             setDone() ;
         }
     }

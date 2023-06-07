@@ -324,31 +324,19 @@ public class SwimmyTestAutoMode extends TestAutoMode {
 
             case 101:
                 {
-                    double delay = getDouble("delay") ;
                     double target = getDouble("target") ;
                     double maxa = getDouble("maxa") ;
                     double maxv = getDouble("maxv") ;
                     int strength = getInteger("strength") ;
-                    addSubActionPair(armUpper, new MotorEncoderMotionMagicActon(armUpper, delay , target, maxa, maxv, strength, HoldType.AtCurrentPosition), true) ;
+                    addSubActionPair(armUpper, new MotorEncoderMotionMagicActon(armUpper, target, maxa, maxv, strength, HoldType.AtCurrentPosition), true) ;
                 }
                 break ;
 
             case 102:
-            {
-                double delay = getDouble("udelay") ;
-                double target = getDouble("utarget") ;
-                double maxa = getDouble("umaxa") ;
-                double maxv = getDouble("umaxv") ;
-                int strength = getInteger("ustrength") ;
-                addSubActionPair(armUpper, new MotorEncoderMotionMagicActon(armUpper, delay , target, maxa, maxv, strength, HoldType.AtCurrentPosition), false) ;
-
-                delay = getDouble("ldelay") ;
-                target = getDouble("ltarget") ;
-                maxa = getDouble("lmaxa") ;
-                maxv = getDouble("lmaxv") ;
-                strength = getInteger("lstrength") ;
-                addSubActionPair(armUpper, new MotorEncoderMotionMagicActon(armLower, delay , target, maxa, maxv, strength, HoldType.AtCurrentPosition), true) ;
-            }
+                {
+                    ArmStaggeredGotoMagicAction act = new ArmStaggeredGotoMagicAction(arm, "place:top:cone:extend") ;
+                    addSubActionPair(arm, act, true) ;
+                }
             break ;
         }
     }

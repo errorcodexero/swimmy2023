@@ -327,8 +327,9 @@
                                     "maxa" : 150000,               // Max decel for trapezoidal profile, upper arm
                                     "maxv" : 150000                 // Max velocity for trapezoidal profile, upper arm
                                 },
-                                "delay" : 0.0,                      // Delay until we start upper arm
-                                "target" : 208000
+                                "delay" : 0.0,                      // Delay until we start upper arm,
+                                "target" : 208000,
+                                "trigger" : 50000                  // How far to move the upper arm before starting the lower arm
                             }
                         },
                         "retract" : {

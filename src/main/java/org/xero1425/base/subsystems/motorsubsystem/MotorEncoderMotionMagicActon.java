@@ -42,14 +42,14 @@ public class MotorEncoderMotionMagicActon extends MotorAction {
 
     private double start_ ;
     private double target_ ;
-    private double delay_ ;
     private HoldType hold_ ;
     private State state_ ;
     private double maxa_ ;
     private double maxv_ ;
     private int strength_ ;
+    private double start_pos_ ;
 
-    public MotorEncoderMotionMagicActon(MotorEncoderSubsystem sub, double delay, double target, double maxa, double maxv, int strength, HoldType holdtype) throws Exception {
+    public MotorEncoderMotionMagicActon(MotorEncoderSubsystem sub, double target, double maxa, double maxv, int strength, HoldType holdtype) throws Exception {
         super(sub);
 
         target_ = target ;
@@ -57,7 +57,6 @@ public class MotorEncoderMotionMagicActon extends MotorAction {
         maxa_ = maxa ;
         maxv_ = maxv ;
         strength_ = strength ;
-        delay_ = delay ;
 
         TalonFX talon = getSubsystem().getMotorController().getTalonFX() ;
         if (talon == null) {
@@ -75,6 +74,11 @@ public class MotorEncoderMotionMagicActon extends MotorAction {
         talon.config_kF(0, kf);
 
         plot_id_ = sub.initPlot(sub.getName() + "-" + toString(plot_id_++)) ;
+    }
+
+    public double getDistance() {
+        MotorEncoderSubsystem me = (MotorEncoderSubsystem)getSubsystem();
+        return Math.abs(me.getPosition() - start_pos_) ;
     }
 
     public boolean isWaiting() {
@@ -157,27 +161,25 @@ public class MotorEncoderMotionMagicActon extends MotorAction {
 
     @Override
     public String toString(int indent) {
-        return spaces(indent) + "MotorEncoderMotionMagicActon delay=" + delay_ + ", target=" + target_ + ", hold=" + hold_.toString();
+        return spaces(indent) + "MotorEncoderMotionMagicActon target=" + target_ + ", hold=" + hold_.toString();
     }
 
     private void tryStart() throws BadMotorRequestException {
         if (state_ == State.Waiting) {
             MotorEncoderSubsystem me = (MotorEncoderSubsystem)getSubsystem() ;
-            double elapsed = getSubsystem().getRobot().getTime() - start_ ;
-            if (elapsed > delay_) {
-                getSubsystem().startPlot(plot_id_, convertUnits(plot_columns_, me.getUnits()));
-                TalonFX talon = getSubsystem().getMotorController().getTalonFX() ;
-                talon.configMotionAcceleration(maxa_);
-                talon.configMotionCruiseVelocity(maxv_);
-                talon.configMotionSCurveStrength(strength_);
-                talon.set(TalonFXControlMode.MotionMagic, target_);
-                state_ = State.Running ;
+            start_pos_ = me.getPosition();
+            me.startPlot(plot_id_, convertUnits(plot_columns_, me.getUnits()));
+            TalonFX talon = me.getMotorController().getTalonFX() ;
+            talon.configMotionAcceleration(maxa_);
+            talon.configMotionCruiseVelocity(maxv_);
+            talon.configMotionSCurveStrength(strength_);
+            talon.set(TalonFXControlMode.MotionMagic, target_);
+            state_ = State.Running ;
 
-                MessageLogger logger = getSubsystem().getRobot().getMessageLogger();
-                logger.startMessage(MessageType.Info) ;
-                logger.add("MotionMagic: ").add("accel", maxa_).add("velocity", maxv_)
-                        .add("strength", strength_).add("target", target_).endMessage() ;
-            }
+            MessageLogger logger = me.getRobot().getMessageLogger();
+            logger.startMessage(MessageType.Info) ;
+            logger.add("MotionMagic: ").add("accel", maxa_).add("velocity", maxv_)
+                    .add("strength", strength_).add("target", target_).endMessage() ;
         }
     }
 }
