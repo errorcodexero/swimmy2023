@@ -18,7 +18,9 @@ public class MotorEncoderMotionMagicActon extends MotorAction {
     private String [] plot_columns_ = 
     { 
         "time (sec)", 
-        "tpos (%%units%%)", "apos (%%units%%)", 
+        "target (%%units%%)", "apos (%%units%%)",
+        "avel (%%units%%)", "tpos (%%units%%)",
+        "error (%%units%%)"
     } ;
 
 
@@ -28,7 +30,8 @@ public class MotorEncoderMotionMagicActon extends MotorAction {
         Complete
     }
 
-    private static final double NearEndpoint = 1000 ;
+    private static final double NearEndpoint = 4266 ;
+    private static final double EndVelocity = 1000 ;
 
     public enum HoldType
     {
@@ -88,9 +91,6 @@ public class MotorEncoderMotionMagicActon extends MotorAction {
 
     @Override
     public void start() throws Exception {
-        MotorEncoderSubsystem sub = (MotorEncoderSubsystem)getSubsystem();
-        getSubsystem().startPlot(plot_id_, convertUnits(plot_columns_, sub.getUnits()));
-
         start_ = getSubsystem().getRobot().getTime() ;
         state_ = State.Waiting ;
         tryStart() ;
@@ -104,12 +104,16 @@ public class MotorEncoderMotionMagicActon extends MotorAction {
         tryStart();
 
         MotorEncoderSubsystem me = (MotorEncoderSubsystem)getSubsystem();
+        TalonFX talon = getSubsystem().getMotorController().getTalonFX() ;
+        double mcvel = talon.getSelectedSensorVelocity() ;
         if (state_ == State.Running) {
             logger.startMessage(MessageType.Info) ;
             logger.add("MotionMagic Pos").add("target", target_).add("actual", me.getPosition()) ;
             logger.endMessage();
         }
-        if (state_ == State.Running && Math.abs(target_ - me.getPosition()) < NearEndpoint) {
+
+        double delta = Math.abs(target_ - me.getPosition()) ;
+        if (state_ == State.Running && delta < NearEndpoint && Math.abs(mcvel) < EndVelocity) {
             state_ = State.Complete ;
             switch(hold_) {
                 case None:
@@ -130,6 +134,7 @@ public class MotorEncoderMotionMagicActon extends MotorAction {
             logger.startMessage(MessageType.Info) ;
             logger.add("Motion magic duration ") ;
             logger.add(getSubsystem().getRobot().getTime() - start_) ;
+            logger.add("delta", delta) ;
             logger.endMessage();
             me.endPlot(plot_id_);
             setDone() ;
@@ -139,10 +144,12 @@ public class MotorEncoderMotionMagicActon extends MotorAction {
         data[0] = getSubsystem().getRobot().getTime() - start_ ;
         data[1] = target_ ;
         data[2] = me.getPosition() ;
+        data[3] = talon.getSelectedSensorVelocity() ;
+        data[4] = talon.getClosedLoopTarget() ;
+        data[5] = talon.getClosedLoopError() ;
         me.addPlotData(plot_id_, data);
 
         if (state_ != old) {
-
             logger.startMessage(MessageType.Info) ;
             logger.add("Motion Magic: ").add(old.toString()).add(" -> ").add(state_.toString()).endMessage();
         }
@@ -155,8 +162,10 @@ public class MotorEncoderMotionMagicActon extends MotorAction {
 
     private void tryStart() throws BadMotorRequestException {
         if (state_ == State.Waiting) {
+            MotorEncoderSubsystem me = (MotorEncoderSubsystem)getSubsystem() ;
             double elapsed = getSubsystem().getRobot().getTime() - start_ ;
             if (elapsed > delay_) {
+                getSubsystem().startPlot(plot_id_, convertUnits(plot_columns_, me.getUnits()));
                 TalonFX talon = getSubsystem().getMotorController().getTalonFX() ;
                 talon.configMotionAcceleration(maxa_);
                 talon.configMotionCruiseVelocity(maxv_);

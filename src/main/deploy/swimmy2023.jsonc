@@ -1180,7 +1180,7 @@
     },
     "testmode": {
         "enabled": true,
-        "which": 101,
+        "which": 102,
         "0": {
             "angle": 90,
             "power": 0.2
@@ -1220,7 +1220,7 @@
             "height" : 60000
         },
         "12" : {
-            "target" : 50000
+            "target" : 80000
         },
         "13" : {
             "height" : 100000,
@@ -1285,11 +1285,23 @@
             "delay" : 1.0
         },
         "101" : {
-            "delay" : 1.0,
-            "target" : 70000,
-            "maxa" : 10000,
-            "maxv" : 17000,
-            "strength" : 8
+            "delay" : 0.0,
+            "target" : 80000,
+            "maxa" : 90000,
+            "maxv" : 18000,
+            "strength" : 6
+        },
+        "102" : {
+            "udelay" : 0.0,
+            "utarget" : 208000,
+            "umaxa" : 90000,
+            "umaxv" : 18000,
+            "ustrength" : 6,
+            "ldelay" : 0.3,
+            "ltarget" : 97000,
+            "lmaxa" : 90000,
+            "lmaxv" : 18000,
+            "lstrength" : 6
         }
     }
 }
