@@ -8,10 +8,10 @@ import org.xero1425.base.controllers.AutoController;
 import org.xero1425.base.controllers.TestAutoMode;
 import org.xero1425.base.subsystems.motorsubsystem.MotorEncoderGotoAction;
 import org.xero1425.base.subsystems.motorsubsystem.MotorEncoderHoldAction;
-import org.xero1425.base.subsystems.motorsubsystem.MotorEncoderMotionMagicActon;
+import org.xero1425.base.subsystems.motorsubsystem.MotorEncoderMotionMagicAction;
 import org.xero1425.base.subsystems.motorsubsystem.MotorEncoderPowerAction;
 import org.xero1425.base.subsystems.motorsubsystem.MotorEncoderSubsystem;
-import org.xero1425.base.subsystems.motorsubsystem.MotorEncoderMotionMagicActon.HoldType;
+import org.xero1425.base.subsystems.motorsubsystem.MotorEncoderMotionMagicAction.HoldType;
 import org.xero1425.base.subsystems.swerve.common.SwerveAlignDriveBaseAction;
 import org.xero1425.base.subsystems.swerve.common.SwerveBaseSubsystem;
 import org.xero1425.base.subsystems.swerve.common.SwerveHolonomicPathFollower;
@@ -328,13 +328,14 @@ public class SwimmyTestAutoMode extends TestAutoMode {
                     double maxa = getDouble("maxa") ;
                     double maxv = getDouble("maxv") ;
                     int strength = getInteger("strength") ;
-                    addSubActionPair(armUpper, new MotorEncoderMotionMagicActon(armUpper, target, maxa, maxv, strength, HoldType.AtCurrentPosition), true) ;
+                    addSubActionPair(armUpper, new MotorEncoderMotionMagicAction(armUpper, target, maxa, maxv, strength, HoldType.AtCurrentPosition), true) ;
                 }
                 break ;
 
             case 102:
                 {
-                    ArmStaggeredGotoMagicAction act = new ArmStaggeredGotoMagicAction(arm, "place:top:cone:extend") ;
+                    String name = getString("name") ;
+                    ArmStaggeredGotoMagicAction act = new ArmStaggeredGotoMagicAction(arm, name) ;
                     addSubActionPair(arm, act, true) ;
                 }
             break ;
@@ -344,6 +345,5 @@ public class SwimmyTestAutoMode extends TestAutoMode {
     @Override
     public Pose2d getInitialPose() {
         return initial_pose_ ;
-    }
-    
+    }    
 }

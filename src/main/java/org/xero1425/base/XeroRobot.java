@@ -2,12 +2,10 @@ package org.xero1425.base;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.NetworkInterface;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -18,6 +16,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.RobotBase;
+import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
@@ -135,9 +134,6 @@ public abstract class XeroRobot extends TimedRobot {
     /// \brief The "subsystem" name for the message logger for this class
     public static final String LoggerName = "xerorobot" ;
 
-    // A array to convert hex characters to integers
-    private static final char[] HEX_ARRAY = "0123456789ABCDEF".toCharArray();
-
     private static final String PDPPropertyName = "system:pdp:type" ;
 
     /// \brief Create a new XeroRobot robot
@@ -179,9 +175,6 @@ public abstract class XeroRobot extends TimedRobot {
         }
 
         start = getTime() ;
-        // Get the network MAC address, used to determine comp bot versus practice bot
-        getMacAddress();
-        logger_.startMessage(MessageType.Info).add("getMacAddress time", getTime() - start).endMessage(); ;
 
         // Read the parameters file
         start = getTime() ;
@@ -749,31 +742,16 @@ public abstract class XeroRobot extends TimedRobot {
         throw new Exception("override this in the derived class");
     }
 
-    // \brief return the MAC address for the practice bot, expected to be overridden by the derived class
-    /// \returns the MAC address for the practice bot
-    protected byte[] getPracticeBotMacAddress() {
-        return new byte[] { 127, 122, -90, -4, 52, 93 } ;
+    // \brief return the Serial number for the practice bot roborio
+    protected String getPracticeSerialNumber() {
+        return "" ;
     }
 
     /// \brief returns true if the current robot is the practice bot.  This is done by comparing the MAC
     /// address of the ethernet port on the RoboRio to a specific MAC address provided by the method getParcticeBotMacAddress().
     /// \returns true if the current robot is the practice bot
     protected boolean isPracticeBot() {
-        if (mac_addr_ == null)
-            return false;
-
-        byte[] addr = getPracticeBotMacAddress();
-        if (addr == null)
-            return false;
-        boolean ret = true ;
-        for(int i = 0 ; i  < 6 ; i++)
-        {
-            byte b1 = addr[i] ;
-            byte b2 = mac_addr_[i] ;
-            if (b1 != b2)
-                ret = false ;
-        }
-        return ret ;
+        return RobotController.getSerialNumber() == getPracticeSerialNumber() ;
     }
 
     /// \brief Abtract method to create the automode controller, must be overridden by the derived class
@@ -1071,44 +1049,6 @@ public abstract class XeroRobot extends TimedRobot {
         }
 
         settings_ = file ;
-    }
-
-    private void getMacAddress() {
-        Enumeration<NetworkInterface> netlist ;
-        mac_addr_ = null ;
-
-        try {
-            netlist = NetworkInterface.getNetworkInterfaces() ;
-            while (netlist.hasMoreElements())
-            {
-                NetworkInterface ni = netlist.nextElement() ;
-                String name = ni.getName() ;
-                if (name.equals("eth0")) {
-                    mac_addr_ = ni.getHardwareAddress() ;
-                    break ;
-                }
-            }
-        }
-        catch(Exception ex)
-        {
-            mac_addr_ = null ;
-        }
-
-        logger_.startMessage(MessageType.Info).add("Mac Address: ") ;
-        if (mac_addr_ == null)
-            logger_.add("NONE") ;
-        else
-        {
-            for(int j = 0 ; j < mac_addr_.length ; j++)
-            {
-                int v = mac_addr_[j] & 0xFF;
-                if (j != 0)
-                    logger_.add(':') ;
-                logger_.add(HEX_ARRAY[v >>> 4]) ;
-                logger_.add(HEX_ARRAY[v & 0x0F]) ;
-            }
-        }
-        logger_.endMessage();
     }
 
     private void checkPaths() {

@@ -7,7 +7,7 @@ import org.xero1425.misc.MessageType;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
-public class MotorEncoderMotionMagicActon extends MotorAction {
+public class MotorEncoderMotionMagicAction extends MotorAction {
 
     // The plot ID for plotting the motion
     int plot_id_ ;
@@ -30,8 +30,8 @@ public class MotorEncoderMotionMagicActon extends MotorAction {
         Complete
     }
 
-    private static final double NearEndpoint = 4266 ;
-    private static final double EndVelocity = 1000 ;
+    private static final double NearEndpoint = 5000 ;
+    private static final double EndVelocity = 3000 ;
 
     public enum HoldType
     {
@@ -49,7 +49,7 @@ public class MotorEncoderMotionMagicActon extends MotorAction {
     private int strength_ ;
     private double start_pos_ ;
 
-    public MotorEncoderMotionMagicActon(MotorEncoderSubsystem sub, double target, double maxa, double maxv, int strength, HoldType holdtype) throws Exception {
+    public MotorEncoderMotionMagicAction(MotorEncoderSubsystem sub, double target, double maxa, double maxv, int strength, HoldType holdtype) throws Exception {
         super(sub);
 
         target_ = target ;
@@ -95,6 +95,8 @@ public class MotorEncoderMotionMagicActon extends MotorAction {
 
     @Override
     public void start() throws Exception {
+        super.start() ;
+
         start_ = getSubsystem().getRobot().getTime() ;
         state_ = State.Waiting ;
         tryStart() ;
@@ -102,6 +104,8 @@ public class MotorEncoderMotionMagicActon extends MotorAction {
 
     @Override
     public void run() throws Exception  {
+        super.run() ;
+
         MessageLogger logger = getSubsystem().getRobot().getMessageLogger();
         State old = state_ ;
 
@@ -110,9 +114,14 @@ public class MotorEncoderMotionMagicActon extends MotorAction {
         MotorEncoderSubsystem me = (MotorEncoderSubsystem)getSubsystem();
         TalonFX talon = getSubsystem().getMotorController().getTalonFX() ;
         double mcvel = talon.getSelectedSensorVelocity() ;
+
         if (state_ == State.Running) {
-            logger.startMessage(MessageType.Info) ;
-            logger.add("MotionMagic Pos").add("target", target_).add("actual", me.getPosition()) ;
+            logger.startMessage(MessageType.Debug, getSubsystem().getLoggerID()) ;
+            logger.add("MotionMagic Pos") ;
+            logger.add("target", target_);
+            logger.add("actual", me.getPosition()) ;
+            logger.add("velocity", mcvel) ;
+            logger.add("state", state_.toString()) ;
             logger.endMessage();
         }
 
@@ -161,7 +170,12 @@ public class MotorEncoderMotionMagicActon extends MotorAction {
 
     @Override
     public String toString(int indent) {
-        return spaces(indent) + "MotorEncoderMotionMagicActon target=" + target_ + ", hold=" + hold_.toString();
+        String ret ;
+
+        ret = spaces(indent) + "MotorEncoderMotionMagicAction (" + getSubsystem().getName() + ")";
+        ret += " target=" + target_ + ", hold=" + hold_.toString();
+
+        return ret ;
     }
 
     private void tryStart() throws BadMotorRequestException {

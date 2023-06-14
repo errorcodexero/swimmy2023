@@ -16,11 +16,11 @@
             "vision": false,
             "swerve" : false,
             "swimmy2023oi" : false,
-            "Swimmy2023RobotSubsystem" : true,
+            "Swimmy2023RobotSubsystem" : false,
             "limelight" : false,
-            "arm-motor-lower" : false,
-            "arm-motor-upper" : false,
-            "gpm" : true
+            "arm-motor-lower" : true,
+            "arm-motor-upper" : true,
+            "gpm" : false
         },
         "verbose": {
             "swerve" : true,
@@ -312,24 +312,17 @@
                     "cone" : {                                     // Tuned and ready
                         "extend" : {
                             "lower" : {
-                                "config" : {
-                                    "maxj" : 1000000,                 // Max jerk for scurve profile, lower arm
-                                    "maxa" : 100000,                // Max accel for trapezoidal/scurve profile, lower arm
-                                    "maxv" : 100000                // Max velocity for trapezoidal/scurve profile, lower arm
-
-                                },
-                                "delay" : 0.3,                      // Delay until we start lower arm
-                                "target" : 97000
+                                "maxa" : 90000,                // Max accel for trapezoidal/scurve profile, lower arm
+                                "maxv" : 9000,                // Max velocity for trapezoidal/scurve profile, lower arm
+                                "target" : 97000,
+                                "strength" : 6
                             },
                             "upper" : {
-                                "config" : {
-                                    "maxj" : 1000000,                // Max accel for trapezoidal profile, upper arm
-                                    "maxa" : 150000,               // Max decel for trapezoidal profile, upper arm
-                                    "maxv" : 150000                 // Max velocity for trapezoidal profile, upper arm
-                                },
-                                "delay" : 0.0,                      // Delay until we start upper arm,
+                                "maxa" : 90000,               // Max decel for trapezoidal profile, upper arm
+                                "maxv" : 9000,                 // Max velocity for trapezoidal profile, upper arm
                                 "target" : 208000,
-                                "trigger" : 50000                  // How far to move the upper arm before starting the lower arm
+                                "trigger" : 16000,                  // How far to move the upper arm before starting the lower arm
+                                "strength" : 6
                             }
                         },
                         "retract" : {
@@ -1293,16 +1286,7 @@
             "strength" : 6
         },
         "102" : {
-            "udelay" : 0.0,
-            "utarget" : 208000,
-            "umaxa" : 90000,
-            "umaxv" : 18000,
-            "ustrength" : 6,
-            "ldelay" : 0.3,
-            "ltarget" : 97000,
-            "lmaxa" : 90000,
-            "lmaxv" : 18000,
-            "lstrength" : 6
+            "name" : "place:top:cone:extend"
         }
     }
 }
