@@ -313,13 +313,13 @@
                         "extend" : {
                             "lower" : {
                                 "maxa" : 90000,                // Max accel for trapezoidal/scurve profile, lower arm
-                                "maxv" : 9000,                // Max velocity for trapezoidal/scurve profile, lower arm
-                                "target" : 97000,
+                                "maxv" : 2000,      // 9000          // Max velocity for trapezoidal/scurve profile, lower arm
+                                "target" : 80800,
                                 "strength" : 6
                             },
                             "upper" : {
                                 "maxa" : 90000,               // Max decel for trapezoidal profile, upper arm
-                                "maxv" : 9000,                 // Max velocity for trapezoidal profile, upper arm
+                                "maxv" : 2000,         // 9000        // Max velocity for trapezoidal profile, upper arm
                                 "target" : 208000,
                                 "trigger" : 16000,                  // How far to move the upper arm before starting the lower arm
                                 "strength" : 6
@@ -1205,7 +1205,7 @@
             "name" : "Middle1Blue-Path1"
         },
         "10" : {
-            "power" : 0.7,
+            "power" : 0.2,
             "duration" : 1.0
         },
         "11" : {

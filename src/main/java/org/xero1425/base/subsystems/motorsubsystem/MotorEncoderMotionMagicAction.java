@@ -118,9 +118,9 @@ public class MotorEncoderMotionMagicAction extends MotorAction {
         if (state_ == State.Running) {
             logger.startMessage(MessageType.Debug, getSubsystem().getLoggerID()) ;
             logger.add("MotionMagic Pos") ;
-            logger.add("target", target_);
-            logger.add("actual", me.getPosition()) ;
-            logger.add("velocity", mcvel) ;
+            logger.add("target", target_, "%.0f");
+            logger.add("actual", me.getPosition(), "%.0f") ;
+            logger.add("velocity", mcvel, "%.0f") ;
             logger.add("state", state_.toString()) ;
             logger.endMessage();
         }
