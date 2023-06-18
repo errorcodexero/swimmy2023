@@ -338,7 +338,24 @@ public class SwimmyTestAutoMode extends TestAutoMode {
                     ArmStaggeredGotoMagicAction act = new ArmStaggeredGotoMagicAction(arm, name) ;
                     addSubActionPair(arm, act, true) ;
                 }
-            break ;
+                break ;
+
+            case 103:
+                {
+                    double target = getDouble("upper-target") ;
+                    double maxa = getDouble("upper-maxa") ;
+                    double maxv = getDouble("upper-maxv") ;
+                    int strength = getInteger("upper-strength") ;
+                    addSubActionPair(armUpper, new MotorEncoderMotionMagicAction(armUpper, target, maxa, maxv, strength, HoldType.AtCurrentPosition), true) ;
+
+                    target = getDouble("lower-target") ;
+                    maxa = getDouble("lower-maxa") ;
+                    maxv = getDouble("lower-maxv") ;
+                    strength = getInteger("lower-strength") ;
+                    addSubActionPair(armLower, new MotorEncoderMotionMagicAction(armLower, target, maxa, maxv, strength, HoldType.AtCurrentPosition), true) ;
+        
+                }
+                break ;
         }
     }
 

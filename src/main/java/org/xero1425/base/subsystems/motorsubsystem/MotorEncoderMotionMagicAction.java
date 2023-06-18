@@ -30,8 +30,8 @@ public class MotorEncoderMotionMagicAction extends MotorAction {
         Complete
     }
 
-    private static final double NearEndpoint = 5000 ;
-    private static final double EndVelocity = 3000 ;
+    private static final double NearEndpoint = 2000 ;
+    private static final double EndVelocity = 1000 ;
 
     public enum HoldType
     {
@@ -119,6 +119,7 @@ public class MotorEncoderMotionMagicAction extends MotorAction {
             logger.startMessage(MessageType.Debug, getSubsystem().getLoggerID()) ;
             logger.add("MotionMagic Pos") ;
             logger.add("target", target_, "%.0f");
+            logger.add("mctarget", talon.getClosedLoopTarget(), "%.0f");
             logger.add("actual", me.getPosition(), "%.0f") ;
             logger.add("velocity", mcvel, "%.0f") ;
             logger.add("state", state_.toString()) ;
@@ -128,22 +129,22 @@ public class MotorEncoderMotionMagicAction extends MotorAction {
         double delta = Math.abs(target_ - me.getPosition()) ;
         if (state_ == State.Running && delta < NearEndpoint && Math.abs(mcvel) < EndVelocity) {
             state_ = State.Complete ;
-            switch(hold_) {
-                case None:
-                    break ;
-                case AtCurrentPosition:
-                    {
-                        MotorEncoderHoldAction act = new MotorEncoderHoldAction(me);
-                        getSubsystem().setDefaultAction(act) ;
-                    }
-                    break ;
-                case AtTargetPosition:
-                    {
-                        MotorEncoderHoldAction act = new MotorEncoderHoldAction(me, target_);
-                        getSubsystem().setDefaultAction(act) ;
-                    }
-                    break ;
-            }
+            // switch(hold_) {
+            //     case None:
+            //         break ;
+            //     case AtCurrentPosition:
+            //         {
+            //             MotorEncoderHoldAction act = new MotorEncoderHoldAction(me);
+            //             getSubsystem().setDefaultAction(act) ;
+            //         }
+            //         break ;
+            //     case AtTargetPosition:
+            //         {
+            //             MotorEncoderHoldAction act = new MotorEncoderHoldAction(me, target_);
+            //             getSubsystem().setDefaultAction(act) ;
+            //         }
+            //         break ;
+            // }
             logger.startMessage(MessageType.Info) ;
             logger.add("Motion magic duration ") ;
             logger.add(getSubsystem().getRobot().getTime() - start_) ;
@@ -192,8 +193,8 @@ public class MotorEncoderMotionMagicAction extends MotorAction {
 
             MessageLogger logger = me.getRobot().getMessageLogger();
             logger.startMessage(MessageType.Info) ;
-            logger.add("MotionMagic: ").add("accel", maxa_).add("velocity", maxv_)
-                    .add("strength", strength_).add("target", target_).endMessage() ;
+            logger.add("MotionMagic: ").add("accel", maxa_, "%.0f").add("velocity", maxv_, "%.0f")
+                    .add("strength", strength_).add("target", target_, "%.0f").endMessage() ;
         }
     }
 }

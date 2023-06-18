@@ -24,7 +24,7 @@
         },
         "verbose": {
             "swerve" : true,
-            "arm-motor-upper" : false,
+            "arm-motor-upper" : true,
             "grabber-motor-grab" : true
         },
         "plotting": {
@@ -313,15 +313,15 @@
                         "extend" : {
                             "lower" : {
                                 "maxa" : 90000,                // Max accel for trapezoidal/scurve profile, lower arm
-                                "maxv" : 2000,      // 9000          // Max velocity for trapezoidal/scurve profile, lower arm
-                                "target" : 80800,
+                                "maxv" : 8000,      // 9000          // Max velocity for trapezoidal/scurve profile, lower arm
+                                "target" : 90000,
                                 "strength" : 6
                             },
                             "upper" : {
                                 "maxa" : 90000,               // Max decel for trapezoidal profile, upper arm
-                                "maxv" : 2000,         // 9000        // Max velocity for trapezoidal profile, upper arm
+                                "maxv" : 12000,         // 9000        // Max velocity for trapezoidal profile, upper arm
                                 "target" : 208000,
-                                "trigger" : 16000,                  // How far to move the upper arm before starting the lower arm
+                                "trigger" : 13333,                  // How far to move the upper arm before starting the lower arm
                                 "strength" : 6
                             }
                         },
@@ -655,7 +655,7 @@
                     "kv": 5.4339E-06
                 },
                 "down" : {
-                    "kp": 0.00006,
+                    "kp": 0.0006,
                     "ka": 0.0,
                     "ki": 0.0,
                     "kd": 0.0,
@@ -663,10 +663,10 @@
                 }
             },
             "magic" : {
-                "kp": 0.00006,
+                "kp": 0.05,
                 "ki": 0.0,
                 "kd": 0.0,
-                "kf": 0.0555887970000000                
+                "kf": 0.072059552
             }
         },
         "arm-motor-upper": {
@@ -1281,12 +1281,22 @@
         "101" : {
             "delay" : 0.0,
             "target" : 80000,
-            "maxa" : 90000,
-            "maxv" : 18000,
+            "maxa" : 20000,
+            "maxv" : 2000,
             "strength" : 6
         },
         "102" : {
             "name" : "place:top:cone:extend"
+        },
+        "103" : {
+            "upper-target" : 80000,
+            "upper-maxa" : 20000,
+            "upper-maxv" : 2000,
+            "upper-strength" : 6,
+            "lower-target" : 80800,
+            "lower-maxa" : 20000,
+            "lower-maxv" : 2000,
+            "lower-strength" : 6    
         }
     }
 }
