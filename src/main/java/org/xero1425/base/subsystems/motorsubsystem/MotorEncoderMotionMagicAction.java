@@ -1,5 +1,6 @@
 package org.xero1425.base.subsystems.motorsubsystem;
 
+import org.xero1425.base.misc.XeroTimer;
 import org.xero1425.base.motors.BadMotorRequestException;
 import org.xero1425.misc.MessageLogger;
 import org.xero1425.misc.MessageType;
@@ -8,6 +9,8 @@ import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
 public class MotorEncoderMotionMagicAction extends MotorAction {
+
+    private double SetDoneDelay = 2.0 ;
 
     // The plot ID for plotting the motion
     int plot_id_ ;
@@ -27,11 +30,12 @@ public class MotorEncoderMotionMagicAction extends MotorAction {
     private enum State {
         Waiting,
         Running,
+        Delaying,
         Complete
     }
 
-    private static final double NearEndpoint = 2000 ;
-    private static final double EndVelocity = 1000 ;
+    private static final double NearEndpoint = 3000 ;
+    private static final double EndVelocity = 1500 ;
 
     public enum HoldType
     {
@@ -48,6 +52,7 @@ public class MotorEncoderMotionMagicAction extends MotorAction {
     private double maxv_ ;
     private int strength_ ;
     private double start_pos_ ;
+    private XeroTimer delay_timer_ ;
 
     public MotorEncoderMotionMagicAction(MotorEncoderSubsystem sub, double target, double maxa, double maxv, int strength, HoldType holdtype) throws Exception {
         super(sub);
@@ -114,6 +119,7 @@ public class MotorEncoderMotionMagicAction extends MotorAction {
         MotorEncoderSubsystem me = (MotorEncoderSubsystem)getSubsystem();
         TalonFX talon = getSubsystem().getMotorController().getTalonFX() ;
         double mcvel = talon.getSelectedSensorVelocity() ;
+        double delta = Math.abs(target_ - me.getPosition()) ;
 
         if (state_ == State.Running) {
             logger.startMessage(MessageType.Debug, getSubsystem().getLoggerID()) ;
@@ -125,33 +131,30 @@ public class MotorEncoderMotionMagicAction extends MotorAction {
             logger.add("state", state_.toString()) ;
             logger.endMessage();
         }
-
-        double delta = Math.abs(target_ - me.getPosition()) ;
-        if (state_ == State.Running && delta < NearEndpoint && Math.abs(mcvel) < EndVelocity) {
+        else if (state_ == State.Delaying && delay_timer_.isExpired())
+        {
+            setDone() ;
+            me.endPlot(plot_id_);
+        }
+        else if (state_ == State.Running && delta < NearEndpoint && Math.abs(mcvel) < EndVelocity) {
             state_ = State.Complete ;
-            // switch(hold_) {
-            //     case None:
-            //         break ;
-            //     case AtCurrentPosition:
-            //         {
-            //             MotorEncoderHoldAction act = new MotorEncoderHoldAction(me);
-            //             getSubsystem().setDefaultAction(act) ;
-            //         }
-            //         break ;
-            //     case AtTargetPosition:
-            //         {
-            //             MotorEncoderHoldAction act = new MotorEncoderHoldAction(me, target_);
-            //             getSubsystem().setDefaultAction(act) ;
-            //         }
-            //         break ;
-            // }
             logger.startMessage(MessageType.Info) ;
             logger.add("Motion magic duration ") ;
             logger.add(getSubsystem().getRobot().getTime() - start_) ;
             logger.add("delta", delta) ;
             logger.endMessage();
-            me.endPlot(plot_id_);
-            setDone() ;
+
+            if (SetDoneDelay > 0.0) 
+            {
+                state_ = State.Delaying ;
+                delay_timer_ = new XeroTimer(getSubsystem().getRobot(), "delaytimer", 2.0);
+                delay_timer_.start() ;
+            }
+            else 
+            {
+                me.endPlot(plot_id_);
+                setDone() ;
+            }
         }
 
         Double[] data = new Double[plot_columns_.length] ;
