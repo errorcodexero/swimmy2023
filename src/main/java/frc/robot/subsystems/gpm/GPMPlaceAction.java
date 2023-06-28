@@ -54,7 +54,12 @@ public class GPMPlaceAction extends Action {
 
         place_method_ = PlaceMethod.Drop ;
         if (still) {
-            armpos = "place-still:" ;
+            //
+            // We can change place: to place-still: and put a different set of
+            // values in the settings JSON file for placing when we are still.  After moving to
+            // motion magic, try to go back to a single set of values first.
+            //
+            armpos = "place:" ;
             force_drop_timer_ = new XeroTimer(sub_.getRobot(), "still-place-settling", 0.5) ;
         }
         else {

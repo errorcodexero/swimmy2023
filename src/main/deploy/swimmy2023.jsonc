@@ -49,142 +49,6 @@
             "drive-forward-distance" : 0.1524
         },
         "arm" : {
-            "shoot" : {
-                "top" : {
-                    "cube" : {      
-                        "extend" : {                               
-                            "lower" : {
-                                "config" : {
-                                    "maxj" : 1000000,               // Max accel for trapezoidal profile, upper arm
-                                    "maxa" : 100000,                // Max decel for trapezoidal profile, upper arm
-                                    "maxv" : 100000                 // Max velocity for trapezoidal profile, upper arm
-                                },
-                                "delay" : 0.35,                      // Delay until we start lower arm
-                                "target" : 50000                     // Lower arm target position
-                            },
-                            "upper" : {
-                                "config" : {
-                                    "maxj" : 1000000,               // Max accel for trapezoidal profile, upper arm
-                                    "maxa" : 150000,                // Max decel for trapezoidal profile, upper arm
-                                    "maxv" : 150000                 // Max velocity for trapezoidal profile, upper arm
-                                },
-                                "delay" : 0.0,                      // Delay until we start upper arm
-                                "target" : 125000                   // Upper arm target position
-                            }
-                        },
-                        "retract" : {
-                            "lower" : {
-                                "config" : {
-                                    "maxj" : 1000000,                // Max accel for trapezoidal profile, upper arm
-                                    "maxa" : 100000,               // Max decel for trapezoidal profile, upper arm
-                                    "maxv" : 100000                 // Max velocity for trapezoidal profile, upper arm
-                                },
-                                "delay" : 0.0,                      // Delay until we start lower arm
-                                "target" : 2000                        // Lower arm target position
-                            },
-                            "upper" : {
-                                "config" : {
-                                    "maxj" : 1000000,                // Max accel for trapezoidal profile, upper arm
-                                    "maxa" : 100000,               // Max decel for trapezoidal profile, upper arm
-                                    "maxv" : 100000                 // Max velocity for trapezoidal profile, upper arm
-                                },
-                                "delay" : 0.0,                      // Delay until we start upper arm
-                                "target" : 0                       // Upper arm target position
-                            }
-                        }
-                    }
-                },
-                "middle" : {
-                    "cube" : {      
-                        "extend" : {                               
-                            "lower" : {
-                                "config" : {
-                                    "maxj" : 1000000,               // Max accel for trapezoidal profile, upper arm
-                                    "maxa" : 100000,                // Max decel for trapezoidal profile, upper arm
-                                    "maxv" : 100000                 // Max velocity for trapezoidal profile, upper arm
-                                },
-                                "delay" : 0.4,                      // Delay until we start lower arm
-                                "target" : 0                     // Lower arm target position
-                            },
-                            "upper" : {
-                                "config" : {
-                                    "maxj" : 1000000,               // Max accel for trapezoidal profile, upper arm
-                                    "maxa" : 150000,                // Max decel for trapezoidal profile, upper arm
-                                    "maxv" : 150000                 // Max velocity for trapezoidal profile, upper arm
-                                },
-                                "delay" : 0.0,                      // Delay until we start upper arm
-                                "target" : 70000                   // Upper arm target position
-                            }
-                        },
-                        "retract" : {
-                            "lower" : {
-                                "config" : {
-                                    "maxj" : 1000000,                // Max accel for trapezoidal profile, upper arm
-                                    "maxa" : 100000,               // Max decel for trapezoidal profile, upper arm
-                                    "maxv" : 100000                 // Max velocity for trapezoidal profile, upper arm
-                                },
-                                "delay" : 0.0,                      // Delay until we start lower arm
-                                "target" : 2000                        // Lower arm target position
-                            },
-                            "upper" : {
-                                "config" : {
-                                    "maxj" : 1000000,                // Max accel for trapezoidal profile, upper arm
-                                    "maxa" : 100000,               // Max decel for trapezoidal profile, upper arm
-                                    "maxv" : 100000                 // Max velocity for trapezoidal profile, upper arm
-                                },
-                                "delay" : 0.4,                      // Delay until we start upper arm
-                                "target" : 0                       // Upper arm target position
-                            }                         
-                        }
-                    }
-                },
-                "bottom" : {
-                    "cube" : {
-                        "grabber-power" : -0.20,
-                        "grabber-duration" : 0.2,
-                        "extend" : {
-                            "lower" : {
-                                "config" : {
-                                    "maxj" : 1000000,                // Max accel for trapezoidal profile, upper arm
-                                    "maxa" : 100000,               // Max decel for trapezoidal profile, upper arm
-                                    "maxv" : 100000                 // Max velocity for trapezoidal profile, upper arm
-                                },
-                                "delay" : 0.4,                      // Delay until we start lower arm
-                                "target" : 59000                    // Lower arm target position
-                            },
-                            "upper" : {
-                                "config" : {
-                                    "maxj" : 1000000,                // Max accel for trapezoidal profile, upper arm
-                                    "maxa" : 150000,                // Max decel for trapezoidal profile, upper arm
-                                    "maxv" : 150000                 // Max velocity for trapezoidal profile, upper arm
-                                },
-                                "delay" : 0.0,                      // Delay until we start upper arm
-                                "target" : 30000                    // Upper arm target position
-                            }
-                        },
-                        "retract" : {
-                            "lower" : {
-                                "config" : {
-                                    "maxj" : 1000000,                // Max accel for trapezoidal profile, upper arm
-                                    "maxa" : 100000,                // Max decel for trapezoidal profile, upper arm
-                                    "maxv" : 100000                 // Max velocity for trapezoidal profile, upper arm
-                                },
-                                "delay" : 0.0,                      // Delay until we start lower arm
-                                "target" : 2000                        // Lower arm target position
-                            },
-                            "upper" : {
-                                "config" : {
-                                    "maxj" : 1000000,                // Max accel for trapezoidal profile, upper arm
-                                    "maxa" : 100000,               // Max decel for trapezoidal profile, upper arm
-                                    "maxv" : 100000                 // Max velocity for trapezoidal profile, upper arm
-                                },
-                                "delay" : 0.0,                      // Delay until we start upper arm
-                                "target" : 0                       // Upper arm target position
-                            }                         
-                        }
-                    }
-                }            
-            },
             "collect" : {
                 "extend-shelf" : {
                     "lower" : {
@@ -309,306 +173,204 @@
             },
             "place" : {
                 "top" : {
-                    "cone" : {                                     // Tuned and ready
+                    "cone" : {
                         "extend" : {
                             "lower" : {
-                                "maxa" : 90000,                // Max accel for trapezoidal/scurve profile, lower arm
-                                "maxv" : 5000,                // Max velocity for trapezoidal/scurve profile, lower arm
-                                "target" : 90000,
-                                "strength" : 6
+                                "maxa" : 60000,                // Max accel/decel for trapezoidal/scurve profile, lower arm
+                                "maxv" : 5000,                 // Max velocity for trapezoidal/scurve profile, lower arm
+                                "target" : 90000,              // The lower arm TARGET position
+                                "strength" : 6                 // The S-curve strength for motion magic
                             },
                             "upper" : {
-                                "maxa" : 90000,               // Max decel for trapezoidal profile, upper arm
-                                "maxv" : 12000,               // Max velocity for trapezoidal profile, upper arm
-                                "target" : 208000,
-                                "trigger" : 13333,                  // How far to move the upper arm before starting the lower arm
-                                "strength" : 6
+                                "maxa" : 60000,                // Max accel/decel for trapezoidal profile, upper arm
+                                "maxv" : 12000,                // Max velocity for trapezoidal profile, upper arm
+                                "target" : 208000,             // The upper arm TARGET position
+                                "trigger" : 13333,             // How far to move the upper arm before starting the lower arm
+                                "strength" : 6                 // The S-curve strength for motion magic
                             }
                         },
                         "retract" : {
                             "lower" : {
-                                "config" : {
-                                    "maxj" : 1000000,                // Max accel for trapezoidal profile, upper arm
-                                    "maxa" : 350000,               // Max decel for trapezoidal profile, upper arm
-                                    "maxv" : 195000                 // Max velocity for trapezoidal profile, upper arm
-                                },
-                                "delay" : 0.0,                      // Delay until we start lower arm
-                                "target" : 2000                        // Lower arm target position
+                                "maxa" : 60000,                // Max accel/decel for trapezoidal profile, upper arm
+                                "maxv" : 5000,                 // Max velocity for trapezoidal profile, upper arm
+                                "target" : 2000,               // Lower arm target position
+                                "trigger" : 40000,             // Trigget to start the upper arm
+                                "strength" : 6                 // The S-curve strength for motion magic
                             },
                             "upper" : {
-                                "config" : {
-                                    "maxj" : 1000000,                // Max accel for trapezoidal profile, upper arm
-                                    "maxa" : 400000,               // Max decel for trapezoidal profile, upper arm
-                                    "maxv" : 195000                 // Max velocity for trapezoidal profile, upper arm
-                                },
-                                "delay" : 0.0,                      // Delay until we start upper arm
-                                "target" : 0                       // Upper arm target position
-                            }
-                        }
-                    },
-                    "cube" : {                                      // Tuned and ready
-                        "extend" : {
-                            "lower" : {
-                                "config" : {
-                                    "maxj" : 1000000,                // Max accel for trapezoidal profile, upper arm
-                                    "maxa" : 100000,               // Max decel for trapezoidal profile, upper arm
-                                    "maxv" : 100000                 // Max velocity for trapezoidal profile, upper arm
-                                },
-                                "delay" : 0.6,                      // Delay until we start lower arm
-                                "target" : 78000                    // Lower arm target position
-                            },
-                            "upper" : {
-                                "config" : {
-                                    "maxj" : 1000000,                // Max accel for trapezoidal profile, upper arm
-                                    "maxa" : 150000,               // Max decel for trapezoidal profile, upper arm
-                                    "maxv" : 150000                 // Max velocity for trapezoidal profile, upper arm
-                                },
-                                "delay" : 0.0,                      // Delay until we start upper arm
-                                "target" : 167000                   // Upper arm target position
-                            }                            
-                        },
-                        "retract" : {
-                            "lower" : {
-                                "config" : {
-                                    "maxj" : 1000000,                // Max accel for trapezoidal profile, upper arm
-                                    "maxa" : 100000,               // Max decel for trapezoidal profile, upper arm
-                                    "maxv" : 100000                 // Max velocity for trapezoidal profile, upper arm
-                                },
-                                "delay" : 0.0,                      // Delay until we start lower arm
-                                "target" : 2000                        // Lower arm target position
-                            },
-                            "upper" : {
-                                "config" : {
-                                    "maxj" : 1000000,                // Max accel for trapezoidal profile, upper arm
-                                    "maxa" : 100000,               // Max decel for trapezoidal profile, upper arm
-                                    "maxv" : 100000                 // Max velocity for trapezoidal profile, upper arm
-                                },
-                                "delay" : 0.0,                      // Delay until we start upper arm
-                                "target" : 0                       // Upper arm target position
-                            }
-                        }
-                    }
-                },
-                "middle" : {
-                    "cone" : {                                      // Tuned and ready
-                        "extend" : {
-                            "lower" : {
-                                "config" : {
-                                    "maxj" : 1000000,                // Max accel for trapezoidal profile, upper arm
-                                    "maxa" : 100000,               // Max decel for trapezoidal profile, upper arm
-                                    "maxv" : 100000                 // Max velocity for trapezoidal profile, upper arm
-                                },
-                                "delay" : 0.4,                      // Delay until we start lower arm
-                                "target" : 48500                    // Lower arm target position
-                            },
-                            "upper" : {
-                                "config" : {
-                                    "maxj" : 1000000,                // Max accel for trapezoidal profile, upper arm
-                                    "maxa" : 150000,               // Max decel for trapezoidal profile, upper arm
-                                    "maxv" : 150000                 // Max velocity for trapezoidal profile, upper arm
-                                },
-                                "delay" : 0.0,                      // Delay until we start upper arm
-                                "target" : 115000                    // Upper arm target position
-                            }
-                        },
-                        "retract" : {
-                            "lower" : {
-                                "config" : {
-                                    "maxj" : 1000000,                // Max accel for trapezoidal profile, upper arm
-                                    "maxa" : 100000,               // Max decel for trapezoidal profile, upper arm
-                                    "maxv" : 100000                 // Max velocity for trapezoidal profile, upper arm
-                                },
-                                "delay" : 0.0,                      // Delay until we start lower arm
-                                "target" : 2000                        // Lower arm target position
-                            },
-                            "upper" : {
-                                "config" : {
-                                    "maxj" : 1000000,                // Max accel for trapezoidal profile, upper arm
-                                    "maxa" : 100000,               // Max decel for trapezoidal profile, upper arm
-                                    "maxv" : 100000                 // Max velocity for trapezoidal profile, upper arm
-                                },
-                                "delay" : 0.0,                      // Delay until we start upper arm
-                                "target" : 0                       // Upper arm target position
-                            }
-                        }
-                    },
-                    "cube" : {                                     
-                        "extend" : {
-                            "lower" : {
-                                "config" : {
-                                    "maxj" : 1000000,                // Max accel for trapezoidal profile, upper arm
-                                    "maxa" : 100000,               // Max decel for trapezoidal profile, upper arm
-                                    "maxv" : 100000                 // Max velocity for trapezoidal profile, upper arm
-                                },
-                                "delay" : 0.6,                      // Delay until we start lower arm
-                                "target" : 49000                    // Lower arm target position
-                            },
-                            "upper" : {
-                                "config" : {
-                                    "maxj" : 1000000,                // Max accel for trapezoidal profile, upper arm
-                                    "maxa" : 150000,               // Max decel for trapezoidal profile, upper arm
-                                    "maxv" : 150000                 // Max velocity for trapezoidal profile, upper arm
-                                },
-                                "delay" : 0.0,                      // Delay until we start upper arm
-                                "target" : 90000                    // Upper arm target position
-                            }
-                        },
-                        "retract" : {
-                            "lower" : {
-                                "config" : {
-                                    "maxj" : 1000000,                // Max accel for trapezoidal profile, upper arm
-                                    "maxa" : 100000,               // Max decel for trapezoidal profile, upper arm
-                                    "maxv" : 100000                 // Max velocity for trapezoidal profile, upper arm
-                                },
-                                "delay" : 0.0,                      // Delay until we start lower arm
-                                "target" : 2000                        // Lower arm target position
-                            },
-                            "upper" : {
-                                "config" : {
-                                    "maxj" : 1000000,                // Max accel for trapezoidal profile, upper arm
-                                    "maxa" : 100000,               // Max decel for trapezoidal profile, upper arm
-                                    "maxv" : 100000                 // Max velocity for trapezoidal profile, upper arm
-                                },
-                                "delay" : 0.4,                      // Delay until we start upper arm
-                                "target" : 0                       // Upper arm target position
-                            }                         
-                        }
-                    }
-                },
-                "bottom" : {
-                    "cone" : {                                      // Tuned and ready
-                        "extend" : {
-                            "lower" : {
-                                "config" : {
-                                    "maxj" : 1000000,                // Max accel for trapezoidal profile, upper arm
-                                    "maxa" : 100000,               // Max decel for trapezoidal profile, upper arm
-                                    "maxv" : 100000                 // Max velocity for trapezoidal profile, upper arm
-                                },
-                                "delay" : 0.4,                      // Delay until we start lower arm
-                                "target" : 59000                    // Lower arm target position
-                            },
-                            "upper" : {
-                                "config" : {
-                                    "maxj" : 1000000,                // Max accel for trapezoidal profile, upper arm
-                                    "maxa" : 150000,               // Max decel for trapezoidal profile, upper arm
-                                    "maxv" : 150000                 // Max velocity for trapezoidal profile, upper arm
-                                },
-                                "delay" : 0.0,                      // Delay until we start upper arm
-                                "target" : 30000                    // Upper arm target position
-                            }
-                        },
-                        "retract" : {
-                            "lower" : {
-                                "config" : {
-                                    "maxj" : 1000000,                // Max accel for trapezoidal profile, upper arm
-                                    "maxa" : 100000,               // Max decel for trapezoidal profile, upper arm
-                                    "maxv" : 100000                 // Max velocity for trapezoidal profile, upper arm
-                                },
-                                "delay" : 0.0,                      // Delay until we start lower arm
-                                "target" : 2000                        // Lower arm target position
-                            },
-                            "upper" : {
-                                "config" : {
-                                    "maxj" : 1000000,                // Max accel for trapezoidal profile, upper arm
-                                    "maxa" : 100000,               // Max decel for trapezoidal profile, upper arm
-                                    "maxv" : 100000                 // Max velocity for trapezoidal profile, upper arm
-                                },
-                                "delay" : 0.0,                      // Delay until we start upper arm
-                                "target" : 0                       // Upper arm target position
+                                "maxa" : 60000,                // Max accel/decel for trapezoidal profile, upper arm
+                                "maxv" : 12000,                // Max velocity for trapezoidal profile, upper arm
+                                "target" : 0,                  // Upper arm target position\
+                                "strength" : 6                 // The S-curve strength for motion magic
                             }
                         }
                     },
                     "cube" : {
                         "extend" : {
                             "lower" : {
-                                "config" : {
-                                    "maxj" : 1000000,                // Max accel for trapezoidal profile, upper arm
-                                    "maxa" : 100000,               // Max decel for trapezoidal profile, upper arm
-                                    "maxv" : 100000                 // Max velocity for trapezoidal profile, upper arm
-                                },
-                                "delay" : 0.4,                      // Delay until we start lower arm
-                                "target" : 59000                    // Lower arm target position
+                                "maxa" : 10000,                // Max accel/decel for trapezoidal profile, upper arm
+                                "maxv" : 10000,                // Max velocity for trapezoidal profile, upper arm
+                                "target" : 78000,              // Lower arm target position
+                                "strength" : 6                 // The S-curve strength for motion magic
                             },
                             "upper" : {
-                                "config" : {
-                                    "maxj" : 1000000,                // Max accel for trapezoidal profile, upper arm
-                                    "maxa" : 150000,                // Max decel for trapezoidal profile, upper arm
-                                    "maxv" : 150000                 // Max velocity for trapezoidal profile, upper arm
-                                },
-                                "delay" : 0.0,                      // Delay until we start upper arm
-                                "target" : 30000                    // Upper arm target position
+                                "maxa" : 15000,                // Max accel/decel for trapezoidal profile, upper arm
+                                "maxv" : 15000,                // Max velocity for trapezoidal profile, upper arm
+                                "target" : 167000,             // Upper arm target position
+                                "trigger" : 13333,             // Trigger to start the lower arm
+                                "strength" : 6                 // The S-curve strength for motion magic
+                            }                            
+                        },
+                        "retract" : {
+                            "lower" : {
+                                "maxa" : 10000,                // Max accel/decel for trapezoidal profile, upper arm
+                                "maxv" : 10000,                // Max velocity for trapezoidal profile, upper arm
+                                "target" : 2000,               // Lower arm target position
+                                "trigger" : 40000,             // Trigger to start the upper arm
+                                "strength" : 6                 // The S-curve strength for motion magic
+                            },
+                            "upper" : {
+                                "maxa" : 10000,                // Max accel/decel for trapezoidal profile, upper arm
+                                "maxv" : 10000,                // Max velocity for trapezoidal profile, upper arm
+                                "target" : 0,                  // Upper arm target position
+                                "strength" : 6                 // The S-curve strength for motion magic
+                            }
+                        }
+                    }
+                },
+                "middle" : {
+                    "cone" : {
+                        "extend" : {
+                            "lower" : {
+                                "maxa" : 10000,                // Max accel/decel for upper arm
+                                "maxv" : 10000,                // Max velocity for upper arm
+                                "target" : 48500,              // Lower arm target position
+                                "strength" : 6                 // The S-curve strength for motion magic
+                            },
+                            "upper" : {
+                                "maxa" : 15000,                // Max accel/decel for upper arm
+                                "maxv" : 15000,                // Max velocity for upper arm
+                                "target" : 115000,             // Upper arm target position
+                                "trigger" : 13333,             // Trigger to start the lower arm
+                                "strength" : 6                 // The S-curve strength for motion magic
                             }
                         },
                         "retract" : {
                             "lower" : {
-                                "config" : {
-                                    "maxj" : 1000000,                // Max accel for trapezoidal profile, upper arm
-                                    "maxa" : 100000,                // Max decel for trapezoidal profile, upper arm
-                                    "maxv" : 100000                 // Max velocity for trapezoidal profile, upper arm
-                                },
-                                "delay" : 0.0,                      // Delay until we start lower arm
-                                "target" : 2000                        // Lower arm target position
+                                "maxa" : 10000,                // Max accel/decel for upper arm
+                                "maxv" : 10000,                // Max velocity for upper arm
+                                "target" : 2000,               // Lower arm target position
+                                "trigger" : 40000,             // Trigger to start the upper arm
+                                "strength" : 6                 // The S-curve strength for motion magic
                             },
                             "upper" : {
-                                "config" : {
-                                    "maxj" : 1000000,                // Max accel for trapezoidal profile, upper arm
-                                    "maxa" : 100000,               // Max decel for trapezoidal profile, upper arm
-                                    "maxv" : 100000                 // Max velocity for trapezoidal profile, upper arm
-                                },
-                                "delay" : 0.0,                      // Delay until we start upper arm
-                                "target" : 0                       // Upper arm target position
+                                "maxa" : 10000,                // Max accel/decel for upper arm
+                                "maxv" : 10000,                // Max velocity for upper arm
+                                "target" : 0,                  // Upper arm target position
+                                "strength" : 6                 // The S-curve strength for motion magic
+                            }
+                        }
+                    },
+                    "cube" : {                                     
+                        "extend" : {
+                            "lower" : {
+                                "maxa" : 10000,                // Max decel for upper arm
+                                "maxv" : 10000,                // Max velocity for upper arm
+                                "target" : 49000,              // Lower arm target position
+                                "strength" : 6                 // The S-curve strength for motion magic
+                            },
+                            "upper" : {
+                                "maxa" : 15000,                // Max decel for upper arm
+                                "maxv" : 15000,                // Max velocity for upper arm
+                                "target" : 90000,              // Upper arm target position
+                                "trigger" : 13333,             // Trigger to start the lower arm
+                                "strength" : 6                 // The S-curve strength for motion magic
+                            }
+                        },
+                        "retract" : {
+                            "lower" : {
+                                "maxa" : 100000,               // Max decel for upper arm
+                                "maxv" : 100000,               // Max velocity for upper arm
+                                "target" : 2000,               // Lower arm target position
+                                "trigger" : 40000,             // Trigger to start upper arm
+                                "strength" : 6                 // The S-curve strength for motion magic
+                            },
+                            "upper" : {
+                                "maxa" : 100000,               // Max decel for upper arm
+                                "maxv" : 100000,               // Max velocity for upper arm
+                                "target" : 0,                  // Upper arm target position
+                                "strength" : 6                 // The S-curve strength for motion magic
+                            }                         
+                        }
+                    }
+                },
+                "bottom" : {
+                    "cone" : {
+                        "extend" : {
+                            "lower" : {
+                                "maxa" : 10000,                // Max decel for upper arm
+                                "maxv" : 10000,                // Max velocity for upper arm
+                                "target" : 59000,              // Lower arm target position
+                                "strength" : 6                 // The S-curve strength for motion magic
+                            },
+                            "upper" : {
+                                "maxa" : 15000,                // Max decel for upper arm
+                                "maxv" : 15000,                // Max velocity for upper arm
+                                "target" : 30000,              // Upper arm target position
+                                "trigger" : 13333,             // The trigger to start the lower arm
+                                "strength" : 6                 // The S-curve strength for motion magic
+                            }
+                        },
+                        "retract" : {
+                            "lower" : {
+                                "maxa" : 10000,                // Max decel for upper arm
+                                "maxv" : 10000,                // Max velocity for upper arm
+                                "target" : 2000,               // Lower arm target position
+                                "strength" : 6                 // The S-curve strength for motion magic
+                            },
+                            "upper" : {
+                                "maxa" : 10000,                // Max decel for upper arm
+                                "maxv" : 10000,                // Max velocity for upper arm
+                                "trigger" : 0,                 // Trigger to start the lower arm
+                                "target" : 0,                  // Upper arm target position
+                                "strength" : 6                 // The S-curve strength for motion magic
+                            }
+                        }
+                    },
+                    "cube" : {
+                        "extend" : {
+                            "lower" : {
+                                "maxa" : 10000,                // Max decel for upper arm
+                                "maxv" : 10000,                // Max velocity for upper arm
+                                "target" : 59000,              // Lower arm target position
+                                "strength" : 6                 // The S-curve strength for motion magic
+                            },
+                            "upper" : {
+                                "maxa" : 15000,                // Max decel for upper arm
+                                "maxv" : 15000,                // Max velocity for upper arm
+                                "target" : 30000,              // Upper arm target position
+                                "trigger" : 13333,             // Trigger to start the lower arm
+                                "strength" : 6                 // The S-curve strength for motion magic
+                            }
+                        },
+                        "retract" : {
+                            "lower" : {
+                                "maxa" : 10000,                // Max decel for upper arm
+                                "maxv" : 10000,                // Max velocity for upper arm
+                                "target" : 2000,               // Lower arm target position
+                                "trigger" : 0,                 // Trigger to start the upper arm
+                                "strength" : 6                 // The S-curve strength for motion magic
+                            },
+                            "upper" : {
+                                "maxa" : 10000,                // Max decel for upper arm
+                                "maxv" : 10000,                // Max velocity for upper arm
+                                "target" : 0,                  // Upper arm target position
+                                "strength" : 6                 // The S-curve strength for motion magic
                             }                         
                         }
                     }
                 }
-            },
-            "place-still" : {
-                "top" : {
-                    "cone" : {                                     // Tuned and ready
-                        "extend" : {
-                            "lower" : {
-                                "config" : {
-                                    "maxj" : 1000000,                 // Max jerk for scurve profile, lower arm
-                                    "maxa" : 200000,                // Max accel for trapezoidal/scurve profile, lower arm
-                                    "maxv" : 190000                // Max velocity for trapezoidal/scurve profile, lower arm
-
-                                },
-                                "delay" : 0.4,                      // Delay until we start lower arm
-                                "target" : 98500
-                            },
-                            "upper" : {
-                                "config" : {
-                                    "maxj" : 1000000,                // Max accel for trapezoidal profile, upper arm
-                                    "maxa" : 250000,               // Max decel for trapezoidal profile, upper arm
-                                    "maxv" : 190000                 // Max velocity for trapezoidal profile, upper arm
-                                },
-                                "delay" : 0.0,                      // Delay until we start upper arm
-                                "target" : 213000
-                            }
-                        },
-                        "retract" : {
-                            "lower" : {
-                                "config" : {
-                                    "maxj" : 1000000,                // Max accel for trapezoidal profile, upper arm
-                                    "maxa" : 350000,               // Max decel for trapezoidal profile, upper arm
-                                    "maxv" : 195000                 // Max velocity for trapezoidal profile, upper arm
-                                },
-                                "delay" : 0.0,                      // Delay until we start lower arm
-                                "target" : 2000                        // Lower arm target position
-                            },
-                            "upper" : {
-                                "config" : {
-                                    "maxj" : 1000000,                // Max accel for trapezoidal profile, upper arm
-                                    "maxa" : 400000,               // Max decel for trapezoidal profile, upper arm
-                                    "maxv" : 195000                 // Max velocity for trapezoidal profile, upper arm
-                                },
-                                "delay" : 0.0,                      // Delay until we start upper arm
-                                "target" : 0                       // Upper arm target position
-                            }
-                        }
-                    }
-                }
-            }            
+            },      
         },
         "arm-motor-lower": {
             "hw": {

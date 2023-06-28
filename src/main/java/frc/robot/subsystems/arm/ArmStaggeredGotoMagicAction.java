@@ -2,6 +2,7 @@ package frc.robot.subsystems.arm;
 
 import org.xero1425.base.actions.Action;
 import org.xero1425.base.subsystems.motorsubsystem.MotorEncoderMotionMagicAction;
+import org.xero1425.base.subsystems.motorsubsystem.MotorEncoderSubsystem;
 import org.xero1425.base.subsystems.motorsubsystem.MotorEncoderMotionMagicAction.HoldType;
 import org.xero1425.misc.MessageLogger;
 import org.xero1425.misc.MessageType;
@@ -15,16 +16,21 @@ public class ArmStaggeredGotoMagicAction extends Action {
     private double lower_maxa_ ;
     private double lower_maxv_ ;
     private int lower_strength_ ;
-    private MotorEncoderMotionMagicAction lower_action_ ;
-    private boolean lower_done_ ;
-    private boolean lower_started_ ;
+
+    private boolean second_started_ ;
 
     private double upper_target_ ;
     private double upper_maxa_ ;
     private double upper_maxv_ ;
     private int upper_strength_ ;
-    private boolean upper_done_ ;
-    private MotorEncoderMotionMagicAction upper_action_ ;
+
+    private MotorEncoderSubsystem first_subsystem_ ;
+    private MotorEncoderMotionMagicAction first_action_ ;
+    private boolean first_done_ ;
+
+    private MotorEncoderSubsystem second_subsystem_ ;
+    private MotorEncoderMotionMagicAction second_action_ ;
+    private boolean second_done_ ;
 
     private double trigger_distance_ ;
 
@@ -44,49 +50,64 @@ public class ArmStaggeredGotoMagicAction extends Action {
         upper_maxv_ = sub_.getSettingsValue(key + ":upper:maxv").getDouble();
         upper_strength_ = sub_.getSettingsValue(key + ":upper:strength").getInteger() ;
 
-        trigger_distance_ = sub_.getSettingsValue(key + ":upper:trigger").getDouble();
+        if (sub_.isSettingDefined(key + ":upper:trigger")) {
+            trigger_distance_ = sub_.getSettingsValue(key + ":upper:trigger").getDouble();
+            second_subsystem_ = sub.getLowerSubsystem() ;
+            second_action_ = new MotorEncoderMotionMagicAction(second_subsystem_, lower_target_, lower_maxa_, lower_maxv_, lower_strength_, HoldType.AtCurrentPosition);
+            first_subsystem_ = sub.getUpperSubsystem() ;
+            first_action_ = new MotorEncoderMotionMagicAction(first_subsystem_, upper_target_, upper_maxa_, upper_maxv_, upper_strength_, HoldType.AtCurrentPosition);
 
-        lower_action_ = new MotorEncoderMotionMagicAction(sub.getLowerSubsystem(), lower_target_, lower_maxa_, lower_maxv_, lower_strength_, HoldType.AtCurrentPosition);
-        upper_action_ = new MotorEncoderMotionMagicAction(sub.getUpperSubsystem(), upper_target_, upper_maxa_, upper_maxv_, upper_strength_, HoldType.AtCurrentPosition);
+        }
+        else if (sub_.isSettingDefined(key + ":lower:trigger")) {
+            trigger_distance_ = sub_.getSettingsValue(key + ":upper:trigger").getDouble();
+            first_subsystem_ = sub.getLowerSubsystem() ;
+            first_action_ = new MotorEncoderMotionMagicAction(first_subsystem_, lower_target_, lower_maxa_, lower_maxv_, lower_strength_, HoldType.AtCurrentPosition);
+            second_subsystem_ = sub.getUpperSubsystem() ;
+            second_action_ = new MotorEncoderMotionMagicAction(second_subsystem_, upper_target_, upper_maxa_, upper_maxv_, upper_strength_, HoldType.AtCurrentPosition);
+
+        }
+        else {
+            throw new Exception("there is no 'trigger' value specified for either the upper or lower arm") ;
+        }
     }
 
     @Override
     public void start() throws Exception {
         super.start() ;
 
-        lower_done_ = false ;
-        lower_started_ = false ;
-        upper_done_ = false ;
+        first_done_ = false ;
+        second_done_ = false ;
+        second_started_ = false ;
 
-        sub_.getUpperSubsystem().setAction(upper_action_, true);
+        first_subsystem_.setAction(first_action_, true) ;
     }
     
     @Override
     public void run() throws Exception {
         super.run() ;
 
-        if (!lower_started_ && upper_action_.getDistance() > trigger_distance_) {
-            lower_started_ = true ;
-            sub_.getLowerSubsystem().setAction(lower_action_, true);
+        if (!second_started_ && first_action_.getDistance() > trigger_distance_) {
+            second_started_ = true ;
+            second_subsystem_.setAction(second_action_, true) ;
         }
 
-        if (lower_started_ && !lower_done_ && lower_action_.isComplete()) {
+        if (second_started_ && !second_done_ && second_action_.isComplete()) {
             MessageLogger logger = sub_.getRobot().getMessageLogger();
             logger.startMessage(MessageType.Info) ;
             logger.add("ArmStaggeredGotoMagicAction: lower action complete @ ", sub_.getRobot().getTime()) ;
             logger.endMessage();
-            lower_done_ = true ;
+            second_done_ = true ;
         }
 
-        if (!upper_done_ && upper_action_.isComplete()) {
+        if (!first_done_ && first_action_.isComplete()) {
             MessageLogger logger = sub_.getRobot().getMessageLogger();
             logger.startMessage(MessageType.Info) ;
             logger.add("ArmStaggeredGotoMagicAction: upper action complete @ ", sub_.getRobot().getTime()) ;
             logger.endMessage();
-            upper_done_ = true ;
+            first_done_ = true ;
         }
 
-        if (lower_done_ && upper_done_) {
+        if (first_done_ && second_done_) {
             setDone() ;
         }
     }
