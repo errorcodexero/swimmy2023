@@ -356,6 +356,18 @@ public class SwimmyTestAutoMode extends TestAutoMode {
         
                 }
                 break ;
+
+            case 104: 
+                {
+                    String name1 = getString("name1") ;
+                    String name2 = getString("name2") ;
+                    ArmStaggeredGotoMagicAction act = new ArmStaggeredGotoMagicAction(arm, name1) ;
+                    addSubActionPair(arm, act, true) ;
+                    addAction(new DelayAction(arm.getRobot(), getDouble("delay")));
+                    act = new ArmStaggeredGotoMagicAction(arm, name2) ;
+                    addSubActionPair(arm, act, true) ;
+                }
+                break;
         }
     }
 

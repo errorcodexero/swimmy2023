@@ -31,7 +31,7 @@ public class SwimmyAutoMode extends AutoMode {
         super(ctrl, name) ;
     }
 
-    protected void grabAndPlace(Location where, GamePiece what) throws InvalidActionRequest, BadParameterTypeException, MissingParameterException {
+    protected void grabAndPlace(Location where, GamePiece what) throws Exception {
         Swimmy2023RobotSubsystem robot = (Swimmy2023RobotSubsystem)getAutoController().getRobot().getRobotSubsystem();
 
         //

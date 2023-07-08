@@ -128,10 +128,12 @@ public class MotorEncoderMotionMagicAction extends MotorAction {
             logger.add("mctarget", talon.getClosedLoopTarget(), "%.0f");
             logger.add("actual", me.getPosition(), "%.0f") ;
             logger.add("velocity", mcvel, "%.0f") ;
+            logger.add("delta", delta, "%.0f") ;
+            logger.add("mcvel", mcvel, "%.0f") ;
             logger.add("state", state_.toString()) ;
             logger.endMessage();
         }
-        else if (state_ == State.Delaying && delay_timer_.isExpired())
+        if (state_ == State.Delaying && delay_timer_.isExpired())
         {
             setDone() ;
             me.endPlot(plot_id_);

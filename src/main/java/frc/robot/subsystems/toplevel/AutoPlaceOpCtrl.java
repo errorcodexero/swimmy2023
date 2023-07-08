@@ -62,7 +62,7 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
 
     private XeroElapsedTimer overall_timer_ ;   // Measure time since auto takes over
     
-    public AutoPlaceOpCtrl(Swimmy2023RobotSubsystem sub, RobotOperation oper) throws BadParameterTypeException, MissingParameterException {
+    public AutoPlaceOpCtrl(Swimmy2023RobotSubsystem sub, RobotOperation oper) throws Exception {
         super(sub, oper) ;
 
         april_tag_action_threshold_ = sub.getSettingsValue("april-tag-place-action-threshold").getDouble() ;

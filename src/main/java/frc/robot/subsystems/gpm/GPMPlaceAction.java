@@ -9,6 +9,7 @@ import org.xero1425.misc.MessageType;
 import org.xero1425.misc.MissingParameterException;
 
 import frc.robot.subsystems.arm.ArmStaggeredGotoAction;
+import frc.robot.subsystems.arm.ArmStaggeredGotoMagicAction;
 import frc.robot.subsystems.grabber.GrabberStowAction;
 import frc.robot.subsystems.toplevel.RobotOperation;
 import frc.robot.subsystems.toplevel.RobotOperation.GamePiece;
@@ -32,8 +33,8 @@ public class GPMPlaceAction extends Action {
 
     private State state_ ;
     private GPMSubsystem sub_ ;
-    private ArmStaggeredGotoAction arm_extend_action_ ;
-    private ArmStaggeredGotoAction arm_retract_action_ ;
+    private ArmStaggeredGotoMagicAction arm_extend_action_ ;
+    private ArmStaggeredGotoMagicAction arm_retract_action_ ;
     private GrabberStowAction grabber_drop_item_ ;
     private MotorEncoderPowerAction shoot_action_ ;
     private boolean ready_to_drop_ ;
@@ -45,7 +46,7 @@ public class GPMPlaceAction extends Action {
     private PlaceMethod place_method_ ;
     private XeroTimer force_drop_timer_ ;
 
-    public GPMPlaceAction(GPMSubsystem sub, RobotOperation.Location loc, RobotOperation.GamePiece gp, boolean force, boolean still) throws MissingParameterException, BadParameterTypeException {
+    public GPMPlaceAction(GPMSubsystem sub, RobotOperation.Location loc, RobotOperation.GamePiece gp, boolean force, boolean still) throws Exception {
         super(sub.getRobot().getMessageLogger());
 
         state_ = State.Idle ;
@@ -88,8 +89,8 @@ public class GPMPlaceAction extends Action {
         }
 
         title_ = armpos ;
-        arm_extend_action_ = new ArmStaggeredGotoAction(sub_.getArm(), armpos + ":extend", false);
-        arm_retract_action_ = new ArmStaggeredGotoAction(sub_.getArm(), armpos + ":retract", false);
+        arm_extend_action_ = new ArmStaggeredGotoMagicAction(sub_.getArm(), armpos + ":extend");
+        arm_retract_action_ = new ArmStaggeredGotoMagicAction(sub_.getArm(), armpos + ":retract");
 
         double drop_duration = sub.getSettingsValue("place-delay").getDouble();
         drop_timer_ = new XeroTimer(sub.getRobot(), "place", drop_duration);

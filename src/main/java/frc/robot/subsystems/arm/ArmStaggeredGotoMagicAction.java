@@ -59,7 +59,7 @@ public class ArmStaggeredGotoMagicAction extends Action {
 
         }
         else if (sub_.isSettingDefined(key + ":lower:trigger")) {
-            trigger_distance_ = sub_.getSettingsValue(key + ":upper:trigger").getDouble();
+            trigger_distance_ = sub_.getSettingsValue(key + ":lower:trigger").getDouble();
             first_subsystem_ = sub.getLowerSubsystem() ;
             first_action_ = new MotorEncoderMotionMagicAction(first_subsystem_, lower_target_, lower_maxa_, lower_maxv_, lower_strength_, HoldType.AtCurrentPosition);
             second_subsystem_ = sub.getUpperSubsystem() ;
