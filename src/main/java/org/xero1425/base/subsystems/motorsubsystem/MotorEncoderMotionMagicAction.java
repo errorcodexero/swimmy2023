@@ -10,7 +10,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
 public class MotorEncoderMotionMagicAction extends MotorAction {
 
-    private double SetDoneDelay = 0.2 ;
+    private double SetDoneDelay = 0.0 ;
 
     // The plot ID for plotting the motion
     int plot_id_ ;

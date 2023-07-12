@@ -61,7 +61,7 @@ public class GPMPlaceAction extends Action {
             // motion magic, try to go back to a single set of values first.
             //
             armpos = "place:" ;
-            force_drop_timer_ = new XeroTimer(sub_.getRobot(), "still-place-settling", 0.5) ;
+            force_drop_timer_ = new XeroTimer(sub_.getRobot(), "still-place-settling", 0.05) ;
         }
         else {
             armpos = "place:" ;
