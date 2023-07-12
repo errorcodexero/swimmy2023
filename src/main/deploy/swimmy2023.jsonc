@@ -152,14 +152,14 @@
                     "cone" : {
                         "extend" : {
                             "lower" : {
-                                "maxa" : 60000,                // Max accel/decel for trapezoidal/scurve profile, lower arm
-                                "maxv" : 5000,                 // Max velocity for trapezoidal/scurve profile, lower arm
+                                "maxa" : 30000,                // Max accel/decel for trapezoidal/scurve profile, lower arm
+                                "maxv" : 10000,                 // Max velocity for trapezoidal/scurve profile, lower arm
                                 "target" : 90000,              // The lower arm TARGET position
                                 "strength" : 6                 // The S-curve strength for motion magic
                             },
                             "upper" : {
                                 "maxa" : 60000,                // Max accel/decel for trapezoidal profile, upper arm
-                                "maxv" : 12000,                // Max velocity for trapezoidal profile, upper arm
+                                "maxv" : 16000,                // Max velocity for trapezoidal profile, upper arm
                                 "target" : 208000,             // The upper arm TARGET position
                                 "trigger" : 13333,             // How far to move the upper arm before starting the lower arm
                                 "strength" : 6                 // The S-curve strength for motion magic
@@ -167,15 +167,15 @@
                         },
                         "retract" : {
                             "lower" : {
-                                "maxa" : 60000,                // Max accel/decel for trapezoidal profile, upper arm
-                                "maxv" : 5000,                 // Max velocity for trapezoidal profile, upper arm
+                                "maxa" : 30000,                // Max accel/decel for trapezoidal profile, upper arm
+                                "maxv" : 7000,                 // Max velocity for trapezoidal profile, upper arm
                                 "target" : 2000,               // Lower arm target position
-                                "trigger" : 40000,             // Trigget to start the upper arm
+                                "trigger" : 20000,             // Trigget to start the upper arm
                                 "strength" : 6                 // The S-curve strength for motion magic
                             },
                             "upper" : {
                                 "maxa" : 60000,                // Max accel/decel for trapezoidal profile, upper arm
-                                "maxv" : 12000,                // Max velocity for trapezoidal profile, upper arm
+                                "maxv" : 16000,                // Max velocity for trapezoidal profile, upper arm
                                 "target" : 0,                  // Upper arm target position\
                                 "strength" : 6                 // The S-curve strength for motion magic
                             }
