@@ -75,6 +75,9 @@ public class ArmStaggeredGotoMagicAction extends Action {
     public void start() throws Exception {
         super.start() ;
 
+        first_subsystem_.setDefaultAction(null);
+        second_subsystem_.setDefaultAction(null);
+
         first_done_ = false ;
         second_done_ = false ;
         second_started_ = false ;
