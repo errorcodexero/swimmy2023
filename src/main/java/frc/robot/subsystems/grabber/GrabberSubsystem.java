@@ -4,6 +4,8 @@ import org.xero1425.base.LoopType;
 import org.xero1425.base.motors.MotorController.NeutralMode;
 import org.xero1425.base.subsystems.Subsystem;
 import org.xero1425.base.subsystems.motorsubsystem.MotorEncoderSubsystem;
+import org.xero1425.misc.MessageLogger;
+import org.xero1425.misc.MessageType;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 
@@ -50,10 +52,24 @@ public class GrabberSubsystem extends Subsystem {
         sensor_lower_value_ = !sensor_lower_.get() ;
         putDashboard("s-upper", DisplayType.Always, sensor_upper_value_);
         putDashboard("s-lower", DisplayType.Always, sensor_lower_value_);
+
+        MessageLogger logger = getRobot().getMessageLogger() ;
+        logger.startMessage(MessageType.Debug) ;
+        logger.add("lower", sensor_lower_value_) ;
+        logger.add("upper", sensor_upper_value_) ;
+        logger.endMessage(); 
     }
 
     public boolean getSensor() {
         return sensor_upper_value_ || sensor_lower_value_;
+    }
+
+    public boolean getUpperSensor() {
+        return sensor_upper_value_ ;
+    }
+
+    public boolean getLowerSensor() {
+        return sensor_lower_value_ ;
     }
 
     public MotorEncoderSubsystem getGrabSubsystem() {
