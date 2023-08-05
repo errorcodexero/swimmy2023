@@ -23,7 +23,7 @@ public class MotorEncoderMotionMagicAction extends MotorAction {
         "time (sec)", 
         "target (%%units%%)", "apos (%%units%%)",
         "avel (%%units%%)", "tpos (%%units%%)",
-        "error (%%units%%)"
+        "error (%%units%%)", "accel (%%units%%)"
     } ;
 
 
@@ -46,6 +46,7 @@ public class MotorEncoderMotionMagicAction extends MotorAction {
 
     private double start_ ;
     private double target_ ;
+    private double prevv_ ;
     private HoldType hold_ ;
     private State state_ ;
     private double maxa_ ;
@@ -102,6 +103,7 @@ public class MotorEncoderMotionMagicAction extends MotorAction {
     public void start() throws Exception {
         super.start() ;
 
+        prevv_ = 0.0 ;
         start_ = getSubsystem().getRobot().getTime() ;
         state_ = State.Waiting ;
         tryStart() ;
@@ -168,7 +170,10 @@ public class MotorEncoderMotionMagicAction extends MotorAction {
         data[3] = talon.getSelectedSensorVelocity() ;
         data[4] = talon.getClosedLoopTarget() ;
         data[5] = talon.getClosedLoopError() ;
+        data[6] = (talon.getSelectedSensorVelocity() - prevv_) / getSubsystem().getRobot().getDeltaTime();
         me.addPlotData(plot_id_, data);
+
+        prevv_ = talon.getSelectedSensorVelocity() ;
 
         if (state_ != old) {
             logger.startMessage(MessageType.Info) ;
