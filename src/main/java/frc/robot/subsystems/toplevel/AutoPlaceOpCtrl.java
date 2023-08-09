@@ -74,7 +74,7 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
             vision_timer_ = new XeroTimer(sub.getRobot(), "vision/timer", 0.3);
 
         if (oper.getLocation() == Location.Middle)
-            settling_timer_ = new XeroTimer(sub.getRobot(), "settling", 0.5) ;
+            settling_timer_ = new XeroTimer(sub.getRobot(), "settling", 0.0) ;
         else
             settling_timer_ = new XeroTimer(sub.getRobot(), "settling", 0.0) ;
 

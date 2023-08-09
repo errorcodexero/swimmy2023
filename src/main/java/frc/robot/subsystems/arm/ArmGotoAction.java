@@ -4,7 +4,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.xero1425.base.actions.Action;
-import org.xero1425.base.subsystems.motorsubsystem.MotorEncoderGotoAction;
+import org.xero1425.base.subsystems.motorsubsystem.MotorEncoderMotionMagicAction;
+import org.xero1425.base.subsystems.motorsubsystem.MotorEncoderMotionMagicAction.HoldType;
 import org.xero1425.misc.BadParameterTypeException;
 import org.xero1425.misc.MessageLogger;
 import org.xero1425.misc.MissingParameterException;
@@ -15,8 +16,11 @@ public class ArmGotoAction extends Action {
     private List<Double> lower_targets_;
     private int current_index_;
 
-    private MotorEncoderGotoAction upper_action_;
-    private MotorEncoderGotoAction lower_action_;
+    private double maxv_ ;
+    private double maxa_ ;
+
+    private MotorEncoderMotionMagicAction upper_action_;
+    private MotorEncoderMotionMagicAction lower_action_;
 
     //
     // Create an ARM goto action with a single set of upper and lower targets
@@ -27,6 +31,9 @@ public class ArmGotoAction extends Action {
 
         upper_targets_.add(upper);
         lower_targets_.add(lower);
+
+        maxa_= 18000 ;
+        maxv_ = 10000 ;
     }
 
     //
@@ -46,6 +53,8 @@ public class ArmGotoAction extends Action {
             upper_targets_.add(upper[i]);
             lower_targets_.add(lower[i]);
         }
+        maxa_= 18000 ;
+        maxv_ = 10000 ;
     }
 
     //
@@ -70,6 +79,9 @@ public class ArmGotoAction extends Action {
         }
 
         arm_ = sub;
+
+        maxa_= 18000 ;
+        maxv_ = 10000 ;
     }
 
     private ArmGotoAction(MessageLogger logger) {
@@ -83,6 +95,9 @@ public class ArmGotoAction extends Action {
 
         upper_targets_ = new LinkedList<Double>();
         lower_targets_ = new LinkedList<Double>();
+
+        maxa_= 18000 ;
+        maxv_ = 10000 ;
     }
 
     @Override
@@ -98,10 +113,10 @@ public class ArmGotoAction extends Action {
             setDone() ;
         }
         else {
-            lower_action_ = new MotorEncoderGotoAction(arm_.getLowerSubsystem(), lower_targets_.get(current_index_), true);
+            lower_action_ = new MotorEncoderMotionMagicAction(arm_.getLowerSubsystem(), lower_targets_.get(current_index_), maxa_, maxv_, 6, HoldType.AtTargetPosition);
             arm_.getLowerSubsystem().setAction(lower_action_, true);
 
-            upper_action_ = new MotorEncoderGotoAction(arm_.getUpperSubsystem(), upper_targets_.get(current_index_), true);
+            upper_action_ = new MotorEncoderMotionMagicAction(arm_.getUpperSubsystem(), upper_targets_.get(current_index_), maxa_, maxv_, 6, HoldType.AtTargetPosition) ;
             arm_.getUpperSubsystem().setAction(upper_action_, true);
         }
 
@@ -126,12 +141,12 @@ public class ArmGotoAction extends Action {
                 //
                 // The previous target is done, move to the next one
                 //
-                lower_action_ = new MotorEncoderGotoAction(arm_.getLowerSubsystem(),
-                        lower_targets_.get(current_index_), true);
+                lower_action_ = new MotorEncoderMotionMagicAction(arm_.getLowerSubsystem(),
+                        lower_targets_.get(current_index_), maxa_, maxv_, 6, HoldType.AtTargetPosition) ;
                 arm_.getLowerSubsystem().setAction(lower_action_, true);
 
-                upper_action_ = new MotorEncoderGotoAction(arm_.getUpperSubsystem(),
-                        upper_targets_.get(current_index_), true);
+                upper_action_ = new MotorEncoderMotionMagicAction(arm_.getUpperSubsystem(),
+                        upper_targets_.get(current_index_), maxa_, maxv_, 6, HoldType.AtTargetPosition) ;
                 arm_.getUpperSubsystem().setAction(upper_action_, true);
                 current_index_++;
             }

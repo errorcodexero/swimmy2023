@@ -144,11 +144,11 @@ public class MotorEncoderMotionMagicAction extends MotorAction {
         }
         else if (state_ == State.Running && delta < NearEndpoint && Math.abs(mcvel) < EndVelocity) {
             state_ = State.Complete ;
-            logger.startMessage(MessageType.Info) ;
-            logger.add("Motion magic duration ") ;
-            logger.add(getSubsystem().getRobot().getTime() - start_) ;
-            logger.add("delta", delta) ;
-            logger.endMessage();
+            // logger.startMessage(MessageType.Info) ;
+            // logger.add("Motion magic duration ") ;
+            // logger.add(getSubsystem().getRobot().getTime() - start_) ;
+            // logger.add("delta", delta) ;
+            // logger.endMessage();
 
             if (SetDoneDelay > 0.0) 
             {

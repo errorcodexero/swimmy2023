@@ -6,7 +6,7 @@ import org.xero1425.misc.MessageLogger;
 import org.xero1425.misc.MessageType;
 
 import frc.robot.subsystems.grabber.GrabberStartCollectAction;
-import frc.robot.subsystems.arm.ArmStaggeredGotoAction;
+import frc.robot.subsystems.arm.ArmStaggeredGotoMagicAction;
 import frc.robot.subsystems.grabber.GrabberGrabGampieceAction;
 import frc.robot.subsystems.grabber.GrabberStowAction;
 import frc.robot.subsystems.toplevel.RobotOperation;
@@ -35,9 +35,9 @@ public class GPMCollectAction extends Action {
     private XeroTimer timer_ ;
     private XeroTimer ground_done_timer_ ;
 
-    private ArmStaggeredGotoAction arm_collect_action_ ;
-    private ArmStaggeredGotoAction arm_lift_action_;
-    private ArmStaggeredGotoAction arm_retract_action_;
+    private ArmStaggeredGotoMagicAction arm_collect_action_ ;
+    private ArmStaggeredGotoMagicAction arm_lift_action_;
+    private ArmStaggeredGotoMagicAction arm_retract_action_;
 
     private State state_ ;
     private boolean ground_ ;
@@ -53,13 +53,13 @@ public class GPMCollectAction extends Action {
         timer_has_started_ = false ;
 
         if (ground) {
-            arm_collect_action_ = new ArmStaggeredGotoAction(subsystem_.getArm(), "collect:extend-ground", false);
-            arm_retract_action_ = new ArmStaggeredGotoAction(subsystem_.getArm(), "collect:retract-ground", false);
+            arm_collect_action_ = new ArmStaggeredGotoMagicAction(subsystem_.getArm(), "collect:extend-ground");
+            arm_retract_action_ = new ArmStaggeredGotoMagicAction(subsystem_.getArm(), "collect:retract-ground");
             arm_lift_action_ = null ;
         }
         else {
-            arm_collect_action_ = new ArmStaggeredGotoAction(subsystem_.getArm(), "collect:extend-shelf", false);
-            arm_retract_action_ = new ArmStaggeredGotoAction(subsystem_.getArm(), "collect:retract-shelf", false);
+            arm_collect_action_ = new ArmStaggeredGotoMagicAction(subsystem_.getArm(), "collect:extend-shelf");
+            arm_retract_action_ = new ArmStaggeredGotoMagicAction(subsystem_.getArm(), "collect:retract-shelf");
             arm_lift_action_ = null ;
         }       
 
