@@ -27,15 +27,6 @@ public class TankDrivePowerAction extends TankDriveAction {
     // If true, this is the timed version of this action.
     private boolean timed_ ;
 
-    // The ID of the plot to generate
-    private int plot_id_ ;
-
-    // An index that is incremented each time this action is created to ensure each action has a unique plot name
-    private static int plot_number_ = 0 ;
-
-    // The set of columns to plot
-    private static final String [] plot_columns_ = { "time (sec)", "dist (m)", "velocity (m/s)", "acceleration (m/s/s)", "lticks (ticks)", "rticks (ticks)", "left (v)", "right (v)" } ;
-
     /// \brief Create the action.  Once power is assigned to the drive base, this action is complete.
     /// \param drive the tankdrive subsystem
     /// \param left the power to apply to the left side of the drive base
@@ -73,7 +64,6 @@ public class TankDrivePowerAction extends TankDriveAction {
         right_ = right ;
         duration_ = duration;
         timed_ = true;
-        plot_id_ = drive.initPlot("tankdrivepower_" + Integer.toString(plot_number_++));
     }
 
     /// \brief Create the action. The action runs until the duration has elapsed and then the power is set to zero.
@@ -89,7 +79,6 @@ public class TankDrivePowerAction extends TankDriveAction {
         right_ = drive.getSettingsValue(right).getDouble();
         duration_ = drive.getSettingsValue(duration).getDouble();
         timed_ = true;
-        plot_id_ = drive.initPlot("tankdrivepower_"+ Integer.toString(plot_number_++));        
     }
 
     /// \brief Start the action by applying the desired power to the left and right sides of the
@@ -108,9 +97,6 @@ public class TankDrivePowerAction extends TankDriveAction {
         }
         catch(Exception ex) {
         }
-
-        if (timed_)
-            getSubsystem().startPlot(plot_id_, plot_columns_) ;
     }
 
     /// \brief Called each robot loop to manage the action.  This is called for timed actions only
@@ -128,24 +114,12 @@ public class TankDrivePowerAction extends TankDriveAction {
                 {
                 }
                 setDone() ;
-                getSubsystem().endPlot(plot_id_) ;
             }
 
             MessageLogger logger = getSubsystem().getRobot().getMessageLogger() ;
             logger.startMessage(MessageType.Debug, getSubsystem().getLoggerID()) ;
             logger.add("dbpower").add("lticks", getSubsystem().getLeftTick()).add("rticks", getSubsystem().getRightTick()) ;
             logger.endMessage();
-
-            Double[] data = new Double[plot_columns_.length] ;
-            data[0] = getSubsystem().getRobot().getTime() - start_ ;
-            data[1] = getSubsystem().getDistance() ;
-            data[2] = getSubsystem().getVelocity() ;
-            data[3] = getSubsystem().getAcceleration() ;
-            data[4] = (double)getSubsystem().getLeftTick() ;
-            data[5] = (double)getSubsystem().getRightTick() ;
-            data[6] = left_ ;
-            data[7] = right_ ;
-            getSubsystem().addPlotData(plot_id_, data);
         }
     }
 

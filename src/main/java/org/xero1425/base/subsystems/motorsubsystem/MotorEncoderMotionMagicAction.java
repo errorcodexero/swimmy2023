@@ -2,6 +2,7 @@ package org.xero1425.base.subsystems.motorsubsystem;
 
 import org.xero1425.base.misc.XeroTimer;
 import org.xero1425.base.motors.BadMotorRequestException;
+import org.xero1425.base.plotting.PlotDataSource;
 import org.xero1425.misc.MessageLogger;
 import org.xero1425.misc.MessageType;
 
@@ -14,17 +15,10 @@ public class MotorEncoderMotionMagicAction extends MotorAction {
 
     // The plot ID for plotting the motion
     int plot_id_ ;
+    private PlotDataSource plot_src_ ;
 
     static int name_id_ = 0 ;
 
-    // The columns to plot
-    private String [] plot_columns_ = 
-    { 
-        "time (sec)", 
-        "target (%%units%%)", "apos (%%units%%)",
-        "avel (%%units%%)", "tpos (%%units%%)",
-        "error (%%units%%)", "accel (%%units%%)"
-    } ;
 
 
     private enum State {
@@ -46,7 +40,6 @@ public class MotorEncoderMotionMagicAction extends MotorAction {
 
     private double start_ ;
     private double target_ ;
-    private double prevv_ ;
     private HoldType hold_ ;
     private State state_ ;
     private double maxa_ ;
@@ -80,6 +73,18 @@ public class MotorEncoderMotionMagicAction extends MotorAction {
         talon.config_kF(0, kf);
 
         plot_id_ = sub.initPlot(sub.getName() + "-" + toString(plot_id_++)) ;
+        createPlotDataSource();
+    }
+
+    private void createPlotDataSource() {
+        plot_src_ = new PlotDataSource() ;
+
+        plot_src_.addDataElement("time (s)", () -> { return getSubsystem().getRobot().getTime() - start_ ; }) ;
+        plot_src_.addDataElement("target (%%units%%)", () -> { return target_; }) ;
+        plot_src_.addDataElement("apos (%%units%%)", () -> { return ((MotorEncoderSubsystem)getSubsystem()).getPosition() ;});
+        plot_src_.addDataElement("avel (%%units%%)", () -> { try { return getSubsystem().getMotorController().getTalonFX().getSelectedSensorPosition() ; } catch(Exception ex) { return 0.0 ; }});
+        plot_src_.addDataElement("tpos (%%units%%)", () -> {  try { return getSubsystem().getMotorController().getTalonFX().getClosedLoopTarget() ; } catch(Exception ex) { return 0.0 ; }});
+        plot_src_.addDataElement("error (%%units%%)", () -> {  try { return getSubsystem().getMotorController().getTalonFX().getClosedLoopError() ; } catch(Exception ex) { return 0.0 ; }});
     }
 
     public double getDistance() {
@@ -103,7 +108,6 @@ public class MotorEncoderMotionMagicAction extends MotorAction {
     public void start() throws Exception {
         super.start() ;
 
-        prevv_ = 0.0 ;
         start_ = getSubsystem().getRobot().getTime() ;
         state_ = State.Waiting ;
         tryStart() ;
@@ -163,18 +167,8 @@ public class MotorEncoderMotionMagicAction extends MotorAction {
             }
         }
 
-        Double[] data = new Double[plot_columns_.length] ;
-        data[0] = getSubsystem().getRobot().getTime() - start_ ;
-        data[1] = target_ ;
-        data[2] = me.getPosition() ;
-        data[3] = talon.getSelectedSensorVelocity() ;
-        data[4] = talon.getClosedLoopTarget() ;
-        data[5] = talon.getClosedLoopError() ;
-        data[6] = (talon.getSelectedSensorVelocity() - prevv_) / getSubsystem().getRobot().getDeltaTime();
-        me.addPlotData(plot_id_, data);
 
-        prevv_ = talon.getSelectedSensorVelocity() ;
-
+        me.addPlotData(plot_id_);
         if (state_ != old) {
             logger.startMessage(MessageType.Info) ;
             logger.add("Motion Magic: ").add(old.toString()).add(" -> ").add(state_.toString()).endMessage();
@@ -195,7 +189,8 @@ public class MotorEncoderMotionMagicAction extends MotorAction {
         if (state_ == State.Waiting) {
             MotorEncoderSubsystem me = (MotorEncoderSubsystem)getSubsystem() ;
             start_pos_ = me.getPosition();
-            me.startPlot(plot_id_, convertUnits(plot_columns_, me.getUnits()));
+            plot_src_.convertUnits(me.getUnits());
+            me.startPlot(plot_id_, plot_src_);
             TalonFX talon = me.getMotorController().getTalonFX() ;
             talon.configMotionAcceleration(maxa_);
             talon.configMotionCruiseVelocity(maxv_);

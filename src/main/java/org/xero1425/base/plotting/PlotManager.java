@@ -1,10 +1,15 @@
-package org.xero1425.base ;
+package org.xero1425.base.plotting ;
 
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.NetworkTableEntry ;
 import java.util.Map ;
+
+import org.xero1425.base.XeroRobot;
+
+import java.util.ArrayList;
 import java.util.HashMap ;
+import java.util.List;
 
 /// \file
 
@@ -17,6 +22,17 @@ import java.util.HashMap ;
 /// This data can be processed by the xerotune toon located here <a href="https://www.mewserver.org/xeroprogs/" here </a>
 public class PlotManager extends PlotManagerBase
 {
+    private class DelayedPlotEndRequests
+    {
+        public int id_ ;
+        public double when_ ;
+
+        public DelayedPlotEndRequests(int id, double when) {
+            id_ = id ;
+            when_ = when ;
+        }
+    }
+
     static private String CompleteEntry = "complete" ;
     static private String PointsEntry = "points" ;
     static private String ColumnsEntry = "columns" ;
@@ -26,6 +42,7 @@ public class PlotManager extends PlotManagerBase
     private int next_plot_id_ ;
     private String plot_table_ ;
     private Map<Integer, PlotInfo> plots_ ;
+    private List<DelayedPlotEndRequests> delayed_ ;
 
     /// \brief create a new plot manager
     /// \param key the name of the key in the network table to hold plot data
@@ -34,6 +51,7 @@ public class PlotManager extends PlotManagerBase
         super(robot) ;
 
         plots_ = new HashMap<Integer, PlotInfo>() ;
+        delayed_ = new ArrayList<DelayedPlotEndRequests>() ;
         next_plot_id_ = 0 ;
         plot_table_ = key ;
     }
@@ -55,13 +73,13 @@ public class PlotManager extends PlotManagerBase
         return info.index_ ;
     }
 
-    public void startPlot(int id, String[] cols)
+    public void startPlot(int id, PlotDataSource src)
     {
         PlotInfo info = plots_.get(id) ;
         if (info == null || !isPlotEnabled(info.name_))
             return ;
 
-        info.cols_ = cols.length ;
+        info.datasrc_ = src ;
         info.index_ = 0 ;
 
         NetworkTableInstance inst = NetworkTableInstance.getDefault() ;
@@ -69,7 +87,7 @@ public class PlotManager extends PlotManagerBase
         NetworkTableEntry entry ;
         
         entry = table.getEntry(ColumnsEntry) ;
-        entry.setStringArray(cols) ;
+        entry.setStringArray(info.datasrc_.columns());
 
         entry = table.getEntry(PointsEntry) ;
         entry.setNumber(0) ;
@@ -83,22 +101,20 @@ public class PlotManager extends PlotManagerBase
         inst.flush() ;
     }
 
-    public void addPlotData(int id, Double[] data)
+    public void addPlotData(int id)
     {
         PlotInfo info = plots_.get(id) ;
         if (info == null || !isPlotEnabled(info.name_))
             return ;
             
-        if (data.length == info.cols_)
-        {
-            NetworkTableInstance inst = NetworkTableInstance.getDefault() ;
-            NetworkTable table = inst.getTable(getKeyForPlot(id)) ;
-            NetworkTableEntry entry = table.getEntry(DataEntry + "/" + Integer.toString(info.index_)) ;
-            entry.setNumberArray(data) ;
-            entry = table.getEntry(PointsEntry) ;
-            info.index_++ ;
-            entry.setNumber(info.index_) ;
-        }
+        Double data[] = info.datasrc_.values() ;
+        NetworkTableInstance inst = NetworkTableInstance.getDefault() ;
+        NetworkTable table = inst.getTable(getKeyForPlot(id)) ;
+        NetworkTableEntry entry = table.getEntry(DataEntry + "/" + Integer.toString(info.index_)) ;
+        entry.setNumberArray(data) ;
+        entry = table.getEntry(PointsEntry) ;
+        info.index_++ ;
+        entry.setNumber(info.index_) ;
     }
 
     public void endPlot(int id)
@@ -113,6 +129,12 @@ public class PlotManager extends PlotManagerBase
         entry.setBoolean(true) ;
 
         inst.flush() ;
+    }
+
+    public void endPlot(int id, double delay)
+    {
+        DelayedPlotEndRequests req = new DelayedPlotEndRequests(id, getRobot().getTime() + delay) ;
+        delayed_.add(req) ;
     }
 
     private String getKeyForPlot(int id)
@@ -131,8 +153,7 @@ public class PlotManager extends PlotManagerBase
             index_ = index ;
         }
         public String name_ ;
-        public int cols_ ;
+        public PlotDataSource datasrc_ ;
         public int index_ ;
     } ;
-
 } ;

@@ -3,6 +3,7 @@ package org.xero1425.base.subsystems.swerve.common;
 import java.util.List;
 
 import org.xero1425.base.misc.XeroTimer;
+import org.xero1425.base.plotting.PlotDataSource;
 import org.xero1425.misc.BadParameterTypeException;
 import org.xero1425.misc.MessageLogger;
 import org.xero1425.misc.MessageType;
@@ -20,22 +21,15 @@ public class SwerveDrivePathAction extends SwerveHolonomicControllerAction {
     private double trajectory_start_time_ ;
     private Trajectory trajectory_ ;
     private Rotation2d facing_ ;
-    private Pose2d last_vision_pose_ ;
     private XeroTimer timer_ ;
     private Pose2d start_ ;
     private Pose2d end_ ;
     private double maxa_ ;
     private double maxv_ ;
+    private Trajectory.State current_state_ ;
 
     private int plot_id_ ;
-    private Double[] plot_data_ ;
-
-    private static final String [] columns_ = {
-        "time",
-        "tx (m)", "ty (m)", "ta (deg)",
-        "ax (m)", "ay (m)", "aa (deg)",
-        "vx (m)", "vy (m)", "va (deg)"
-    } ;
+    private PlotDataSource plot_src_ ;
 
     public SwerveDrivePathAction(SwerveBaseSubsystem sub, Pose2d start, List<Translation2d> interior, Pose2d end, Rotation2d facing, double maxa, double maxv) throws BadParameterTypeException, MissingParameterException {
         super(sub) ;
@@ -53,9 +47,9 @@ public class SwerveDrivePathAction extends SwerveHolonomicControllerAction {
         trajectory_ = TrajectoryGenerator.generateTrajectory(start, interior, end, config) ;
 
         facing_ = facing;
-        timer_ = new XeroTimer(sub.getRobot(), "drivetimer", 0.2);
+        timer_ = new XeroTimer(sub.getRobot(), "drivetimer", 1.0);
 
-        plot_data_ = new Double[columns_.length] ;
+
         plot_id_ = getSubsystem().initPlot("SwerveDrivePathAction") ;
 
         start_ = start ;
@@ -63,53 +57,39 @@ public class SwerveDrivePathAction extends SwerveHolonomicControllerAction {
 
         maxa_ = maxa ;
         maxv_ = maxv ;
+        createPlotDataSource();
+    }
+
+    private void createPlotDataSource() {
+        plot_src_ = new PlotDataSource() ;
+
+        plot_src_.addDataElement("time", () -> { return getSubsystem().getRobot().getTime() - trajectory_start_time_ ;});
+
+        plot_src_.addDataElement("tx (m)", () -> { return current_state_.poseMeters.getX() ; });
+        plot_src_.addDataElement("ty (m)", () -> { return current_state_.poseMeters.getY() ; });
+        plot_src_.addDataElement("ta (deg)", () -> { return current_state_.poseMeters.getRotation().getDegrees() ; });
+
+        plot_src_.addDataElement("ax (m)", () -> { return getSubsystem().getPose().getX() ; });
+        plot_src_.addDataElement("ay (m)", () -> { return getSubsystem().getPose().getY() ; });
+        plot_src_.addDataElement("aa (deg)", () -> { return getSubsystem().getPose().getRotation().getDegrees() ; });
     }
 
     @Override
     public void start() throws Exception {
         super.start() ;
         trajectory_start_time_ = getSubsystem().getRobot().getTime() ;
-        getSubsystem().startPlot(plot_id_, columns_);
+        getSubsystem().startPlot(plot_id_, plot_src_);
     }
 
     @Override
     public void run()  throws Exception {
         double deltat = getSubsystem().getRobot().getTime() - trajectory_start_time_ ;
         
-        Trajectory.State st = trajectory_.sample(getSubsystem().getRobot().getTime() - trajectory_start_time_) ;
-        ChassisSpeeds speed = controller().calculate(getSubsystem().getPose(), st, facing_) ;
+        current_state_ = trajectory_.sample(getSubsystem().getRobot().getTime() - trajectory_start_time_) ;
+        ChassisSpeeds speed = controller().calculate(getSubsystem().getPose(), current_state_, facing_) ;
         getSubsystem().drive(speed) ;
 
-        Pose2d vpose = getSubsystem().getVisionPose() ;
-
-        Pose2d actual = getSubsystem().getPose() ;
-        int i = 0 ;
-        plot_data_[i++] = getSubsystem().getRobot().getTime() - trajectory_start_time_;
-        plot_data_[i++] = st.poseMeters.getX() ;
-        plot_data_[i++] = st.poseMeters.getY() ;
-        plot_data_[i++] = st.poseMeters.getRotation().getDegrees() ;
-        plot_data_[i++] = actual.getX() ;
-        plot_data_[i++] = actual.getY() ;
-        plot_data_[i++] = actual.getRotation().getDegrees() ;
-
-        if (vpose != null) {
-            plot_data_[i++] = vpose.getX() ;
-            plot_data_[i++] = vpose.getY() ;
-            plot_data_[i++] = vpose.getRotation().getDegrees() ;
-            last_vision_pose_ = vpose ;
-        }
-        else if (last_vision_pose_ != null) {
-            plot_data_[i++] = last_vision_pose_.getX() ;
-            plot_data_[i++] = last_vision_pose_.getY() ;
-            plot_data_[i++] = last_vision_pose_.getRotation().getDegrees() ;
-        }
-        else {
-            plot_data_[i++] = 0.0 ;
-            plot_data_[i++] = 0.0 ;
-            plot_data_[i++] = 0.0 ;
-        }
-
-        getSubsystem().addPlotData(plot_id_, plot_data_) ;
+        getSubsystem().addPlotData(plot_id_) ;
 
         if (deltat >= trajectory_.getTotalTimeSeconds() && !timer_.isRunning()) {
             timer_.start();

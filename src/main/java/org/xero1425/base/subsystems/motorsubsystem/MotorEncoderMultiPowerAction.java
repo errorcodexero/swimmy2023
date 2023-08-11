@@ -16,12 +16,6 @@ public class MotorEncoderMultiPowerAction extends MotorAction
 
     private double start_ ;
 
-    // The plot ID for the action
-    private int plot_id_ ;
-
-    // The columns to plot
-    private String[] plot_columns_ = { "time (s)","pos (%%units%%)","vel (%%units%%/s)","accel (%%units%%/s/s)","out (v)","encoder (ticks)" } ;
-
     /// \brief Create the MotorEncoderPowerAction that applies a fixed power value then is done
     /// \param motor the subsystem to apply the action to
     /// \param power the power to apply to the motor
@@ -32,7 +26,6 @@ public class MotorEncoderMultiPowerAction extends MotorAction
             throw new IllegalArgumentException("expected size of times array and powers array to be the same") ;
         }
 
-        plot_id_ = motor.initPlot(toString()) ;
         times_ = times ;
         powers_ = powers ;
     }
@@ -47,8 +40,6 @@ public class MotorEncoderMultiPowerAction extends MotorAction
         current_index_ = 0 ;
         current_time_ = start_ ;
 
-        MotorEncoderSubsystem sub = (MotorEncoderSubsystem)getSubsystem();
-        getSubsystem().startPlot(plot_id_, convertUnits(plot_columns_, sub.getUnits()));
         getSubsystem().setPower(powers_[current_index_]) ;
     }
 
@@ -64,7 +55,6 @@ public class MotorEncoderMultiPowerAction extends MotorAction
             //
             current_index_++ ;
             if (current_index_ == powers_.length) {
-                getSubsystem().endPlot(plot_id_);
                 setDone() ;
             }
             else {
@@ -72,25 +62,12 @@ public class MotorEncoderMultiPowerAction extends MotorAction
                 getSubsystem().setPower(powers_[current_index_]) ;
             }
         }
-
-        Double [] data = new Double[plot_columns_.length] ;
-        data[0] = getSubsystem().getRobot().getTime() - start_ ;
-        data[1] = ((MotorEncoderSubsystem)(getSubsystem())).getPosition() ;
-        data[2] = ((MotorEncoderSubsystem)(getSubsystem())).getVelocity() ;
-        data[3] = ((MotorEncoderSubsystem)(getSubsystem())).getAcceleration() ;
-        data[4] = getSubsystem().getPower() ;
-        data[5] = ((MotorEncoderSubsystem)(getSubsystem())).getEncoderRawCount() ;
-        getSubsystem().addPlotData(plot_id_, data);
-        
-        if (isDone())
-            getSubsystem().endPlot(plot_id_) ;
     }
 
     /// \brief Cancel the action, settings the power to zero
     @Override
     public void cancel() {
         super.cancel() ;
-        getSubsystem().endPlot(plot_id_) ;        
     }
 
     /// \brief Returnsa human readable string describing the action
@@ -107,5 +84,4 @@ public class MotorEncoderMultiPowerAction extends MotorAction
     public String toString() {
         return "MotorEncoderMultiPowerAction " + getSubsystem().getName() ;
     }
-
 }

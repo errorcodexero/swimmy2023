@@ -15,9 +15,6 @@ public class TankDriveRotateAction extends TankDriveAction {
     private double start_position_ ;
     private double start_time_ ;
 
-    // The plot ID for plotting the motion
-    int plot_id_ ;
-
     // The PID controller to follow the plan
     PIDACtrl ctrl_ ;
 
@@ -27,9 +24,6 @@ public class TankDriveRotateAction extends TankDriveAction {
     // ID number to add to each action
     static int name_id_ = 0 ;
     
-    // The columns to plot
-    static final String [] plot_columns_ = { "time (sec)", "tpos (m)", "apos (m)", "tvel (m/s)", "avel (m/s)", "out (volt)" } ;
-
     public TankDriveRotateAction(TankDriveSubsystem sub, double target) throws BadParameterTypeException, MissingParameterException {
         super(sub) ;
 
@@ -37,7 +31,6 @@ public class TankDriveRotateAction extends TankDriveAction {
 
         ISettingsSupplier settings = sub.getRobot().getSettingsSupplier() ;
         profile_ = new TrapezoidalProfile(settings, "subsystems:" + sub.getName() + ":rotate:trapezoid") ;
-        plot_id_ = sub.initPlot(sub.getName() + "-" + toString(plot_id_++)) ;
     }    
 
     @Override
@@ -45,7 +38,6 @@ public class TankDriveRotateAction extends TankDriveAction {
         super.start() ;
 
         setTarget();
-        getSubsystem().startPlot(plot_id_, plot_columns_) ;
     }
 
     @Override
@@ -64,7 +56,6 @@ public class TankDriveRotateAction extends TankDriveAction {
         {
             setDone() ;
             sub.setPower(0.0, 0.0) ;
-            sub.endPlot(plot_id_);
         }
         else
         {
@@ -73,15 +64,6 @@ public class TankDriveRotateAction extends TankDriveAction {
             double targetAcc = profile_.getAccel(elapsed) ;
             double out = ctrl_.getOutput(targetAcc, targetVel, targetDist, traveled, dt) ;
             sub.setPower(out, -out) ;
-
-            Double[] data = new Double[plot_columns_.length] ;
-            data[0] = elapsed ;
-            data[1] = start_position_ + targetDist ;
-            data[2] = position ;
-            data[3] = targetVel ;
-            data[4] = sub.getVelocity() ;
-            data[5] = out ;
-            sub.addPlotData(plot_id_, data);
         }
     }
 

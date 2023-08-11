@@ -1,6 +1,7 @@
 package org.xero1425.base.subsystems.motorsubsystem;
 
 import org.xero1425.base.XeroRobot;
+import org.xero1425.base.plotting.PlotDataSource;
 import org.xero1425.misc.BadParameterTypeException;
 import org.xero1425.misc.IMotionProfile;
 import org.xero1425.misc.ISettingsSupplier;
@@ -75,31 +76,25 @@ public class MotorEncoderGotoAction extends MotorAction {
     private double start_position_ ;
 
     // The PID controller to follow the plan
-    PIDACtrl ctrl_ ;
+    private PIDACtrl ctrl_ ;
 
     // The TrapezoidalProfile that is the plan to follow
-    IMotionProfile profile_ ;
+    private IMotionProfile profile_ ;
 
     // If true, add a hold action at the end of the goto action to hold the
     // subsystem in place.
-    boolean addhold_ ;
+    private boolean addhold_ ;
 
-    boolean use_actual_ ;
+    private boolean use_actual_ ;
 
     // The plot ID for plotting the motion
-    int plot_id_ ;
+    private int plot_id_ ;
+
+    private PlotDataSource plot_src_ ;
 
     static int name_id_ = 0 ;
 
-    // The columns to plot
-    private String [] plot_columns_ = 
-    { 
-        "time (sec)", 
-        "tpos (%%units%%)", "apos (%%units%%)", 
-        "tvel (%%units%%/s)", "avel (%%units%%/s)", 
-        "tacc (%%units%%/s/s)", "aacc (%%units%%/s/s)",
-        "out (volts)", "current (amps)"
-    } ;
+
 
     /// \brief Create the action
     /// \param sub the MotorEncoderSubsystem subsystem for the action    
@@ -107,7 +102,7 @@ public class MotorEncoderGotoAction extends MotorAction {
     /// \param addhold if true, add a hold action when the goto action is complete
     public MotorEncoderGotoAction(MotorEncoderSubsystem sub, double target, boolean addhold)
             throws Exception {
-        super(sub) ;
+        this(sub) ;
 
         if (!(sub instanceof MotorEncoderSubsystem))
             throw new Exception("This subsystem is not a MotorEncoderSubsystem") ;
@@ -118,7 +113,7 @@ public class MotorEncoderGotoAction extends MotorAction {
 
         ISettingsSupplier settings = sub.getRobot().getSettingsSupplier() ;
         profile_ = new TrapezoidalProfile(settings, "subsystems:" + sub.getName() + ":goto") ;
-        plot_id_ = sub.initPlot(sub.getName() + "-" + toString(0)) ;
+
     }
 
     /// \brief Create the action
@@ -127,7 +122,7 @@ public class MotorEncoderGotoAction extends MotorAction {
     /// \param addhold if true, add a hold action when the goto action is complete    
     public MotorEncoderGotoAction(MotorEncoderSubsystem sub, String target, boolean addhold)
             throws Exception {
-        super(sub) ;
+        this(sub) ;
 
         if (!(sub instanceof MotorEncoderSubsystem))
             throw new Exception("This subsystem is not a MotorEncoderSubsystem") ;
@@ -147,7 +142,7 @@ public class MotorEncoderGotoAction extends MotorAction {
     /// \param addhold if true, add a hold action when the goto action is complete
     public MotorEncoderGotoAction(MotorEncoderSubsystem sub, double target, TrapezoidalProfileConfig c, boolean addhold)
             throws Exception {
-        super(sub) ;
+        this(sub) ;
 
         if (!(sub instanceof MotorEncoderSubsystem))
             throw new Exception("This subsystem is not a MotorEncoderSubsystem") ;
@@ -157,7 +152,6 @@ public class MotorEncoderGotoAction extends MotorAction {
         use_actual_ = false ;
 
         profile_ = new TrapezoidalProfile(c) ;
-        plot_id_ = sub.initPlot(sub.getName() + "-" + toString(0)) ;
     }
 
     /// \brief Create the action
@@ -166,7 +160,7 @@ public class MotorEncoderGotoAction extends MotorAction {
     /// \param addhold if true, add a hold action when the goto action is complete    
     public MotorEncoderGotoAction(MotorEncoderSubsystem sub, String target, TrapezoidalProfileConfig c, boolean addhold)
             throws Exception {
-        super(sub) ;
+        this(sub) ;
 
         if (!(sub instanceof MotorEncoderSubsystem))
             throw new Exception("This subsystem is not a MotorEncoderSubsystem") ;
@@ -185,7 +179,7 @@ public class MotorEncoderGotoAction extends MotorAction {
     /// \param addhold if true, add a hold action when the goto action is complete
     public MotorEncoderGotoAction(MotorEncoderSubsystem sub, double target, SCurveConfig c, boolean addhold)
             throws Exception {
-        super(sub) ;
+        this(sub) ;
 
         if (!(sub instanceof MotorEncoderSubsystem))
             throw new Exception("This subsystem is not a MotorEncoderSubsystem") ;
@@ -195,7 +189,6 @@ public class MotorEncoderGotoAction extends MotorAction {
         use_actual_ = false ;
 
         profile_ = new SCurveProfile(c) ;
-        plot_id_ = sub.initPlot(sub.getName() + "-" + toString(0)) ;
     }
 
     /// \brief Create the action
@@ -204,7 +197,7 @@ public class MotorEncoderGotoAction extends MotorAction {
     /// \param addhold if true, add a hold action when the goto action is complete    
     public MotorEncoderGotoAction(MotorEncoderSubsystem sub, String target, SCurveConfig c, boolean addhold)
             throws Exception {
-        super(sub) ;
+        this(sub) ;
 
         if (!(sub instanceof MotorEncoderSubsystem))
             throw new Exception("This subsystem is not a MotorEncoderSubsystem") ;
@@ -216,7 +209,30 @@ public class MotorEncoderGotoAction extends MotorAction {
         profile_ = new SCurveProfile(c) ;
         plot_id_ = sub.initPlot(sub.getName() + "-" + toString(0)) ;        
     }   
-    
+        private MotorEncoderGotoAction(MotorEncoderSubsystem sub) {
+        super(sub) ;
+
+        plot_id_ = sub.initPlot(sub.getName() + "-" + toString(plot_id_++)) ;
+        createPlotDataSource();
+    }
+
+    private void createPlotDataSource() {
+        plot_src_ = new PlotDataSource() ;
+
+        plot_src_.addDataElement("time", () -> { return getSubsystem().getRobot().getTime() - start_time_ ;});
+
+        plot_src_.addDataElement("tpos (%%units%%)", () -> { return profile_.getDistance(getSubsystem().getRobot().getTime() - start_time_);});
+        plot_src_.addDataElement("apos (%%units%%)", () -> { return ((MotorEncoderSubsystem)getSubsystem()).getPosition() ; }) ;
+
+        plot_src_.addDataElement("tvel (%%units%%)", () -> { return profile_.getVelocity(getSubsystem().getRobot().getTime() - start_time_);});
+        plot_src_.addDataElement("avel (%%units%%)", () -> { return ((MotorEncoderSubsystem)getSubsystem()).getVelocity() ; }) ;
+
+        plot_src_.addDataElement("tacc (%%units%%)", () -> { return profile_.getAccel(getSubsystem().getRobot().getTime() - start_time_);});  
+        plot_src_.addDataElement("aacc (%%units%%)", () -> { return ((MotorEncoderSubsystem)getSubsystem()).getAcceleration() ; }) ;
+
+        plot_src_.addDataElement("out (volts)", () -> { return getSubsystem().getPower() ; });
+        plot_src_.addDataElement("current (amps)", () -> { return ((MotorEncoderSubsystem)getSubsystem()).getTotalCurrent() ; }) ;
+    }
     public void useActual(boolean b) {
         use_actual_ = b ;
     }
@@ -232,7 +248,8 @@ public class MotorEncoderGotoAction extends MotorAction {
         super.start() ;
         setTarget() ;
         MotorEncoderSubsystem sub = (MotorEncoderSubsystem)getSubsystem();
-        getSubsystem().startPlot(plot_id_, convertUnits(plot_columns_, sub.getUnits()));
+        plot_src_.convertUnits(sub.getUnits());
+        getSubsystem().startPlot(plot_id_, plot_src_);
     }
 
     /// \brief Called once per robot loop to adjust the motor power to follow the motion plan
@@ -261,18 +278,7 @@ public class MotorEncoderGotoAction extends MotorAction {
             double targetAcc = profile_.getAccel(elapsed) ;
             double out = ctrl_.getOutput(targetAcc, targetVel, targetDist, traveled, dt) ;
             sub.setPower(out) ;
-
-            Double[] data = new Double[plot_columns_.length] ;
-            data[0] = elapsed ;
-            data[1] = start_position_ + targetDist ;
-            data[2] = position ;
-            data[3] = targetVel ;
-            data[4] = sub.getVelocity() ;
-            data[5] = targetAcc;
-            data[6] = sub.getAcceleration();
-            data[7] = out ;
-            data[8] = sub.getTotalCurrent();
-            sub.addPlotData(plot_id_, data);
+            sub.addPlotData(plot_id_);
         }
     }
 

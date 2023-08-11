@@ -10,6 +10,11 @@ import org.xero1425.misc.MessageType;
 /// traveled in a circle.  It compute the scrub factor which is the ratio of the actual distance traveled
 /// versus the ideal distance traveled if the wheels had not friction. 
 public class TankDriveScrubCharAction extends TankDriveAction {
+    
+    private final double power_;
+    private double start_angle_;
+    private final double total_;
+
     /// \brief Create the scrub action
     /// \param drive the tankdrive subsystem
     /// \param power the power to use in the action
@@ -18,8 +23,6 @@ public class TankDriveScrubCharAction extends TankDriveAction {
         super(drive);
         power_ = power;
         total_ = total;
-
-        plot_id_ = drive.initPlot("tankdrivescrub");
     }
 
     /// \brief start the action
@@ -31,9 +34,7 @@ public class TankDriveScrubCharAction extends TankDriveAction {
         super.start();
 
         getSubsystem().setPower(-power_, power_);
-        start_ = getSubsystem().getRobot().getTime();
         start_angle_ = getSubsystem().getTotalAngle();
-        getSubsystem().startPlot(plot_id_, plot_columns_);
     }
 
     /// \brief Called once per robot loop to manage the scrub action
@@ -61,14 +62,6 @@ public class TankDriveScrubCharAction extends TankDriveAction {
             logger.add(", effective Width ").add(effr * 2.0);
             logger.add(", scrub", scrub) ;
             logger.endMessage();
-        } else {
-            final Double[] data = new Double[7];
-            data[0] = getSubsystem().getRobot().getTime() - start_;
-            data[1] = getSubsystem().getAngle().getDegrees() ;
-            data[4] = (double) getSubsystem().getLeftTick();
-            data[5] = (double) getSubsystem().getRightTick();
-            data[6] = power_;
-            getSubsystem().addPlotData(plot_id_, data);
         }
     }
 
@@ -78,7 +71,6 @@ public class TankDriveScrubCharAction extends TankDriveAction {
         super.cancel();
 
         getSubsystem().setPower(0.0, 0.0);
-        getSubsystem().endPlot(plot_id_);
     }
 
     /// \brief Returns a human readable string describing the action
@@ -90,11 +82,4 @@ public class TankDriveScrubCharAction extends TankDriveAction {
 
         return ret;
     }
-
-    private final double power_;
-    private double start_;
-    private double start_angle_;
-    private final double total_;
-    private final int plot_id_;
-    private static String [] plot_columns_ = { "time (sec)", "angle (degs)", "lticks (ticks)", "rticks (ticks)", "power (volts)" } ;
 } ;

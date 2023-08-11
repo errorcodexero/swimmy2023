@@ -3,6 +3,7 @@ package org.xero1425.base.subsystems.swerve.common;
 import org.xero1425.base.misc.XeroTimer;
 import org.xero1425.base.motors.BadMotorRequestException;
 import org.xero1425.base.motors.MotorRequestFailedException;
+import org.xero1425.base.plotting.PlotDataSource;
 import org.xero1425.misc.BadParameterTypeException;
 import org.xero1425.misc.MessageLogger;
 import org.xero1425.misc.MessageType;
@@ -27,7 +28,7 @@ public class SwerveHolonomicPathFollower extends SwerveHolonomicControllerAction
 
     private double start_ ;
     private int plot_id_ ;
-    private Double[] plot_data_ ;
+    private PlotDataSource plot_src_ ;
 
     private boolean end_phase_;
     private XeroTimer end_timer_;
@@ -37,11 +38,7 @@ public class SwerveHolonomicPathFollower extends SwerveHolonomicControllerAction
     private todoLambda lambda_ ;
     private double distance_ ;
 
-    private static final String [] columns_ = {
-        "time", "index",
-        "tx (m)", "ty (m)", "ta (deg)",
-        "ax (m)", "ay (m)", "aa (deg)"
-    } ;
+
 
     public SwerveHolonomicPathFollower(SwerveBaseSubsystem sub, String pathname, boolean setpose, double endtime) throws BadParameterTypeException, MissingParameterException {
         super(sub) ;
@@ -49,11 +46,26 @@ public class SwerveHolonomicPathFollower extends SwerveHolonomicControllerAction
         pathname_ = pathname ;
         setpose_ = setpose ;
 
-        plot_data_ = new Double[columns_.length] ;
+
         plot_id_ = getSubsystem().initPlot(pathname_) ;
+        createPlotDataSource();
 
         end_timer_ = new XeroTimer(sub.getRobot(), "holonomicpath", endtime);
         disable_vision_ = true ;
+    }
+
+    private void createPlotDataSource() {
+        plot_src_ = new PlotDataSource() ;
+
+        plot_src_.addDataElement("time", () -> { return getSubsystem().getRobot().getTime() - start_ ;});
+
+        plot_src_.addDataElement("tx (m)", () -> { return getPoseFromPath(index_).getX() ; });
+        plot_src_.addDataElement("ty (m)", () -> { return getPoseFromPath(index_).getY() ; });
+        plot_src_.addDataElement("ta (deg)", () -> { return getPoseFromPath(index_).getRotation().getDegrees() ; });
+
+        plot_src_.addDataElement("ax (m)", () -> { return getSubsystem().getPose().getX() ; });
+        plot_src_.addDataElement("ay (m)", () -> { return getSubsystem().getPose().getY() ; });
+        plot_src_.addDataElement("aa (deg)", () -> { return getSubsystem().getPose().getRotation().getDegrees() ; });
     }
 
     public void setLambda(todoLambda lambda, double dist) {
@@ -76,7 +88,7 @@ public class SwerveHolonomicPathFollower extends SwerveHolonomicControllerAction
         if (disable_vision_) {
             getSubsystem().enableVision(false);
         }
-        getSubsystem().startPlot(plot_id_, columns_);
+        getSubsystem().startPlot(plot_id_, plot_src_);
 
         start_ = getSubsystem().getRobot().getTime() ;
         path_ = getSubsystem().getRobot().getPathManager().getPath(pathname_);
@@ -141,17 +153,7 @@ public class SwerveHolonomicPathFollower extends SwerveHolonomicControllerAction
         logger.add(" ").add(actual.getRotation().getDegrees()) ;
 
         logger.endMessage();
-
-        int i = 0 ;
-        plot_data_[i++] = getSubsystem().getRobot().getTime() - start_ ;
-        plot_data_[i++] = (double)index_ ;
-        plot_data_[i++] = target.getX() ;
-        plot_data_[i++] = target.getY() ;
-        plot_data_[i++] = target.getRotation().getDegrees() ;
-        plot_data_[i++] = actual.getX() ;
-        plot_data_[i++] = actual.getY() ;
-        plot_data_[i++] = actual.getRotation().getDegrees() ;
-        getSubsystem().addPlotData(plot_id_, plot_data_) ;   
+        getSubsystem().addPlotData(plot_id_);
         
         if (index_ < path_.getTrajectoryEntryCount()) {
             index_++ ;            

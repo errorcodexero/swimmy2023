@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import org.xero1425.base.LoopType;
 import org.xero1425.base.XeroRobot;
 import org.xero1425.base.actions.Action;
+import org.xero1425.base.plotting.PlotDataSource;
 import org.xero1425.misc.BadParameterTypeException;
 import org.xero1425.misc.ISettingsSupplier;
 import org.xero1425.misc.MessageLogger;
@@ -683,15 +684,15 @@ public class Subsystem {
     /// \brief start a plot with the data columns given
     /// \param id the handle for a plot returned by initPlot().
     /// \param cols an array of data columns to be plotted
-    public void startPlot(int id, String[] cols) {
-        getRobot().getPlotManager().startPlot(id, cols) ;
+    public void startPlot(int id, PlotDataSource src) {
+        getRobot().getPlotManager().startPlot(id, src) ;
     }
 
     /// \brief add data to a plot
     /// \param id the handle for a plot returned by initPlot()
     /// \param data the data for the plot, should be the same size as the cols array in startPlot()
-    public void addPlotData(int id, Double[] data) {
-        getRobot().getPlotManager().addPlotData(id, data) ;
+    public void addPlotData(int id) {
+        getRobot().getPlotManager().addPlotData(id) ;
     }
 
     /// \brief end a plot

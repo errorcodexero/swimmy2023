@@ -1,7 +1,9 @@
-package org.xero1425.base;
+package org.xero1425.base.plotting;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import org.xero1425.base.XeroRobot;
 
 public abstract class PlotManagerBase {
 
@@ -15,8 +17,8 @@ public abstract class PlotManagerBase {
     }
 
     public abstract int initPlot(String name) ;
-    public abstract void startPlot(int id, String[] cols) ;
-    public abstract void addPlotData(int id, Double[] data) ;
+    public abstract void startPlot(int id, PlotDataSource src) ;
+    public abstract void addPlotData(int id) ;
     public abstract void endPlot(int id) ;
 
     public void enable(boolean value) {
@@ -25,6 +27,10 @@ public abstract class PlotManagerBase {
 
     public void enable(String name) {
         enabled_plots_.add(name);
+    }
+
+    protected XeroRobot getRobot() {
+        return robot_ ;
     }
 
     protected boolean isPlotEnabled(String name) {

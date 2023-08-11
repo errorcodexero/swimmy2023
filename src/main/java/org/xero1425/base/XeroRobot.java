@@ -37,6 +37,8 @@ import org.xero1425.misc.SimArgs;
 import org.xero1425.misc.XeroPathManager;
 import org.xero1425.misc.XeroPathType;
 import org.xero1425.base.motors.MotorFactory;
+import org.xero1425.base.plotting.PlotManager;
+import org.xero1425.base.plotting.PlotManagerBase;
 import org.xero1425.base.subsystems.RobotSubsystem;
 import org.xero1425.base.subsystems.Subsystem.DisplayType;
 import org.xero1425.base.subsystems.tankdrive.TankDrivePathFollowerAction;
@@ -79,9 +81,6 @@ public abstract class XeroRobot extends TimedRobot {
 
     // The motor factor for creating new motors
     private MotorFactory motors_ ;
-
-    // The MAC address for the ethernet controller
-    private byte[] mac_addr_ ;
 
     // The base robot subsystem
     private RobotSubsystem robot_subsystem_ ;
@@ -200,26 +199,7 @@ public abstract class XeroRobot extends TimedRobot {
         // Create the motor factor
         motors_ = new MotorFactory(logger_, settings_);
 
-        // Create the plot manager
-        int ver ;
-        
-        try {
-            ver = settings_.get("system:plotting:version").getInteger() ;
-        }
-        catch(Exception ex) {
-            ver = 3 ;
-        }
-
-        if (ver == 4) {
-            plot_mgr_ = new PlotManagerNT4(this, "/XeroPlot") ;
-        }
-        else {
-            //
-            // In all cases fall back to the proven plotting unless the version
-            // is explictly 4
-            //
-            plot_mgr_ = new PlotManager(this, "/XeroPlot");
-        }
+        plot_mgr_ = new PlotManager(this, "/XeroPlot");
 
         // Store the initial time
         last_time_ = getTime();

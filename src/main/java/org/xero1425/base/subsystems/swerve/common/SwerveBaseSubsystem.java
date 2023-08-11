@@ -6,6 +6,7 @@ import java.util.List;
 import org.xero1425.base.IVisionLocalization;
 import org.xero1425.base.motors.BadMotorRequestException;
 import org.xero1425.base.motors.MotorRequestFailedException;
+import org.xero1425.base.plotting.PlotDataSource;
 import org.xero1425.base.subsystems.DriveBaseSubsystem;
 import org.xero1425.base.subsystems.Subsystem;
 import org.xero1425.misc.MessageLogger;
@@ -33,16 +34,7 @@ public abstract class SwerveBaseSubsystem extends DriveBaseSubsystem {
 
     private int plotid_ ;
     private double plotstart_ ;
-    private Double[] plotdata_ ;
-    private static final String [] columns_ = {
-        "time",
-        "fl-ang-t (deg)", "fl-ang-a (deg)","fl-drv-t (m/s)","fl-drv-a (m/s)",
-        "fr-ang-t (deg)", "fr-ang-a (deg)","fr-drv-t (m/s)","fr-drv-a (m/s)",
-        "bl-ang-t (deg)", "bl-ang-a (deg)","bl-drv-t (m/s)","bl-drv-a (m/s)",
-        "br-ang-t (deg)", "br-ang-a (deg)","br-drv-t (m/s)","br-drv-a (m/s)",
-    } ;
-    
-    private int index_ ;
+    private PlotDataSource plotsrc_ ;
 
     private SwerveVisionProcessing vision_ ;
     private SwerveDriveKinematics kinematics_ ;
@@ -82,8 +74,9 @@ public abstract class SwerveBaseSubsystem extends DriveBaseSubsystem {
             powers_[i] = 0.0 ;
         }
 
-        plotdata_ = new Double[columns_.length] ;
         plotid_ = -1 ;
+        plotsrc_ = null ;
+        plotstart_ = 0.0 ;
        
         width_ = getSettingsValue("physical:width").getDouble() ;
         length_ = getSettingsValue("physical:length").getDouble() ;
@@ -103,6 +96,33 @@ public abstract class SwerveBaseSubsystem extends DriveBaseSubsystem {
         shuffleboardTab.addNumber("Pose X", () -> getPose().getX());
         shuffleboardTab.addNumber("Pose Y", () -> getPose().getY());
         last_pose_ = new Pose2d() ;
+        createPlotDataSource();
+    }
+
+    private void createPlotDataSource() {
+        plotsrc_ = new PlotDataSource() ;
+
+        plotsrc_.addDataElement("time (s)", () -> { return getRobot().getTime() - plotstart_ ; }) ;
+
+        plotsrc_.addDataElement("fl-ang-t (s)", () -> { return getModuleTarget(FL).angle.getDegrees() ; }) ;
+        plotsrc_.addDataElement("fl-ang-a (s)", () -> { return getModuleState(FL).angle.getDegrees() ; }) ;
+        plotsrc_.addDataElement("fl-drv-t (s)", () -> { return getModuleTarget(FL).speedMetersPerSecond; }) ;
+        plotsrc_.addDataElement("fl-drv-a (s)", () -> { return getModuleState(FL).speedMetersPerSecond ; }) ;
+
+        plotsrc_.addDataElement("fr-ang-t (s)", () -> { return getModuleTarget(FR).angle.getDegrees() ; }) ;
+        plotsrc_.addDataElement("fr-ang-a (s)", () -> { return getModuleState(FR).angle.getDegrees() ; }) ;
+        plotsrc_.addDataElement("fr-drv-t (s)", () -> { return getModuleTarget(FR).speedMetersPerSecond; }) ;
+        plotsrc_.addDataElement("fr-drv-a (s)", () -> { return getModuleState(FR).speedMetersPerSecond ; }) ;
+        
+        plotsrc_.addDataElement("bl-ang-t (s)", () -> { return getModuleTarget(BL).angle.getDegrees() ; }) ;
+        plotsrc_.addDataElement("bl-ang-a (s)", () -> { return getModuleState(BL).angle.getDegrees() ; }) ;
+        plotsrc_.addDataElement("bl-drv-t (s)", () -> { return getModuleTarget(BL).speedMetersPerSecond; }) ;
+        plotsrc_.addDataElement("bl-drv-a (s)", () -> { return getModuleState(BL).speedMetersPerSecond ; }) ;
+        
+        plotsrc_.addDataElement("br-ang-t (s)", () -> { return getModuleTarget(BR).angle.getDegrees() ; }) ;
+        plotsrc_.addDataElement("br-ang-a (s)", () -> { return getModuleState(BR).angle.getDegrees() ; }) ;
+        plotsrc_.addDataElement("br-drv-t (s)", () -> { return getModuleTarget(BR).speedMetersPerSecond; }) ;
+        plotsrc_.addDataElement("br-drv-a (s)", () -> { return getModuleState(BR).speedMetersPerSecond ; }) ; 
     }
 
     public Pose2d getVisionPose() {
@@ -305,7 +325,7 @@ public abstract class SwerveBaseSubsystem extends DriveBaseSubsystem {
             plotid_ = initPlot(name) ;
         }
 
-        startPlot(plotid_, columns_);
+        startPlot(plotid_, plotsrc_);
         plotstart_ = getRobot().getTime();
     }
 
@@ -354,34 +374,10 @@ public abstract class SwerveBaseSubsystem extends DriveBaseSubsystem {
     }
 
     protected void newPlotData() {
-        index_ = 0 ;
-        
-        putData(getRobot().getTime() - plotstart_) ;
 
-        putData(getModuleTarget(FL).angle.getDegrees()) ;
-        putData(getModuleState(FL).angle.getDegrees()) ;
-        putData(getModuleTarget(FL).speedMetersPerSecond) ;
-        putData(getModuleState(FL).speedMetersPerSecond) ;
 
-        putData(getModuleTarget(FR).angle.getDegrees()) ;
-        putData(getModuleState(FR).angle.getDegrees()) ;
-        putData(getModuleTarget(FR).speedMetersPerSecond) ;
-        putData(getModuleState(FR).speedMetersPerSecond) ;
-
-        putData(getModuleTarget(BL).angle.getDegrees()) ;
-        putData(getModuleState(BL).angle.getDegrees()) ;
-        putData(getModuleTarget(BL).speedMetersPerSecond) ;
-        putData(getModuleState(BL).speedMetersPerSecond) ;
-        
-        putData(getModuleTarget(BR).angle.getDegrees()) ;
-        putData(getModuleState(BR).angle.getDegrees()) ;
-        putData(getModuleTarget(BR).speedMetersPerSecond) ;
-        putData(getModuleState(BR).speedMetersPerSecond) ;
-
-        addPlotData(plotid_, plotdata_);
+        addPlotData(plotid_);
     }
 
-    private void putData(double d) {
-        plotdata_[index_++] = d ;
-    }
+
 }
