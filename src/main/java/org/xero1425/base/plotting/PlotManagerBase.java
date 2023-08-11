@@ -16,6 +16,7 @@ public abstract class PlotManagerBase {
         robot_ = robot ;
     }
 
+    public abstract void run() ;
     public abstract int initPlot(String name) ;
     public abstract void startPlot(int id, PlotDataSource src) ;
     public abstract void addPlotData(int id) ;

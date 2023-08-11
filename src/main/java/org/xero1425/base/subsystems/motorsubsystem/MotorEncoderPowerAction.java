@@ -1,5 +1,6 @@
 package org.xero1425.base.subsystems.motorsubsystem ;
 
+import org.xero1425.base.plotting.PlotDataSource;
 import org.xero1425.misc.BadParameterTypeException;
 import org.xero1425.misc.MissingParameterException;
 
@@ -15,8 +16,8 @@ public class MotorEncoderPowerAction extends MotorPowerAction
     // The plot ID for the action
     private int plot_id_ ;
 
-    // The columns to plot
-    private String[] plot_columns_ = { "time (s)","pos (%%units%%)","vel (%%units%%/s)","accel (%%units%%/s/s)","out (v)","encoder (ticks)" } ;
+    private PlotDataSource plot_src_ ;
+
 
     /// \brief Create the MotorEncoderPowerAction that applies a fixed power value then is done
     /// \param motor the subsystem to apply the action to
@@ -42,7 +43,7 @@ public class MotorEncoderPowerAction extends MotorPowerAction
     /// \param duration the amount of time to apply the power  
     public MotorEncoderPowerAction(MotorEncoderSubsystem motor, double power, double duration) {
         super(motor, power, duration);
-        plot_id_ = motor.initPlot(toString()) ;
+        createPlotDataSource();
     }
 
     /// \brief Create the MotorEncoderPowerAction that applies the power for a fixed 
@@ -54,7 +55,22 @@ public class MotorEncoderPowerAction extends MotorPowerAction
             throws BadParameterTypeException, MissingParameterException {
 
         super(motor, power, duration);
-        plot_id_ = motor.initPlot(toString()) ;        
+        createPlotDataSource() ;
+    }
+
+    private void createPlotDataSource() {
+        plot_id_ = getSubsystem().initPlot(toString()) ;
+
+        plot_src_ = new PlotDataSource() ;
+
+        plot_src_.addDataElement("time", () -> { return getSubsystem().getRobot().getTime() - start_ ;});
+        plot_src_.addDataElement("pos (%%units%%)", () -> { return ((MotorEncoderSubsystem)(getSubsystem())).getPosition() ; });
+        plot_src_.addDataElement("vel (%%units%%/s)", () -> { return ((MotorEncoderSubsystem)(getSubsystem())).getVelocity() ; });
+        plot_src_.addDataElement("accel (%%units%%/s/s)", () -> { return ((MotorEncoderSubsystem)(getSubsystem())).getAcceleration() ; });
+        plot_src_.addDataElement("counts (counts)", () -> { return ((MotorEncoderSubsystem)(getSubsystem())).getEncoderRawCount() ; });
+
+        plot_src_.addDataElement("out (volts)", () -> { return getSubsystem().getPower() ; });
+        plot_src_.addDataElement("current (amps)", () -> { return ((MotorEncoderSubsystem)getSubsystem()).getTotalCurrent() ; }) ;
     }
 
     /// \brief Start the action by applying the power requested
@@ -64,7 +80,8 @@ public class MotorEncoderPowerAction extends MotorPowerAction
 
         start_ = getSubsystem().getRobot().getTime() ;
         MotorEncoderSubsystem sub = (MotorEncoderSubsystem)getSubsystem();
-        getSubsystem().startPlot(plot_id_, convertUnits(plot_columns_, sub.getUnits()));
+        plot_src_.convertUnits(sub.getUnits());
+        getSubsystem().startPlot(plot_id_, plot_src_);
     }
 
     /// \brief Called each robot loop.  Calls the base class to perform the action and then
@@ -73,15 +90,7 @@ public class MotorEncoderPowerAction extends MotorPowerAction
     public void run() {
         super.run() ;
 
-        Double [] data = new Double[plot_columns_.length] ;
-        data[0] = getSubsystem().getRobot().getTime() - start_ ;
-        data[1] = ((MotorEncoderSubsystem)(getSubsystem())).getPosition() ;
-        data[2] = ((MotorEncoderSubsystem)(getSubsystem())).getVelocity() ;
-        data[3] = ((MotorEncoderSubsystem)(getSubsystem())).getAcceleration() ;
-        data[4] = getSubsystem().getPower() ;
-        data[5] = ((MotorEncoderSubsystem)(getSubsystem())).getEncoderRawCount() ;
-        getSubsystem().addPlotData(plot_id_, data);
-        
+        getSubsystem().addPlotData(plot_id_);
         if (isDone())
             getSubsystem().endPlot(plot_id_) ;
     }

@@ -1,5 +1,6 @@
 package org.xero1425.base.subsystems.motorsubsystem;
 
+import org.xero1425.base.plotting.PlotDataSource;
 import org.xero1425.misc.PIDCtrl;
 
 public class MotorEncoderTrackPositionAction extends MotorAction {
@@ -22,8 +23,8 @@ public class MotorEncoderTrackPositionAction extends MotorAction {
     // The plot ID for the action
     private int plot_id_ ;
 
-    // The columns to plot
-    private String [] columns_ = { "time", "target(%%units%%)", "actual(%%units%%)", "error", "power"}  ;
+    // Data source for plots
+    private PlotDataSource plot_src_ ;
 
     /// \brief Create the action
     /// \param sub the MotorEncoderSubsystem subsystem for the action    
@@ -38,8 +39,19 @@ public class MotorEncoderTrackPositionAction extends MotorAction {
         target_ = checkTarget(target) ;
         
         ctrl_ = new PIDCtrl(sub.getRobot().getSettingsSupplier(), "subsystems:" + sub.getName() + ":" + name, false) ;
+        createPlotDataSource() ;
+    }
 
-        plot_id_ = sub.initPlot(toString(0)) ;
+    private void createPlotDataSource() {
+        plot_id_ = getSubsystem().initPlot(toString(0)) ;
+
+        plot_src_ = new PlotDataSource() ;
+
+        plot_src_.addDataElement("time", () -> { return getSubsystem().getRobot().getTime() - start_ ;});
+        plot_src_.addDataElement("target (%%units%%)", () -> { return target_ ; });
+        plot_src_.addDataElement("actual (%%units%%)", () -> { return ((MotorEncoderSubsystem)(getSubsystem())).getPosition() ; });
+        plot_src_.addDataElement("error (%%units%%)", () -> { return error_ ; });
+        plot_src_.addDataElement("out (volts)", () -> { return getSubsystem().getPower() ; });
     }
 
     public double getError() {
@@ -55,7 +67,8 @@ public class MotorEncoderTrackPositionAction extends MotorAction {
 
         if (plot_id_ != -1) {
             MotorEncoderSubsystem sub = (MotorEncoderSubsystem)getSubsystem();
-            getSubsystem().startPlot(plot_id_, convertUnits(columns_, sub.getUnits())) ;
+            plot_src_.convertUnits(sub.getUnits());
+            getSubsystem().startPlot(plot_id_, plot_src_);
         }
     }
 
@@ -98,14 +111,7 @@ public class MotorEncoderTrackPositionAction extends MotorAction {
         error_ = Math.abs(target_ - sub.getPosition()) ;
 
         if (plot_id_ != -1) {
-            Double[] data = new Double[columns_.length] ;
-            data[0] = getSubsystem().getRobot().getTime() - start_ ;
-            data[1] = target_ ;
-            data[2] = sub.getPosition() ;
-            data[3] = error_ ;
-            data[4] = out ;
-            getSubsystem().addPlotData(plot_id_, data);
-
+            getSubsystem().addPlotData(plot_id_);
             if (getSubsystem().getRobot().getTime() - start_ > 2.5)
             {
                 getSubsystem().endPlot(plot_id_) ;

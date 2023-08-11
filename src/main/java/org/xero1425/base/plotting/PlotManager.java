@@ -25,13 +25,24 @@ public class PlotManager extends PlotManagerBase
     private class DelayedPlotEndRequests
     {
         public int id_ ;
-        public double when_ ;
+        public double endtime_ ;
 
-        public DelayedPlotEndRequests(int id, double when) {
+        public DelayedPlotEndRequests(int id, double endtime) {
             id_ = id ;
-            when_ = when ;
+            endtime_ = endtime ;
         }
     }
+
+    private class PlotInfo
+    {
+        PlotInfo(String name, int index) {
+            name_ = name ;
+            index_ = index ;
+        }
+        public String name_ ;
+        public PlotDataSource datasrc_ ;
+        public int index_ ;
+    } ;
 
     static private String CompleteEntry = "complete" ;
     static private String PointsEntry = "points" ;
@@ -54,6 +65,22 @@ public class PlotManager extends PlotManagerBase
         delayed_ = new ArrayList<DelayedPlotEndRequests>() ;
         next_plot_id_ = 0 ;
         plot_table_ = key ;
+    }
+
+    public void run() {
+        ArrayList<DelayedPlotEndRequests> remove = new ArrayList<DelayedPlotEndRequests>() ;
+
+        double now = getRobot().getTime() ;
+        for(DelayedPlotEndRequests req : delayed_) {
+            if (now > req.endtime_) {
+                endPlot(req.id_);
+                remove.add(req);
+            }
+        }
+
+        for(DelayedPlotEndRequests req : remove) {
+            delayed_.remove(req);
+        }
     }
 
     public int initPlot(String name)
@@ -146,14 +173,4 @@ public class PlotManager extends PlotManagerBase
         return plot_table_ + "/" + info.name_ ;
     }
 
-    private class PlotInfo
-    {
-        PlotInfo(String name, int index) {
-            name_ = name ;
-            index_ = index ;
-        }
-        public String name_ ;
-        public PlotDataSource datasrc_ ;
-        public int index_ ;
-    } ;
 } ;

@@ -224,15 +224,16 @@ public class MotorEncoderGotoAction extends MotorAction {
         plot_src_.addDataElement("tpos (%%units%%)", () -> { return profile_.getDistance(getSubsystem().getRobot().getTime() - start_time_);});
         plot_src_.addDataElement("apos (%%units%%)", () -> { return ((MotorEncoderSubsystem)getSubsystem()).getPosition() ; }) ;
 
-        plot_src_.addDataElement("tvel (%%units%%)", () -> { return profile_.getVelocity(getSubsystem().getRobot().getTime() - start_time_);});
-        plot_src_.addDataElement("avel (%%units%%)", () -> { return ((MotorEncoderSubsystem)getSubsystem()).getVelocity() ; }) ;
+        plot_src_.addDataElement("tvel (%%units%%/s)", () -> { return profile_.getVelocity(getSubsystem().getRobot().getTime() - start_time_);});
+        plot_src_.addDataElement("avel (%%units%%/s)", () -> { return ((MotorEncoderSubsystem)getSubsystem()).getVelocity() ; }) ;
 
-        plot_src_.addDataElement("tacc (%%units%%)", () -> { return profile_.getAccel(getSubsystem().getRobot().getTime() - start_time_);});  
-        plot_src_.addDataElement("aacc (%%units%%)", () -> { return ((MotorEncoderSubsystem)getSubsystem()).getAcceleration() ; }) ;
+        plot_src_.addDataElement("tacc (%%units%%/s/s)", () -> { return profile_.getAccel(getSubsystem().getRobot().getTime() - start_time_);});  
+        plot_src_.addDataElement("aacc (%%units%%/s/s)", () -> { return ((MotorEncoderSubsystem)getSubsystem()).getAcceleration() ; }) ;
 
         plot_src_.addDataElement("out (volts)", () -> { return getSubsystem().getPower() ; });
         plot_src_.addDataElement("current (amps)", () -> { return ((MotorEncoderSubsystem)getSubsystem()).getTotalCurrent() ; }) ;
     }
+
     public void useActual(boolean b) {
         use_actual_ = b ;
     }

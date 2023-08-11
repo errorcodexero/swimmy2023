@@ -6,6 +6,7 @@ import org.xero1425.base.motors.MotorController;
 import org.xero1425.base.motors.MotorRequestFailedException;
 import org.xero1425.base.motors.TalonFXMotorController;
 import org.xero1425.base.motors.MotorController.PidType;
+import org.xero1425.base.plotting.PlotDataSource;
 import org.xero1425.misc.BadParameterTypeException;
 import org.xero1425.misc.ISettingsSupplier;
 import org.xero1425.misc.MissingParameterException;
@@ -30,6 +31,9 @@ public class MotorEncoderVelocityAction extends MotorAction {
     // The plot ID for the action
     private int plot_id_ ;
 
+    // Plot data source
+    private PlotDataSource plot_src_ ;
+
     // The name of the action
     private String name_ ;
 
@@ -38,9 +42,6 @@ public class MotorEncoderVelocityAction extends MotorAction {
 
     // The timer for the plot
     private XeroTimer plot_timer_ ;
-
-    // The columns to plot
-    private static String [] columns_ = { "time", "target (u)", "actual (u)"}  ;
 
     /// \brief Create a new MotorEncoderVelocityAction
     /// \param sub the target MotorEncoderSubsystem
@@ -58,13 +59,12 @@ public class MotorEncoderVelocityAction extends MotorAction {
 
         String pidname = "subsystems:" + sub.getName() + ":" + name_ ;
 
-        plot_id_ = sub.initPlot(toString(0) + "-" + String.valueOf(which_++)) ;     
         plot_duration_ = 10.0 ;
-
         if (settings.isDefined(pidname + ":plot-duration")) {
             plot_duration_ = settings.get(pidname + ":plot-duration").getDouble() ;
         }
         plot_timer_ = new XeroTimer(sub.getRobot(), "velocity-action-plot", plot_duration_) ;
+        createPlotDataSource();
     }
 
     /// \brief Create a new MotorEncoderVelocityAction
@@ -78,12 +78,24 @@ public class MotorEncoderVelocityAction extends MotorAction {
 
         target_ = getSubsystem().getSettingsValue(target).getDouble() ;
 
-        plot_id_ = sub.initPlot(toString(0) + "-" + String.valueOf(which_++)) ;   
         plot_duration_ = 10.0 ;
         if (settings.isDefined(pidname + ":plot-duration")) {
             plot_duration_ = settings.get(pidname + ":plot-duration").getDouble() ;
         }
         plot_timer_ = new XeroTimer(sub.getRobot(), "velocity-action-plot", plot_duration_) ;        
+
+        createPlotDataSource();
+    }
+
+    private void createPlotDataSource() {
+        plot_id_ = getSubsystem().initPlot(toString(0) + "-" + String.valueOf(which_++)) ; 
+
+        plot_src_ = new PlotDataSource() ;
+
+        plot_src_.addDataElement("time", () -> { return getSubsystem().getRobot().getTime() - start_ ;});
+        plot_src_.addDataElement("target (%%units%%)", () -> { return target_ ; });
+        plot_src_.addDataElement("actual (%%units%%)", () -> { return ((MotorEncoderSubsystem)(getSubsystem())).getPosition() ; });
+        plot_src_.addDataElement("error (%%units%%)", () -> { return error_ ; });
     }
 
     public double getError() {
@@ -132,7 +144,7 @@ public class MotorEncoderVelocityAction extends MotorAction {
         super.start() ;
 
         if (plot_id_ != -1) {
-            getSubsystem().startPlot(plot_id_, columns_) ;
+            getSubsystem().startPlot(plot_id_, plot_src_) ;
             plot_timer_.start() ;
         }
 
@@ -156,16 +168,8 @@ public class MotorEncoderVelocityAction extends MotorAction {
     @Override
     public void run() throws Exception {
         super.run() ;
-
-        MotorEncoderSubsystem me = (MotorEncoderSubsystem)getSubsystem() ;
-
         if (plot_id_ != -1) {
-            Double[] data = new Double[columns_.length] ;
-            data[0] = getSubsystem().getRobot().getTime() - start_ ;
-            data[1] = target_ ;
-            data[2] = me.getVelocity() ;
-            getSubsystem().addPlotData(plot_id_, data);
-
+            getSubsystem().addPlotData(plot_id_);
             if (plot_timer_.isExpired()) {
                 getSubsystem().endPlot(plot_id_) ;
                 plot_id_ = -1 ;

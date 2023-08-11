@@ -851,6 +851,10 @@ public abstract class XeroRobot extends TimedRobot {
             logStackTrace(ex.getStackTrace());
         }
 
+        if (plot_mgr_ != null) {
+            plot_mgr_.run();
+        }
+
         last_time_ = initial_time ;
     }
 
