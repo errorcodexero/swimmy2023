@@ -84,9 +84,6 @@ public class SwerveSpeedAngleAction extends SwerveDriveAction {
 
     @Override
     public void run() {
-
-        getSubsystem().newPlotData();
-
         if (!Double.isFinite(duration_) && plot_timer_.isExpired()) {
             getSubsystem().endSwervePlot();
         }

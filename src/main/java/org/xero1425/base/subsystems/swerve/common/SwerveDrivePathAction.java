@@ -49,15 +49,13 @@ public class SwerveDrivePathAction extends SwerveHolonomicControllerAction {
         facing_ = facing;
         timer_ = new XeroTimer(sub.getRobot(), "drivetimer", 1.0);
 
-
-        plot_id_ = getSubsystem().initPlot("SwerveDrivePathAction") ;
+        createPlotDataSource();
 
         start_ = start ;
         end_ = end ;
 
         maxa_ = maxa ;
         maxv_ = maxv ;
-        createPlotDataSource();
     }
 
     private void createPlotDataSource() {
@@ -72,13 +70,15 @@ public class SwerveDrivePathAction extends SwerveHolonomicControllerAction {
         plot_src_.addDataElement("ax (m)", () -> { return getSubsystem().getPose().getX() ; });
         plot_src_.addDataElement("ay (m)", () -> { return getSubsystem().getPose().getY() ; });
         plot_src_.addDataElement("aa (deg)", () -> { return getSubsystem().getPose().getRotation().getDegrees() ; });
+
+        plot_id_ = getSubsystem().initPlot("SwerveDrivePathAction", plot_src_) ;
     }
 
     @Override
     public void start() throws Exception {
         super.start() ;
         trajectory_start_time_ = getSubsystem().getRobot().getTime() ;
-        getSubsystem().startPlot(plot_id_, plot_src_);
+        getSubsystem().startPlot(plot_id_);
     }
 
     @Override
@@ -88,8 +88,6 @@ public class SwerveDrivePathAction extends SwerveHolonomicControllerAction {
         current_state_ = trajectory_.sample(getSubsystem().getRobot().getTime() - trajectory_start_time_) ;
         ChassisSpeeds speed = controller().calculate(getSubsystem().getPose(), current_state_, facing_) ;
         getSubsystem().drive(speed) ;
-
-        getSubsystem().addPlotData(plot_id_) ;
 
         if (deltat >= trajectory_.getTotalTimeSeconds() && !timer_.isRunning()) {
             timer_.start();

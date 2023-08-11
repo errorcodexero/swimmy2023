@@ -58,7 +58,6 @@ public class MotorEncoderVelocityAction extends MotorAction {
         target_ = target;
 
         String pidname = "subsystems:" + sub.getName() + ":" + name_ ;
-
         plot_duration_ = 10.0 ;
         if (settings.isDefined(pidname + ":plot-duration")) {
             plot_duration_ = settings.get(pidname + ":plot-duration").getDouble() ;
@@ -88,14 +87,14 @@ public class MotorEncoderVelocityAction extends MotorAction {
     }
 
     private void createPlotDataSource() {
-        plot_id_ = getSubsystem().initPlot(toString(0) + "-" + String.valueOf(which_++)) ; 
-
         plot_src_ = new PlotDataSource() ;
 
         plot_src_.addDataElement("time", () -> { return getSubsystem().getRobot().getTime() - start_ ;});
         plot_src_.addDataElement("target (%%units%%)", () -> { return target_ ; });
         plot_src_.addDataElement("actual (%%units%%)", () -> { return ((MotorEncoderSubsystem)(getSubsystem())).getPosition() ; });
         plot_src_.addDataElement("error (%%units%%)", () -> { return error_ ; });
+
+        plot_id_ = getSubsystem().initPlot(toString(0) + "-" + String.valueOf(which_++), plot_src_) ; 
     }
 
     public double getError() {
@@ -144,7 +143,7 @@ public class MotorEncoderVelocityAction extends MotorAction {
         super.start() ;
 
         if (plot_id_ != -1) {
-            getSubsystem().startPlot(plot_id_, plot_src_) ;
+            getSubsystem().startPlot(plot_id_) ;
             plot_timer_.start() ;
         }
 
@@ -169,7 +168,6 @@ public class MotorEncoderVelocityAction extends MotorAction {
     public void run() throws Exception {
         super.run() ;
         if (plot_id_ != -1) {
-            getSubsystem().addPlotData(plot_id_);
             if (plot_timer_.isExpired()) {
                 getSubsystem().endPlot(plot_id_) ;
                 plot_id_ = -1 ;

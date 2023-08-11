@@ -46,8 +46,6 @@ public class SwerveHolonomicPathFollower extends SwerveHolonomicControllerAction
         pathname_ = pathname ;
         setpose_ = setpose ;
 
-
-        plot_id_ = getSubsystem().initPlot(pathname_) ;
         createPlotDataSource();
 
         end_timer_ = new XeroTimer(sub.getRobot(), "holonomicpath", endtime);
@@ -66,6 +64,8 @@ public class SwerveHolonomicPathFollower extends SwerveHolonomicControllerAction
         plot_src_.addDataElement("ax (m)", () -> { return getSubsystem().getPose().getX() ; });
         plot_src_.addDataElement("ay (m)", () -> { return getSubsystem().getPose().getY() ; });
         plot_src_.addDataElement("aa (deg)", () -> { return getSubsystem().getPose().getRotation().getDegrees() ; });
+
+        plot_id_ = getSubsystem().initPlot(pathname_, plot_src_) ;
     }
 
     public void setLambda(todoLambda lambda, double dist) {
@@ -88,7 +88,7 @@ public class SwerveHolonomicPathFollower extends SwerveHolonomicControllerAction
         if (disable_vision_) {
             getSubsystem().enableVision(false);
         }
-        getSubsystem().startPlot(plot_id_, plot_src_);
+        getSubsystem().startPlot(plot_id_);
 
         start_ = getSubsystem().getRobot().getTime() ;
         path_ = getSubsystem().getRobot().getPathManager().getPath(pathname_);
@@ -153,7 +153,6 @@ public class SwerveHolonomicPathFollower extends SwerveHolonomicControllerAction
         logger.add(" ").add(actual.getRotation().getDegrees()) ;
 
         logger.endMessage();
-        getSubsystem().addPlotData(plot_id_);
         
         if (index_ < path_.getTrajectoryEntryCount()) {
             index_++ ;            

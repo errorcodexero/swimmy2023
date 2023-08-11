@@ -35,13 +35,17 @@ public class PlotManager extends PlotManagerBase
 
     private class PlotInfo
     {
-        PlotInfo(String name, int index) {
+        public String name_ ;                   // The human readable name for the plot
+        public PlotDataSource datasrc_ ;        // THe data source for the plot
+        public int id_ ;                        // The ID of the plot
+        public int index_ ;                     // The current data index in the network tables
+
+        PlotInfo(String name, int id, PlotDataSource src) {
             name_ = name ;
-            index_ = index ;
+            id_ = id ;
+            index_ = 0 ;
+            datasrc_ = src ;
         }
-        public String name_ ;
-        public PlotDataSource datasrc_ ;
-        public int index_ ;
     } ;
 
     static private String CompleteEntry = "complete" ;
@@ -70,6 +74,16 @@ public class PlotManager extends PlotManagerBase
     public void run() {
         ArrayList<DelayedPlotEndRequests> remove = new ArrayList<DelayedPlotEndRequests>() ;
 
+        //
+        // Extract data for all active plots and send to network tables
+        // 
+        for(PlotInfo info : plots_.values()) {
+            addPlotData(info);
+        }
+
+        //
+        // Check for any plots with a delayed end time and see if it is time to shut them down
+        //
         double now = getRobot().getTime() ;
         for(DelayedPlotEndRequests req : delayed_) {
             if (now > req.endtime_) {
@@ -83,7 +97,7 @@ public class PlotManager extends PlotManagerBase
         }
     }
 
-    public int initPlot(String name)
+    public int initPlot(String name, PlotDataSource src)
     {
         if (!isPlotEnabled(name))
             return -1 ;
@@ -94,19 +108,17 @@ public class PlotManager extends PlotManagerBase
                 return key ;
         }
 
-        PlotInfo info = new PlotInfo(name, next_plot_id_++) ;
-        plots_.put(info.index_, info) ;
-
-        return info.index_ ;
+        PlotInfo info = new PlotInfo(name, next_plot_id_++, src) ;
+        plots_.put(info.id_, info) ;
+        return info.id_ ;
     }
 
-    public void startPlot(int id, PlotDataSource src)
+    public void startPlot(int id)
     {
         PlotInfo info = plots_.get(id) ;
         if (info == null || !isPlotEnabled(info.name_))
             return ;
 
-        info.datasrc_ = src ;
         info.index_ = 0 ;
 
         NetworkTableInstance inst = NetworkTableInstance.getDefault() ;
@@ -128,15 +140,11 @@ public class PlotManager extends PlotManagerBase
         inst.flush() ;
     }
 
-    public void addPlotData(int id)
+    private void addPlotData(PlotInfo info)
     {
-        PlotInfo info = plots_.get(id) ;
-        if (info == null || !isPlotEnabled(info.name_))
-            return ;
-            
         Double data[] = info.datasrc_.values() ;
         NetworkTableInstance inst = NetworkTableInstance.getDefault() ;
-        NetworkTable table = inst.getTable(getKeyForPlot(id)) ;
+        NetworkTable table = inst.getTable(getKeyForPlot(info.id_)) ;
         NetworkTableEntry entry = table.getEntry(DataEntry + "/" + Integer.toString(info.index_)) ;
         entry.setNumberArray(data) ;
         entry = table.getEntry(PointsEntry) ;

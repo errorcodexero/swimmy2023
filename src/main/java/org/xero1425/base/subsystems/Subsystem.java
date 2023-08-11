@@ -677,22 +677,15 @@ public class Subsystem {
     /// The name must be unique across all plots created.
     /// \param name the name of the plot
     /// \returns a handle to the plot to be used in any subsequent plot related calls.
-    public int initPlot(String name) {
-        return getRobot().getPlotManager().initPlot(name) ;
+    public int initPlot(String name, PlotDataSource src) {
+        return getRobot().getPlotManager().initPlot(name, src) ;
     }
 
     /// \brief start a plot with the data columns given
     /// \param id the handle for a plot returned by initPlot().
     /// \param cols an array of data columns to be plotted
-    public void startPlot(int id, PlotDataSource src) {
-        getRobot().getPlotManager().startPlot(id, src) ;
-    }
-
-    /// \brief add data to a plot
-    /// \param id the handle for a plot returned by initPlot()
-    /// \param data the data for the plot, should be the same size as the cols array in startPlot()
-    public void addPlotData(int id) {
-        getRobot().getPlotManager().addPlotData(id) ;
+    public void startPlot(int id) {
+        getRobot().getPlotManager().startPlot(id) ;
     }
 
     /// \brief end a plot

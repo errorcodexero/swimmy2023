@@ -43,8 +43,6 @@ public class MotorEncoderTrackPositionAction extends MotorAction {
     }
 
     private void createPlotDataSource() {
-        plot_id_ = getSubsystem().initPlot(toString(0)) ;
-
         plot_src_ = new PlotDataSource() ;
 
         plot_src_.addDataElement("time", () -> { return getSubsystem().getRobot().getTime() - start_ ;});
@@ -52,6 +50,7 @@ public class MotorEncoderTrackPositionAction extends MotorAction {
         plot_src_.addDataElement("actual (%%units%%)", () -> { return ((MotorEncoderSubsystem)(getSubsystem())).getPosition() ; });
         plot_src_.addDataElement("error (%%units%%)", () -> { return error_ ; });
         plot_src_.addDataElement("out (volts)", () -> { return getSubsystem().getPower() ; });
+        plot_id_ = getSubsystem().initPlot(toString(0), plot_src_) ;
     }
 
     public double getError() {
@@ -68,7 +67,7 @@ public class MotorEncoderTrackPositionAction extends MotorAction {
         if (plot_id_ != -1) {
             MotorEncoderSubsystem sub = (MotorEncoderSubsystem)getSubsystem();
             plot_src_.convertUnits(sub.getUnits());
-            getSubsystem().startPlot(plot_id_, plot_src_);
+            getSubsystem().startPlot(plot_id_);
         }
     }
 
@@ -111,7 +110,6 @@ public class MotorEncoderTrackPositionAction extends MotorAction {
         error_ = Math.abs(target_ - sub.getPosition()) ;
 
         if (plot_id_ != -1) {
-            getSubsystem().addPlotData(plot_id_);
             if (getSubsystem().getRobot().getTime() - start_ > 2.5)
             {
                 getSubsystem().endPlot(plot_id_) ;

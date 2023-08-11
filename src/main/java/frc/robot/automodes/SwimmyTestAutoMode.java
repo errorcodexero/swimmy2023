@@ -22,7 +22,7 @@ import org.xero1425.misc.TrapezoidalProfileConfig;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import frc.robot.subsystems.arm.ArmGotoAction;
-import frc.robot.subsystems.arm.ArmStaggeredGotoAction;
+import frc.robot.subsystems.arm.ArmStaggeredGotoMagicAction;
 import frc.robot.subsystems.arm.ArmStaggeredGotoMagicAction;
 import frc.robot.subsystems.arm.ArmSubsystem;
 import frc.robot.subsystems.gpm.GPMCollectAction;
@@ -159,13 +159,13 @@ public class SwimmyTestAutoMode extends TestAutoMode {
                 break; 
 
             case 18:
-                addSubActionPair(arm, new ArmStaggeredGotoAction(arm, getString("profile1"), false), true);
+                addSubActionPair(arm, new ArmStaggeredGotoMagicAction(arm, getString("profile1")), true);
                 addAction(new DelayAction(arm.getRobot(), getDouble("delay")));
-                addSubActionPair(arm, new ArmStaggeredGotoAction(arm, getString("profile2"), false), true);
+                addSubActionPair(arm, new ArmStaggeredGotoMagicAction(arm, getString("profile2")), true);
                 break ;
 
             case 19:
-                addSubActionPair(arm, new ArmStaggeredGotoAction(arm, "place:top:cone:extend", false), true) ;
+                addSubActionPair(arm, new ArmStaggeredGotoMagicAction(arm, "place:top:cone:extend"), true) ;
                 break ;
 
             case 20:
@@ -222,9 +222,9 @@ public class SwimmyTestAutoMode extends TestAutoMode {
                 break ;   
                 
             case 75:
-                addSubActionPair(arm, new ArmStaggeredGotoAction(arm, "place:top:cone:extend", false), true);
+                addSubActionPair(arm, new ArmStaggeredGotoMagicAction(arm, "place:top:cone:extend"), true);
                 addAction(new DelayAction(getAutoController().getRobot(), 2.0));
-                addSubActionPair(arm, new ArmStaggeredGotoAction(arm, "place:top:cone:retract", false), true);
+                addSubActionPair(arm, new ArmStaggeredGotoMagicAction(arm, "place:top:cone:retract"), true);
                 break ;
 
             //
@@ -251,7 +251,7 @@ public class SwimmyTestAutoMode extends TestAutoMode {
                 //
                 // Position the ARM for shooting, uses the profile "subsytems:arm:shoot" to position the arm
                 //
-                addSubActionPair(arm, new ArmStaggeredGotoAction(arm, "shoot:top:cube:extend", false), true);
+                addSubActionPair(arm, new ArmStaggeredGotoMagicAction(arm, "shoot:top:cube:extend"), true);
 
                 //
                 // Let the arm settings before shooting
@@ -267,7 +267,7 @@ public class SwimmyTestAutoMode extends TestAutoMode {
                 //
                 // Move the ARM back to the stowed position
                 //
-                //addSubActionPair(arm, new ArmStaggeredGotoAction(arm, "shoot:top:cube:retract", false), true);
+                //addSubActionPair(arm, new ArmStaggeredGotoMagicAction(arm, "shoot:top:cube:retract", false), true);
                 addSubActionPair(gpm, new GPMStowAction(gpm), true);
                 break;
 

@@ -7,8 +7,6 @@ import org.xero1425.misc.IMotionProfile;
 import org.xero1425.misc.ISettingsSupplier;
 import org.xero1425.misc.MissingParameterException;
 import org.xero1425.misc.PIDACtrl;
-import org.xero1425.misc.SCurveConfig;
-import org.xero1425.misc.SCurveProfile;
 import org.xero1425.misc.TrapezoidalProfile;
 import org.xero1425.misc.TrapezoidalProfileConfig;
 import org.xero1425.misc.XeroMath;
@@ -92,17 +90,13 @@ public class MotorEncoderGotoAction extends MotorAction {
 
     private PlotDataSource plot_src_ ;
 
-    static int name_id_ = 0 ;
-
-
-
     /// \brief Create the action
     /// \param sub the MotorEncoderSubsystem subsystem for the action    
     /// \param target the target position
     /// \param addhold if true, add a hold action when the goto action is complete
     public MotorEncoderGotoAction(MotorEncoderSubsystem sub, double target, boolean addhold)
             throws Exception {
-        this(sub) ;
+        super(sub) ;
 
         if (!(sub instanceof MotorEncoderSubsystem))
             throw new Exception("This subsystem is not a MotorEncoderSubsystem") ;
@@ -113,7 +107,7 @@ public class MotorEncoderGotoAction extends MotorAction {
 
         ISettingsSupplier settings = sub.getRobot().getSettingsSupplier() ;
         profile_ = new TrapezoidalProfile(settings, "subsystems:" + sub.getName() + ":goto") ;
-
+        createPlotDataSource() ;
     }
 
     /// \brief Create the action
@@ -122,7 +116,7 @@ public class MotorEncoderGotoAction extends MotorAction {
     /// \param addhold if true, add a hold action when the goto action is complete    
     public MotorEncoderGotoAction(MotorEncoderSubsystem sub, String target, boolean addhold)
             throws Exception {
-        this(sub) ;
+        super(sub) ;
 
         if (!(sub instanceof MotorEncoderSubsystem))
             throw new Exception("This subsystem is not a MotorEncoderSubsystem") ;
@@ -133,88 +127,44 @@ public class MotorEncoderGotoAction extends MotorAction {
         
         ISettingsSupplier settings = sub.getRobot().getSettingsSupplier() ;
         profile_ = new TrapezoidalProfile(settings, "subsystems:" + sub.getName() + ":goto") ;
-        plot_id_ = sub.initPlot(sub.getName() + "-" + toString(0)) ;        
+        createPlotDataSource() ;
     }
 
     /// \brief Create the action
     /// \param sub the MotorEncoderSubsystem subsystem for the action    
     /// \param target the target position
     /// \param addhold if true, add a hold action when the goto action is complete
-    public MotorEncoderGotoAction(MotorEncoderSubsystem sub, double target, TrapezoidalProfileConfig c, boolean addhold)
-            throws Exception {
-        this(sub) ;
-
-        if (!(sub instanceof MotorEncoderSubsystem))
-            throw new Exception("This subsystem is not a MotorEncoderSubsystem") ;
-                    
-        target_ = target ;
-        addhold_ = addhold ;
-        use_actual_ = false ;
-
-        profile_ = new TrapezoidalProfile(c) ;
-    }
-
-    /// \brief Create the action
-    /// \param sub the MotorEncoderSubsystem subsystem for the action
-    /// \param target a string that names the settings value in the settings file that contains the target value 
-    /// \param addhold if true, add a hold action when the goto action is complete    
-    public MotorEncoderGotoAction(MotorEncoderSubsystem sub, String target, TrapezoidalProfileConfig c, boolean addhold)
-            throws Exception {
-        this(sub) ;
-
-        if (!(sub instanceof MotorEncoderSubsystem))
-            throw new Exception("This subsystem is not a MotorEncoderSubsystem") ;
-
-        target_ = getSubsystem().getSettingsValue(target).getDouble() ;
-        addhold_ = addhold ;
-        use_actual_ = false ;
-        
-        profile_ = new TrapezoidalProfile(c) ;
-        plot_id_ = sub.initPlot(sub.getName() + "-" + toString(0)) ;        
-    }    
-
-        /// \brief Create the action
-    /// \param sub the MotorEncoderSubsystem subsystem for the action    
-    /// \param target the target position
-    /// \param addhold if true, add a hold action when the goto action is complete
-    public MotorEncoderGotoAction(MotorEncoderSubsystem sub, double target, SCurveConfig c, boolean addhold)
-            throws Exception {
-        this(sub) ;
-
-        if (!(sub instanceof MotorEncoderSubsystem))
-            throw new Exception("This subsystem is not a MotorEncoderSubsystem") ;
-                    
-        target_ = target ;
-        addhold_ = addhold ;
-        use_actual_ = false ;
-
-        profile_ = new SCurveProfile(c) ;
-    }
-
-    /// \brief Create the action
-    /// \param sub the MotorEncoderSubsystem subsystem for the action
-    /// \param target a string that names the settings value in the settings file that contains the target value 
-    /// \param addhold if true, add a hold action when the goto action is complete    
-    public MotorEncoderGotoAction(MotorEncoderSubsystem sub, String target, SCurveConfig c, boolean addhold)
-            throws Exception {
-        this(sub) ;
-
-        if (!(sub instanceof MotorEncoderSubsystem))
-            throw new Exception("This subsystem is not a MotorEncoderSubsystem") ;
-
-        target_ = getSubsystem().getSettingsValue(target).getDouble() ;
-        addhold_ = addhold ;
-        use_actual_ = false ;
-        
-        profile_ = new SCurveProfile(c) ;
-        plot_id_ = sub.initPlot(sub.getName() + "-" + toString(0)) ;        
-    }   
-        private MotorEncoderGotoAction(MotorEncoderSubsystem sub) {
+    public MotorEncoderGotoAction(MotorEncoderSubsystem sub, double target, TrapezoidalProfileConfig c, boolean addhold) throws Exception {
         super(sub) ;
 
-        plot_id_ = sub.initPlot(sub.getName() + "-" + toString(plot_id_++)) ;
-        createPlotDataSource();
+        if (!(sub instanceof MotorEncoderSubsystem))
+            throw new Exception("This subsystem is not a MotorEncoderSubsystem") ;
+                    
+        target_ = target ;
+        addhold_ = addhold ;
+        use_actual_ = false ;
+
+        profile_ = new TrapezoidalProfile(c) ;
+        createPlotDataSource() ;
     }
+
+    /// \brief Create the action
+    /// \param sub the MotorEncoderSubsystem subsystem for the action
+    /// \param target a string that names the settings value in the settings file that contains the target value 
+    /// \param addhold if true, add a hold action when the goto action is complete    
+    public MotorEncoderGotoAction(MotorEncoderSubsystem sub, String target, TrapezoidalProfileConfig c, boolean addhold) throws Exception {
+        super(sub) ;
+
+        if (!(sub instanceof MotorEncoderSubsystem))
+            throw new Exception("This subsystem is not a MotorEncoderSubsystem") ;
+
+        target_ = getSubsystem().getSettingsValue(target).getDouble() ;
+        addhold_ = addhold ;
+        use_actual_ = false ;
+        
+        profile_ = new TrapezoidalProfile(c) ;
+        createPlotDataSource() ;
+    }    
 
     private void createPlotDataSource() {
         plot_src_ = new PlotDataSource() ;
@@ -232,6 +182,8 @@ public class MotorEncoderGotoAction extends MotorAction {
 
         plot_src_.addDataElement("out (volts)", () -> { return getSubsystem().getPower() ; });
         plot_src_.addDataElement("current (amps)", () -> { return ((MotorEncoderSubsystem)getSubsystem()).getTotalCurrent() ; }) ;
+
+        plot_id_ = getSubsystem().initPlot(getSubsystem().getName() + "-" + toString(0), plot_src_) ;  
     }
 
     public void useActual(boolean b) {
@@ -250,7 +202,7 @@ public class MotorEncoderGotoAction extends MotorAction {
         setTarget() ;
         MotorEncoderSubsystem sub = (MotorEncoderSubsystem)getSubsystem();
         plot_src_.convertUnits(sub.getUnits());
-        getSubsystem().startPlot(plot_id_, plot_src_);
+        getSubsystem().startPlot(plot_id_);
     }
 
     /// \brief Called once per robot loop to adjust the motor power to follow the motion plan
@@ -279,7 +231,6 @@ public class MotorEncoderGotoAction extends MotorAction {
             double targetAcc = profile_.getAccel(elapsed) ;
             double out = ctrl_.getOutput(targetAcc, targetVel, targetDist, traveled, dt) ;
             sub.setPower(out) ;
-            sub.addPlotData(plot_id_);
         }
     }
 

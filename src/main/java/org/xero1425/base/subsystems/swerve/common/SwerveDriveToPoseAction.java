@@ -83,7 +83,7 @@ public class SwerveDriveToPoseAction extends SwerveHolonomicControllerAction {
     private SwerveDriveToPoseAction(SwerveBaseSubsystem subsys) throws BadParameterTypeException, MissingParameterException {
         super(subsys);
 
-        plot_id_ = getSubsystem().initPlot("DriveToPose") ;
+
         createPlotDataSource();
         timer_ = new XeroTimer(subsys.getRobot(), "drivetimer", 1.0);
     }
@@ -100,12 +100,14 @@ public class SwerveDriveToPoseAction extends SwerveHolonomicControllerAction {
         plot_src_.addDataElement("ax (m)", () -> { return getSubsystem().getPose().getX() ; });
         plot_src_.addDataElement("ay (m)", () -> { return getSubsystem().getPose().getY() ; });
         plot_src_.addDataElement("aa (deg)", () -> { return getSubsystem().getPose().getRotation().getDegrees() ; });
+
+        plot_id_ = getSubsystem().initPlot("DriveToPose", plot_src_) ;
     }
 
     @Override
     public void start() throws Exception {
         super.start();
-        getSubsystem().startPlot(plot_id_, plot_src_);
+        getSubsystem().startPlot(plot_id_);
         trajectory_ = getSubsystem().createTrajectory(start_position_, target_position_, maxa_, maxv_) ;
         trajectory_start_time_ = getSubsystem().getRobot().getTime() ;
     }
@@ -120,8 +122,6 @@ public class SwerveDriveToPoseAction extends SwerveHolonomicControllerAction {
         Rotation2d face = (facing_ == null) ? target_position_.getRotation() : facing_ ;
         ChassisSpeeds speed = controller().calculate(getSubsystem().getPose(), current_state_, face) ;
         getSubsystem().drive(speed) ;
-
-        getSubsystem().addPlotData(plot_id_) ;
 
         MessageLogger logger = getSubsystem().getRobot().getMessageLogger();
         logger.startMessage(MessageType.Debug, getSubsystem().getLoggerID());

@@ -17,9 +17,8 @@ public abstract class PlotManagerBase {
     }
 
     public abstract void run() ;
-    public abstract int initPlot(String name) ;
-    public abstract void startPlot(int id, PlotDataSource src) ;
-    public abstract void addPlotData(int id) ;
+    public abstract int initPlot(String name, PlotDataSource src) ;
+    public abstract void startPlot(int id) ;
     public abstract void endPlot(int id) ;
 
     public void enable(boolean value) {

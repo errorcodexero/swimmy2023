@@ -17,10 +17,6 @@ public class MotorEncoderMotionMagicAction extends MotorAction {
     int plot_id_ ;
     private PlotDataSource plot_src_ ;
 
-    static int name_id_ = 0 ;
-
-
-
     private enum State {
         Waiting,
         Running,
@@ -71,8 +67,6 @@ public class MotorEncoderMotionMagicAction extends MotorAction {
         talon.config_kI(0, ki);
         talon.config_kD(0, kd);
         talon.config_kF(0, kf);
-
-        plot_id_ = sub.initPlot(sub.getName() + "-" + toString(plot_id_++)) ;
         createPlotDataSource();
     }
 
@@ -85,6 +79,8 @@ public class MotorEncoderMotionMagicAction extends MotorAction {
         plot_src_.addDataElement("avel (%%units%%)", () -> { try { return getSubsystem().getMotorController().getTalonFX().getSelectedSensorPosition() ; } catch(Exception ex) { return 0.0 ; }});
         plot_src_.addDataElement("tpos (%%units%%)", () -> {  try { return getSubsystem().getMotorController().getTalonFX().getClosedLoopTarget() ; } catch(Exception ex) { return 0.0 ; }});
         plot_src_.addDataElement("error (%%units%%)", () -> {  try { return getSubsystem().getMotorController().getTalonFX().getClosedLoopError() ; } catch(Exception ex) { return 0.0 ; }});
+
+        plot_id_ = getSubsystem().initPlot(getSubsystem().getName() + "-" + toString(plot_id_++), plot_src_) ;
     }
 
     public double getDistance() {
@@ -167,11 +163,10 @@ public class MotorEncoderMotionMagicAction extends MotorAction {
             }
         }
 
-
-        me.addPlotData(plot_id_);
         if (state_ != old) {
-            logger.startMessage(MessageType.Info) ;
-            logger.add("Motion Magic: ").add(old.toString()).add(" -> ").add(state_.toString()).endMessage();
+            logger.startMessage(MessageType.Debug, getSubsystem().getLoggerID());
+            logger.add("Motion Magic: ").add(old.toString()).add(" -> ").add(state_.toString()) ;
+            logger.endMessage();
         }
     }
 
@@ -190,7 +185,7 @@ public class MotorEncoderMotionMagicAction extends MotorAction {
             MotorEncoderSubsystem me = (MotorEncoderSubsystem)getSubsystem() ;
             start_pos_ = me.getPosition();
             plot_src_.convertUnits(me.getUnits());
-            me.startPlot(plot_id_, plot_src_);
+            me.startPlot(plot_id_);
             TalonFX talon = me.getMotorController().getTalonFX() ;
             talon.configMotionAcceleration(maxa_);
             talon.configMotionCruiseVelocity(maxv_);

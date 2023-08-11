@@ -59,8 +59,6 @@ public class MotorEncoderPowerAction extends MotorPowerAction
     }
 
     private void createPlotDataSource() {
-        plot_id_ = getSubsystem().initPlot(toString()) ;
-
         plot_src_ = new PlotDataSource() ;
 
         plot_src_.addDataElement("time", () -> { return getSubsystem().getRobot().getTime() - start_ ;});
@@ -71,6 +69,8 @@ public class MotorEncoderPowerAction extends MotorPowerAction
 
         plot_src_.addDataElement("out (volts)", () -> { return getSubsystem().getPower() ; });
         plot_src_.addDataElement("current (amps)", () -> { return ((MotorEncoderSubsystem)getSubsystem()).getTotalCurrent() ; }) ;
+
+        plot_id_ = getSubsystem().initPlot(toString(), plot_src_) ;
     }
 
     /// \brief Start the action by applying the power requested
@@ -81,7 +81,7 @@ public class MotorEncoderPowerAction extends MotorPowerAction
         start_ = getSubsystem().getRobot().getTime() ;
         MotorEncoderSubsystem sub = (MotorEncoderSubsystem)getSubsystem();
         plot_src_.convertUnits(sub.getUnits());
-        getSubsystem().startPlot(plot_id_, plot_src_);
+        getSubsystem().startPlot(plot_id_);
     }
 
     /// \brief Called each robot loop.  Calls the base class to perform the action and then
@@ -89,8 +89,6 @@ public class MotorEncoderPowerAction extends MotorPowerAction
     @Override
     public void run() {
         super.run() ;
-
-        getSubsystem().addPlotData(plot_id_);
         if (isDone())
             getSubsystem().endPlot(plot_id_) ;
     }

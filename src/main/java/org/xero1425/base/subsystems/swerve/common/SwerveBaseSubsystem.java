@@ -322,10 +322,10 @@ public abstract class SwerveBaseSubsystem extends DriveBaseSubsystem {
    
     public void startSwervePlot(String name) {
         if (plotid_ == -1) {
-            plotid_ = initPlot(name) ;
+            plotid_ = initPlot(name, plotsrc_) ;
         }
 
-        startPlot(plotid_, plotsrc_);
+        startPlot(plotid_);
         plotstart_ = getRobot().getTime();
     }
 
@@ -372,12 +372,4 @@ public abstract class SwerveBaseSubsystem extends DriveBaseSubsystem {
             logger.endMessage();
         }
     }
-
-    protected void newPlotData() {
-
-
-        addPlotData(plotid_);
-    }
-
-
 }

@@ -90,8 +90,6 @@ public class SwervePowerAngleAction extends SwerveDriveAction {
     @Override
     public void run() {
 
-        getSubsystem().newPlotData();
-
         if (action_timer_ == null && plot_timer_.isExpired()) {
             //
             // The action will run forever, we will stop the plot after the DefaultPlotInterval
