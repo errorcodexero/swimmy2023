@@ -39,12 +39,14 @@ public class PlotManager extends PlotManagerBase
         public PlotDataSource datasrc_ ;        // THe data source for the plot
         public int id_ ;                        // The ID of the plot
         public int index_ ;                     // The current data index in the network tables
+        public boolean enabled_ ;
 
         PlotInfo(String name, int id, PlotDataSource src) {
             name_ = name ;
             id_ = id ;
             index_ = 0 ;
             datasrc_ = src ;
+            enabled_ = false ;
         }
     } ;
 
@@ -78,7 +80,9 @@ public class PlotManager extends PlotManagerBase
         // Extract data for all active plots and send to network tables
         // 
         for(PlotInfo info : plots_.values()) {
-            addPlotData(info);
+            if (info.enabled_) {
+                addPlotData(info);
+            }
         }
 
         //
@@ -119,6 +123,7 @@ public class PlotManager extends PlotManagerBase
         if (info == null || !isPlotEnabled(info.name_))
             return ;
 
+        info.enabled_ = true ;
         info.index_ = 0 ;
 
         NetworkTableInstance inst = NetworkTableInstance.getDefault() ;
@@ -157,6 +162,8 @@ public class PlotManager extends PlotManagerBase
         PlotInfo info = plots_.get(id) ;
         if (info == null || !isPlotEnabled(info.name_))
             return ;
+
+        info.enabled_ = false ;
             
         NetworkTableInstance inst = NetworkTableInstance.getDefault() ;
         NetworkTable table = inst.getTable(getKeyForPlot(id)) ;

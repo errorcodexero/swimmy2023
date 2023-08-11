@@ -13,6 +13,9 @@ public abstract class MotorController
     // The name of the motor
     private String name_ ;
 
+    // The CAN ID for the motor
+    private int can_id_ ;
+
     // The PDP channel for the motor
     private int pdp_channel_ ;
 
@@ -46,9 +49,14 @@ public abstract class MotorController
 
     /// \brief Create a new motor controller
     /// \param name the name of the motor controller
-    MotorController(String name) {
+    MotorController(String name, int canid) {
+        can_id_ = canid ;
         name_ = name ;
         pdp_channel_ = -1 ;
+    }
+
+    public int getCanId() {
+        return can_id_ ;
     }
 
     protected void setPDPChannel(int channel) {

@@ -61,11 +61,12 @@
             "model" : "arm",
             "instance" : "1",
             "props" : {
-                "first:motor:type" : "talon-fx",
-                "first:motor:index" : 1,
+                "first:motor:bus" : "",
+                "first:motor:canid" : 1,
                 "first:ticks_per_second_per_volt" : 176960,
-                "second:motor:type" : "talon-fx",
-                "second:motor:index" : 2,
+
+                "second:motor:bus" : "",
+                "second:motor:canid" : 2,
                 "second:ticks_per_second_per_volt" :  176083
             }
         }

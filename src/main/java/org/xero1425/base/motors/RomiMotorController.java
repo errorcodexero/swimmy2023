@@ -20,7 +20,7 @@ public class RomiMotorController extends MotorController {
     /// \param name the name of this motor
     /// \param index the CAN address of this motor controller    
     public RomiMotorController(String name, int index) {
-        super(name) ;
+        super(name, index) ;
 
         motor_ = new Spark(index) ;
     }

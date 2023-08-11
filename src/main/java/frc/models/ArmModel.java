@@ -1,59 +1,47 @@
 package frc.models;
 
-import org.xero1425.misc.BadParameterTypeException;
-import org.xero1425.misc.MessageLogger;
-import org.xero1425.misc.MessageType;
+import org.xero1425.base.motors.MotorFactory;
 import org.xero1425.misc.SettingsValue;
 import org.xero1425.simulator.engine.SimulationEngine;
 import org.xero1425.simulator.engine.SimulationModel;
-import org.xero1425.simulator.models.SimMotorController;
+
+import com.ctre.phoenix.motorcontrol.TalonFXSimCollection;
 
 public class ArmModel extends SimulationModel {
-    private SimMotorController first_ ;
     private double first_ticks_per_second_per_volt_ ;
     private double first_angle_ ;
 
-    private SimMotorController second_ ;
     private double second_ticks_per_second_per_volt_ ;
     private double second_angle_ ;
 
+    private TalonFXSimCollection first_ ;
+    private TalonFXSimCollection second_ ;
+
     public ArmModel(SimulationEngine engine, String model, String inst) {
         super(engine, model, inst) ;
+
     }
 
     @Override
     public boolean create() {
-        first_ = new SimMotorController(this, "first") ;
-        if (!first_.createMotor()) {
-            return false ;
-        }
+        boolean ret = true ;
 
         try {
-            first_ticks_per_second_per_volt_ = getProperty("first:ticks_per_second_per_volt").getDouble();
-        } catch (BadParameterTypeException e) {
-            MessageLogger logger = getEngine().getMessageLogger() ;
-            logger.startMessage(MessageType.Error) ;
-            logger.add("cannot create model ").addQuoted(getModelName()).add(" instance ").addQuoted(getInstanceName()) ;
-            logger.add(" - missing parameter ").addQuoted("first:ticks_per_second_per_volt").endMessage();
-            return false ;
+            int canid1 = getProperty("first:motor:canid").getInteger();
+            int canid2 = getProperty("second:motor:canid").getInteger();
+            String bus1 = getProperty("first:motor:bus").getString() ;
+            String bus2 = getProperty("first:motor:bus").getString() ;
+
+            first_ = getEngine().getRobot().getMotorFactory().getFXSimCollection(bus1, canid1) ;
+            second_ = getEngine().getRobot().getMotorFactory().getFXSimCollection(bus2, canid2) ;
+
+            setCreated(); 
+        }
+        catch(Exception ex) {
+            ret = false ;
         }
 
-        second_ = new SimMotorController(this, "second") ;
-        if (!second_.createMotor())
-            return false ;
-
-        try {
-            second_ticks_per_second_per_volt_ = getProperty("second:ticks_per_second_per_volt").getDouble();
-        } catch (BadParameterTypeException e) {
-            MessageLogger logger = getEngine().getMessageLogger() ;
-            logger.startMessage(MessageType.Error) ;
-            logger.add("cannot create model ").addQuoted(getModelName()).add(" instance ").addQuoted(getInstanceName()) ;
-            logger.add(" - missing parameter ").addQuoted("second:ticks_per_second_per_volt").endMessage();
-            return false ;
-        }
-
-        setCreated(); 
-        return true ;
+        return ret ;
     }
 
     @Override
@@ -65,14 +53,14 @@ public class ArmModel extends SimulationModel {
     public void run(double dt) {
         double power, delta;
 
-        power = first_.getPower() ;
+        power = first_.getMotorOutputLeadVoltage();
         delta = power * first_ticks_per_second_per_volt_ * dt;
         first_angle_ += delta ;
-        first_.setEncoder(first_angle_);
+        first_.setIntegratedSensorRawPosition((int)first_angle_) ;
 
-        power = second_.getPower() ;
+        power = second_.getMotorOutputLeadVoltage();
         delta = power * second_ticks_per_second_per_volt_ * dt;
         second_angle_ += delta ;
-        second_.setEncoder(second_angle_);
+        second_.setIntegratedSensorRawPosition((int)first_angle_) ;
     }
 }

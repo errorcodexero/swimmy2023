@@ -54,7 +54,7 @@ public class SparkMaxMotorController extends MotorController
     /// \param brushless if true, the motor is a brushless motgor
     /// \param if true, this device has followers
     public SparkMaxMotorController(String name, int index, boolean brushless, boolean leader) throws MotorRequestFailedException {
-        super(name) ;
+        super(name, index) ;
 
         inverted_ = false ;
         brushless_ = brushless ;

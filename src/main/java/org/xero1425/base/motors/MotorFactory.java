@@ -10,6 +10,9 @@ import org.xero1425.misc.MessageType;
 import org.xero1425.misc.SettingsValue;
 import org.xero1425.misc.SettingsValue.SettingsType;
 
+import com.ctre.phoenix.motorcontrol.TalonFXSimCollection;
+import com.ctre.phoenix.motorcontrol.can.TalonFX;
+
 /// \file
 /// This file contains the implementation of the MotorFactory.
 /// The motor factory is used to create and initialize motors for all subsystems
@@ -285,6 +288,14 @@ public class MotorFactory {
         if (channel != Integer.MAX_VALUE)
             ctrl.setPDPChannel(channel);
 
+        if (!motors_.containsKey(bus)) {
+            Map<Integer, MotorController> motors = new HashMap<Integer, MotorController>() ;
+            motors_.put(bus, motors);
+        }
+
+        Map<Integer, MotorController> mlist = motors_.get(bus);
+        mlist.put(canid, ctrl);
+
         return ctrl ;
     }
 
@@ -396,5 +407,21 @@ public class MotorFactory {
         }
 
         return v.getBoolean() ;
+    }
+
+    public TalonFXSimCollection getFXSimCollection(String bus, int canid) {
+        TalonFXSimCollection ret = null ;
+
+        MotorController ctrl = getMotorController(bus, canid) ;
+        if (ctrl != null) {
+            try {
+                TalonFX fx = ctrl.getTalonFX() ;
+                ret = fx.getSimCollection() ;
+            }
+            catch(Exception ex) {
+            }
+        }
+
+        return ret ;
     }
 } ;

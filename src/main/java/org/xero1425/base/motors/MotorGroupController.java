@@ -19,7 +19,7 @@ public class MotorGroupController extends MotorController
     /// \brief Create a new MotorGroupController
     /// \param name the name of the group
     public MotorGroupController(String name) {
-        super(name) ;
+        super(name, -1) ;
         motors_ = new ArrayList<MotorController>() ;
     }
 
