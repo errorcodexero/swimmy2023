@@ -87,7 +87,7 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
         forward_holding_ = 0.3 ;
         if ((oper.getAprilTag() == GridTagPosition.Right && oper.getSlot() == Slot.Right) ||
             (oper.getAprilTag() == GridTagPosition.Left && oper.getSlot() == Slot.Left)) {
-            forward_power_ = 0.25 ;
+            forward_power_ = 0.4 ;
             forward_time = 1.0 ;
         }
 
@@ -285,8 +285,8 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
             double max_v;
             double max_a;
             if (getOper().getGamePiece() == GamePiece.Cone) {
-                max_v = 1.0;
-                max_a = 1.0;
+                max_v = 0.5;
+                max_a = 0.5;
             } else {
                 max_v = 2.0;
                 max_a = 2.0;

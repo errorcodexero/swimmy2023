@@ -153,7 +153,7 @@ public class MotorEncoderMotionMagicAction extends MotorAction {
             if (SetDoneDelay > 0.0) 
             {
                 state_ = State.Delaying ;
-                delay_timer_ = new XeroTimer(getSubsystem().getRobot(), "delaytimer", 2.0);
+                delay_timer_ = new XeroTimer(getSubsystem().getRobot(), "delaytimer", SetDoneDelay);
                 delay_timer_.start() ;
             }
             else 

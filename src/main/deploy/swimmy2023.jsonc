@@ -615,7 +615,7 @@
                         "canid": 13,
                         "offset": {
                             "PRACTICE" : -285.47,
-                            "COMPETITION" : -218.85
+                            "COMPETITION" : -234.8
                         }
                     }
                 },
@@ -630,7 +630,7 @@
                         "canid": 23,
                         "offset": {
                             "PRACTICE" : -259.89,
-                            "COMPETITION" : -22
+                            "COMPETITION" : -80
                         }
                     }
                 },
@@ -645,7 +645,7 @@
                         "canid": 43,
                         "offset": {
                             "PRACTICE" : -79.36,
-                            "COMPETITION" : -146.1
+                            "COMPETITION" : -107.8
                         }
                     }
                 },
@@ -660,7 +660,7 @@
                         "canid": 33,
                         "offset": {
                             "PRACTICE" : -314.12,
-                            "COMPETITION" : -77.96
+                            "COMPETITION" : -348.5
                         }
                     }
                 }
@@ -754,7 +754,7 @@
                     "kd": 0.0,
                     "kf" : {
                         "PRACTICE" : 0.22272211,
-                        "COMPETITION" : 0.224895986
+                        "COMPETITION" : 0.204273400
                     },
                     "min": -1.0,
                     "max": 1.0,
@@ -769,7 +769,7 @@
                     "kd": 0.0,
                     "kf" : {
                         "PRACTICE" : 0.222039656,
-                        "COMPETITION" : 0.223224251
+                        "COMPETITION" : 0.203025074
                     },
                     "min": -1.0,
                     "max": 1.0,
@@ -784,7 +784,7 @@
                     "kd": 0.0,
                     "kf" : {
                         "PRACTICE" : 0.22181802,
-                        "COMPETITION" : 0.231975503
+                        "COMPETITION" : 0.203998368
                     },
                     "min": -1.0,
                     "max": 1.0,
@@ -799,7 +799,7 @@
                     "kd": 0.0,
                     "kf" : {
                         "PRACTICE" : 0.222286438,
-                        "COMPETITION" : 0.224366166
+                        "COMPETITION" : 0.202208113
                     },
                     "min": -1.0,
                     "max": 1.0,
@@ -891,10 +891,10 @@
     },
     "testmode": {
         "enabled": true,
-        "which": 104,
+        "which": 81,
         "0": {
-            "angle": 90,
-            "power": 0.2
+            "angle": 45,
+            "power": 0.1
         },
         "1": {
             "angle": 0.0,
@@ -915,8 +915,8 @@
         },
         "5": {
             "angle": 0.0,
-            "power": 0.1,
-            "duration": 10
+            "power": 0.7,
+            "duration": 2
         },
         "7" : {
             "name" : "Middle1Blue-Path1"
@@ -1016,9 +1016,9 @@
             "lower-strength" : 6   
         },
         "104": {
-            "name1" : "collect:extend-shelf",
+            "name1" : "place:top:cone:extend",
             "delay" : 5,
-            "name2" : "collect:retract-shelf"
+            "name2" : "place:top:cone:retract"
         }
     }
 }
