@@ -114,10 +114,7 @@ public class TalonFXMotorController extends MotorController
 
     /// \brief Returns true if the motor controller supports PID loops on the controller
     /// \returns true if the motor controller supports PID loops on the controller
-    public boolean hasPID() throws BadMotorRequestException {
-        if (RobotBase.isSimulation())
-            return false ;
-
+    public boolean hasPID(PidType type) throws BadMotorRequestException {
         return true ;
     }
 
@@ -370,5 +367,9 @@ public class TalonFXMotorController extends MotorController
         if (controller_ != null) {
             controller_.setStatusFramePeriod(StatusFrameEnhanced.Status_21_FeedbackIntegrated, interval) ;
         }
+    }
+
+    public TalonFX getTalonFX() throws BadMotorRequestException {
+        return controller_ ;
     }
 } ;

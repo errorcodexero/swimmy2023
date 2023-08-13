@@ -226,8 +226,8 @@
                             "heading": -3.947785604877789e-14,
                             "swrot": -3.947785604877789e-14,
                             "swrotvel": 0,
-                            "x": 14.338150145872596,
-                            "y": 0.9996652294219892
+                            "x": 13.997775109876597,
+                            "y": 0.8842083587159841
                         }
                     ],
                     "startvelocity": 0
@@ -348,8 +348,8 @@
                             "heading": 179.99999999999997,
                             "swrot": 179.99999999999997,
                             "swrotvel": 0,
-                            "x": 2.3223724257737386,
-                            "y": 0.892221613444951
+                            "x": 2.5439642007877468,
+                            "y": 0.8842083587159841
                         }
                     ],
                     "startvelocity": 0
@@ -553,8 +553,151 @@
                     "startvelocity": 0
                 }
             ]
+        },
+        {
+            "name": "Exp",
+            "paths": [
+                {
+                    "constraints": [
+                    ],
+                    "endvelocity": 0,
+                    "maxacceleration": 4,
+                    "maxvelocity": 4,
+                    "name": "P1",
+                    "points": [
+                        {
+                            "heading": 0,
+                            "swrot": 0,
+                            "swrotvel": 0,
+                            "x": 1.934463226804112,
+                            "y": 5.131005370071488
+                        },
+                        {
+                            "heading": 0,
+                            "swrot": 0,
+                            "swrotvel": 0,
+                            "x": 3.977147977991693,
+                            "y": 5.169546591792009
+                        },
+                        {
+                            "heading": 0,
+                            "swrot": 0,
+                            "swrotvel": 0,
+                            "x": 6.270350670362657,
+                            "y": 5.921100415342156
+                        },
+                        {
+                            "heading": -143.97262661489634,
+                            "swrot": 180,
+                            "swrotvel": 0,
+                            "x": 7.426587321978268,
+                            "y": 4.687781320285504
+                        },
+                        {
+                            "heading": 180,
+                            "swrot": 180,
+                            "swrotvel": 0,
+                            "x": 4.844325466703401,
+                            "y": 4.591428265984203
+                        },
+                        {
+                            "heading": 180,
+                            "swrot": 180,
+                            "swrotvel": 0,
+                            "x": 3.533923928205708,
+                            "y": 4.552887044263683
+                        },
+                        {
+                            "heading": -180,
+                            "swrot": 180,
+                            "swrotvel": 0,
+                            "x": 1.7995689507822905,
+                            "y": 3.916956885875096
+                        }
+                    ],
+                    "startvelocity": 0
+                },
+                {
+                    "constraints": [
+                    ],
+                    "endvelocity": 0,
+                    "maxacceleration": 4,
+                    "maxvelocity": 4,
+                    "name": "P2",
+                    "points": [
+                        {
+                            "heading": 0,
+                            "swrot": 180,
+                            "swrotvel": 0,
+                            "x": 1.79957,
+                            "y": 3.91696
+                        },
+                        {
+                            "heading": 0,
+                            "swrot": 180,
+                            "swrotvel": 0,
+                            "x": 3.264135376162065,
+                            "y": 4.5721576551239425
+                        },
+                        {
+                            "heading": 0,
+                            "swrot": 180,
+                            "swrotvel": 0,
+                            "x": 5.499526235952249,
+                            "y": 5.882559193621636
+                        },
+                        {
+                            "heading": -90,
+                            "swrot": -90,
+                            "swrotvel": 0,
+                            "x": 7.137528159074364,
+                            "y": 5.208087813512529
+                        },
+                        {
+                            "heading": 180,
+                            "swrot": 180,
+                            "swrotvel": 0,
+                            "x": 4.112042254013515,
+                            "y": 4.764863763726544
+                        },
+                        {
+                            "heading": 180,
+                            "swrot": 180,
+                            "swrotvel": 0,
+                            "x": 1.8573807833630718,
+                            "y": 4.456533989962382
+                        }
+                    ],
+                    "startvelocity": 0
+                },
+                {
+                    "constraints": [
+                    ],
+                    "endvelocity": 0,
+                    "maxacceleration": 4,
+                    "maxvelocity": 4,
+                    "name": "P3",
+                    "points": [
+                        {
+                            "heading": -1.4033418597069752e-14,
+                            "swrot": 180,
+                            "swrotvel": 0,
+                            "x": 1.85738,
+                            "y": 4.45653
+                        },
+                        {
+                            "heading": 0,
+                            "swrot": 0,
+                            "swrotvel": 0,
+                            "x": 7.696375874021911,
+                            "y": 6.190888967385799
+                        }
+                    ],
+                    "startvelocity": 0
+                }
+            ]
         }
     ],
-    "outdir": "C:/cygwin64/home/team1425/robots/swimmy2023/src/main/deploy/paths",
+    "outdir": "C:/cygwin64/home/butch/robottools/robots/swimmy2023/src/main/deploy/paths",
     "units": "m"
 }

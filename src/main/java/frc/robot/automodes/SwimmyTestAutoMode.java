@@ -8,8 +8,10 @@ import org.xero1425.base.controllers.AutoController;
 import org.xero1425.base.controllers.TestAutoMode;
 import org.xero1425.base.subsystems.motorsubsystem.MotorEncoderGotoAction;
 import org.xero1425.base.subsystems.motorsubsystem.MotorEncoderHoldAction;
+import org.xero1425.base.subsystems.motorsubsystem.MotorEncoderMotionMagicAction;
 import org.xero1425.base.subsystems.motorsubsystem.MotorEncoderPowerAction;
 import org.xero1425.base.subsystems.motorsubsystem.MotorEncoderSubsystem;
+import org.xero1425.base.subsystems.motorsubsystem.MotorEncoderMotionMagicAction.HoldType;
 import org.xero1425.base.subsystems.swerve.common.SwerveAlignDriveBaseAction;
 import org.xero1425.base.subsystems.swerve.common.SwerveBaseSubsystem;
 import org.xero1425.base.subsystems.swerve.common.SwerveHolonomicPathFollower;
@@ -21,6 +23,7 @@ import org.xero1425.misc.TrapezoidalProfileConfig;
 import edu.wpi.first.math.geometry.Pose2d;
 import frc.robot.subsystems.arm.ArmGotoAction;
 import frc.robot.subsystems.arm.ArmStaggeredGotoAction;
+import frc.robot.subsystems.arm.ArmStaggeredGotoMagicAction;
 import frc.robot.subsystems.arm.ArmSubsystem;
 import frc.robot.subsystems.gpm.GPMCollectAction;
 import frc.robot.subsystems.gpm.GPMPlaceAction;
@@ -45,6 +48,7 @@ public class SwimmyTestAutoMode extends TestAutoMode {
             throws InvalidActionRequest, Exception {
         super(ctrl, "Swimmy-Test-Mode");
 
+        TrapezoidalProfileConfig cfg = null ;
         Swimmy2023RobotSubsystem robotsys = (Swimmy2023RobotSubsystem) ctrl.getRobot().getRobotSubsystem();
         LimeLightSubsystem limelight = robotsys.getLimeLight();
         SwerveBaseSubsystem swerve = (SwerveBaseSubsystem) robotsys.getDB();
@@ -138,18 +142,14 @@ public class SwimmyTestAutoMode extends TestAutoMode {
                 break ;                
 
             case 12:
-                {
-                    TrapezoidalProfileConfig cfg = new TrapezoidalProfileConfig(100000, -100000, 100000) ;
-                    addSubActionPair(armUpper, new MotorEncoderGotoAction(armUpper, getDouble("target"), cfg, true), true) ;
-                }
+                cfg = new TrapezoidalProfileConfig(100000, -100000, 100000) ;
+                addSubActionPair(armUpper, new MotorEncoderGotoAction(armUpper, getDouble("target"), cfg, true), true) ;
                 break ;
 
             case 13:
-                {
-                    TrapezoidalProfileConfig cfg = new TrapezoidalProfileConfig(100000, -100000, 100000) ;
-                    addSubActionPair(armUpper, new MotorEncoderGotoAction(armUpper, getDouble("height"), cfg, true), true) ;
-                    addSubActionPair(armLower, new MotorEncoderGotoAction(armLower, getDouble("target"), cfg, true), true) ;
-                }
+                cfg = new TrapezoidalProfileConfig(100000, -100000, 100000) ;
+                addSubActionPair(armUpper, new MotorEncoderGotoAction(armUpper, getDouble("height"), cfg, true), true) ;
+                addSubActionPair(armLower, new MotorEncoderGotoAction(armLower, getDouble("target"), cfg, true), true) ;
                 break ;
             
             case 17:
@@ -165,7 +165,7 @@ public class SwimmyTestAutoMode extends TestAutoMode {
                 break ;
 
             case 19:
-                addSubActionPair(arm, new ArmStaggeredGotoAction(arm, "place:middle:cone:extend", false), true) ;
+                addSubActionPair(arm, new ArmStaggeredGotoAction(arm, "place:top:cone:extend", false), true) ;
                 break ;
 
             case 20:
@@ -289,7 +289,7 @@ public class SwimmyTestAutoMode extends TestAutoMode {
                 {
                     addSubActionPair(grabber, new GrabberGrabGampieceAction(grabber, GamePiece.Cone, false), true);
                     addAction(new DelayAction(gpm.getRobot(), getDouble("delay")));
-                    addSubActionPair(gpm, new GPMPlaceAction(gpm, Location.Top, GamePiece.Cone, true, true), true);
+                    addSubActionPair(gpm, new GPMPlaceAction(gpm, Location.Middle, GamePiece.Cone, true, true), true);
                 }
                 break;
 
@@ -315,13 +315,64 @@ public class SwimmyTestAutoMode extends TestAutoMode {
                 
             case 85:
                 addSubActionPair(gpm, new GPMCollectAction(gpm, GamePiece.Cube, true), true);
-                break;                    
+                break;     
+                
+            case 100:
+                cfg = new TrapezoidalProfileConfig(100000, -100000, 100000) ;
+                addSubActionPair(armUpper, new MotorEncoderGotoAction(armUpper, getDouble("target"), cfg, true), true) ;
+                break ;
+
+            case 101:
+                {
+                    double target = getDouble("target") ;
+                    double maxa = getDouble("maxa") ;
+                    double maxv = getDouble("maxv") ;
+                    int strength = getInteger("strength") ;
+                    addSubActionPair(armUpper, new MotorEncoderMotionMagicAction(armUpper, target, maxa, maxv, strength, HoldType.AtCurrentPosition), true) ;
+                }
+                break ;
+
+            case 102:
+                {
+                    String name = getString("name") ;
+                    ArmStaggeredGotoMagicAction act = new ArmStaggeredGotoMagicAction(arm, name) ;
+                    addSubActionPair(arm, act, true) ;
+                }
+                break ;
+
+            case 103:
+                {
+                    double target = getDouble("upper-target") ;
+                    double maxa = getDouble("upper-maxa") ;
+                    double maxv = getDouble("upper-maxv") ;
+                    int strength = getInteger("upper-strength") ;
+                    addSubActionPair(armUpper, new MotorEncoderMotionMagicAction(armUpper, target, maxa, maxv, strength, HoldType.AtCurrentPosition), true) ;
+
+                    target = getDouble("lower-target") ;
+                    maxa = getDouble("lower-maxa") ;
+                    maxv = getDouble("lower-maxv") ;
+                    strength = getInteger("lower-strength") ;
+                    addSubActionPair(armLower, new MotorEncoderMotionMagicAction(armLower, target, maxa, maxv, strength, HoldType.AtCurrentPosition), true) ;
+        
+                }
+                break ;
+
+            case 104: 
+                {
+                    String name1 = getString("name1") ;
+                    String name2 = getString("name2") ;
+                    ArmStaggeredGotoMagicAction act = new ArmStaggeredGotoMagicAction(arm, name1) ;
+                    addSubActionPair(arm, act, true) ;
+                    addAction(new DelayAction(arm.getRobot(), getDouble("delay")));
+                    act = new ArmStaggeredGotoMagicAction(arm, name2) ;
+                    addSubActionPair(arm, act, true) ;
+                }
+                break;
         }
     }
 
     @Override
     public Pose2d getInitialPose() {
         return initial_pose_ ;
-    }
-    
+    }    
 }

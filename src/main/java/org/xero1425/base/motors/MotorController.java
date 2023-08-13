@@ -1,5 +1,7 @@
 package org.xero1425.base.motors ;
 
+import com.ctre.phoenix.motorcontrol.can.TalonFX;
+
 /// \file
 
 /// \brief This class is an abstract base class that defines a contract that all supported motors
@@ -78,6 +80,7 @@ public abstract class MotorController
         None,                       ///< No PID type has been set
         Position,                   ///< Position PID control
         Velocity,                   ///< Velocity PID control
+        Magic,                      ///< Motion Magic
     }
 
     public abstract void setNeutralDeadband(double value) throws BadMotorRequestException, MotorRequestFailedException ;
@@ -96,11 +99,6 @@ public abstract class MotorController
     /// \brief Returns true if the motor is inverted
     /// \returns true if the motor is inverted
     public abstract boolean isInverted() throws BadMotorRequestException , MotorRequestFailedException ;    
-
-    /// \brief Reapplies the inverted status of the motor.  When setInverted() is called, the inverted state of the motor
-    /// is stored and this method reapplies that stored state to the motor controller.  This was put into place because some
-    /// motors setup to follow other motors lost their inverted state when the robot was disabled and re-enabled.
-    // public abstract void reapplyInverted() throws BadMotorRequestException, MotorRequestFailedException ;
 
     /// \brief Set the neutral mode for the motor
     /// \param mode the neutral mode for the motor
@@ -123,7 +121,7 @@ public abstract class MotorController
     
     /// \brief Returns true if the motor controller supports PID loops on the controller
     /// \returns true if the motor controller supports PID loops on the controller
-    public abstract boolean hasPID() throws BadMotorRequestException , MotorRequestFailedException ;
+    public abstract boolean hasPID(PidType type) throws BadMotorRequestException , MotorRequestFailedException ;
 
     /// \brief Set the target if running a PID loop on the motor controller
     /// \param target the target for the PID loop on the motor controller
@@ -190,4 +188,6 @@ public abstract class MotorController
     public double TicksPerRevolution() throws BadMotorRequestException {
         throw new BadMotorRequestException(this, "this motor does not support an embedded encoder")  ;
     }
+
+    public abstract TalonFX getTalonFX() throws BadMotorRequestException ;
 }

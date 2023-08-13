@@ -148,12 +148,12 @@ public class Swimmy2023OIDeviceHollister extends OIPanel {
 
     private boolean isDriverGroundCollect() {
         Gamepad gp = getSubsystem().getGamePad();
-        return gp.isRTriggerPressed();
+        return gp != null && gp.isRTriggerPressed();
     }
 
     private boolean isDriverManualStationCollect() {
         Gamepad gp = getSubsystem().getGamePad();
-        return gp.isRBackButtonPressed();
+        return gp != null && gp.isRBackButtonPressed();
     }
 
     private boolean isAbort() {

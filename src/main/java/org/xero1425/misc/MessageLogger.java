@@ -397,6 +397,18 @@ public final class MessageLogger
         return this;        
     }
 
+    public MessageLogger add(final String name, final double value, String fmt) {
+        final ThreadData per = getPerThreadData();
+        if (per.enabled_&& per.in_message_) {
+            per.message_.append(" ") ;
+            per.message_.append(name) ;
+            per.message_.append(" = ") ;
+            per.message_.append(String.format(java.util.Locale.US, fmt, value)) ;
+        }
+
+        return this;        
+    }
+
     public MessageLogger add(final String name, final Rotation2d value) {
         final ThreadData per = getPerThreadData();
         if (per.enabled_&& per.in_message_) {

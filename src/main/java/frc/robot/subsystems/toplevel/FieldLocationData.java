@@ -50,14 +50,14 @@ public class FieldLocationData {
     // According to the game manual, this shouild be 0.859964 but we have adjusted slightly based on
     // emperical experiments.
     //
-    static final double GridYOffset = 0.56000;
+    static final double GridYOffset = 0.50;
 
     //
     // For the output slots where the gap is wider, allow extra Y offset so bumpers touch both sides reliably.
     // Placement success not high when bumper only contacts one side due to either slight turn-in or
     // lack of alignment.
     //
-    static final double GridExtraYOffsetOuterSlots = 0.02;
+    static final double GridExtraYOffsetOuterSlots = 0.05;
 
     public class FieldItem
     {

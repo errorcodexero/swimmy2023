@@ -257,12 +257,8 @@ public class MotorFactory {
         //
         if (type.equals("romi")) {
             ctrl = new RomiMotorController(name, canid);
-        } else if (type.equals("talon-srx")) {
-            ctrl = new CTREMotorController(name, canid, CTREMotorController.MotorType.TalonSRX);
         } else if (type.equals("talon-fx")) {
             ctrl = new TalonFXMotorController(name, bus, canid, leader);
-        } else if (type.equals("victor-spx")) {
-            ctrl = new CTREMotorController(name, canid, CTREMotorController.MotorType.VictorSPX);
         } else if (type.equals("sparkmax-brushless")) {
             ctrl = new SparkMaxMotorController(name, canid, true, leader);
         } else if (type.equals("sparmmax-brushed")) {

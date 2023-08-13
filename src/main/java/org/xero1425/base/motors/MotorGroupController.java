@@ -1,6 +1,9 @@
 package org.xero1425.base.motors ;
 
 import java.util.List ;
+
+import com.ctre.phoenix.motorcontrol.can.TalonFX;
+
 import java.util.ArrayList ;
 
 /// \file
@@ -92,11 +95,11 @@ public class MotorGroupController extends MotorController
 
     /// \brief Returns true if the motor controller supports PID loops on the controller
     /// \returns true if the motor controller supports PID loops on the controller    
-    public boolean hasPID() throws BadMotorRequestException, MotorRequestFailedException {
+    public boolean hasPID(PidType type) throws BadMotorRequestException, MotorRequestFailedException {
         if (motors_.size() == 0)
             throw new BadMotorRequestException(this, "request made to empty MotorGroupController") ;
 
-        return motors_.get(0).hasPID() ;
+        return motors_.get(0).hasPID(type) ;
     }
 
     /// \brief Set the target if running a PID loop on the motor controller
@@ -273,5 +276,12 @@ public class MotorGroupController extends MotorController
             else
                 ctrl.setEncoderUpdateFrequncy(EncoderUpdateFrequency.Infrequent, EncoderUpdateFrequency.Infrequent) ;
         }
+    }
+
+    public TalonFX getTalonFX() throws BadMotorRequestException {
+        if (motors_.size() == 0)
+            throw new BadMotorRequestException(this, "request made to empty MotorGroupController") ;
+
+        return motors_.get(0).getTalonFX() ;
     }
 } ;

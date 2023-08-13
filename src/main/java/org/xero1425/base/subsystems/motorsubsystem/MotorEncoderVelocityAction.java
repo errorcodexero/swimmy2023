@@ -2,14 +2,13 @@ package org.xero1425.base.subsystems.motorsubsystem;
 
 import org.xero1425.base.misc.XeroTimer;
 import org.xero1425.base.motors.BadMotorRequestException;
+import org.xero1425.base.motors.MotorController;
 import org.xero1425.base.motors.MotorRequestFailedException;
+import org.xero1425.base.motors.TalonFXMotorController;
 import org.xero1425.base.motors.MotorController.PidType;
 import org.xero1425.misc.BadParameterTypeException;
 import org.xero1425.misc.ISettingsSupplier;
-import org.xero1425.misc.MessageLogger;
-import org.xero1425.misc.MessageType;
 import org.xero1425.misc.MissingParameterException;
-import org.xero1425.misc.PIDCtrl;
 
 /// \file
 
@@ -28,17 +27,11 @@ public class MotorEncoderVelocityAction extends MotorAction {
     // The start time for the action
     private double start_ ;
 
-    // The PID controller to manage the velocity
-    private PIDCtrl pid_ ;
-
     // The plot ID for the action
     private int plot_id_ ;
 
     // The name of the action
     private String name_ ;
-
-    // For the PID control into software vs motor controller
-    private boolean forcesw_ ;
 
     // The duration of the plot request
     private double plot_duration_ ;
@@ -64,21 +57,10 @@ public class MotorEncoderVelocityAction extends MotorAction {
         target_ = target;
 
         String pidname = "subsystems:" + sub.getName() + ":" + name_ ;
-        forcesw_ = settings.get(pidname + ":use-sw").getBoolean() ;
 
-        if (useSWPID()) {
-            pid_ = new PIDCtrl(settings, pidname, false);
-        } else {
-            MessageLogger logger = sub.getRobot().getMessageLogger() ;
-            logger.startMessage(MessageType.Info) ;
-            logger.add("using 'hw' PID for subsystem '" + sub.getName() + "', action '" + name_ + "'") ;
-            logger.endMessage();
-            pid_ = null ;
-        }
-            
         plot_id_ = sub.initPlot(toString(0) + "-" + String.valueOf(which_++)) ;     
-
         plot_duration_ = 10.0 ;
+
         if (settings.isDefined(pidname + ":plot-duration")) {
             plot_duration_ = settings.get(pidname + ":plot-duration").getDouble() ;
         }
@@ -95,20 +77,8 @@ public class MotorEncoderVelocityAction extends MotorAction {
         String pidname = "subsystems:" + sub.getName() + ":" + name_ ;
 
         target_ = getSubsystem().getSettingsValue(target).getDouble() ;
-        forcesw_ = settings.get(pidname + ":use-sw").getBoolean() ;
-
-        if (useSWPID()) {
-            pid_ = new PIDCtrl(getSubsystem().getRobot().getSettingsSupplier(), pidname, false);
-        } else {
-            MessageLogger logger = sub.getRobot().getMessageLogger() ;
-            logger.startMessage(MessageType.Info) ;
-            logger.add("using 'hw' PID for subsystem '" + sub.getName() + "', action '" + name_ + "'") ;
-            logger.endMessage();
-            pid_ = null ;
-        }
 
         plot_id_ = sub.initPlot(toString(0) + "-" + String.valueOf(which_++)) ;   
-
         plot_duration_ = 10.0 ;
         if (settings.isDefined(pidname + ":plot-duration")) {
             plot_duration_ = settings.get(pidname + ":plot-duration").getDouble() ;
@@ -131,15 +101,23 @@ public class MotorEncoderVelocityAction extends MotorAction {
     public void setTarget(double target) throws BadMotorRequestException, MotorRequestFailedException {
         target_ = target ;
 
-        if (!useSWPID()) {
+        //
+        // If we are running the loop in the motor controller, commuincate the new target to the
+        // motor controller.  Since the motor controller does not run its PID loop in robot units,
+        // we must as the subsystem to translate the units from robot units to motor controller units.
+        //
+        MotorEncoderSubsystem sub = (MotorEncoderSubsystem)getSubsystem() ;
+        MotorController mc = sub.getMotorController() ;
+        TalonFXMotorController talon = (TalonFXMotorController)mc ;
+        if (talon != null) {
             //
-            // If we are running the loop in the motor controller, commuincate the new target to the
-            // motor controller.  Since the motor controller does not run its PID loop in robot units,
-            // we must as the subsystem to translate the units from robot units to motor controller units.
+            // If this is a Talon FX, we need to supply velocities in encoder units
+            // per 100 ms.  If this is a SparkMax we program the SparkMax to work in native
+            // units.
             //
-            MotorEncoderSubsystem sub = (MotorEncoderSubsystem)getSubsystem() ;
-            getSubsystem().getMotorController().setTarget(sub.velocityToController(target)) ;
+            target = sub.getEncoder().mapVelocityToMotor(target) / 10.0 ;
         }
+        getSubsystem().getMotorController().setTarget(target);
     }
 
     /// \brief Returns the current target
@@ -159,26 +137,19 @@ public class MotorEncoderVelocityAction extends MotorAction {
         }
 
         start_ = getSubsystem().getRobot().getTime() ;
-        if (!useSWPID()) {
-            //
-            // We are using a control loop in the motor controller, get the parameters from the
-            // settings file
-            //
-            double p = getSubsystem().getSettingsValue(name_ + ":kp").getDouble() ;
-            double i = getSubsystem().getSettingsValue(name_ + ":ki").getDouble() ;
-            double d = getSubsystem().getSettingsValue(name_ + ":kd").getDouble() ;
-            double f = getSubsystem().getSettingsValue(name_ + ":kf").getDouble() ;
-            double outmax = getSubsystem().getSettingsValue(name_ + ":max").getDouble() ;
 
-            getSubsystem().getMotorController().setPID(PidType.Velocity, p, i, d, f, outmax);
-            setTarget(target_);
-        }
-        else {
-            //
-            // Software based PID controller, running on the RoboRio.  Reset any internal state.
-            //
-            pid_.reset() ;
-        }
+        //
+        // We are using a control loop in the motor controller, get the parameters from the
+        // settings file
+        //
+        double p = getSubsystem().getSettingsValue(name_ + ":kp").getDouble() ;
+        double i = getSubsystem().getSettingsValue(name_ + ":ki").getDouble() ;
+        double d = getSubsystem().getSettingsValue(name_ + ":kd").getDouble() ;
+        double f = getSubsystem().getSettingsValue(name_ + ":kf").getDouble() ;
+        double outmax = getSubsystem().getSettingsValue(name_ + ":max").getDouble() ;
+
+        getSubsystem().getMotorController().setPID(PidType.Velocity, p, i, d, f, outmax);
+        setTarget(target_);
     }
 
     /// \brief Process the velocity action once per robot loop, adjusting the power as needed
@@ -187,29 +158,6 @@ public class MotorEncoderVelocityAction extends MotorAction {
         super.run() ;
 
         MotorEncoderSubsystem me = (MotorEncoderSubsystem)getSubsystem() ;
-
-        if (useSWPID()) {
-            //
-            // Running the PID loop in the RoboRio, do the calculations
-            //
-            error_ = Math.abs(target_ - me.getVelocity()) ;
-            double out = pid_.getOutput(target_, me.getVelocity(), getSubsystem().getRobot().getDeltaTime()) ;
-            getSubsystem().setPower(out) ;
-
-            MessageLogger logger = getSubsystem().getRobot().getMessageLogger() ;
-            logger.startMessage(MessageType.Debug, getSubsystem().getLoggerID()) ;
-            logger.add("MotorEncoderVelocityAction:") ;
-            logger.add(" target", target_) ;
-            logger.add(", actual", me.getVelocity()) ;
-            logger.add(", power", out) ;
-            logger.endMessage();            
-        }
-        else {
-            //
-            // Running the computations in the motor controller
-            //
-            // Nothing to see here ....
-        }
 
         if (plot_id_ != -1) {
             Double[] data = new Double[columns_.length] ;
@@ -223,13 +171,6 @@ public class MotorEncoderVelocityAction extends MotorAction {
                 plot_id_ = -1 ;
             }
         }
-
-        MessageLogger logger = getSubsystem().getRobot().getMessageLogger() ;
-        logger.startMessage(MessageType.Debug, getSubsystem().getLoggerID()) ;
-        logger.add("MotorEncoderVelocityAction:") ;
-        logger.add("target", target_) ;
-        logger.add("actual", me.getVelocity()) ;
-        logger.endMessage();   
     }
 
     /// \brief Cancel the velocity action, settings the power of the motor to zero
@@ -238,9 +179,7 @@ public class MotorEncoderVelocityAction extends MotorAction {
         super.cancel() ;
 
         try {
-            if (!useSWPID()) {
-                getSubsystem().getMotorController().stopPID() ;
-            }
+            getSubsystem().getMotorController().stopPID() ;
         }
         catch(Exception ex) {
         }
@@ -259,9 +198,5 @@ public class MotorEncoderVelocityAction extends MotorAction {
 
         ret = prefix(indent) + "MotorEncoderVelocityAction, " + getSubsystem().getName() + ", " +  Double.toString(target_) ;
         return ret ;
-    }
-
-    private boolean useSWPID() throws BadMotorRequestException, MotorRequestFailedException {
-        return forcesw_ || !getSubsystem().getMotorController().hasPID() ;
     }
 }

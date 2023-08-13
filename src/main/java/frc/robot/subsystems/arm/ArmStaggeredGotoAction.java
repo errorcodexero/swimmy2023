@@ -49,17 +49,17 @@ public class ArmStaggeredGotoAction extends Action {
     private void setupScurve() throws BadParameterTypeException, MissingParameterException {
         double maxa, maxv, maxj ;
 
-        maxj = sub_.getSettingsValue(key_ + ":lower:config:maxj").getDouble();
-        maxa = sub_.getSettingsValue(key_ + ":lower:config:maxa").getDouble();
-        maxv = sub_.getSettingsValue(key_ + ":lower:config:maxv").getDouble();
+        maxj = sub_.getSettingsValue(key_ + ":lower:maxj").getDouble();
+        maxa = sub_.getSettingsValue(key_ + ":lower:maxa").getDouble();
+        maxv = sub_.getSettingsValue(key_ + ":lower:maxv").getDouble();
         lower_scurve_config_ = new SCurveConfig(maxj, maxa, maxv) ;
 
         lower_start_time_ = sub_.getSettingsValue(key_ + ":lower:delay").getDouble();
         lower_target_ = sub_.getSettingsValue(key_ + ":lower:target").getDouble();
 
-        maxj = sub_.getSettingsValue(key_ + ":upper:config:maxj").getDouble();
-        maxa = sub_.getSettingsValue(key_ + ":upper:config:maxa").getDouble();
-        maxv = sub_.getSettingsValue(key_ + ":upper:config:maxv").getDouble();
+        maxj = sub_.getSettingsValue(key_ + ":upper:maxj").getDouble();
+        maxa = sub_.getSettingsValue(key_ + ":upper:maxa").getDouble();
+        maxv = sub_.getSettingsValue(key_ + ":upper:maxv").getDouble();
         upper_scurve_config_ = new SCurveConfig(maxj, maxa, maxv) ;
 
         upper_start_time_ = sub_.getSettingsValue(key_ + ":upper:delay").getDouble();
@@ -72,15 +72,15 @@ public class ArmStaggeredGotoAction extends Action {
     private void setupTrapezoidal() throws BadParameterTypeException, MissingParameterException {
         double maxa, maxv ;
 
-        maxa = sub_.getSettingsValue(key_ + ":lower:config:maxa").getDouble();
-        maxv = sub_.getSettingsValue(key_ + ":lower:config:maxv").getDouble();
+        maxa = sub_.getSettingsValue(key_ + ":lower:maxa").getDouble();
+        maxv = sub_.getSettingsValue(key_ + ":lower:maxv").getDouble();
         lower_trap_config_ = new TrapezoidalProfileConfig(maxa, -maxa, maxv);
 
         lower_start_time_ = sub_.getSettingsValue(key_ + ":lower:delay").getDouble();
         lower_target_ = sub_.getSettingsValue(key_ + ":lower:target").getDouble();
 
-        maxa = sub_.getSettingsValue(key_ + ":upper:config:maxa").getDouble();
-        maxv = sub_.getSettingsValue(key_ + ":upper:config:maxv").getDouble();
+        maxa = sub_.getSettingsValue(key_ + ":upper:maxa").getDouble();
+        maxv = sub_.getSettingsValue(key_ + ":upper:maxv").getDouble();
         upper_trap_config_ = new TrapezoidalProfileConfig(maxa, -maxa, maxv);
 
         upper_start_time_ = sub_.getSettingsValue(key_ + ":upper:delay").getDouble();

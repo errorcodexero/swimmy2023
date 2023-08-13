@@ -53,7 +53,7 @@ public class SwerveDrivePathAction extends SwerveHolonomicControllerAction {
         trajectory_ = TrajectoryGenerator.generateTrajectory(start, interior, end, config) ;
 
         facing_ = facing;
-        timer_ = new XeroTimer(sub.getRobot(), "drivetimer", 1.0);
+        timer_ = new XeroTimer(sub.getRobot(), "drivetimer", 0.2);
 
         plot_data_ = new Double[columns_.length] ;
         plot_id_ = getSubsystem().initPlot("SwerveDrivePathAction") ;

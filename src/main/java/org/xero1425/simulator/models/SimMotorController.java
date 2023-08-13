@@ -4,7 +4,6 @@ import edu.wpi.first.hal.HALValue;
 import edu.wpi.first.hal.SimDeviceJNI;
 import edu.wpi.first.hal.simulation.SimDeviceDataJNI;
 import org.xero1425.simulator.engine.SimulationModel;
-import org.xero1425.base.motors.CTREMotorController;
 import org.xero1425.base.motors.MotorController;
 import org.xero1425.base.motors.SparkMaxMotorController;
 import org.xero1425.misc.BadParameterTypeException;
@@ -103,14 +102,7 @@ public class SimMotorController {
         } catch (BadParameterTypeException e) {
         }
 
-        if (t.equals("talon-fx") || t.equals("talon-srx")) {
-            if (handle_ == -1)
-            {
-                handle_ = SimDeviceDataJNI.getSimDeviceHandle(CTREMotorController.SimDeviceName + "[" + index_ + "]") ;
-                ticks_per_rev_ = 2048 ;
-            }
-        }
-        else if (t.equals("sparkmax-brushed")) {
+        if (t.equals("sparkmax-brushed")) {
             if (handle_ == -1)
                 handle_ = SimDeviceDataJNI.getSimDeviceHandle(SparkMaxMotorController.SimDeviceNameBrushed + "[" + index_ + "]") ;
         }

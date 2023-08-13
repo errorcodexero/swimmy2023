@@ -3,7 +3,7 @@ package frc.robot.subsystems.toplevel;
 import org.xero1425.base.misc.XeroTimer;
 
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import frc.robot.subsystems.arm.ArmStaggeredGotoAction;
+import frc.robot.subsystems.arm.ArmStaggeredGotoMagicAction;
 import frc.robot.subsystems.gpm.GPMCollectAction;
 
 public class ManualCollectOpCtrl extends OperationCtrl {
@@ -16,7 +16,7 @@ public class ManualCollectOpCtrl extends OperationCtrl {
     }
 
     private GPMCollectAction collect_action_ ;
-    private ArmStaggeredGotoAction stow_arm_ ;
+    private ArmStaggeredGotoMagicAction stow_arm_ ;
     private XeroTimer drive_back_timer_ ;
     private State state_ ;
     
@@ -25,7 +25,7 @@ public class ManualCollectOpCtrl extends OperationCtrl {
 
         state_ = State.Idle;
         collect_action_ = new GPMCollectAction(sub.getGPM(), oper.getGamePiece(), false);
-        stow_arm_ = new ArmStaggeredGotoAction(sub.getGPM().getArm(), "collect:retract-shelf", false);
+        stow_arm_ = new ArmStaggeredGotoMagicAction(sub.getGPM().getArm(), "collect:retract-shelf");
         drive_back_timer_ = new XeroTimer(sub.getRobot(), "collect-back-timer", 0.5);
     }
 

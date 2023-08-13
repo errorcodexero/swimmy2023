@@ -5,18 +5,13 @@ import java.util.function.Supplier;
 import org.xero1425.base.actions.ConditionalAction;
 import org.xero1425.base.actions.DelayAction;
 import org.xero1425.base.actions.DispatchAction;
-import org.xero1425.base.actions.InvalidActionRequest;
 import org.xero1425.base.actions.ParallelAction;
 import org.xero1425.base.actions.SequenceAction;
 import org.xero1425.base.actions.ParallelAction.DonePolicy;
 import org.xero1425.base.controllers.AutoController;
 import org.xero1425.base.controllers.AutoMode;
-import org.xero1425.base.subsystems.swerve.common.SwerveDriveSpeedAction;
 import org.xero1425.base.subsystems.swerve.common.SwerveHolonomicPathFollower;
-import org.xero1425.misc.BadParameterTypeException;
-import org.xero1425.misc.MissingParameterException;
 
-import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import frc.robot.subsystems.gpm.GPMCollectAction;
 import frc.robot.subsystems.gpm.GPMPlaceAction;
 import frc.robot.subsystems.grabber.GrabberGrabLoadedGamepieceAction;
@@ -33,7 +28,7 @@ public class SwimmyAutoMode extends AutoMode {
         super(ctrl, name) ;
     }
 
-    protected void grabAndPlace(Location where, GamePiece what) throws InvalidActionRequest, BadParameterTypeException, MissingParameterException {
+    protected void grabAndPlace(Location where, GamePiece what) throws Exception {
         Swimmy2023RobotSubsystem robot = (Swimmy2023RobotSubsystem)getAutoController().getRobot().getRobotSubsystem();
 
         //
