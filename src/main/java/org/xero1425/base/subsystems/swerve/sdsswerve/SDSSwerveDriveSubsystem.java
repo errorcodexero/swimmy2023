@@ -88,7 +88,7 @@ public class SDSSwerveDriveSubsystem extends SwerveBaseSubsystem {
             nominal_voltage_ = 12.0 ;
         }
 
-        String ratiostr = getSettingsValue("ratio").getString() ;
+        String ratiostr = getSettingsValue("hw:gear-ratio").getString() ;
         ratio_ = Mk4iSwerveModuleHelper.GearRatio.L3 ;
 
         if (ratiostr.equals("L2")) {
