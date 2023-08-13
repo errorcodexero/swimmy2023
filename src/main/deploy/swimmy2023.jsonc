@@ -599,6 +599,7 @@
             // This section describes the hardware that implements the swerve drive
             //
             "hw": {
+                "gear-ratio" : "L3",
                 "bus" : "DriveBase",
                 "gyro": {
                     "type": "navx",

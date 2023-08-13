@@ -30,6 +30,8 @@ public class SDSSwerveDriveSubsystem extends SwerveBaseSubsystem {
         Chassis
     } ;
 
+    private Mk4iSwerveModuleHelper.GearRatio ratio_ ;
+
     private final SwerveModule fl_ ;
     private final SwerveModule fr_ ;
     private final SwerveModule bl_ ;
@@ -86,6 +88,16 @@ public class SDSSwerveDriveSubsystem extends SwerveBaseSubsystem {
             nominal_voltage_ = 12.0 ;
         }
 
+        String ratiostr = getSettingsValue("ratio").getString() ;
+        ratio_ = Mk4iSwerveModuleHelper.GearRatio.L3 ;
+
+        if (ratiostr.equals("L2")) {
+            ratio_ = Mk4iSwerveModuleHelper.GearRatio.L2 ;
+        }
+        else if (ratiostr.equals("L1")) {
+            ratio_ = Mk4iSwerveModuleHelper.GearRatio.L1 ;
+        }
+
         ShuffleboardTab shuffleboardTab = Shuffleboard.getTab("Drivetrain");
 
         lay = shuffleboardTab.getLayout("FLModule", BuiltInLayouts.kList).withSize(2, 4).withPosition(0, 0) ;
@@ -95,9 +107,9 @@ public class SDSSwerveDriveSubsystem extends SwerveBaseSubsystem {
         offset = Math.toRadians(getSettingsValue("hw:fl:encoder:offset").getDouble()) ;
 
         if (isVerbose())
-            fl_ = Mk4iSwerveModuleHelper.createFalcon500(lay, config, Mk4iSwerveModuleHelper.GearRatio.L2, drive, steer, encoder, offset) ;
+            fl_ = Mk4iSwerveModuleHelper.createFalcon500(lay, config, ratio_, drive, steer, encoder, offset) ;
         else
-            fl_ = Mk4iSwerveModuleHelper.createFalcon500(config, Mk4iSwerveModuleHelper.GearRatio.L2, drive, steer, encoder, offset) ;
+            fl_ = Mk4iSwerveModuleHelper.createFalcon500(config, ratio_, drive, steer, encoder, offset) ;
 
         lay = shuffleboardTab.getLayout("FRModule", BuiltInLayouts.kList).withSize(2, 4).withPosition(0, 0) ;
         drive = getSettingsValue("hw:fr:drive:canid").getInteger() ;
@@ -106,9 +118,9 @@ public class SDSSwerveDriveSubsystem extends SwerveBaseSubsystem {
         offset = Math.toRadians(getSettingsValue("hw:fr:encoder:offset").getDouble()) ;
 
         if (isVerbose())
-            fr_ = Mk4iSwerveModuleHelper.createFalcon500(lay, config, Mk4iSwerveModuleHelper.GearRatio.L2, drive, steer, encoder, offset) ;
+            fr_ = Mk4iSwerveModuleHelper.createFalcon500(lay, config, ratio_, drive, steer, encoder, offset) ;
         else
-            fr_ = Mk4iSwerveModuleHelper.createFalcon500(config, Mk4iSwerveModuleHelper.GearRatio.L2, drive, steer, encoder, offset) ;
+            fr_ = Mk4iSwerveModuleHelper.createFalcon500(config, ratio_, drive, steer, encoder, offset) ;
 
         lay = shuffleboardTab.getLayout("BLModule", BuiltInLayouts.kList).withSize(2, 4).withPosition(0, 0) ;
         drive = getSettingsValue("hw:bl:drive:canid").getInteger() ;
@@ -116,9 +128,9 @@ public class SDSSwerveDriveSubsystem extends SwerveBaseSubsystem {
         encoder = getSettingsValue("hw:bl:encoder:canid").getInteger() ;
         offset = Math.toRadians(getSettingsValue("hw:bl:encoder:offset").getDouble()) ;
         if (isVerbose())
-            bl_ = Mk4iSwerveModuleHelper.createFalcon500(lay, config, Mk4iSwerveModuleHelper.GearRatio.L2, drive, steer, encoder, offset) ;
+            bl_ = Mk4iSwerveModuleHelper.createFalcon500(lay, config, ratio_, drive, steer, encoder, offset) ;
         else
-            bl_ = Mk4iSwerveModuleHelper.createFalcon500(config, Mk4iSwerveModuleHelper.GearRatio.L2, drive, steer, encoder, offset) ;        
+            bl_ = Mk4iSwerveModuleHelper.createFalcon500(config, ratio_, drive, steer, encoder, offset) ;        
 
         lay = shuffleboardTab.getLayout("BRModule", BuiltInLayouts.kList).withSize(2, 4).withPosition(0, 0) ;
         drive = getSettingsValue("hw:br:drive:canid").getInteger() ;
@@ -126,9 +138,9 @@ public class SDSSwerveDriveSubsystem extends SwerveBaseSubsystem {
         encoder = getSettingsValue("hw:br:encoder:canid").getInteger() ;
         offset = Math.toRadians(getSettingsValue("hw:br:encoder:offset").getDouble()) ;
         if (isVerbose())
-            br_ = Mk4iSwerveModuleHelper.createFalcon500(lay, config, Mk4iSwerveModuleHelper.GearRatio.L2, drive, steer, encoder, offset) ;
+            br_ = Mk4iSwerveModuleHelper.createFalcon500(lay, config, ratio_, drive, steer, encoder, offset) ;
         else
-            br_ = Mk4iSwerveModuleHelper.createFalcon500(config, Mk4iSwerveModuleHelper.GearRatio.L2, drive, steer, encoder, offset) ;        
+            br_ = Mk4iSwerveModuleHelper.createFalcon500(config, ratio_, drive, steer, encoder, offset) ;        
 
         createOdometry(); 
 
