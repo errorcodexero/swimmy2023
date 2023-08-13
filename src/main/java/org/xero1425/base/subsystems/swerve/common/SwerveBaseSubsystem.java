@@ -98,10 +98,7 @@ public abstract class SwerveBaseSubsystem extends DriveBaseSubsystem {
         kinematics_ = new SwerveDriveKinematics(new Translation2d(getWidth() / 2.0, getLength() / 2.0), new Translation2d(getWidth() / 2.0, -getLength() / 2.0), 
                         new Translation2d(-getWidth() / 2.0, getLength() / 2.0), new Translation2d(-getWidth() / 2.0, -getLength() / 2.0)) ;
 
-        ShuffleboardTab shuffleboardTab = Shuffleboard.getTab("Drivetrain");
-        shuffleboardTab.addNumber("Heading", () -> getHeading().getDegrees());
-        shuffleboardTab.addNumber("Pose X", () -> getPose().getX());
-        shuffleboardTab.addNumber("Pose Y", () -> getPose().getY());
+
         last_pose_ = new Pose2d() ;
     }
 
@@ -181,6 +178,11 @@ public abstract class SwerveBaseSubsystem extends DriveBaseSubsystem {
             logger.endMessage();
             throw ex ;
         }
+
+        ShuffleboardTab shuffleboardTab = Shuffleboard.getTab("Drivetrain");
+        shuffleboardTab.addNumber("Heading", () -> getHeading().getDegrees());
+        shuffleboardTab.addNumber("Pose X", () -> getPose().getX());
+        shuffleboardTab.addNumber("Pose Y", () -> getPose().getY());
     }
 
     // Control the swerve drive by settings a ChassisSppeds object
