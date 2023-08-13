@@ -28,7 +28,7 @@
             "grabber-motor-grab" : false
         },
         "plotting": {
-            "enabled" : false,
+            "enabled" : true,
             "version" : 3
         },
         "pneumatics": {
