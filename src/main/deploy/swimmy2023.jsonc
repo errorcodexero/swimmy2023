@@ -28,7 +28,7 @@
             "grabber-motor-grab" : false
         },
         "plotting": {
-            "enabled" : true,
+            "enabled" : false,
             "version" : 3
         },
         "pneumatics": {
@@ -131,14 +131,14 @@
                     "cone" : {
                         "extend" : {
                             "lower" : {
-                                "maxa" : 30000,                // Max accel/decel for trapezoidal/scurve profile, lower arm
-                                "maxv" : 16000,                 // Max velocity for trapezoidal/scurve profile, lower arm
+                                "maxa" : 10000,                // Max accel/decel for trapezoidal/scurve profile, lower arm
+                                "maxv" : 8000,                 // Max velocity for trapezoidal/scurve profile, lower arm
                                 "target" : 90000,              // 89000 The lower arm TARGET position
                                 "strength" : 6                 // The S-curve strength for motion magic
                             },
                             "upper" : {
-                                "maxa" : 30000,                // Max accel/decel for trapezoidal profile, upper arm
-                                "maxv" : 18000,                // Max velocity for trapezoidal profile, upper arm
+                                "maxa" : 20000,                // Max accel/decel for trapezoidal profile, upper arm
+                                "maxv" : 16000,                // Max velocity for trapezoidal profile, upper arm
                                 "target" : 210000,             // 212000 The upper arm TARGET position
                                 "trigger" : 13333,             // How far to move the upper arm before starting the lower arm
                                 "strength" : 6                 // The S-curve strength for motion magic
@@ -163,7 +163,7 @@
                     "cube" : {
                         "extend" : {
                             "lower" : {
-                                "maxa" : 30000,                // Max accel/decel for trapezoidal profile, upper arm
+                                "maxa" : 10000,                // Max accel/decel for trapezoidal profile, upper arm
                                 "maxv" : 10000,                // Max velocity for trapezoidal profile, upper arm
                                 "target" : 78000,              // Lower arm target position
                                 "strength" : 6                 // The S-curve strength for motion magic
@@ -197,8 +197,8 @@
                     "cone" : {
                         "extend" : {
                             "lower" : {
-                                "maxa" : 30000,                // Max accel/decel for upper arm
-                                "maxv" : 10000,                // Max velocity for upper arm
+                                "maxa" : 10000,                // Max accel/decel for upper arm
+                                "maxv" : 8000,                // Max velocity for upper arm
                                 "target" : 42000,              // Lower arm target position
                                 "strength" : 6                 // The S-curve strength for motion magic
                             },

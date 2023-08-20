@@ -74,9 +74,9 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
             vision_timer_ = new XeroTimer(sub.getRobot(), "vision/timer", 0.3);
 
         if (oper.getLocation() == Location.Middle)
-            settling_timer_ = new XeroTimer(sub.getRobot(), "settling", 0.0) ;
+            settling_timer_ = new XeroTimer(sub.getRobot(), "settling", 0.3) ;
         else
-            settling_timer_ = new XeroTimer(sub.getRobot(), "settling", 0.0) ;
+            settling_timer_ = new XeroTimer(sub.getRobot(), "settling", 0.3) ;
 
         align_action_ = new SwerveLinearAlignAction(getRobotSubsystem().getSwerve(), getRobotSubsystem().getLimeLight()) ;
 
