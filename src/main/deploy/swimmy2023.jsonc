@@ -75,7 +75,7 @@
                     "upper" : {
                         "maxa" : 40000,                // Max decel for trapezoidal profile, upper arm
                         "maxv" : 19000,                // Max velocity for trapezoidal profile, upper arm
-                        "target" : 92000,               // Upper arm target position
+                        "target" : 93000,               // Upper arm target position
                         "strength" : 6,
                         "trigger" : 10000
                     }
@@ -99,7 +99,7 @@
                     "lower" : {
                         "maxa" : 30000,                // Max accel for trapezoidal profile, lower arm
                         "maxv" : 15000,                 // Max velocity for trapezoidal profile, lower arm
-                        "target" : 100000,
+                        "target" : 98000,
                         "strength" : 6                 // The S-curve strength for motion magic                   // Lower arm target position
                     },
                     "upper" : {
@@ -133,7 +133,7 @@
                             "lower" : {
                                 "maxa" : 10000,                // Max accel/decel for trapezoidal/scurve profile, lower arm
                                 "maxv" : 8000,                 // Max velocity for trapezoidal/scurve profile, lower arm
-                                "target" : 90000,              // 89000 The lower arm TARGET position
+                                "target" : 89000,              // The lower arm TARGET position
                                 "strength" : 6                 // The S-curve strength for motion magic
                             },
                             "upper" : {
@@ -325,7 +325,207 @@
                         }
                     }
                 }
-            }
+            },
+            "place-still" : {
+                "top" : {
+                    "cone" : {
+                        "extend" : {
+                            "lower" : {
+                                "maxa" : 30000,                // Max accel/decel for trapezoidal/scurve profile, lower arm
+                                "maxv" : 10000,                 // Max velocity for trapezoidal/scurve profile, lower arm
+                                "target" : 90000,              // The lower arm TARGET position
+                                "strength" : 6                 // The S-curve strength for motion magic
+                            },
+                            "upper" : {
+                                "maxa" : 60000,                // Max accel/decel for trapezoidal profile, upper arm
+                                "maxv" : 16000,                // Max velocity for trapezoidal profile, upper arm
+                                "target" : 208000,             // The upper arm TARGET position
+                                "trigger" : 13333,             // How far to move the upper arm before starting the lower arm
+                                "strength" : 6                 // The S-curve strength for motion magic
+                            }
+                        },
+                        "retract" : {
+                            "lower" : {
+                                "maxa" : 30000,                // Max accel/decel for trapezoidal profile, upper arm
+                                "maxv" : 7000,                 // Max velocity for trapezoidal profile, upper arm
+                                "target" : 2000,               // Lower arm target position
+                                "trigger" : 20000,             // Trigget to start the upper arm
+                                "strength" : 6                 // The S-curve strength for motion magic
+                            },
+                            "upper" : {
+                                "maxa" : 60000,                // Max accel/decel for trapezoidal profile, upper arm
+                                "maxv" : 16000,                // Max velocity for trapezoidal profile, upper arm
+                                "target" : 0,                  // Upper arm target position\
+                                "strength" : 6                 // The S-curve strength for motion magic
+                            }
+                        }
+                    },
+                    "cube" : {
+                        "extend" : {
+                            "lower" : {
+                                "maxa" : 10000,                // Max accel/decel for trapezoidal profile, upper arm
+                                "maxv" : 10000,                // Max velocity for trapezoidal profile, upper arm
+                                "target" : 78000,              // Lower arm target position
+                                "strength" : 6                 // The S-curve strength for motion magic
+                            },
+                            "upper" : {
+                                "maxa" : 15000,                // Max accel/decel for trapezoidal profile, upper arm
+                                "maxv" : 15000,                // Max velocity for trapezoidal profile, upper arm
+                                "target" : 167000,             // Upper arm target position
+                                "trigger" : 13333,             // Trigger to start the lower arm
+                                "strength" : 6                 // The S-curve strength for motion magic
+                            }                            
+                        },
+                        "retract" : {
+                            "lower" : {
+                                "maxa" : 10000,                // Max accel/decel for trapezoidal profile, upper arm
+                                "maxv" : 10000,                // Max velocity for trapezoidal profile, upper arm
+                                "target" : 2000,               // Lower arm target position
+                                "trigger" : 40000,             // Trigger to start the upper arm
+                                "strength" : 6                 // The S-curve strength for motion magic
+                            },
+                            "upper" : {
+                                "maxa" : 10000,                // Max accel/decel for trapezoidal profile, upper arm
+                                "maxv" : 10000,                // Max velocity for trapezoidal profile, upper arm
+                                "target" : 0,                  // Upper arm target position
+                                "strength" : 6                 // The S-curve strength for motion magic
+                            }
+                        }
+                    }
+                },                
+                "middle" : {
+                    "cone" : {
+                        "extend" : {
+                            "lower" : {
+                                "maxa" : 10000,                // Max accel/decel for upper arm
+                                "maxv" : 8000,                // Max velocity for upper arm
+                                "target" : 42500,              // Lower arm target position
+                                "strength" : 6                 // The S-curve strength for motion magic
+                            },
+                            "upper" : {
+                                "maxa" : 60000,                // Max accel/decel for upper arm
+                                "maxv" : 16000,                // Max velocity for upper arm
+                                "target" : 113000,             // 120000 Upper arm target position
+                                "trigger" : 13333,             // Trigger to start the lower arm
+                                "strength" : 6                 // The S-curve strength for motion magic
+                            }
+                        },
+                        "retract" : {
+                            "lower" : {
+                                "maxa" : 10000,                // Max accel/decel for upper arm
+                                "maxv" : 10000,                // Max velocity for upper arm
+                                "target" : 2000,               // Lower arm target position
+                                "trigger" : 0,             // Trigger to start the upper arm
+                                "strength" : 6                 // The S-curve strength for motion magic
+                            },
+                            "upper" : {
+                                "maxa" : 10000,                // Max accel/decel for upper arm
+                                "maxv" : 10000,                // Max velocity for upper arm
+                                "target" : 0,                  // Upper arm target position
+                                "strength" : 6                 // The S-curve strength for motion magic
+                            }
+                        }
+                    },
+                    "cube" : {                                     
+                        "extend" : {
+                            "lower" : {
+                                "maxa" : 30000,                // Max decel for upper arm
+                                "maxv" : 10000,                // Max velocity for upper arm
+                                "target" : 49000,              // Lower arm target position
+                                "strength" : 6                 // The S-curve strength for motion magic
+                            },
+                            "upper" : {
+                                "maxa" : 60000,                // Max decel for upper arm
+                                "maxv" : 16000,                // Max velocity for upper arm
+                                "target" : 90000,              // Upper arm target position
+                                "trigger" : 13333,             // Trigger to start the lower arm
+                                "strength" : 6                 // The S-curve strength for motion magic
+                            }
+                        },
+                        "retract" : {
+                            "lower" : {
+                                "maxa" : 10000,               // Max decel for upper arm
+                                "maxv" : 10000,               // Max velocity for upper arm
+                                "target" : 2000,               // Lower arm target position
+                                "trigger" : 40000,             // Trigger to start upper arm
+                                "strength" : 6                 // The S-curve strength for motion magic
+                            },
+                            "upper" : {
+                                "maxa" : 10000,               // Max decel for upper arm
+                                "maxv" : 10000,               // Max velocity for upper arm
+                                "target" : 0,                  // Upper arm target position
+                                "strength" : 6                 // The S-curve strength for motion magic
+                            }                         
+                        }
+                    }
+                },
+                "bottom" : {
+                    "cone" : {
+                        "extend" : {
+                            "lower" : {
+                                "maxa" : 10000,                // Max decel for upper arm
+                                "maxv" : 10000,                // Max velocity for upper arm
+                                "target" : 59000,              // Lower arm target position
+                                "strength" : 6                 // The S-curve strength for motion magic
+                            },
+                            "upper" : {
+                                "maxa" : 15000,                // Max decel for upper arm
+                                "maxv" : 15000,                // Max velocity for upper arm
+                                "target" : 30000,              // Upper arm target position
+                                "trigger" : 13333,             // The trigger to start the lower arm
+                                "strength" : 6                 // The S-curve strength for motion magic
+                            }
+                        },
+                        "retract" : {
+                            "lower" : {
+                                "maxa" : 10000,                // Max decel for upper arm
+                                "maxv" : 10000,                // Max velocity for upper arm
+                                "target" : 2000,               // Lower arm target position
+                                "strength" : 6                 // The S-curve strength for motion magic
+                            },
+                            "upper" : {
+                                "maxa" : 10000,                // Max decel for upper arm
+                                "maxv" : 10000,                // Max velocity for upper arm
+                                "trigger" : 0,                 // Trigger to start the lower arm
+                                "target" : 0,                  // Upper arm target position
+                                "strength" : 6                 // The S-curve strength for motion magic
+                            }
+                        }
+                    },
+                    "cube" : {
+                        "extend" : {
+                            "lower" : {
+                                "maxa" : 10000,                // Max decel for upper arm
+                                "maxv" : 10000,                // Max velocity for upper arm
+                                "target" : 59000,              // Lower arm target position
+                                "strength" : 6                 // The S-curve strength for motion magic
+                            },
+                            "upper" : {
+                                "maxa" : 15000,                // Max decel for upper arm
+                                "maxv" : 15000,                // Max velocity for upper arm
+                                "target" : 30000,              // Upper arm target position
+                                "trigger" : 13333,             // Trigger to start the lower arm
+                                "strength" : 6                 // The S-curve strength for motion magic
+                            }
+                        },
+                        "retract" : {
+                            "lower" : {
+                                "maxa" : 10000,                // Max decel for upper arm
+                                "maxv" : 10000,                // Max velocity for upper arm
+                                "target" : 2000,               // Lower arm target position
+                                "trigger" : 0,                 // Trigger to start the upper arm
+                                "strength" : 6                 // The S-curve strength for motion magic
+                            },
+                            "upper" : {
+                                "maxa" : 10000,                // Max decel for upper arm
+                                "maxv" : 10000,                // Max velocity for upper arm
+                                "target" : 0,                  // Upper arm target position
+                                "strength" : 6                 // The S-curve strength for motion magic
+                            }                         
+                        }
+                    }
+                }
+            }            
         },
         "arm-motor-lower": {
             "hw": {
