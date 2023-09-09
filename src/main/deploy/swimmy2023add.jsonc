@@ -1111,6 +1111,28 @@
         "Edge1" : {
             "before-collect-delay" : 2.4,
             "grab-delay" : 0.02
+        },
+        "three" : {
+            "red" : {
+                "path1": {
+                    "before-collect-delay" : 1.2,
+                    "grab-delay" : 0.02                    
+                },
+                "path2" : {
+                    "before-collect-delay" : 1.2,
+                    "grab-delay" : 0.02                    
+                }
+            },
+            "blue" : {
+                "path1": {
+                    "before-collect-delay" : 1.2,
+                    "grab-delay" : 0.02                    
+                },
+                "path2" : {
+                    "before-collect-delay" : 1.2,
+                    "grab-delay" : 0.02                    
+                }
+            }
         }
     },
     "testmode": {

@@ -2,6 +2,7 @@ package frc.robot.automodes;
 
 import java.util.function.Supplier;
 
+import org.xero1425.base.actions.Action;
 import org.xero1425.base.actions.ConditionalAction;
 import org.xero1425.base.actions.DelayAction;
 import org.xero1425.base.actions.DispatchAction;
@@ -42,7 +43,7 @@ public class SwimmyAutoMode extends AutoMode {
         addSubActionPair(robot.getGPM(), new GPMPlaceAction(robot.getGPM(), where, what, true, true), true);
     }
 
-    protected void driveAndCollect(String path, boolean setpose, double collectdelay, double grabdelay, GamePiece what, double lambdist) throws Exception {
+    protected void driveAndCollect(String path, boolean setpose, double collectdelay, double grabdelay, GamePiece what, double lambdist, Action added) throws Exception {
         Swimmy2023RobotSubsystem robot = (Swimmy2023RobotSubsystem)getAutoController().getRobot().getRobotSubsystem();
 
         SwerveHolonomicPathFollower pathact = new SwerveHolonomicPathFollower(robot.getSwerve(), path, setpose, 0.2);
@@ -67,6 +68,10 @@ public class SwimmyAutoMode extends AutoMode {
         delaycollect.addAction(new DelayAction(getAutoController().getRobot(), collectdelay));
         delaycollect.addSubActionPair(robot.getGPM(), collect , true);
         action.addAction(delaycollect);
+
+        if (added != null) {
+            action.addAction(added);
+        }        
 
         addAction(action);
     }
