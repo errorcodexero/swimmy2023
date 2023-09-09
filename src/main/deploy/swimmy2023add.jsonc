@@ -49,6 +49,21 @@
             "drive-forward-distance" : 0.1524
         },
         "arm" : {
+            "shoot" : {
+                "lower" : {
+                    "maxa" : 30000,                // Max accel for trapezoidal profile, lower arm
+                    "maxv" : 15000,                 // Max velocity for trapezoidal profile, lower arm
+                    "target" : 0,
+                    "strength" : 6                 // The S-curve strength for motion magic                   // Lower arm target position
+                },
+                "upper" : {
+                    "maxa" : 30000,               // Max decel for trapezoidal profile, upper arm
+                    "maxv" : 15000,                 // Max velocity for trapezoidal profile, upper arm
+                    "target" : 0,                    // Upper arm target position
+                    "trigger" : 2000,
+                    "strength" : 6                 // The S-curve strength for motion magic
+                }
+            },
             "stow" : {
                 "lower" : {
                     "maxa" : 30000,                // Max accel for trapezoidal profile, lower arm
