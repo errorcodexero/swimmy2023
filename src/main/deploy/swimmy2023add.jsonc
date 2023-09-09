@@ -1,0 +1,1233 @@
+{
+    "system": {
+        "messages": {
+            // Robot framework settings
+            "actions": true,
+            "pathmanager": false,
+            "xerorobot": false,
+            "simulator": false,
+            "limelight-edgar" : false,
+            "oibuttons" : false,
+
+            // Special settings
+            "pathfollowing": false,
+
+            // Subsystem related messages
+            "vision": false,
+            "swerve" : false,
+            "swimmy2023oi" : false,
+            "Swimmy2023RobotSubsystem" : true,
+            "limelight" : false,
+            "arm-motor-lower" : false,
+            "arm-motor-upper" : false,
+            "gpm" : false
+        },
+        "verbose": {
+            "swerve" : false,
+            "arm-motor-upper" : false,
+            "grabber-motor-grab" : false
+        },
+        "plotting": {
+            "enabled" : false,
+            "version" : 3
+        },
+        "pneumatics": {
+            "type": "REVPH",
+            "min-pressure" : 100.0,
+            "max-pressure" : 120.0
+        },
+        "pdp" : {
+            "type" : "rev"
+        }
+    },
+    "subsystems": {
+        "Swimmy2023RobotSubsystem" : {
+            "april-tag-collect-action-threshold" : 1.75,
+            "april-tag-place-action-threshold" : 1.5,
+            "april-tag-place-arm-action-threshold" : 2.0,  // Allow deploying arm before we take over, but fully deployed arm makes it run into cone nodes. Use only for cubes.
+            "tape-align-threshold" : 0.1016,
+            "drive-forward-distance" : 0.1524
+        },
+        "arm" : {
+            "stow" : {
+                "lower" : {
+                    "maxa" : 30000,                // Max accel for trapezoidal profile, lower arm
+                    "maxv" : 15000,                 // Max velocity for trapezoidal profile, lower arm
+                    "target" : 0,
+                    "strength" : 6                 // The S-curve strength for motion magic                   // Lower arm target position
+                },
+                "upper" : {
+                    "maxa" : 30000,               // Max decel for trapezoidal profile, upper arm
+                    "maxv" : 15000,                 // Max velocity for trapezoidal profile, upper arm
+                    "target" : 0,                    // Upper arm target position
+                    "trigger" : 2000,
+                    "strength" : 6                 // The S-curve strength for motion magic
+                }
+            },
+            "collect" : {
+                "extend-shelf" : {
+                    "lower" : {
+                        "maxa" : 10000,                // Max decel for trapezoidal profile, upper arm
+                        "maxv" : 10000,                // Max velocity for trapezoidal profile, upper arm
+                        "target" : 7000,                // Lower arm target position
+                        "strength" : 6
+                    },
+                    "upper" : {
+                        "maxa" : 40000,                // Max decel for trapezoidal profile, upper arm
+                        "maxv" : 19000,                // Max velocity for trapezoidal profile, upper arm
+                        "target" : 93000,               // Upper arm target position
+                        "strength" : 6,
+                        "trigger" : 10000
+                    }
+                },        
+                "retract-shelf" : {
+                    "lower" : {
+                        "maxa" : 15000,               // Max decel for trapezoidal profile, upper arm
+                        "maxv" : 15000,                 // Max velocity for trapezoidal profile, upper arm
+                        "target" : 2000,                        // Lower arm target position
+                        "strength" : 6,
+                        "trigger": 1000
+                    },
+                    "upper" : {
+                        "maxa" : 15000,               // Max decel for trapezoidal profile, upper arm
+                        "maxv" : 15000,                 // Max velocity for trapezoidal profile, upper arm
+                        "target" : 40000,                    // Upper arm target position
+                        "strength" : 6
+                    }
+                },
+                "extend-ground" : {
+                    "lower" : {
+                        "maxa" : 30000,                // Max accel for trapezoidal profile, lower arm
+                        "maxv" : 15000,                 // Max velocity for trapezoidal profile, lower arm
+                        "target" : 98000,
+                        "strength" : 6                 // The S-curve strength for motion magic                   // Lower arm target position
+                    },
+                    "upper" : {
+                        "maxa" : 30000,               // Max decel for trapezoidal profile, upper arm
+                        "maxv" : 15000,                 // Max velocity for trapezoidal profile, upper arm
+                        "target" : 20741,                    // Upper arm target position
+                        "trigger" : 2000,
+                        "strength" : 6                 // The S-curve strength for motion magic
+                    }
+                },
+                "retract-ground" : {
+                    "lower" : {
+                        "maxa" : 15000,               // Max decel for trapezoidal profile, upper arm
+                        "maxv" : 15000,                 // Max velocity for trapezoidal profile, upper arm
+                        "target" : 2000,                        // Lower arm target position
+                        "trigger": 4000,
+                        "strength" : 6                 // The S-curve strength for motion magic
+                    },
+                    "upper" : {
+                        "maxa" : 15000,               // Max decel for trapezoidal profile, upper arm
+                        "maxv" : 15000,                 // Max velocity for trapezoidal profile, upper arm
+                        "target" : 40000,
+                        "strength" : 6                 // The S-curve strength for motion magic                    // Upper arm target position
+                    }
+                }
+            },
+            "place" : {
+                "top" : {
+                    "cone" : {
+                        "extend" : {
+                            "lower" : {
+                                "maxa" : 10000,                // Max accel/decel for trapezoidal/scurve profile, lower arm
+                                "maxv" : 8000,                 // Max velocity for trapezoidal/scurve profile, lower arm
+                                "target" : 89000,              // The lower arm TARGET position
+                                "strength" : 6                 // The S-curve strength for motion magic
+                            },
+                            "upper" : {
+                                "maxa" : 20000,                // Max accel/decel for trapezoidal profile, upper arm
+                                "maxv" : 16000,                // Max velocity for trapezoidal profile, upper arm
+                                "target" : 210000,             // 212000 The upper arm TARGET position
+                                "trigger" : 13333,             // How far to move the upper arm before starting the lower arm
+                                "strength" : 6                 // The S-curve strength for motion magic
+                            }
+                        },
+                        "retract" : {
+                            "lower" : {
+                                "maxa" : 30000,                // Max accel/decel for trapezoidal profile, upper arm
+                                "maxv" : 10000,                 // Max velocity for trapezoidal profile, upper arm
+                                "target" : 300,               // Lower arm target position
+                                "trigger" : 8000,             // Trigget to start the upper arm
+                                "strength" : 6                 // The S-curve strength for motion magic
+                            },
+                            "upper" : {
+                                "maxa" : 100000,                // Max accel/decel for trapezoidal profile, upper arm
+                                "maxv" : 18000,                // Max velocity for trapezoidal profile, upper arm
+                                "target" : 0,                  // Upper arm target position\
+                                "strength" : 6                 // The S-curve strength for motion magic
+                            }
+                        }
+                    },
+                    "cube" : {
+                        "extend" : {
+                            "lower" : {
+                                "maxa" : 10000,                // Max accel/decel for trapezoidal profile, upper arm
+                                "maxv" : 10000,                // Max velocity for trapezoidal profile, upper arm
+                                "target" : 78000,              // Lower arm target position
+                                "strength" : 6                 // The S-curve strength for motion magic
+                            },
+                            "upper" : {
+                                "maxa" : 60000,                // Max accel/decel for trapezoidal profile, upper arm
+                                "maxv" : 16000,                // Max velocity for trapezoidal profile, upper arm
+                                "target" : 167000,             // Upper arm target position
+                                "trigger" : 13333,             // Trigger to start the lower arm
+                                "strength" : 6                 // The S-curve strength for motion magic
+                            }                            
+                        },
+                        "retract" : {
+                            "lower" : {
+                                "maxa" : 30000,                // Max accel/decel for trapezoidal profile, upper arm
+                                "maxv" : 10000,                // Max velocity for trapezoidal profile, upper arm
+                                "target" : 2000,               // Lower arm target position
+                                "trigger" : 6000,             // Trigger to start the upper arm
+                                "strength" : 6                 // The S-curve strength for motion magic
+                            },
+                            "upper" : {
+                                "maxa" : 100000,                // Max accel/decel for trapezoidal profile, upper arm
+                                "maxv" : 16000,                // Max velocity for trapezoidal profile, upper arm
+                                "target" : 0,                  // Upper arm target position
+                                "strength" : 6                 // The S-curve strength for motion magic
+                            }
+                        }
+                    }
+                },
+                "middle" : {
+                    "cone" : {
+                        "extend" : {
+                            "lower" : {
+                                "maxa" : 10000,                // Max accel/decel for upper arm
+                                "maxv" : 8000,                // Max velocity for upper arm
+                                "target" : 42500,              // Lower arm target position
+                                "strength" : 6                 // The S-curve strength for motion magic
+                            },
+                            "upper" : {
+                                "maxa" : 60000,                // Max accel/decel for upper arm
+                                "maxv" : 16000,                // Max velocity for upper arm
+                                "target" : 113000,             // 120000 Upper arm target position
+                                "trigger" : 13333,             // Trigger to start the lower arm
+                                "strength" : 6                 // The S-curve strength for motion magic
+                            }
+                        },
+                        "retract" : {
+                            "lower" : {
+                                "maxa" : 10000,                // Max accel/decel for upper arm
+                                "maxv" : 10000,                // Max velocity for upper arm
+                                "target" : 2000,               // Lower arm target position
+                                "trigger" : 0,             // Trigger to start the upper arm
+                                "strength" : 6                 // The S-curve strength for motion magic
+                            },
+                            "upper" : {
+                                "maxa" : 10000,                // Max accel/decel for upper arm
+                                "maxv" : 10000,                // Max velocity for upper arm
+                                "target" : 0,                  // Upper arm target position
+                                "strength" : 6                 // The S-curve strength for motion magic
+                            }
+                        }
+                    },
+                    "cube" : {                                     
+                        "extend" : {
+                            "lower" : {
+                                "maxa" : 30000,                // Max decel for upper arm
+                                "maxv" : 10000,                // Max velocity for upper arm
+                                "target" : 49000,              // Lower arm target position
+                                "strength" : 6                 // The S-curve strength for motion magic
+                            },
+                            "upper" : {
+                                "maxa" : 60000,                // Max decel for upper arm
+                                "maxv" : 16000,                // Max velocity for upper arm
+                                "target" : 90000,              // Upper arm target position
+                                "trigger" : 13333,             // Trigger to start the lower arm
+                                "strength" : 6                 // The S-curve strength for motion magic
+                            }
+                        },
+                        "retract" : {
+                            "lower" : {
+                                "maxa" : 10000,               // Max decel for upper arm
+                                "maxv" : 10000,               // Max velocity for upper arm
+                                "target" : 2000,               // Lower arm target position
+                                "trigger" : 40000,             // Trigger to start upper arm
+                                "strength" : 6                 // The S-curve strength for motion magic
+                            },
+                            "upper" : {
+                                "maxa" : 10000,               // Max decel for upper arm
+                                "maxv" : 10000,               // Max velocity for upper arm
+                                "target" : 0,                  // Upper arm target position
+                                "strength" : 6                 // The S-curve strength for motion magic
+                            }                         
+                        }
+                    }
+                },
+                "bottom" : {
+                    "cone" : {
+                        "extend" : {
+                            "lower" : {
+                                "maxa" : 10000,                // Max decel for upper arm
+                                "maxv" : 10000,                // Max velocity for upper arm
+                                "target" : 59000,              // Lower arm target position
+                                "strength" : 6                 // The S-curve strength for motion magic
+                            },
+                            "upper" : {
+                                "maxa" : 15000,                // Max decel for upper arm
+                                "maxv" : 15000,                // Max velocity for upper arm
+                                "target" : 30000,              // Upper arm target position
+                                "trigger" : 13333,             // The trigger to start the lower arm
+                                "strength" : 6                 // The S-curve strength for motion magic
+                            }
+                        },
+                        "retract" : {
+                            "lower" : {
+                                "maxa" : 10000,                // Max decel for upper arm
+                                "maxv" : 10000,                // Max velocity for upper arm
+                                "target" : 2000,               // Lower arm target position
+                                "strength" : 6                 // The S-curve strength for motion magic
+                            },
+                            "upper" : {
+                                "maxa" : 10000,                // Max decel for upper arm
+                                "maxv" : 10000,                // Max velocity for upper arm
+                                "trigger" : 0,                 // Trigger to start the lower arm
+                                "target" : 0,                  // Upper arm target position
+                                "strength" : 6                 // The S-curve strength for motion magic
+                            }
+                        }
+                    },
+                    "cube" : {
+                        "extend" : {
+                            "lower" : {
+                                "maxa" : 10000,                // Max decel for upper arm
+                                "maxv" : 10000,                // Max velocity for upper arm
+                                "target" : 59000,              // Lower arm target position
+                                "strength" : 6                 // The S-curve strength for motion magic
+                            },
+                            "upper" : {
+                                "maxa" : 15000,                // Max decel for upper arm
+                                "maxv" : 15000,                // Max velocity for upper arm
+                                "target" : 30000,              // Upper arm target position
+                                "trigger" : 13333,             // Trigger to start the lower arm
+                                "strength" : 6                 // The S-curve strength for motion magic
+                            }
+                        },
+                        "retract" : {
+                            "lower" : {
+                                "maxa" : 10000,                // Max decel for upper arm
+                                "maxv" : 10000,                // Max velocity for upper arm
+                                "target" : 2000,               // Lower arm target position
+                                "trigger" : 0,                 // Trigger to start the upper arm
+                                "strength" : 6                 // The S-curve strength for motion magic
+                            },
+                            "upper" : {
+                                "maxa" : 10000,                // Max decel for upper arm
+                                "maxv" : 10000,                // Max velocity for upper arm
+                                "target" : 0,                  // Upper arm target position
+                                "strength" : 6                 // The S-curve strength for motion magic
+                            }                         
+                        }
+                    }
+                }
+            },
+            "place-still" : {
+                "top" : {
+                    "cone" : {
+                        "extend" : {
+                            "lower" : {
+                                "maxa" : 30000,                // Max accel/decel for trapezoidal/scurve profile, lower arm
+                                "maxv" : 10000,                 // Max velocity for trapezoidal/scurve profile, lower arm
+                                "target" : 90000,              // The lower arm TARGET position
+                                "strength" : 6                 // The S-curve strength for motion magic
+                            },
+                            "upper" : {
+                                "maxa" : 60000,                // Max accel/decel for trapezoidal profile, upper arm
+                                "maxv" : 16000,                // Max velocity for trapezoidal profile, upper arm
+                                "target" : 208000,             // The upper arm TARGET position
+                                "trigger" : 13333,             // How far to move the upper arm before starting the lower arm
+                                "strength" : 6                 // The S-curve strength for motion magic
+                            }
+                        },
+                        "retract" : {
+                            "lower" : {
+                                "maxa" : 30000,                // Max accel/decel for trapezoidal profile, upper arm
+                                "maxv" : 7000,                 // Max velocity for trapezoidal profile, upper arm
+                                "target" : 2000,               // Lower arm target position
+                                "trigger" : 20000,             // Trigget to start the upper arm
+                                "strength" : 6                 // The S-curve strength for motion magic
+                            },
+                            "upper" : {
+                                "maxa" : 60000,                // Max accel/decel for trapezoidal profile, upper arm
+                                "maxv" : 16000,                // Max velocity for trapezoidal profile, upper arm
+                                "target" : 0,                  // Upper arm target position\
+                                "strength" : 6                 // The S-curve strength for motion magic
+                            }
+                        }
+                    },
+                    "cube" : {
+                        "extend" : {
+                            "lower" : {
+                                "maxa" : 10000,                // Max accel/decel for trapezoidal profile, upper arm
+                                "maxv" : 10000,                // Max velocity for trapezoidal profile, upper arm
+                                "target" : 78000,              // Lower arm target position
+                                "strength" : 6                 // The S-curve strength for motion magic
+                            },
+                            "upper" : {
+                                "maxa" : 15000,                // Max accel/decel for trapezoidal profile, upper arm
+                                "maxv" : 15000,                // Max velocity for trapezoidal profile, upper arm
+                                "target" : 167000,             // Upper arm target position
+                                "trigger" : 13333,             // Trigger to start the lower arm
+                                "strength" : 6                 // The S-curve strength for motion magic
+                            }                            
+                        },
+                        "retract" : {
+                            "lower" : {
+                                "maxa" : 10000,                // Max accel/decel for trapezoidal profile, upper arm
+                                "maxv" : 10000,                // Max velocity for trapezoidal profile, upper arm
+                                "target" : 2000,               // Lower arm target position
+                                "trigger" : 40000,             // Trigger to start the upper arm
+                                "strength" : 6                 // The S-curve strength for motion magic
+                            },
+                            "upper" : {
+                                "maxa" : 10000,                // Max accel/decel for trapezoidal profile, upper arm
+                                "maxv" : 10000,                // Max velocity for trapezoidal profile, upper arm
+                                "target" : 0,                  // Upper arm target position
+                                "strength" : 6                 // The S-curve strength for motion magic
+                            }
+                        }
+                    }
+                },                
+                "middle" : {
+                    "cone" : {
+                        "extend" : {
+                            "lower" : {
+                                "maxa" : 10000,                // Max accel/decel for upper arm
+                                "maxv" : 8000,                // Max velocity for upper arm
+                                "target" : 42500,              // Lower arm target position
+                                "strength" : 6                 // The S-curve strength for motion magic
+                            },
+                            "upper" : {
+                                "maxa" : 60000,                // Max accel/decel for upper arm
+                                "maxv" : 16000,                // Max velocity for upper arm
+                                "target" : 113000,             // 120000 Upper arm target position
+                                "trigger" : 13333,             // Trigger to start the lower arm
+                                "strength" : 6                 // The S-curve strength for motion magic
+                            }
+                        },
+                        "retract" : {
+                            "lower" : {
+                                "maxa" : 10000,                // Max accel/decel for upper arm
+                                "maxv" : 10000,                // Max velocity for upper arm
+                                "target" : 2000,               // Lower arm target position
+                                "trigger" : 0,             // Trigger to start the upper arm
+                                "strength" : 6                 // The S-curve strength for motion magic
+                            },
+                            "upper" : {
+                                "maxa" : 10000,                // Max accel/decel for upper arm
+                                "maxv" : 10000,                // Max velocity for upper arm
+                                "target" : 0,                  // Upper arm target position
+                                "strength" : 6                 // The S-curve strength for motion magic
+                            }
+                        }
+                    },
+                    "cube" : {                                     
+                        "extend" : {
+                            "lower" : {
+                                "maxa" : 30000,                // Max decel for upper arm
+                                "maxv" : 10000,                // Max velocity for upper arm
+                                "target" : 49000,              // Lower arm target position
+                                "strength" : 6                 // The S-curve strength for motion magic
+                            },
+                            "upper" : {
+                                "maxa" : 60000,                // Max decel for upper arm
+                                "maxv" : 16000,                // Max velocity for upper arm
+                                "target" : 90000,              // Upper arm target position
+                                "trigger" : 13333,             // Trigger to start the lower arm
+                                "strength" : 6                 // The S-curve strength for motion magic
+                            }
+                        },
+                        "retract" : {
+                            "lower" : {
+                                "maxa" : 10000,               // Max decel for upper arm
+                                "maxv" : 10000,               // Max velocity for upper arm
+                                "target" : 2000,               // Lower arm target position
+                                "trigger" : 40000,             // Trigger to start upper arm
+                                "strength" : 6                 // The S-curve strength for motion magic
+                            },
+                            "upper" : {
+                                "maxa" : 10000,               // Max decel for upper arm
+                                "maxv" : 10000,               // Max velocity for upper arm
+                                "target" : 0,                  // Upper arm target position
+                                "strength" : 6                 // The S-curve strength for motion magic
+                            }                         
+                        }
+                    }
+                },
+                "bottom" : {
+                    "cone" : {
+                        "extend" : {
+                            "lower" : {
+                                "maxa" : 10000,                // Max decel for upper arm
+                                "maxv" : 10000,                // Max velocity for upper arm
+                                "target" : 59000,              // Lower arm target position
+                                "strength" : 6                 // The S-curve strength for motion magic
+                            },
+                            "upper" : {
+                                "maxa" : 15000,                // Max decel for upper arm
+                                "maxv" : 15000,                // Max velocity for upper arm
+                                "target" : 30000,              // Upper arm target position
+                                "trigger" : 13333,             // The trigger to start the lower arm
+                                "strength" : 6                 // The S-curve strength for motion magic
+                            }
+                        },
+                        "retract" : {
+                            "lower" : {
+                                "maxa" : 10000,                // Max decel for upper arm
+                                "maxv" : 10000,                // Max velocity for upper arm
+                                "target" : 2000,               // Lower arm target position
+                                "strength" : 6                 // The S-curve strength for motion magic
+                            },
+                            "upper" : {
+                                "maxa" : 10000,                // Max decel for upper arm
+                                "maxv" : 10000,                // Max velocity for upper arm
+                                "trigger" : 0,                 // Trigger to start the lower arm
+                                "target" : 0,                  // Upper arm target position
+                                "strength" : 6                 // The S-curve strength for motion magic
+                            }
+                        }
+                    },
+                    "cube" : {
+                        "extend" : {
+                            "lower" : {
+                                "maxa" : 10000,                // Max decel for upper arm
+                                "maxv" : 10000,                // Max velocity for upper arm
+                                "target" : 59000,              // Lower arm target position
+                                "strength" : 6                 // The S-curve strength for motion magic
+                            },
+                            "upper" : {
+                                "maxa" : 15000,                // Max decel for upper arm
+                                "maxv" : 15000,                // Max velocity for upper arm
+                                "target" : 30000,              // Upper arm target position
+                                "trigger" : 13333,             // Trigger to start the lower arm
+                                "strength" : 6                 // The S-curve strength for motion magic
+                            }
+                        },
+                        "retract" : {
+                            "lower" : {
+                                "maxa" : 10000,                // Max decel for upper arm
+                                "maxv" : 10000,                // Max velocity for upper arm
+                                "target" : 2000,               // Lower arm target position
+                                "trigger" : 0,                 // Trigger to start the upper arm
+                                "strength" : 6                 // The S-curve strength for motion magic
+                            },
+                            "upper" : {
+                                "maxa" : 10000,                // Max decel for upper arm
+                                "maxv" : 10000,                // Max velocity for upper arm
+                                "target" : 0,                  // Upper arm target position
+                                "strength" : 6                 // The S-curve strength for motion magic
+                            }                         
+                        }
+                    }
+                }
+            }            
+        },
+        "arm-motor-lower": {
+            "hw": {
+                "motors": {
+                    "1": {
+                        "type": "talon-fx",
+                        "canid": 1,
+                        "bus" : "",
+                        "inverted" : true,
+                        "neutral-mode": "brake",
+                        "free-current-limit" : 60.0,
+                        "stall-current-limit" : 60.0,
+                        "pdp-channel" : 4
+                    }
+                },
+                "encoder": {
+                    "type": "motor",
+                    "m": 1,
+                    "b": 0,
+                    "units" : "ticks"
+                }
+            },
+            "hold": {
+                "kp": 0.00004,
+                "ki": 0,
+                "kd": 0,
+                "kf": 0,
+                "min": -1.0,
+                "max": 1.0,
+                "imax": 0
+            },
+            "goto": {
+                "threshold": 100,
+                "maxd": -100000,
+                "maxa": 100000,
+                "maxv": 100000
+            },
+            "follower": {
+                "up" : {
+                    "kp": 0.00006,
+                    "ka": 0.0,
+                    "ki": 0.0,
+                    "kd": 0.0,
+                    "kv": 5.4339E-06
+                },
+                "down" : {
+                    "kp": 0.0006,
+                    "ka": 0.0,
+                    "ki": 0.0,
+                    "kd": 0.0,
+                    "kv": 5.4339E-06
+                }
+            },
+            "magic" : {
+                "kp": 0.6,
+                "ki": 0.0,
+                "kd": 0.0,
+                "kf": 0.072059552
+            }
+        },
+        "arm-motor-upper": {
+            "hw": {
+                "motors": {
+                    "1": {
+                        "type": "talon-fx",
+                        "canid": 2,
+                        "bus" : "",
+                        "inverted" : false,
+                        "neutral-mode": "brake",
+                        "free-current-limit" : 60.0,
+                        "stall-current-limit" : 60.0,
+                        "pdp-channel" : 5
+                    }
+                },
+                "encoder": {
+                    "type": "motor",
+                    "m": 1,
+                    "b": 0,
+                    "units" : "ticks"
+                }
+            },
+            "hold": {
+                "kp": 0.00015,
+                "ki": 0.0,
+                "kd": 0,
+                "kf": 0,
+                "min": -0.30,
+                "max": 0.30,
+                "imax": 0
+            },
+            "goto": {
+                "threshold": 100,
+                "maxd": -300000,
+                "maxa": 300000,
+                "maxv": 300000
+            },
+            "follower": {
+                "up" : {
+                    "kp": 0.00002,
+                    "ka": 0.0,
+                    "ki": 0.0,
+                    "kd": 0.0,
+                    "kv": 5.64659E-06
+                },
+                "down" : {
+                    "kp": 0.00002,
+                    "ka": 0.0,
+                    "ki": 0.0,
+                    "kd": 0.0,
+                    "kv": 5.64659E-06
+                }
+            },
+            "magic" : {
+                "kp": 0.6,
+                "ki": 0.0,
+                "kd": 0.0,
+                "kf": 0.05776462
+            }
+        },
+        "grabber" : {
+            "hw" : {
+                "sensor" : {
+                    "upper" : 0,
+                    "lower" : 1
+                }
+            },
+            "start" : {
+                "position" : 1400,
+                "delay" : 0.2
+            },
+            "open" : {
+                //
+                // The motor power to run the grabber motors while collecting a game piece
+                //
+                "power" : 2.0
+            },
+            "close" : {
+                //
+                // The delay between closing the grabber and stopping the motors when grabbing
+                // a game piece
+                //
+                "ground" : {
+                    "position" : {
+                        "cube" : 990,
+                        "cone" : 1200
+                    },
+                    "spin-power" : 0.4,
+                    "spin-delay" : 0.2
+                },
+                "shelf" : {
+                    "position" : {
+                        "cube" : 990,
+                        "cone" : 1400
+                    },
+                    "spin-power" : 0.4,
+                    "spin-delay" : 0.2
+                },
+                "hold-power" : 0.1
+            },
+            "shoot" : {
+                "cone" : {
+                    "position" : 1200,
+                    "spin-delay" : 0.2,
+                    "spin-power" : 1.0,
+                    "finish-time" : 1.5
+                }
+            }
+        },
+        "grabber-motor-spin": {
+            "hw": {
+                "motors": {
+                    "1": {
+                        "type": "sparkmax-brushless",
+                        "canid": 4,
+                        "bus" : "",
+                        "inverted" : true,
+                        "neutral-mode": "brake"
+                    }
+                },
+                "encoder": {
+                    "type": "motor",
+                    "m": 1,
+                    "b": 0,
+                    "units" : "ticks"
+                }
+            },
+            "power" : {
+                "spin" : {
+                    "cone": 1.0,
+                    "cube" : 1.0
+                }
+            }
+        },
+        "grabber-motor-grab": {
+            "hw": {
+                "motors": {
+                    "1": {
+                        "type": "sparkmax-brushless",
+                        "canid": 3,
+                        "bus" : "",
+                        "inverted" : true,
+                        "neutral-mode": "brake"
+                    }
+                },
+                "encoder": {
+                    "type": "motor",
+                    "m": 1,
+                    "b": 0,
+                    "units" : "ticks"
+                }
+            },
+            "hold": {
+                "kp": 0.003,
+                "ki": 0,
+                "kd": 0,
+                "kf": 0,
+                "min": -0.8,
+                "max": 0.8,
+                "imax": 0
+            },
+            "positions" : {
+                "open" : {
+                    "cube" : 400,
+                    "cone" : 100
+                }
+            }
+        },
+        "swimmy2023oi": {
+            "swerve_gamepad": {
+                "index": 0,
+                "angle": {
+                    "maximum": 180,
+                    "deadband": 0.05
+                },
+                "position": {
+                    "maximum": 4.5,
+                    "deadband": {
+                        "x": 0.1,
+                        "y": 0.1
+                    }
+                },
+                "power": 2.0
+            },
+            "panel" : {
+                "index" : 2,
+                "outputs" : {
+                    "state1" : 1,
+                    "state2" : 2
+                },
+                "gadgets" : {
+                    "collect_v_place" : 6,
+                    "auto_v_manual" : 5,
+                    "lock" : 4,
+                    "abort" : 1,
+                    "turtle" : 2,
+                    "collect" : 3,
+                    "station_v_ground" : 15,
+                    "cone_v_cube" : {
+                        "1" : 9,
+                        "2" : 10
+                    },
+                    "apriltag" : {
+                        "1" : 7,
+                        "2" : 8
+                    },
+                    "slot" : {
+                        "1" : 11,
+                        "2" : 12
+                    },
+                    "height" : {
+                        "1" : 13,
+                        "2" : 14
+                    }
+                }
+            }
+        },
+        "swerve": {
+            //
+            // This section describes the hardware that implements the swerve drive
+            //
+            "hw": {
+                "gear-ratio" : "L3",
+                "bus" : "DriveBase",
+                "gyro": {
+                    "type": "navx",
+                    "start-time": 3.0
+                },
+                "fl": {
+                    "steer": {
+                        "canid": 11
+                    },
+                    "drive": {
+                        "canid": 12
+                    },
+                    "encoder": {
+                        "canid": 13,
+                        "offset": {
+                            "PRACTICE" : -285.47,
+                            "COMPETITION" : -234.8
+                        }
+                    }
+                },
+                "fr": {
+                    "steer": {
+                        "canid": 21
+                    },
+                    "drive": {
+                        "canid": 22
+                    },
+                    "encoder": {
+                        "canid": 23,
+                        "offset": {
+                            "PRACTICE" : -259.89,
+                            "COMPETITION" : -80
+                        }
+                    }
+                },
+                "bl": {
+                    "steer": {
+                        "canid": 41
+                    },
+                    "drive": {
+                        "canid": 42
+                    },
+                    "encoder": {
+                        "canid": 43,
+                        "offset": {
+                            "PRACTICE" : -79.36,
+                            "COMPETITION" : -107.8
+                        }
+                    }
+                },
+                "br": {
+                    "steer": {
+                        "canid": 31
+                    },
+                    "drive": {
+                        "canid": 32
+                    },
+                    "encoder": {
+                        "canid": 33,
+                        "offset": {
+                            "PRACTICE" : -314.12,
+                            "COMPETITION" : -348.5
+                        }
+                    }
+                }
+            },
+            
+            //
+            // This section describes how the vision integration with the drive base behaves
+            //
+            "estimator" : {
+                "advanced-rejection" : false,                   // If true, the advanced rejection of vision samples is used, see the code for more details
+                "vision-reject-threshold" : 100.0,              // Reject vision samples that are more than this distance from the current robot pose
+                "single-threshold" : 2.0,                       // When we see a single target, and we are greater than this distance, use the single-far std devs
+                                                                // Otherwise use the single-near std devs
+                "multi-threshold" : 2.0,                        // When we see multiple targets, and we are greater than this distance, use the multi-far std devs
+                                                                // Otherwise use the multi-near std devs
+                "single-tag-ignore-reject-threshold" : 2.0,     // If we see a single tag and the pose from the tag is greater than the vision-reject-threshold from the
+                                                                // current robot pose, we normally reject the vision sample.  However, if the distance to the tag is
+                                                                // within this distance, we apply it anyway assuming that the odometry is just way off.
+
+                "odometry" : {                                  // The std devs for the odometry
+                    "x" : 0.9,
+                    "y" : 0.9,
+                    "heading" : 0.9
+                },
+                //
+                // Jack in the bot - Odometry (0.02, 0.02, 0.02), Vision (0.1, 0.1, 0.01).
+                //
+                "vision" : {
+                    "single-far" : {
+                        "x" : 9.0,
+                        "y" : 9.0,
+                        "heading" : 9.0
+                    },
+                    "single-near" : {
+                        "x" : 0.1,
+                        "y" : 0.1,
+                        "heading" : 0.1
+                    },
+                    "multi-far" : {
+                        "x" : 0.1,
+                        "y" : 0.1,
+                        "heading" : 0.1
+                    },
+                    "multi-near" : {
+                        "x" : 0.1,
+                        "y" : 0.1,
+                        "heading" : 0.1
+                    }
+                }
+            },
+            //
+            // This section is the PID controllers for the holonomic drive controller (path following)
+            //
+            "pid": {                        
+                "xctrl": {
+                    "kp": 12.0,
+                    "ki": 0,
+                    "kd": 0
+                },
+                "yctrl": {
+                    "kp": 12.0,
+                    "ki": 0,
+                    "kd": 0
+                },
+                "rotation": {
+                    "kp": 8.0,
+                    "ki": 0,
+                    "kd": 0
+                }
+            },
+
+            //
+            // This section sets the tolerances for path following
+            //
+            "holonomic-path-following": {
+                "xy-tolerance": 0.05,
+                "angle-tolerance": 2.0
+            },
+
+            //
+            // This section is the pid controller for the low level modules, specifically the module velocity since the
+            // angle is managed in the motor controller and initialize by the low level code.
+            //
+            "pids": {
+                "fl": {
+                    "kp":  {
+                        "PRACTICE" : 0.0,
+                        "COMPETITION" : 0.0
+                    },
+                    "ki": 0.0,
+                    "kd": 0.0,
+                    "kf" : {
+                        "PRACTICE" : 0.22272211,
+                        "COMPETITION" : 0.204273400
+                    },
+                    "min": -1.0,
+                    "max": 1.0,
+                    "imax": 0.0
+                },
+                "fr": {
+                    "kp":  {
+                        "PRACTICE" : 0.0,
+                        "COMPETITION" : 0.0
+                    },
+                    "ki": 0.0,
+                    "kd": 0.0,
+                    "kf" : {
+                        "PRACTICE" : 0.222039656,
+                        "COMPETITION" : 0.203025074
+                    },
+                    "min": -1.0,
+                    "max": 1.0,
+                    "imax": 0.0
+                },
+                "bl": {
+                    "kp":  {
+                        "PRACTICE" : 0.0,
+                        "COMPETITION" : 0.0
+                    },
+                    "ki": 0.0,
+                    "kd": 0.0,
+                    "kf" : {
+                        "PRACTICE" : 0.22181802,
+                        "COMPETITION" : 0.203998368
+                    },
+                    "min": -1.0,
+                    "max": 1.0,
+                    "imax": 0.0
+                },
+                "br": {
+                    "kp":  {
+                        "PRACTICE" : 0.0,
+                        "COMPETITION" : 0.0
+                    },
+                    "ki": 0.0,
+                    "kd": 0.0,
+                    "kf" : {
+                        "PRACTICE" : 0.222286438,
+                        "COMPETITION" : 0.202208113
+                    },
+                    "min": -1.0,
+                    "max": 1.0,
+                    "imax": 0.0
+                }
+            },
+
+            //
+            // This section is a PID controller for rotationally aligning the robot with a vision target
+            //
+            "align-pid" : {
+                "kp" : 0.0,
+                "ki" : 0.0,
+                "kd" : 0.0,
+                "kf" : 0.0,
+                "max" : 1.5707963268,          // Radians per second (90)
+                "min" : 1.5707963268,          // Radians per second (90)
+                "imax" : 0.0
+            },
+
+                        //
+            // This section is a PID controller for rotationally aligning the robot with a vision target
+            //
+            "balance-pid" : {
+                "kp" : 0.032,
+                "ki" : 0.0,
+                "kd" : 0.0,        //  0.000001,
+                "kf" : 0.0,
+                "max" : 0.5,           // Meters Per Second
+                "min" : -0.5,          //Meters Per Second
+                "imax" : 0.0
+            },
+
+            //
+            // This section descrdibes the physical characteristics of the robot
+            //
+            "physical": {
+                "width": 0.5715, // meters
+                "length": 0.5842, // meters
+                "path" : {
+                    "maxv" : 2.0,
+                    "maxa" : 2.0
+                },
+                "max-angular-speed": 100,
+                "max-angular-accel": 100
+            },
+
+            //
+            // This section describes electrical characteristics of the robot
+            //
+            "electrical": {
+                "max-voltage": 12.0,
+                "nominal-voltage": 11.0,
+                "steer-current-limit": 10.0,
+                "drive-current-limit": 40.0
+            }
+        },
+        "gpm" : {
+            "place-delay" : 0.1,
+            "shoot" : {
+                "top" : {
+                    "cube" : {
+                        "grabber-power" : -0.20,
+                        "grabber-duration" : 0.2
+                    }
+                },
+                "middle" : {
+                    "cube" : {
+                        "grabber-power" : -0.15,
+                        "grabber-duration" : 0.3
+                    }
+                }
+            }
+        }
+    },
+    "automodes" : {
+        "center1" : {
+            "before-collect-delay" : 5.0,
+            "grab-delay" : 0.02
+        },
+        "Middle1" : {
+            "before-collect-delay" : 1.2,
+            "grab-delay" : 0.02
+        },
+        "Edge1" : {
+            "before-collect-delay" : 2.4,
+            "grab-delay" : 0.02
+        }
+    },
+    "testmode": {
+        "enabled": true,
+        "which": 81,
+        "0": {
+            "angle": 45,
+            "power": 0.1
+        },
+        "1": {
+            "angle": 0.0,
+            "power": 0.2,
+            "duration": 1
+        },
+        "2": {
+            "angle": 0.0,
+            "speed": 0.5
+        },
+        "3": {
+            "angle": 0.0,
+            "speed": 1.0,
+            "duration": 3.0
+        },
+        "4": {
+            "name": "Edge1Blue-Path1"
+        },
+        "5": {
+            "angle": 0.0,
+            "power": 0.7,
+            "duration": 2
+        },
+        "7" : {
+            "name" : "Middle1Blue-Path1"
+        },
+        "10" : {
+            "power" : 0.2,
+            "duration" : 1.0
+        },
+        "11" : {
+            "power" : 0.1,
+            "duration" : 2.0,
+            "height" : 60000
+        },
+        "12" : {
+            "target" : 80000
+        },
+        "13" : {
+            "height" : 100000,
+            "target" : 100000
+        },
+        "18" : {
+            "profile1" : "place-still:top:cone:extend",
+            "delay" : 3.0,
+            "profile2" : "place-still:top:cone:retract"
+        },
+        "20" : {
+            "power" : 0.2,
+            "duration" : 1.0          
+        },
+        "21" : {
+            "power" : 0.6,
+            "duration" : 5.0            
+        },
+        "22" : {
+            "position" : 500
+        },
+        "23" : {
+            "position" : 750
+        },
+        "29" : {
+            "power" : 0.4,
+            "duration" : 3.0
+        },
+        "76" : {
+            //
+            // The time between when the grabber grabs the cube and when the arms lift.  This is
+            // to give the mentor time to get away from the arms
+            //
+            "grab-delay" : 1.0,
+
+            //
+            // The time between when the arms get in their shooting position and when we actually shoot. 
+            // Ideally we want this to be zero, but this value allows us to test for any settling needed
+            // to get a consistent shot 
+            //
+            "settle-delay" : 1.0,
+
+            //
+            // The power to apply when running the spinner motors backwards to shoot
+            //
+            "grabber-power" : -0.20,
+
+            //
+            // The duration to run the spinner motors backwards 
+            //
+            "duration" : 0.2
+        },
+        "79" : {
+            "position" : 0,
+            "duration" : 0.2,
+            "delay" : 1.0
+        },
+        "80" : {
+            "delay" : 0.1
+        },
+        "81" : {
+            "delay" : 0.1
+        },
+        "101" : {
+            "delay" : 0.0,
+            "target" : 80000,
+            "maxa" : 20000,
+            "maxv" : 2000,
+            "strength" : 6
+        },
+        "102" : {
+            "name" : "place:top:cone:extend"
+        },
+        "103" : {
+            "upper-target" : 80000,
+            "upper-maxa" : 20000,
+            "upper-maxv" : 2000,
+            "upper-strength" : 6,
+            "lower-target" : 80800,
+            "lower-maxa" : 20000,
+            "lower-maxv" : 2000,
+            "lower-strength" : 6   
+        },
+        "104": {
+            "name1" : "place:top:cone:extend",
+            "delay" : 5,
+            "name2" : "place:top:cone:retract"
+        }
+    }
+}
