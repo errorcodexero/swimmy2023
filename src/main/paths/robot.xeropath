@@ -9,8 +9,8 @@
                     "constraints": [
                     ],
                     "endvelocity": 0,
-                    "maxacceleration": 2,
-                    "maxvelocity": 2,
+                    "maxacceleration": 4,
+                    "maxvelocity": 3.75,
                     "name": "Path1",
                     "points": [
                         {
@@ -34,8 +34,8 @@
                     "constraints": [
                     ],
                     "endvelocity": 0,
-                    "maxacceleration": 2,
-                    "maxvelocity": 2,
+                    "maxacceleration": 4,
+                    "maxvelocity": 3.75,
                     "name": "Path2",
                     "points": [
                         {
@@ -369,8 +369,8 @@
                         }
                     ],
                     "endvelocity": 0,
-                    "maxacceleration": 3,
-                    "maxvelocity": 3,
+                    "maxacceleration": 4,
+                    "maxvelocity": 3.75,
                     "name": "Path1",
                     "points": [
                         {
@@ -421,8 +421,8 @@
                         }
                     ],
                     "endvelocity": 0,
-                    "maxacceleration": 3,
-                    "maxvelocity": 3,
+                    "maxacceleration": 4,
+                    "maxvelocity": 3.75,
                     "name": "Path2",
                     "points": [
                         {
@@ -471,8 +471,8 @@
                         }
                     ],
                     "endvelocity": 0,
-                    "maxacceleration": 3,
-                    "maxvelocity": 3,
+                    "maxacceleration": 4,
+                    "maxvelocity": 3.75,
                     "name": "Path1",
                     "points": [
                         {
@@ -501,14 +501,14 @@
                             "swrot": 1,
                             "swrotvel": 0,
                             "x": 6.530435369434484,
-                            "y": 4.636562443598941
+                            "y": 4.712762443598942
                         },
                         {
                             "heading": 0,
                             "swrot": 0,
                             "swrotvel": 0,
-                            "x": 6.924869102647295,
-                            "y": 4.62219661112649
+                            "x": 7.049891528763454,
+                            "y": 4.65731909532329
                         }
                     ],
                     "startvelocity": 0
@@ -517,16 +517,16 @@
                     "constraints": [
                     ],
                     "endvelocity": 0,
-                    "maxacceleration": 3,
-                    "maxvelocity": 3,
+                    "maxacceleration": 4,
+                    "maxvelocity": 3.75,
                     "name": "Path2",
                     "points": [
                         {
                             "heading": 180,
                             "swrot": 0,
                             "swrotvel": 0,
-                            "x": 6.82652,
-                            "y": 4.62736
+                            "x": 7.04989,
+                            "y": 4.65732
                         },
                         {
                             "heading": 180,
@@ -562,7 +562,7 @@
                     ],
                     "endvelocity": 0,
                     "maxacceleration": 4,
-                    "maxvelocity": 4,
+                    "maxvelocity": 3.75,
                     "name": "P1",
                     "points": [
                         {
@@ -698,6 +698,6 @@
             ]
         }
     ],
-    "outdir": "C:/cygwin64/home/butch/robottools/robots/swimmy2023/src/main/deploy/paths",
+    "outdir": "C:/cygwin64/home/team1425/robots/swimmy2023/src/main/deploy/paths",
     "units": "m"
 }

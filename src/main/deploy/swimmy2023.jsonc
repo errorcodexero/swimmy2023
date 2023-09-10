@@ -49,6 +49,21 @@
             "drive-forward-distance" : 0.1524
         },
         "arm" : {
+            "shoot" : {
+                "lower" : {
+                    "maxa" : 30000,                // Max accel for trapezoidal profile, lower arm
+                    "maxv" : 15000,                 // Max velocity for trapezoidal profile, lower arm
+                    "target" : 0,
+                    "strength" : 6                 // The S-curve strength for motion magic                   // Lower arm target position
+                },
+                "upper" : {
+                    "maxa" : 30000,               // Max decel for trapezoidal profile, upper arm
+                    "maxv" : 15000,                 // Max velocity for trapezoidal profile, upper arm
+                    "target" : 0,                    // Upper arm target position
+                    "trigger" : 2000,
+                    "strength" : 6                 // The S-curve strength for motion magic
+                }
+            },
             "stow" : {
                 "lower" : {
                     "maxa" : 30000,                // Max accel for trapezoidal profile, lower arm
@@ -684,6 +699,14 @@
                     "spin-delay" : 0.2
                 },
                 "hold-power" : 0.1
+            },
+            "shoot" : {
+                "cone" : {
+                    "position" : 1200,
+                    "spin-delay" : 0.2,
+                    "spin-power" : 1.0,
+                    "finish-time" : 1.5
+                }
             }
         },
         "grabber-motor-spin": {
@@ -1078,7 +1101,7 @@
     },
     "automodes" : {
         "center1" : {
-            "before-collect-delay" : 5.0,
+            "before-collect-delay" : 5.5,
             "grab-delay" : 0.02
         },
         "Middle1" : {
@@ -1088,6 +1111,28 @@
         "Edge1" : {
             "before-collect-delay" : 2.4,
             "grab-delay" : 0.02
+        },
+        "three" : {
+            "red" : {
+                "path1": {
+                    "before-collect-delay" : 1.2,
+                    "grab-delay" : 0.02                    
+                },
+                "path2" : {
+                    "before-collect-delay" : 1.2,
+                    "grab-delay" : 0.02                    
+                }
+            },
+            "blue" : {
+                "path1": {
+                    "before-collect-delay" : 1.2,
+                    "grab-delay" : 0.02                    
+                },
+                "path2" : {
+                    "before-collect-delay" : 1.2,
+                    "grab-delay" : 0.02                    
+                }
+            }
         }
     },
     "testmode": {
