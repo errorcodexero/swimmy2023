@@ -14,14 +14,14 @@ public class GrabberGrabLoadedGamepieceAction extends Action {
     private MotorEncoderPowerAction stop_spinner_action_;
     private XeroTimer timer_ ;
 
-    public GrabberGrabLoadedGamepieceAction(GrabberSubsystem sub) throws BadParameterTypeException, MissingParameterException {
+    public GrabberGrabLoadedGamepieceAction(GrabberSubsystem sub, String name) throws BadParameterTypeException, MissingParameterException {
         super(sub.getRobot().getMessageLogger());
         sub_ = sub ;
 
-        double v = sub.getSettingsValue("start:position").getDouble() ;
+        double v = sub.getSettingsValue(name + ":position").getDouble() ;
         hold_ = new MotorEncoderHoldAction(sub_.getGrabSubsystem(), v) ;
 
-        v = sub.getSettingsValue("start:delay").getDouble();
+        v = sub.getSettingsValue(name + ":delay").getDouble();
         timer_ = new XeroTimer(sub_.getRobot(), "gametimer", v) ;
 
         stop_spinner_action_ = new MotorEncoderPowerAction(sub.getSpinSubsystem(), 0.1);

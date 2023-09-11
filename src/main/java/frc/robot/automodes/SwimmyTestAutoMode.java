@@ -27,9 +27,11 @@ import frc.robot.subsystems.arm.ArmStaggeredGotoMagicAction;
 import frc.robot.subsystems.arm.ArmSubsystem;
 import frc.robot.subsystems.gpm.GPMCollectAction;
 import frc.robot.subsystems.gpm.GPMPlaceAction;
+import frc.robot.subsystems.gpm.GPMShootAction;
 import frc.robot.subsystems.gpm.GPMStowAction;
 import frc.robot.subsystems.gpm.GPMSubsystem;
 import frc.robot.subsystems.grabber.GrabberGrabGampieceAction;
+import frc.robot.subsystems.grabber.GrabberShootAction;
 import frc.robot.subsystems.grabber.GrabberStartCollectAction;
 import frc.robot.subsystems.grabber.GrabberSubsystem;
 import frc.robot.subsystems.swerve.SwerveDriveBalancePlatform;
@@ -368,6 +370,24 @@ public class SwimmyTestAutoMode extends TestAutoMode {
                     addSubActionPair(arm, act, true) ;
                 }
                 break;
+
+            case 105:
+                {
+                    addSubActionPair(gpm, new GPMShootAction(gpm), true);
+                }
+                break;
+
+            case 106:
+                {
+                    addSubActionPair(grabber, new GrabberShootAction(grabber), true);
+                }
+                break ;
+
+            case 107:
+                {
+                    addSubActionPair(arm, new ArmStaggeredGotoMagicAction(arm, "shoot"), true) ;
+                }
+                break ;
         }
     }
 

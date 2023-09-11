@@ -23,29 +23,31 @@ public class SwimmyThreeAutoMode extends SwimmyAutoMode  {
         //
         // In parallel, drive the first path and spit out the cone and then go collect a second cone
         //
-        driveAndCollect("Three" + color + "-Path1", true, beforedelay1, grabdelay1, what2, lam2, da) ;
+        driveAndCollect("Three" + color + "-path1", true, beforedelay1, grabdelay1, what2, lam2, null) ;
 
-        //
-        // Drive the second path back to the grid
-        //
-        drivePath("Three" + color + "-Path2", false);
+        // driveAndCollect("Three" + color + "-path2", true, beforedelay1, grabdelay1, what3, lam3, null) ;
 
-        //
-        // In parallel, drive the third path back out to collect a new cone, spitting out the cone we are holding
-        //
-        shoot = new GPMShootAction(robot.getGPM()) ;
-        da = new DispatchAction(robot.getGPM(), shoot, true) ;
-        driveAndCollect("Three" + color + "-Path3", true, beforedelay2, grabdelay2, what3, lam3, da) ;
+        // //
+        // // Drive the second path back to the grid
+        // //
+        // drivePath("Three" + color + "-Path2", false);
 
-        //
-        // Drive the fourth path back to the grid
-        // 
-        drivePath("Three" + color + "-Path4", false);
+        // //
+        // // In parallel, drive the third path back out to collect a new cone, spitting out the cone we are holding
+        // //
+        // shoot = new GPMShootAction(robot.getGPM()) ;
+        // da = new DispatchAction(robot.getGPM(), shoot, true) ;
+        // driveAndCollect("Three" + color + "-Path3", true, beforedelay2, grabdelay2, what3, lam3, da) ;
 
-        //
-        // And shoot the final cone
-        //
-        shoot = new GPMShootAction(robot.getGPM()) ;
-        addSubActionPair(robot.getGPM(), shoot, true) ;
+        // //
+        // // Drive the fourth path back to the grid
+        // // 
+        // drivePath("Three" + color + "-Path4", false);
+
+        // //
+        // // And shoot the final cone
+        // //
+        // shoot = new GPMShootAction(robot.getGPM()) ;
+        // addSubActionPair(robot.getGPM(), shoot, true) ;
     }
 }

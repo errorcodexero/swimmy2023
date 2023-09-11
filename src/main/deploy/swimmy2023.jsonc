@@ -57,10 +57,10 @@
                     "strength" : 6                 // The S-curve strength for motion magic                   // Lower arm target position
                 },
                 "upper" : {
-                    "maxa" : 30000,               // Max decel for trapezoidal profile, upper arm
-                    "maxv" : 15000,                 // Max velocity for trapezoidal profile, upper arm
-                    "target" : 0,                    // Upper arm target position
-                    "trigger" : 2000,
+                    "maxa" : 100000,               // Max decel for trapezoidal profile, upper arm
+                    "maxv" : 20000,                 // Max velocity for trapezoidal profile, upper arm
+                    "target" : 30000,                    // Upper arm target position
+                    "trigger" : 1000,
                     "strength" : 6                 // The S-curve strength for motion magic
                 }
             },
@@ -702,11 +702,13 @@
             },
             "shoot" : {
                 "cone" : {
-                    "position" : 1200,
-                    "spin-delay" : 0.2,
-                    "spin-power" : 1.0,
+                    "position" : 700,
+                    "spin-delay" : 0.02,
+                    "spin-power" : -1.0,
                     "finish-time" : 1.5
-                }
+                },
+                "position" : 700,
+                "delay" : 0.2
             }
         },
         "grabber-motor-spin": {
@@ -1113,7 +1115,7 @@
             "grab-delay" : 0.02
         },
         "three" : {
-            "red" : {
+            "Red" : {
                 "path1": {
                     "before-collect-delay" : 1.2,
                     "grab-delay" : 0.02                    
@@ -1123,7 +1125,7 @@
                     "grab-delay" : 0.02                    
                 }
             },
-            "blue" : {
+            "Blue" : {
                 "path1": {
                     "before-collect-delay" : 1.2,
                     "grab-delay" : 0.02                    
@@ -1137,7 +1139,7 @@
     },
     "testmode": {
         "enabled": true,
-        "which": 81,
+        "which": 105,
         "0": {
             "angle": 45,
             "power": 0.1
@@ -1265,6 +1267,8 @@
             "name1" : "place:top:cone:extend",
             "delay" : 5,
             "name2" : "place:top:cone:retract"
+        },
+        "106":{
         }
     }
 }

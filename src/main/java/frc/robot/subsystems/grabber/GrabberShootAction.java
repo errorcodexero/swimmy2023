@@ -38,7 +38,7 @@ public class GrabberShootAction extends Action {
         super.start();
 
         shooting_ = false ;
-        sub_.getGrabSubsystem().setDefaultAction(hold_action_);
+        sub_.getGrabSubsystem().setAction(hold_action_);
         start_shoot_timer_.start() ;      
     }    
 
@@ -46,7 +46,7 @@ public class GrabberShootAction extends Action {
     public void run() throws Exception { 
         super.run() ;
 
-        if (shooting_) {
+        if (!shooting_) {
             if (start_shoot_timer_.isExpired()) {
                 shooting_ = true ;
                 sub_.getSpinSubsystem().setAction(start_spinner_action_, true) ;
@@ -55,7 +55,8 @@ public class GrabberShootAction extends Action {
         }
         else {
             if (finish_timer_.isExpired()) {
-                sub_.getSpinSubsystem().setAction(stop_spinner_action_, true) ;                
+                sub_.getSpinSubsystem().setAction(stop_spinner_action_, true) ;  
+                setDone() ;              
             }
         }
     }    

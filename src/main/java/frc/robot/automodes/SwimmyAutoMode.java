@@ -35,7 +35,7 @@ public class SwimmyAutoMode extends AutoMode {
         //
         // Close the grabber around the game piece
         // 
-        addSubActionPair(robot.getGPM().getGrabber(), new GrabberGrabLoadedGamepieceAction(robot.getGPM().getGrabber()), true);
+        addSubActionPair(robot.getGPM().getGrabber(), new GrabberGrabLoadedGamepieceAction(robot.getGPM().getGrabber(), "start"), true);
 
         //
         // Place the game piece onto the placement location
@@ -75,6 +75,10 @@ public class SwimmyAutoMode extends AutoMode {
 
         addAction(action);
     }
+
+    protected void driveAndCollectAndPlace(String path, boolean setpose, double collectdelay, double grabdelay, GamePiece what, double lambdist, GridTagPosition tpos, Slot slot, Location loc) throws Exception {
+
+    }    
     
     protected void driveAndPlace(String path, GridTagPosition tpos, Slot slot, Location loc, GamePiece what) throws Exception {
         Swimmy2023RobotSubsystem robot = (Swimmy2023RobotSubsystem)getAutoController().getRobot().getRobotSubsystem();
