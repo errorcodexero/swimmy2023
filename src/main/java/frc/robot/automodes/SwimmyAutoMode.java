@@ -2,7 +2,6 @@ package frc.robot.automodes;
 
 import java.util.function.Supplier;
 
-import org.xero1425.base.actions.Action;
 import org.xero1425.base.actions.ConditionalAction;
 import org.xero1425.base.actions.DelayAction;
 import org.xero1425.base.actions.DispatchAction;
@@ -15,8 +14,10 @@ import org.xero1425.base.subsystems.swerve.common.SwerveHolonomicPathFollower;
 
 import frc.robot.subsystems.gpm.GPMCollectAction;
 import frc.robot.subsystems.gpm.GPMPlaceAction;
+import frc.robot.subsystems.gpm.GPMSubsystem;
 import frc.robot.subsystems.grabber.GrabberGrabLoadedGamepieceAction;
 import frc.robot.subsystems.toplevel.AutoGamePieceAction;
+import frc.robot.subsystems.toplevel.AutoGamePieceAction2;
 import frc.robot.subsystems.toplevel.RobotOperation;
 import frc.robot.subsystems.toplevel.Swimmy2023RobotSubsystem;
 import frc.robot.subsystems.toplevel.RobotOperation.GamePiece;
@@ -25,6 +26,8 @@ import frc.robot.subsystems.toplevel.RobotOperation.Location;
 import frc.robot.subsystems.toplevel.RobotOperation.Slot;
 
 public class SwimmyAutoMode extends AutoMode {
+    private GPMCollectAction collect_ ;
+
     public SwimmyAutoMode(AutoController ctrl, String name) {
         super(ctrl, name) ;
     }
@@ -43,13 +46,45 @@ public class SwimmyAutoMode extends AutoMode {
         addSubActionPair(robot.getGPM(), new GPMPlaceAction(robot.getGPM(), where, what, true, true), true);
     }
 
-    protected void driveAndCollect(String path, boolean setpose, double collectdelay, double grabdelay, GamePiece what, double lambdist, Action added) throws Exception {
+    protected void driveAndCollect2(String path, boolean setpose, double startcollect, double closecollect, GamePiece what) throws Exception {
+        Swimmy2023RobotSubsystem robot = (Swimmy2023RobotSubsystem)getAutoController().getRobot().getRobotSubsystem();
+        GPMSubsystem gpm = robot.getGPM() ;
+
+        SwerveHolonomicPathFollower pathact = new SwerveHolonomicPathFollower(robot.getSwerve(), path, setpose, 0.2);
+        collect_ = new GPMCollectAction(robot.getGPM(), what, true) ;
+        
+        pathact.addDistanceBasedAction(startcollect, () -> { gpm.setAction(collect_); }) ;
+        pathact.addDistanceBasedAction(closecollect, () -> { collect_.forcedClosed(); }) ;
+
+        addAction(pathact);
+    }
+
+    protected void driveAndCollectAndPlace(String path, boolean setpose, double startcollect, double closecollect, double place, 
+                                            GamePiece what, GridTagPosition tpos, Slot slot, Location loc) throws Exception {
+        Swimmy2023RobotSubsystem robot = (Swimmy2023RobotSubsystem)getAutoController().getRobot().getRobotSubsystem();
+
+        RobotOperation oper = new RobotOperation(RobotOperation.Action.Place, what, tpos, slot, loc);
+        AutoGamePieceAction2 act = new AutoGamePieceAction2(robot, place, oper, path, 0.2) ;
+        SwerveHolonomicPathFollower drive = act.getPathAction() ;
+
+        collect_ = new GPMCollectAction(robot.getGPM(), what, true) ;
+        DispatchAction da = new DispatchAction(robot.getGPM(), collect_, false);
+
+        drive.addDistanceBasedAction(startcollect, () -> { robot.getGPM().setAction(da) ; }) ;
+        drive.addDistanceBasedAction(closecollect, () -> { collect_.forcedClosed();}) ;
+
+        addAction(act) ;
+    }
+
+    protected void driveAndCollect(String path, boolean setpose, double collectdelay, double grabdelay, GamePiece what, double lambdist) throws Exception {
         Swimmy2023RobotSubsystem robot = (Swimmy2023RobotSubsystem)getAutoController().getRobot().getRobotSubsystem();
 
         SwerveHolonomicPathFollower pathact = new SwerveHolonomicPathFollower(robot.getSwerve(), path, setpose, 0.2);
         GPMCollectAction collect = new GPMCollectAction(robot.getGPM(), what, true) ;
 
-        pathact.setLambda(()-> { collect.forcedClosed();}, lambdist);
+        pathact.addDistanceBasedAction(lambdist, ()-> { collect.forcedClosed();});
+
+        // pathact.setLambda(()-> { collect.forcedClosed();}, lambdist);
 
         ParallelAction action = new ParallelAction(getMessageLogger(), DonePolicy.All) ;
 
@@ -69,17 +104,9 @@ public class SwimmyAutoMode extends AutoMode {
         delaycollect.addSubActionPair(robot.getGPM(), collect , true);
         action.addAction(delaycollect);
 
-        if (added != null) {
-            action.addAction(added);
-        }        
-
         addAction(action);
     }
 
-    protected void driveAndCollectAndPlace(String path, boolean setpose, double collectdelay, double grabdelay, GamePiece what, double lambdist, GridTagPosition tpos, Slot slot, Location loc) throws Exception {
-
-    }    
-    
     protected void driveAndPlace(String path, GridTagPosition tpos, Slot slot, Location loc, GamePiece what) throws Exception {
         Swimmy2023RobotSubsystem robot = (Swimmy2023RobotSubsystem)getAutoController().getRobot().getRobotSubsystem();
 

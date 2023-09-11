@@ -22,7 +22,8 @@ public class SwimmyAutoPlaceCollectPlace extends SwimmyAutoMode  {
         //
         double beforedelay = ctrl.getRobot().getSettingsSupplier().get("automodes:" + side + ":before-collect-delay").getDouble() ;
         double grabdelay = ctrl.getRobot().getSettingsSupplier().get("automodes:" + side + ":grab-delay").getDouble() ;
-        driveAndCollect(side + color + "-Path1", true, beforedelay, grabdelay, what2, lambdist, null);
+
+        driveAndCollect(side + color + "-Path1", true, beforedelay, grabdelay, what2, lambdist);
 
         //
         // Drive back to place second cube

@@ -1,7 +1,6 @@
 package frc.robot.subsystems.gpm;
 
 import org.xero1425.base.actions.Action;
-import org.xero1425.base.subsystems.motorsubsystem.MotorEncoderHoldAction;
 
 import frc.robot.subsystems.arm.ArmStaggeredGotoMagicAction;
 import frc.robot.subsystems.grabber.GrabberGrabLoadedGamepieceAction;
@@ -10,7 +9,6 @@ import frc.robot.subsystems.grabber.GrabberShootAction;
 public class GPMShootAction extends Action {
     private GPMSubsystem sub_ ;
     private GrabberGrabLoadedGamepieceAction grab_cone_ ;
-    private MotorEncoderHoldAction hold_ ;
     private ArmStaggeredGotoMagicAction shoot_arm_action_ ;
     private GrabberShootAction shoot_grabber_action_ ;
     private boolean is_grabbed_ ;

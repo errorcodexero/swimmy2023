@@ -1,5 +1,8 @@
 package org.xero1425.base.subsystems.swerve.common;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.xero1425.base.misc.XeroTimer;
 import org.xero1425.base.motors.BadMotorRequestException;
 import org.xero1425.base.motors.MotorRequestFailedException;
@@ -16,9 +19,22 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 
 public class SwerveHolonomicPathFollower extends SwerveHolonomicControllerAction {
 
-    public interface todoLambda {
+    public interface Executor {
         void doit() ;
     }
+
+    private class DistanceBasedAction {
+        public final double Distance ;
+        public final Executor Function ;
+        public boolean Executed ;
+
+        public DistanceBasedAction(double dist, Executor fun) {
+            Distance = dist ;
+            Function = fun ;
+        }
+    }
+
+    private List<DistanceBasedAction> actions_ ;
 
     private String pathname_ ;
     private XeroPath path_;
@@ -33,9 +49,10 @@ public class SwerveHolonomicPathFollower extends SwerveHolonomicControllerAction
     private XeroTimer end_timer_;
 
     private boolean disable_vision_ ;
-
-    private todoLambda lambda_ ;
     private double distance_ ;
+
+    // private Executor lambda_ ;
+    // private double distance_ ;
 
     private static final String [] columns_ = {
         "time", "index",
@@ -54,11 +71,22 @@ public class SwerveHolonomicPathFollower extends SwerveHolonomicControllerAction
 
         end_timer_ = new XeroTimer(sub.getRobot(), "holonomicpath", endtime);
         disable_vision_ = true ;
+
+        actions_ = new ArrayList<DistanceBasedAction>() ;
     }
 
-    public void setLambda(todoLambda lambda, double dist) {
-        lambda_ = lambda ;
-        distance_ = dist ;
+    public double getDistance() {
+        return distance_ ;
+    }
+
+    // public void setLambda(Executor lambda, double dist) {
+    //     lambda_ = lambda ;
+    //     distance_ = dist ;
+    // }
+
+    public void addDistanceBasedAction(double dist, Executor action) {
+        DistanceBasedAction act = new DistanceBasedAction(dist, action) ;
+        actions_.add(act) ;
     }
 
     public String getPathName() {
@@ -72,6 +100,13 @@ public class SwerveHolonomicPathFollower extends SwerveHolonomicControllerAction
     @Override
     public void start() throws Exception {
         super.start() ;
+
+        //
+        // Initialize the actions that are executed based on distance
+        //
+        for(DistanceBasedAction item : actions_) {
+            item.Executed = false ;
+        }
 
         if (disable_vision_) {
             getSubsystem().enableVision(false);
@@ -96,6 +131,22 @@ public class SwerveHolonomicPathFollower extends SwerveHolonomicControllerAction
         index_ = 0 ;
     }
 
+    private void checkActions(double distance) {
+        for(DistanceBasedAction item : actions_) {
+            if (distance > item.Distance && !item.Executed) {
+                MessageLogger logger = getSubsystem().getRobot().getMessageLogger() ;
+                logger.startMessage(MessageType.Info);
+                logger.add("PathFollowing executing lambda") ;
+                logger.add("target", item.Distance);
+                logger.add("actual", distance) ;
+                logger.endMessage();       
+                
+                item.Function.doit() ;
+                item.Executed = true ;
+            }
+        }
+    }
+
     @Override
     public void run() throws BadMotorRequestException, MotorRequestFailedException {
         double velocity ;
@@ -106,25 +157,26 @@ public class SwerveHolonomicPathFollower extends SwerveHolonomicControllerAction
             target = getPoseFromPath(index_);
             velocity = getVelocityFromPath(index_) ;
             
-            double dist = getDistanceFromPath(index_);
-            if (lambda_ != null && dist > distance_) {
-                MessageLogger logger = getSubsystem().getRobot().getMessageLogger() ;
-                logger.startMessage(MessageType.Info);
-                logger.add("PathFollowing executing lambda") ;
-                logger.add("target", distance_);
-                logger.add("actual", dist) ;
-                logger.endMessage();
+            distance_ = getDistanceFromPath(index_);
+            checkActions(distance_);
 
-                lambda_.doit() ;
-                lambda_ = null ;
-            }
+            // if (lambda_ != null && dist > distance_) {
+            //     MessageLogger logger = getSubsystem().getRobot().getMessageLogger() ;
+            //     logger.startMessage(MessageType.Info);
+            //     logger.add("PathFollowing executing lambda") ;
+            //     logger.add("target", distance_);
+            //     logger.add("actual", dist) ;
+            //     logger.endMessage();
+
+            //     lambda_.doit() ;
+            //     lambda_ = null ;
+            // }
         }
         else {
             target = getPoseFromPath(index_ - 1);
             velocity = 0.0 ;
         }
-
-
+        
         ChassisSpeeds speed = controller().calculate(getSubsystem().getPose(), target, velocity, target.getRotation()) ;
         getSubsystem().drive(speed) ;
 

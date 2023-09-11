@@ -1114,26 +1114,28 @@
             "before-collect-delay" : 2.4,
             "grab-delay" : 0.02
         },
-        "three" : {
-            "Red" : {
-                "path1": {
-                    "before-collect-delay" : 1.2,
-                    "grab-delay" : 0.02                    
+        "middle1fast" : {
+            "red" : {
+                "1" : {
+                    "start-collect" : 5.0,
+                    "close-collect" : 5.2,
+                    "start-place" : 7.0
                 },
-                "path2" : {
-                    "before-collect-delay" : 1.2,
-                    "grab-delay" : 0.02                    
+                "2" : {
+                    "start-collect" : 5.0,
+                    "close-collect" : 5.2
                 }
             },
-            "Blue" : {
-                "path1": {
-                    "before-collect-delay" : 1.2,
-                    "grab-delay" : 0.02                    
+            "blue" : {
+                "1" : {
+                    "start-collect" : 5.0,
+                    "close-collect" : 5.2,
+                    "start-place" : 7.0
                 },
-                "path2" : {
-                    "before-collect-delay" : 1.2,
-                    "grab-delay" : 0.02                    
-                }
+                "2" : {
+                    "start-collect" : 5.0,
+                    "close-collect" : 5.2
+                }          
             }
         }
     },
