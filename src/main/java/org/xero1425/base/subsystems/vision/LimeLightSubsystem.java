@@ -178,7 +178,7 @@ public class LimeLightSubsystem extends Subsystem implements IVisionLocalization
 
     ///////////////////////////////////////////////////////
     //
-    // The IVisionAlignmentData interface
+    // The IVisionLocalization interface
     //
     ///////////////////////////////////////////////////////
 

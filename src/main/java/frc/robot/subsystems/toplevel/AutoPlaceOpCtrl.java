@@ -59,6 +59,7 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
     private XeroTimer wheels_timer_ ;
 
     private double arm_wait_start_time_ ;
+    private boolean faster_ = true ;
 
     private XeroElapsedTimer overall_timer_ ;   // Measure time since auto takes over
     
@@ -272,41 +273,59 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
         }
     }
 
+    private void visionNextStep() throws BadParameterTypeException, MissingParameterException {
+        getRobotSubsystem().getSwerve().enableVision(false);
+        target_pose_ = getRobotSubsystem().getFieldData().getGridPose(Alliance.Invalid, getOper().getAprilTag(), getOper().getSlot());
+
+        double max_v;
+        double max_a;
+        if (getOper().getGamePiece() == GamePiece.Cone) {
+            if (faster_) {
+                max_v = 2.0;
+                max_a = 2.0;
+            }
+            else {
+                max_v = 0.5;
+                max_a = 0.5;                
+            }
+        } else {
+            max_v = 2.0;
+            max_a = 2.0;
+        }
+
+        List<Pose2d> pts = computeDrivePathPoints(getRobotSubsystem().getSwerve().getPose(), target_pose_);
+        List<Translation2d> interior = new ArrayList<Translation2d>() ;
+        drive_to_action_ = new SwerveDrivePathAction(getRobotSubsystem().getSwerve(), pts.get(0), interior, pts.get(1), target_pose_.getRotation(), max_a, max_v);
+
+        getRobotSubsystem().getSwerve().setAction(drive_to_action_, true);
+        state_ = State.DrivingToLocation ;        
+    }
+
     private void stateWaitingForVision() throws BadParameterTypeException, MissingParameterException {
         int tag = getRobotSubsystem().getFieldData().getGridTag(Alliance.Invalid, getOper().getAprilTag());
         double dist = getRobotSubsystem().getLimeLight().distantToTag(tag) ;
 
-        MessageLogger logger = getRobotSubsystem().getRobot().getMessageLogger();
-        if (vision_timer_.isExpired()) {
-
-            getRobotSubsystem().getSwerve().enableVision(false);
-            target_pose_ = getRobotSubsystem().getFieldData().getGridPose(Alliance.Invalid, getOper().getAprilTag(), getOper().getSlot());
-
-            double max_v;
-            double max_a;
-            if (getOper().getGamePiece() == GamePiece.Cone) {
-                max_v = 0.5;
-                max_a = 0.5;
-            } else {
-                max_v = 2.0;
-                max_a = 2.0;
+        if (faster_) {
+            Pose2d pos = getRobotSubsystem().getSwerve().getVisionPose() ;
+            if (pos != null) {
+                getRobotSubsystem().getSwerve().setPose(pos);
+                visionNextStep();
             }
-
-            List<Pose2d> pts = computeDrivePathPoints(getRobotSubsystem().getSwerve().getPose(), target_pose_);
-            List<Translation2d> interior = new ArrayList<Translation2d>() ;
-            drive_to_action_ = new SwerveDrivePathAction(getRobotSubsystem().getSwerve(), pts.get(0), interior, pts.get(1), target_pose_.getRotation(), max_a, max_v);
-
-            getRobotSubsystem().getSwerve().setAction(drive_to_action_, true);
-            state_ = State.DrivingToLocation ;
         }
         else {
-            logger.startMessage(MessageType.Debug, getRobotSubsystem().getLoggerID());
-            logger.add("Waiting On Vision") ;
-            logger.add("tag", tag) ;
-            logger.add("dist", dist) ;
-            logger.add("vision", getRobotSubsystem().getLimeLight().getBlueBotPose().toPose2d());
-            logger.add("db", getRobotSubsystem().getSwerve().getPose());
-            logger.endMessage();
+            MessageLogger logger = getRobotSubsystem().getRobot().getMessageLogger();
+            if (vision_timer_.isExpired()) {
+                visionNextStep();
+            }
+            else {
+                logger.startMessage(MessageType.Debug, getRobotSubsystem().getLoggerID());
+                logger.add("Waiting On Vision") ;
+                logger.add("tag", tag) ;
+                logger.add("dist", dist) ;
+                logger.add("vision", getRobotSubsystem().getLimeLight().getBlueBotPose().toPose2d());
+                logger.add("db", getRobotSubsystem().getSwerve().getPose());
+                logger.endMessage();
+            }
         }
     }
 
