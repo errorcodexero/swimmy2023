@@ -64,7 +64,7 @@ public class SwimmyAutoMode extends AutoMode {
         Swimmy2023RobotSubsystem robot = (Swimmy2023RobotSubsystem)getAutoController().getRobot().getRobotSubsystem();
 
         RobotOperation oper = new RobotOperation(RobotOperation.Action.Place, what, tpos, slot, loc);
-        AutoGamePieceAction2 act = new AutoGamePieceAction2(robot, place, oper, path, 0.2) ;
+        AutoGamePieceAction2 act = new AutoGamePieceAction2(robot, setpose, place, oper, path, 0.2) ;
         SwerveHolonomicPathFollower drive = act.getPathAction() ;
 
         collect_ = new GPMCollectAction(robot.getGPM(), what, true) ;

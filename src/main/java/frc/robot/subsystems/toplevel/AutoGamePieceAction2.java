@@ -16,14 +16,14 @@ public class AutoGamePieceAction2 extends Action {
     private String pathname_ ;
     private SwerveHolonomicPathFollower drive_action_ ;
 
-    public AutoGamePieceAction2(Swimmy2023RobotSubsystem sub, double dist, RobotOperation oper, String pathname, double delay) throws BadParameterTypeException, MissingParameterException {
+    public AutoGamePieceAction2(Swimmy2023RobotSubsystem sub, boolean setpose, double dist, RobotOperation oper, String pathname, double delay) throws BadParameterTypeException, MissingParameterException {
         super(sub.getRobot().getMessageLogger());
         dist_ = dist ;
         sub_ = sub;
         oper_ = oper;
 
         SwerveBaseSubsystem swerve = (SwerveBaseSubsystem)sub_.getRobot().getRobotSubsystem().getDB();
-        drive_action_ = new SwerveHolonomicPathFollower(swerve, pathname, false, delay) ;
+        drive_action_ = new SwerveHolonomicPathFollower(swerve, pathname, setpose, delay) ;
         drive_action_.disableVision(false);
         pathname_ = pathname;
     }

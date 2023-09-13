@@ -1118,7 +1118,7 @@
             "red" : {
                 "1" : {
                     "start-collect" : 4.42,
-                    "close-collect" : 6.91,
+                    "close-collect" : 6.6,
                     "start-place" : 8.78
                 },
                 "2" : {
@@ -1129,7 +1129,7 @@
             "blue" : {
                 "1" : {
                     "start-collect" : 4.42,
-                    "close-collect" : 6.91,
+                    "close-collect" : 6.6,
                     "start-place" : 8.78
                 },
                 "2" : {

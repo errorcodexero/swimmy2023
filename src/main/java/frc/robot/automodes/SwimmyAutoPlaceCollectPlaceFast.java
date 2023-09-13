@@ -29,7 +29,7 @@ public class SwimmyAutoPlaceCollectPlaceFast extends SwimmyAutoMode  {
         //
         // Close collect distance for path 1
         //
-        double cc1 = settings.get(settingsprefix + "1:start-collect").getDouble() ;
+        double cc1 = settings.get(settingsprefix + "1:close-collect").getDouble() ;
 
         //
         // Place operation distance for path 1
@@ -44,7 +44,7 @@ public class SwimmyAutoPlaceCollectPlaceFast extends SwimmyAutoMode  {
         //
         // Close collect distance for path 2
         //
-        double cc2 = settings.get(settingsprefix + "2:start-collect").getDouble() ;        
+        double cc2 = settings.get(settingsprefix + "2:close-collect").getDouble() ;        
 
         //
         // Grab the loaded game piece and place it on the grid

@@ -59,7 +59,8 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
     private XeroTimer wheels_timer_ ;
 
     private double arm_wait_start_time_ ;
-    private boolean faster_ = true ;
+    private boolean faster_pose = false ;
+    private boolean faster_drive = false ;
 
     private XeroElapsedTimer overall_timer_ ;   // Measure time since auto takes over
     
@@ -280,7 +281,7 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
         double max_v;
         double max_a;
         if (getOper().getGamePiece() == GamePiece.Cone) {
-            if (faster_) {
+            if (faster_drive) {
                 max_v = 2.0;
                 max_a = 2.0;
             }
@@ -305,7 +306,7 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
         int tag = getRobotSubsystem().getFieldData().getGridTag(Alliance.Invalid, getOper().getAprilTag());
         double dist = getRobotSubsystem().getLimeLight().distantToTag(tag) ;
 
-        if (faster_) {
+        if (faster_pose) {
             Pose2d pos = getRobotSubsystem().getSwerve().getVisionPose() ;
             if (pos != null) {
                 getRobotSubsystem().getSwerve().setPose(pos);
