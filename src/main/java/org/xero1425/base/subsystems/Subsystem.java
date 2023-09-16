@@ -172,17 +172,6 @@ public class Subsystem {
         return "This subsystem is not publishing status" ;
     }
 
-    // public void publishStatus() {
-    //     getRobot().publishSubsystemStatus(getName(), getStatus());
-    //     publishChildSubsystems();
-    // }
-
-    // protected void publishChildSubsystems() {
-    //     for(Subsystem sys : children_) {
-    //         sys.publishStatus(); ;
-    //     }
-    // }
-
     /// \brief Return a settings file value associated with this subsystem
     ///
     /// This method searches for a settings value assocaited with the given subsystem.  Subsystem values

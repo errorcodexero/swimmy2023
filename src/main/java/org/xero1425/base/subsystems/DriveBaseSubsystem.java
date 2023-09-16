@@ -26,6 +26,9 @@ public abstract class DriveBaseSubsystem extends Subsystem {
         } else if (gyrotype.equals("LSM6DS33")) {
             gyro_ = new RomiGyro();
         }
+        else if (gyrotype.equals("pigeon2")) {
+            gyro_ = new Pigeon2Gyro() ;
+        }
         else {
             String msg = "the gyro type '" + gyrotype + "' is not valid.  Only 'navx' and 'LSM6D33' are supported" ;
             throw new Exception(msg) ;

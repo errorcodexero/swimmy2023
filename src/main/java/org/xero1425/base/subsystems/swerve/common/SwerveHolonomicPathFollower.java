@@ -51,9 +51,6 @@ public class SwerveHolonomicPathFollower extends SwerveHolonomicControllerAction
     private boolean disable_vision_ ;
     private double distance_ ;
 
-    // private Executor lambda_ ;
-    // private double distance_ ;
-
     private static final String [] columns_ = {
         "time", "index",
         "tx (m)", "ty (m)", "ta (deg)",
@@ -78,11 +75,6 @@ public class SwerveHolonomicPathFollower extends SwerveHolonomicControllerAction
     public double getDistance() {
         return distance_ ;
     }
-
-    // public void setLambda(Executor lambda, double dist) {
-    //     lambda_ = lambda ;
-    //     distance_ = dist ;
-    // }
 
     public void addDistanceBasedAction(double dist, Executor action) {
         DistanceBasedAction act = new DistanceBasedAction(dist, action) ;
@@ -159,18 +151,6 @@ public class SwerveHolonomicPathFollower extends SwerveHolonomicControllerAction
             
             distance_ = getDistanceFromPath(index_);
             checkActions(distance_);
-
-            // if (lambda_ != null && dist > distance_) {
-            //     MessageLogger logger = getSubsystem().getRobot().getMessageLogger() ;
-            //     logger.startMessage(MessageType.Info);
-            //     logger.add("PathFollowing executing lambda") ;
-            //     logger.add("target", distance_);
-            //     logger.add("actual", dist) ;
-            //     logger.endMessage();
-
-            //     lambda_.doit() ;
-            //     lambda_ = null ;
-            // }
         }
         else {
             target = getPoseFromPath(index_ - 1);
