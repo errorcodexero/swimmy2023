@@ -15,6 +15,10 @@ public class Pigeon2Gyro implements XeroGyro {
         gyro_ = new Pigeon2(canid, bus) ;
     }
 
+    public boolean isConnected() {
+        return true ;
+    }
+
     public double getYaw() {
         return gyro_.getYaw() ;
     }
@@ -34,22 +38,24 @@ public class Pigeon2Gyro implements XeroGyro {
         return data_[2] ;
     }
 
-    public double getGyroX()  {
-        gyro_.getRawGyro(data_) ;
-        return data_[0] ;
-    }
+    // public double getGyroX()  {
+    //     gyro_.getRawGyro(data_) ;
+    //     return data_[0] ;
+    // }
 
-    public double getGyroY() {
-        gyro_.getRawGyro(data_) ;
-        return data_[1] ;
-    }
+    // public double getGyroY() {
+    //     gyro_.getRawGyro(data_) ;
+    //     return data_[1] ;
+    // }
     
-    public double getGyroZ() {
-        gyro_.getRawGyro(data_) ;
-        return data_[2] ;        
-    }
+    // public double getGyroZ() {
+    //     gyro_.getRawGyro(data_) ;
+    //     return data_[2] ;        
+    // }
     
-    public double getAccelX() ;
-    public double getAccelY() ;
-    public double getAccelZ() ;
+    // public double getAccelX() {
+
+    // }
+    // public double getAccelY() ;
+    // public double getAccelZ() ;
 }

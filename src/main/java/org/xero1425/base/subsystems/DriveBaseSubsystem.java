@@ -3,6 +3,7 @@ package org.xero1425.base.subsystems;
 import org.xero1425.base.gyro.NavxGyro;
 import org.xero1425.base.gyro.RomiGyro;
 import org.xero1425.base.gyro.XeroGyro;
+import org.xero1425.base.gyro.Pigeon2Gyro;
 import org.xero1425.misc.MessageLogger;
 import org.xero1425.misc.MessageType;
 import org.xero1425.misc.XeroPathSegment;
@@ -27,7 +28,8 @@ public abstract class DriveBaseSubsystem extends Subsystem {
             gyro_ = new RomiGyro();
         }
         else if (gyrotype.equals("pigeon2")) {
-            gyro_ = new Pigeon2Gyro() ;
+            int canid = getSettingsValue("hw:gyro:canid").getInteger() ;
+            gyro_ = new Pigeon2Gyro(canid) ;
         }
         else {
             String msg = "the gyro type '" + gyrotype + "' is not valid.  Only 'navx' and 'LSM6D33' are supported" ;

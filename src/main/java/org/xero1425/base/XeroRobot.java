@@ -80,9 +80,6 @@ public abstract class XeroRobot extends TimedRobot {
     // The motor factor for creating new motors
     private MotorFactory motors_ ;
 
-    // The MAC address for the ethernet controller
-    private byte[] mac_addr_ ;
-
     // The base robot subsystem
     private RobotSubsystem robot_subsystem_ ;
 
