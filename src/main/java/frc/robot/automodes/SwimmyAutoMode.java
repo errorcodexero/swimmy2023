@@ -26,7 +26,8 @@ import frc.robot.subsystems.toplevel.RobotOperation.Location;
 import frc.robot.subsystems.toplevel.RobotOperation.Slot;
 
 public class SwimmyAutoMode extends AutoMode {
-    private GPMCollectAction collect_ ;
+    private GPMCollectAction collect1_ ;
+    private GPMCollectAction collect2_ ;
 
     public SwimmyAutoMode(AutoController ctrl, String name) {
         super(ctrl, name) ;
@@ -51,10 +52,10 @@ public class SwimmyAutoMode extends AutoMode {
         GPMSubsystem gpm = robot.getGPM() ;
 
         SwerveHolonomicPathFollower pathact = new SwerveHolonomicPathFollower(robot.getSwerve(), path, setpose, 0.2);
-        collect_ = new GPMCollectAction(robot.getGPM(), what, true) ;
+        collect1_ = new GPMCollectAction(robot.getGPM(), what, true) ;
         
-        pathact.addDistanceBasedAction(startcollect, () -> { gpm.setAction(collect_); }) ;
-        pathact.addDistanceBasedAction(closecollect, () -> { collect_.forcedClosed(); }) ;
+        pathact.addDistanceBasedAction(startcollect, () -> { gpm.setAction(collect1_); }) ;
+        pathact.addDistanceBasedAction(closecollect, () -> { collect1_.forcedClosed(); }) ;
 
         addAction(pathact);
     }
@@ -67,11 +68,11 @@ public class SwimmyAutoMode extends AutoMode {
         AutoGamePieceAction2 act = new AutoGamePieceAction2(robot, setpose, place, oper, path, 0.2) ;
         SwerveHolonomicPathFollower drive = act.getPathAction() ;
 
-        collect_ = new GPMCollectAction(robot.getGPM(), what, true) ;
-        DispatchAction da = new DispatchAction(robot.getGPM(), collect_, false);
+        collect2_ = new GPMCollectAction(robot.getGPM(), what, true) ;
+        DispatchAction da = new DispatchAction(robot.getGPM(), collect2_, false);
 
         drive.addDistanceBasedAction(startcollect, () -> { robot.getGPM().setAction(da) ; }) ;
-        drive.addDistanceBasedAction(closecollect, () -> { collect_.forcedClosed();}) ;
+        drive.addDistanceBasedAction(closecollect, () -> { collect2_.forcedClosed();}) ;
 
         addAction(act) ;
     }

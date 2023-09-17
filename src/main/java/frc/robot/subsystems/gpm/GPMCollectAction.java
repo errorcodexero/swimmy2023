@@ -80,6 +80,8 @@ public class GPMCollectAction extends Action {
     }
 
     public void forcedClosed() {
+        MessageLogger logger = subsystem_.getRobot().getMessageLogger();
+        logger.startMessage(MessageType.Info).add("GPMCollectAction - set forced close value").endMessage();
         force_closed_ = true ;
     }
 
@@ -98,6 +100,7 @@ public class GPMCollectAction extends Action {
 
         timer_active_ = false ;
         state_ = State.WaitingForDeploy ;
+        force_closed_ = false ;
 
         subsystem_.getGrabber().setAction(grabber_start_collect_action_, true);
         subsystem_.getArm().setAction(arm_collect_action_, true);
@@ -145,6 +148,8 @@ public class GPMCollectAction extends Action {
                 break ;
 
             case WaitingForSensor:
+                MessageLogger logger = subsystem_.getRobot().getMessageLogger();
+                logger.startMessage(MessageType.Info).add("GPMCollectAction - checking for forced_close").add("forcedclose", force_closed_).endMessage();
                 if (isCollectDone()) {
                     subsystem_.getGrabber().setAction(grabber_stop_collect_action_, true);
                     state_ = State.CloseGrabber;

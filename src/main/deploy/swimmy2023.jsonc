@@ -1128,12 +1128,12 @@
             },
             "blue" : {
                 "1" : {
-                    "start-collect" : 4.42,
-                    "close-collect" : 6.6,
+                    "start-collect" : 4.2,
+                    "close-collect" : 4.7,
                     "start-place" : 8.78
                 },
                 "2" : {
-                    "start-collect" : 5.0,
+                    "start-collect" : 3.3,
                     "close-collect" : 5.2
                 }          
             }
@@ -1141,7 +1141,7 @@
     },
     "testmode": {
         "enabled": true,
-        "which": 105,
+        "which": 23,
         "0": {
             "angle": 45,
             "power": 0.1
@@ -1201,7 +1201,7 @@
             "duration" : 5.0            
         },
         "22" : {
-            "position" : 500
+            "position" : 800
         },
         "23" : {
             "position" : 750

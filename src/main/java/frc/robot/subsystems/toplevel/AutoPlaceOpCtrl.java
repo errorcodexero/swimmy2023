@@ -84,13 +84,13 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
 
         place_action_ = new GPMPlaceAction(sub.getGPM(), oper.getLocation(), oper.getGamePiece(), false, false);
 
-        double forward_time = 0.3 ;
-        forward_power_ = 1.0 ;
+        double forward_time = 0.4 ;
+        forward_power_ = 0.4 ;
         forward_holding_ = 0.3 ;
         if ((oper.getAprilTag() == GridTagPosition.Right && oper.getSlot() == Slot.Right) ||
             (oper.getAprilTag() == GridTagPosition.Left && oper.getSlot() == Slot.Left)) {
             forward_power_ = 0.4 ;
-            forward_time = 1.0 ;
+            forward_time = 0.4;
         }
 
         forward_timer_ = new XeroTimer(sub.getRobot(), "forward", forward_time) ;
