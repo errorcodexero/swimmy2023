@@ -148,8 +148,6 @@ public class GPMCollectAction extends Action {
                 break ;
 
             case WaitingForSensor:
-                MessageLogger logger = subsystem_.getRobot().getMessageLogger();
-                logger.startMessage(MessageType.Info).add("GPMCollectAction - checking for forced_close").add("forcedclose", force_closed_).endMessage();
                 if (isCollectDone()) {
                     subsystem_.getGrabber().setAction(grabber_stop_collect_action_, true);
                     state_ = State.CloseGrabber;

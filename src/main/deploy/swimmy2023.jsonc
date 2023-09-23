@@ -1134,7 +1134,7 @@
                 },
                 "2" : {
                     "start-collect" : 3.3,
-                    "close-collect" : 5.2
+                    "close-collect" : 10.0
                 }          
             }
         }
