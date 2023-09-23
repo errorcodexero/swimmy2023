@@ -40,18 +40,6 @@ public class ConditionalAction extends Action {
     public void run() throws Exception {
         super.run() ;
 
-        // ActionGroup gr = (ActionGroup)iftrue_;
-        // List<Action> list = new ArrayList<Action>() ;
-        // gr.getAllChildren(list);
-
-        // getMessageLogger().startMessage(MessageType.Info);
-        // getMessageLogger().add("Conditional:RUN");
-        // getMessageLogger().add("state", state_);
-        // getMessageLogger().add("isdone", iftrue_.isDone());
-        // getMessageLogger().add("childisdone", list.get(0).isDone());
-        // getMessageLogger().add("iftrue", iftrue_.toString(0));
-        // getMessageLogger().endMessage();
-
         if (state_ && iftrue_.isDone()) {
             setDone() ;
         }

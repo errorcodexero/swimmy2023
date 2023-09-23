@@ -159,28 +159,4 @@ public class RomiGyro implements Gyro, XeroGyro {
   public boolean isConnected() {
     return m_gyroSimDevice != null ;
   }
-
-  public double getGyroX() {
-    return 0.0 ;
-  }
-
-  public double getGyroY() {
-    return 0.0 ;
-  }
-
-  public double getGyroZ()  {
-    return 0.0 ;
-  }
-  
-  public double getAccelX()  {
-    return 0.0 ;
-  }
-
-  public double getAccelY() {
-    return 0.0 ;
-  }
-
-  public double getAccelZ() {
-    return 0.0 ;
-  }
 }

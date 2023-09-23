@@ -43,8 +43,9 @@ public class TeleopController extends BaseController
         catch(InvalidActionRequest ex) {
             MessageLogger logger = getRobot().getMessageLogger() ;
             logger.startMessage(MessageType.Error) ;
-            logger.add("Error generating actions in teleop - ") ;
+            logger.add("Exception generating actions in teleop - ") ;
             logger.add(ex.getMessage()) ;
+            logger.logStackTrace(ex.getStackTrace());
             logger.endMessage(); 
         }
     }
