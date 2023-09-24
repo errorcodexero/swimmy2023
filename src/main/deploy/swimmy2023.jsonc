@@ -23,7 +23,7 @@
             "gpm" : false
         },
         "verbose": {
-            "swerve" : false,
+            "swerve" : true,
             "arm-motor-upper" : false,
             "grabber-motor-grab" : false
         },
@@ -1141,7 +1141,7 @@
     },
     "testmode": {
         "enabled": true,
-        "which": 105,
+        "which": 11,
         "0": {
             "angle": 45,
             "power": 0.1

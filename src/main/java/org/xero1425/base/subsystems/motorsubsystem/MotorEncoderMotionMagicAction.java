@@ -1,5 +1,6 @@
 package org.xero1425.base.subsystems.motorsubsystem;
 
+import org.xero1425.base.XeroRobot;
 import org.xero1425.base.misc.XeroTimer;
 import org.xero1425.base.motors.BadMotorRequestException;
 import org.xero1425.misc.MessageLogger;
@@ -64,22 +65,24 @@ public class MotorEncoderMotionMagicAction extends MotorAction {
         maxv_ = maxv ;
         strength_ = strength ;
 
-        TalonFX talon = getSubsystem().getMotorController().getTalonFX() ;
-        if (talon == null) {
-            throw new BadMotorRequestException(getSubsystem().getMotorController(), "requested TalonFX motor controller on non TalonFX motor") ;
+        if (XeroRobot.isReal()) {
+            TalonFX talon = getSubsystem().getMotorController().getTalonFX() ;
+            if (talon == null) {
+                throw new BadMotorRequestException(getSubsystem().getMotorController(), "requested TalonFX motor controller on non TalonFX motor") ;
+            }
+
+            double kp = sub.getSettingsValue("magic:kp").getDouble() ;
+            double ki = sub.getSettingsValue("magic:ki").getDouble() ;
+            double kd = sub.getSettingsValue("magic:kd").getDouble() ;
+            double kf = sub.getSettingsValue("magic:kf").getDouble() ;
+            
+            talon.config_kP(0, kp);
+            talon.config_kI(0, ki);
+            talon.config_kD(0, kd);
+            talon.config_kF(0, kf);
+
+            plot_id_ = sub.initPlot(sub.getName() + "-" + toString(plot_id_++)) ;
         }
-
-        double kp = sub.getSettingsValue("magic:kp").getDouble() ;
-        double ki = sub.getSettingsValue("magic:ki").getDouble() ;
-        double kd = sub.getSettingsValue("magic:kd").getDouble() ;
-        double kf = sub.getSettingsValue("magic:kf").getDouble() ;
-        
-        talon.config_kP(0, kp);
-        talon.config_kI(0, ki);
-        talon.config_kD(0, kd);
-        talon.config_kF(0, kf);
-
-        plot_id_ = sub.initPlot(sub.getName() + "-" + toString(plot_id_++)) ;
     }
 
     public double getDistance() {

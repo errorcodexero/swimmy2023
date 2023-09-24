@@ -21,7 +21,9 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.shuffleboard.SimpleWidget;
 import org.xero1425.simulator.engine.SimulationEngine;
 import org.xero1425.misc.MessageType;
 import org.xero1425.misc.MissingParameterException;
@@ -117,6 +119,7 @@ public abstract class XeroRobot extends TimedRobot {
     // The type of pneumatics on the robot
     private PneumaticsModuleType pneumatics_type_ ;
 
+    // The power distribution hub for the robot, used for reading currents
     private PowerDistribution pdp_ ;
 
     // Server for dispalying the status of the robot
@@ -125,11 +128,22 @@ public abstract class XeroRobot extends TimedRobot {
     // The april tag layout for this field
     private AprilTagFieldLayout layout_ ;
 
-    // If true, we have run autonomous already
+    //
+    // The set of loop types we have run.  For instance, in a match we will see
+    // disabled, auto, disabled, teleop
+    //
     private List<LoopType> loop_type_history_ ;
+
+    // The automode that is currently selected
+    private SimpleWidget sel_automode_name_ ;
+    private SimpleWidget sel_automode_number_ ;
+    private SimpleWidget sel_testmode_ ;
 
     /// \brief The "subsystem" name for the message logger for this class
     public static final String LoggerName = "xerorobot" ;
+
+    /// \brief This is the shuffle board tab where automode things are found
+    public static final String AutoModeTab = "AutoMode" ;
 
     private static final String PDPPropertyName = "system:pdp:type" ;
 
@@ -220,16 +234,8 @@ public abstract class XeroRobot extends TimedRobot {
 
         // Store the initial time
         last_time_ = getTime();
-
         automode_ = -1;
 
-        // try {
-        //     server_ = new StatusServer(9001) ;
-        //     server_.start() ;
-        // }
-        // catch(IOException ex) {
-
-        // }
     }
 
     public RobotPaths getRobotFileSystemPaths() {
@@ -963,8 +969,21 @@ public abstract class XeroRobot extends TimedRobot {
     }
 
     private void displayAutoModeState() {
-        SmartDashboard.putNumber("AutoModeNumber", automode_) ;
-        SmartDashboard.putString("AutoModeName", auto_controller_.getAutoModeName()) ;
+        int testnumber = auto_controller_.getTestNumber() ;
+        int number = (testnumber == -1) ? automode_ : -1 ;
+        String name = auto_controller_.getAutoModeName() ;
+
+        if (sel_automode_name_ == null) {
+            ShuffleboardTab tab = Shuffleboard.getTab(AutoModeTab) ;
+            sel_automode_name_ = tab.add("Name", name).withSize(2, 1).withPosition(0, 1) ;
+            sel_automode_number_ = tab.add("Number", number).withSize(1,1).withPosition(2, 0);
+            sel_testmode_ = tab.add("TestMode", testnumber).withSize(1,1).withPosition(2, 1);            
+        }
+        else {
+            sel_automode_name_.getEntry().setString(name);
+            sel_automode_number_.getEntry().setInteger(number);
+            sel_testmode_.getEntry().setInteger(testnumber) ;
+        }
     }
 
     private void updateAutoMode() {
@@ -972,7 +991,6 @@ public abstract class XeroRobot extends TimedRobot {
             String msg = DriverStation.getGameSpecificMessage() ;
 
             int sel = -1 ;
-
             if (robot_subsystem_.getOI() != null) {
                 sel = getAutoModeSelection() ;
                 boolean dbg = shutdownDebug() ;
@@ -981,7 +999,6 @@ public abstract class XeroRobot extends TimedRobot {
                     automode_ = sel ;
                     game_data_ = msg ;
                     fms_connection_ = dbg;
-
                 }
             }
 

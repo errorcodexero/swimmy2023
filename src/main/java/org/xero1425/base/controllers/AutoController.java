@@ -1,5 +1,7 @@
 package org.xero1425.base.controllers;
 
+import static org.junit.Assert.fail;
+
 import java.util.ArrayList;
 import java.util.List;
 import org.xero1425.base.XeroRobot;
@@ -46,6 +48,19 @@ public abstract class AutoController extends BaseController {
                 test_mode_ = true ;
             }
         }
+    }
+
+    public int getTestNumber() {
+        int ret = -1 ;
+
+        if (test_mode_ && current_automode_ != null)  {
+            if (current_automode_ instanceof TestAutoMode) {
+                TestAutoMode ta = (TestAutoMode)current_automode_ ;
+                ret = ta.getTestNumber() ;
+            }
+        }
+
+        return ret ;
     }
 
     /// \brief Add a new automode to the automode controller

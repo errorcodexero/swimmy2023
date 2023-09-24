@@ -2,6 +2,7 @@ package org.xero1425.base.subsystems.oi;
 
 import java.util.List;
 
+import org.xero1425.base.XeroRobot;
 import org.xero1425.base.controllers.AutoMode;
 
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
@@ -41,7 +42,8 @@ public class OIShuffleBoardDevice extends OIDevice {
                 }
             }
 
-            Shuffleboard.getTab("AutoMode").add("AutoMode", chooser_).withSize(2,1).withWidget(BuiltInWidgets.kComboBoxChooser) ;
+            String tab = XeroRobot.AutoModeTab ;
+            Shuffleboard.getTab(tab).add("AutoMode", chooser_).withSize(2,1).withWidget(BuiltInWidgets.kComboBoxChooser) ;
         }
         else if (chooser_ != null) {
             Integer i = chooser_.getSelected() ;
