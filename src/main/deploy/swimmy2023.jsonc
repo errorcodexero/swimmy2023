@@ -1117,13 +1117,13 @@
         "middle1fast" : {
             "red" : {
                 "1" : {
-                    "start-collect" : 4.42,
-                    "close-collect" : 6.6,
+                    "start-collect" : 4.2,
+                    "close-collect" : 4.7,
                     "start-place" : 8.78
                 },
                 "2" : {
                     "start-collect" : 3.3,
-                    "close-collect" : 5.65
+                    "close-collect" : 10.0
                 }
             },
             "blue" : {

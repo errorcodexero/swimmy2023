@@ -84,8 +84,8 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
 
         place_action_ = new GPMPlaceAction(sub.getGPM(), oper.getLocation(), oper.getGamePiece(), false, false);
 
-        double forward_time = 0.6 ;
         forward_power_ = 0.4 ;
+        double forward_time = 0.6 ;
         forward_holding_ = 0.3 ;
         if ((oper.getAprilTag() == GridTagPosition.Right && oper.getSlot() == Slot.Right) ||
             (oper.getAprilTag() == GridTagPosition.Left && oper.getSlot() == Slot.Left)) {
