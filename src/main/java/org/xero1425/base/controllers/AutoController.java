@@ -1,7 +1,5 @@
 package org.xero1425.base.controllers;
 
-import static org.junit.Assert.fail;
-
 import java.util.ArrayList;
 import java.util.List;
 import org.xero1425.base.XeroRobot;
