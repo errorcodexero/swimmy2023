@@ -1,0 +1,134 @@
+#!/bin/bash
+
+EXIT_STATUS=0
+
+function findtests()
+{
+    FILES=`find src/sim/sims -name \*.json -print`
+    for FILE in $FILES; do
+	ONE=${FILE%.*}
+	TWO=${ONE##*/}
+	TESTS=($TWO ${TESTS[@]})
+    done
+}
+
+function detectos()
+{
+    myname="$(uname -s)"
+    case "${myname}" in
+	Linux*) ostype="linux";;
+	Darwin*) ostype="macos";;
+	CYGWIN*) ostype="windows";;
+	*) ostype="unknown";;
+    esac
+}
+
+function initwin()
+{
+    export JAVA_HOME="C:/users/public/wpilib/2023/jdk"
+    echo "initialzing for windows"
+    JPATH="-Djava.library.path=build/jni/release"
+    PATH=build/jni/release:$PATH
+}
+
+function initmacos()
+{
+    echo "initialzing for macos"
+    export JAVA_HOME="/Library/Java/JavaVirtualMachines/adoptopenjdk-11.jdk/Contents/Home"
+    export PATH=build/tmp/jniExtractDir:$PATH
+    export DYLD_LIBRARY_PATH=build/tmp/jniExtractDir:$DYLD_LIBRARY_PATH
+    JPATH="-Djava.library.path=build/tmp/jniExtractDir:/Users/bwg/Library/Java/Extensions:/Library/Java/Extensions:/Network/Library/Java/Extensions:/System/Library/Java/Extensions:/usr/lib/java:."
+}
+
+function initlinux()
+{
+    echo "initialzing for linux"
+    JPATH="-Djava.library.path=build/jni/release:/usr/java/packages/lib:/usr/lib/x86_64-linux-gnu/jni:/lib/x86_64-linux-gnu:/usr/lib/x86_64-linux-gnu:/usr/lib/jni:/lib:/usr/lib"
+    echo Found java at $JAVA_HOME
+    # export JAVA_HOME=~/wpilib/2023/jdk
+    export LD_LIBRARY_PATH=build/jni/release:$LD_LIBRARY_PATH
+}
+
+function init()
+{
+    detectos
+    if [ $ostype == "linux" ]; then
+	initlinux
+    elif [ $ostype == "macos" ]; then
+	initmacos
+    elif [ $ostype == "windows" ]; then
+	initwin
+    else
+	echo "unknown operating system"
+	exit 1
+    fi
+}
+
+function runone()
+{
+    echo -n "Running test $1 ... "
+    $JAVA_HOME/bin/java $JPATH -jar build/libs/$JARNAME.jar --logfile testout/$1.log --input $1
+    if [ $? -eq 0 ]; then
+	echo passed
+    else
+	EXIT_STATUS=1
+	echo failed
+    fi	
+}
+
+function prunetests()
+{
+    if [ $# -eq 1 ]; then
+	for TEST in ${TESTS[@]}; do
+	    if [[ $TEST =~ $1 ]]; then
+		RUNTESTS=(${RUNTESTS[@]} $TEST)
+	    fi
+	done
+    else
+	RUNTESTS=${TESTS[@]}
+    fi
+}
+
+function runtests()
+{
+    echo -n "Running tests:"
+    first=true
+    for TEST in ${RUNTESTS[@]}; do
+	if [ $first == "false" ]; then
+	    echo -n ","
+	fi
+	echo -n $TEST
+	first=false
+    done
+    echo
+    
+    for TEST in ${RUNTESTS[@]}; do
+	runone $TEST
+    done
+}
+
+declare -a TESTS=()
+declare -a RUNTESTS=()
+JPATH=""
+ostype=""
+mkdir -p testout
+JARNAMEFULL=`pwd`
+JARNAME=`basename $JARNAMEFULL`
+
+init
+findtests
+
+if [ "$#" -gt 0 ]; then
+    if [ "$1" == "--list" ]; then
+	echo "Available tests"
+	for TEST in ${TESTS[@]}; do
+	    echo "    " $TEST
+	done
+	exit 0 ;
+    fi
+fi
+
+
+prunetests $@
+runtests
+exit $EXIT_STATUS
