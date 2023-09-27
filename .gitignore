@@ -3,6 +3,7 @@
 
 logs
 testout
+doxyout
 
 ### C++ ###
 # Prerequisites
