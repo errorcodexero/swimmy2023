@@ -82,90 +82,9 @@ public class XeroMath
         return result ;        
     }
 
-    public static double[] cubic(double a, double b, double c, double d) {
-        double [] ret = null ;
-
-        if (Math.abs(a) < 1e-8) {
-            ret = quadratic(b, c, d) ;
-        }
-        else {
-            b /= a ;
-            c /= a ;
-            d /= a ;
-
-            double q = (3.0*c - (b*b))/9.0 ;
-            double r = (-(27.0*d) + b*(9.0*c - 2.0*(b*b))) / 54.0 ;
-            double disc = q*q*q + r*r ;
-            double term1 = (b / 3.0) ;
-
-            if (disc > 0.0) {
-                //
-                // One real root, two complex
-                //
-                ret = new double[1] ;
-
-                double mins_s = 0.0 ;
-                double mins_t = 0.0 ;
-
-                double s = r + Math.sqrt(disc);
-                if (s < 0) {
-                    mins_s = -s ;
-                    s = -Math.pow(mins_s, 1.0 / 3.0) ;
-                } else {
-                    s = Math.pow(s, 1.0 / 3.0) ;
-                }
-                    
-                double t = r - Math.sqrt(disc) ;
-                if (t < 0) {
-                    mins_t = -t ;
-                    t = -Math.pow(mins_t, 1.0 / 3.0);
-                }
-                else {
-                    t = Math.pow(t, 1.0 / 3.0) ;
-                }
-                    
-                ret[0] = -term1 + s + t ;
-            }
-            else if (Math.abs(disc) < 1e-12) {
-                //
-                // All roots real, two are equal
-                //
-                ret = new double[2] ;
-
-                double mins_r = 0.0 ;
-                double r13 = 0.0 ;
-
-                if (r < 0.0) {
-                    mins_r = -r ;
-                    r13 = -Math.pow(mins_r, 1.0 / 3.0);                    
-                }
-                else {
-                    r13 = Math.pow(r, 1.0 / 3.0) ;
-                }
-
-                ret[0] = -term1 + 2.0 * r13;
-                ret[1] = -(r13 + term1) ;
-            }
-            else {
-                //
-                // All roots real and unequal
-                //
-                ret = new double[3] ;
-                double r13 = 0.0 ;
-
-                q = -q ;
-                double dum1 = q * q * q ;
-                dum1 = Math.acos(r / Math.sqrt(dum1));
-                r13 = 2.0 * Math.sqrt(q);
-                ret[0] = -term1 + r13 * Math.cos(dum1 / 3.0);
-                ret[1] = -term1 + r13 * Math.cos((dum1 + 2.0 * Math.PI) / 3.0);
-                ret[1] = -term1 + r13 * Math.cos((dum1 + 4.0 * Math.PI) / 3.0);
-            }
-        }
-
-        return ret ;
-    }
-
+    /// \brief returns the smallest real positive root for a quadratic equation with the roots given
+    /// \param roots the set of roots of the quadratic
+    /// \returns the single root that is the smallest positive root.  If none are present, returns MAX_VALUE.
     public static double pickRoot(double [] roots) throws Exception {
         if (roots.length == 0) {
             throw new Exception("no real roots for equation") ;

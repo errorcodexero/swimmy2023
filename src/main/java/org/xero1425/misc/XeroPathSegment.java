@@ -26,6 +26,8 @@ public class XeroPathSegment
     /// \param vel the velocity at this point of the path
     /// \param accel the acceleration at this point of the path
     /// \param jerk the jerk at this point of the path
+    /// \param curv the curvature of the path
+    /// \param rot the rotation of the robot if its a swerve
     /// \param heading the heading of the robot at this point of the path
     public XeroPathSegment(double time, double x, double y, double dist, double vel, double accel, double jerk, double heading, double curv, double rot) {
         time_ = time ;
@@ -103,10 +105,14 @@ public class XeroPathSegment
         return heading_ ;
     }
 
+    /// \brief returns the curvature for the path segment
+    /// \returns the curvature for the path segment      
     public double getCurvature() {
         return curvature_ ;
     }
 
+    /// \brief returns the robot rotation for swerve for the path segment
+    /// \returns the robot rotation for swerve for the path segment      
     public double getRotation() {
         return rotation_ ;
     }
