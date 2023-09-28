@@ -168,10 +168,6 @@ public class Subsystem {
         this(parent.getRobot(), parent, name) ;
     }
 
-    public String getStatus() {
-        return "This subsystem is not publishing status" ;
-    }
-
     /// \brief Return a settings file value associated with this subsystem
     ///
     /// This method searches for a settings value assocaited with the given subsystem.  Subsystem values
