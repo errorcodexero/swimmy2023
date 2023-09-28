@@ -33,7 +33,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 /// \li \c run() - called during the robot loop once per loop during teleop
 /// \li \c reset() - called after teleop as the robot enters the disabled state
 ///
-public class Subsystem {
+public abstract class Subsystem {
     //
     // If true, we turn on subsystem timing
     //
@@ -688,8 +688,7 @@ public class Subsystem {
 
     /// \brief stub version of the computeMyState method.
     /// Should be implemented by a derived class
-    protected void computeMyState() throws Exception {        
-    }
+    protected abstract void computeMyState() throws Exception ;
 
     private boolean shouldDisplay(DisplayType dtype) {
         boolean ret = false ;

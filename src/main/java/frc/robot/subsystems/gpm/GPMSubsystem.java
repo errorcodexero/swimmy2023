@@ -19,6 +19,9 @@ public class GPMSubsystem extends Subsystem {
         addChild(grabberSubsystem_);
 
     }
+    
+    protected void computeMyState() {
+    }    
 
     public ArmSubsystem getArm() {
         return armSubsystem_ ;
@@ -27,6 +30,4 @@ public class GPMSubsystem extends Subsystem {
     public GrabberSubsystem getGrabber() {
         return grabberSubsystem_ ;
     }
-
-
 }

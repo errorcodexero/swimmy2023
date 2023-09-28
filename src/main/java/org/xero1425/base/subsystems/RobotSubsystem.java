@@ -25,6 +25,9 @@ public class RobotSubsystem extends Subsystem
         db_ = null ;
     }
 
+    public void computeMyState() {
+    }
+
     /// \brief Add a child subsystem to this subsystem.  If the child is a drivebase
     /// or an OI, it is remembered as these are special cases.  Otherwise the child is
     /// just added to the current subsystem like any other child.  Adding more than one

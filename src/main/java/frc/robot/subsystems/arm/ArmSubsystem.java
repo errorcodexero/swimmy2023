@@ -26,6 +26,9 @@ public class ArmSubsystem extends Subsystem {
         motor_upper_.getMotorController().setNeutralDeadband(0.001) ;
     }
 
+    protected void computeMyState() {
+    }
+
     public MotorEncoderSubsystem getLowerSubsystem() {
         return motor_lower_ ;
     }

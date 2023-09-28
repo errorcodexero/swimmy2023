@@ -44,6 +44,9 @@ public class MotorSubsystem extends Subsystem
         }
     }
 
+    protected void computeMyState() throws Exception {
+    }
+
     /// \brief Returns true if the motor is running.  Running is defined as a power greater
     /// than 1e-3.
     /// \returns true if the motor is running

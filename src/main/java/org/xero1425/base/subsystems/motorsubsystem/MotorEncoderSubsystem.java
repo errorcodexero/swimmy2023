@@ -270,6 +270,7 @@ public class MotorEncoderSubsystem extends MotorSubsystem
     /// SmartDashboard if verbose output is enabled for this subsystem.
     @Override
     public void computeMyState() throws Exception {
+        
         super.computeMyState();
 
         double pos = encoder_.getPosition() ;

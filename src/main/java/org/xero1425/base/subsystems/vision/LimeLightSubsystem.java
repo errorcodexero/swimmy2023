@@ -115,6 +115,9 @@ public class LimeLightSubsystem extends Subsystem implements IVisionLocalization
         setCamMode(CamMode.VisionProcessing);
     }
 
+    protected void computeMyState() {
+    }
+
     ///////////////////////////////////////////////////////
     //
     // The IVisionAlignmentData interface

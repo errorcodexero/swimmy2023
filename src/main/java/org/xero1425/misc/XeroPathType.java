@@ -4,6 +4,7 @@ package org.xero1425.misc;
 
 /// \brief The type of path following used by the robot 
 public enum XeroPathType {
+    None,                       ///< No path following
     SwervePathFollowing,        ///< Swerve drive using path following
     SwervePurePursuit,          ///< Swerve drive using pure pursuit
     SwerveRamsete,              ///< Swerve drive using ramsete
