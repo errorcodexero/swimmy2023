@@ -180,7 +180,7 @@ public abstract class SwerveBaseSubsystem extends DriveBaseSubsystem {
         }
 
         ShuffleboardTab shuffleboardTab = Shuffleboard.getTab("Drivetrain");
-        shuffleboardTab.addNumber("Heading", () -> getHeading().getDegrees());
+        shuffleboardTab.addNumber("Heading", () -> getPose().getRotation().getDegrees());
         shuffleboardTab.addNumber("Pose X", () -> getPose().getX());
         shuffleboardTab.addNumber("Pose Y", () -> getPose().getY());
     }
@@ -278,10 +278,6 @@ public abstract class SwerveBaseSubsystem extends DriveBaseSubsystem {
     // This is a hack for this one event.  Need to rethink this after block party
     public double getRotationalVelocity() {
         return rotational_velocity_.getMax() ;
-    }
-
-    public Rotation2d getHeading() {
-        return getPose().getRotation() ;
     }
 
     public int getModuleCount() {

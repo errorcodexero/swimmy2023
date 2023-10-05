@@ -8,6 +8,7 @@ import org.xero1425.base.subsystems.swerve.common.SwerveDriveXPatternAction;
 import org.xero1425.misc.BadParameterTypeException;
 import org.xero1425.misc.MissingParameterException;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
@@ -191,18 +192,9 @@ public class SwerveDriveGamepad extends Gamepad {
         // the positive X axis of the field.
         //
         rxscaled *= 2.0 / Math.hypot(db_.getLength(), db_.getWidth()) / 39.37;  // 39.27 to convert meters -> inches. Original equation from SDS assumes inches.
-        ChassisSpeeds speeds = ChassisSpeeds.fromFieldRelativeSpeeds(-lyscaled, -lxscaled, rxscaled, db_.getHeading()) ;
+        Pose2d robotpose = db_.getPose() ;
+        ChassisSpeeds speeds = ChassisSpeeds.fromFieldRelativeSpeeds(-lyscaled, -lxscaled, rxscaled, robotpose.getRotation()) ;
         action_.update(speeds) ;
-
-        // MessageLogger logger = getSubsystem().getRobot().getMessageLogger() ;
-        // logger.startMessage(MessageType.Info);
-        // logger.add("lxscaled", lxscaled) ;
-        // logger.add("lyscaled", lyscaled) ;
-        // logger.add("rxscaled", rxscaled) ;
-        // logger.add("dbheading", db_.getHeading());
-        // logger.add("gamepad: ");
-        // logger.add(speeds.toString());
-        // logger.endMessage();
 
         if (db_.getAction() != action_)
             db_.setAction(action_) ;
