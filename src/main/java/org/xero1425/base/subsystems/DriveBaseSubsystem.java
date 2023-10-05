@@ -48,7 +48,8 @@ public abstract class DriveBaseSubsystem extends Subsystem {
     }
 
     public void computeMyState() throws Exception  {
-        putDashboard("heading", DisplayType.Always, gyro_.getYaw());
+        putDashboard("gyro-heading", DisplayType.Always, gyro_.getYaw());
+        putDashboard("robot-heading", DisplayType.Always, getPose().getRotation().getDegrees());
     }
 
     public double getYaw() {

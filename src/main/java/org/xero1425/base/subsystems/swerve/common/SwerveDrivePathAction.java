@@ -125,6 +125,7 @@ public class SwerveDrivePathAction extends SwerveHolonomicControllerAction {
             logger.add("SwerveDrivePathAction: complete due robot at endpoint");
             logger.add("target pose", end_);
             logger.add("actual pose", getSubsystem().getPose());
+            logger.add("heading: ", facing_) ;
             logger.endMessage();
         }
         else if (deltat >= trajectory_.getTotalTimeSeconds() && timer_.isExpired()) {

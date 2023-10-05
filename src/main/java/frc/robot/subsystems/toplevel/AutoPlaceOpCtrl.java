@@ -76,7 +76,7 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
             vision_timer_ = new XeroTimer(sub.getRobot(), "vision/timer", 0.3);
 
         if (oper.getLocation() == Location.Middle)
-            settling_timer_ = new XeroTimer(sub.getRobot(), "settling", 0.6) ;
+            settling_timer_ = new XeroTimer(sub.getRobot(), "settling", 0.4) ;
         else
             settling_timer_ = new XeroTimer(sub.getRobot(), "settling", 0.3) ;
 
@@ -90,7 +90,7 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
         if ((oper.getAprilTag() == GridTagPosition.Right && oper.getSlot() == Slot.Right) ||
             (oper.getAprilTag() == GridTagPosition.Left && oper.getSlot() == Slot.Left)) {
             forward_power_ = 0.4 ;
-            forward_time = 0.4;
+            forward_time = 0.6;
         }
 
         forward_timer_ = new XeroTimer(sub.getRobot(), "forward", forward_time) ;

@@ -194,16 +194,6 @@ public class SwerveDriveGamepad extends Gamepad {
         ChassisSpeeds speeds = ChassisSpeeds.fromFieldRelativeSpeeds(-lyscaled, -lxscaled, rxscaled, db_.getHeading()) ;
         action_.update(speeds) ;
 
-        // MessageLogger logger = getSubsystem().getRobot().getMessageLogger() ;
-        // logger.startMessage(MessageType.Info);
-        // logger.add("lxscaled", lxscaled) ;
-        // logger.add("lyscaled", lyscaled) ;
-        // logger.add("rxscaled", rxscaled) ;
-        // logger.add("dbheading", db_.getHeading());
-        // logger.add("gamepad: ");
-        // logger.add(speeds.toString());
-        // logger.endMessage();
-
         if (db_.getAction() != action_)
             db_.setAction(action_) ;
     }
