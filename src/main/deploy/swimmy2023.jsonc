@@ -1050,7 +1050,7 @@
             // This section is a PID controller for rotationally aligning the robot with a vision target
             //
             "balance-pid" : {
-                "kp" : 0.032,
+                "kp" : 0.05,
                 "ki" : 0.0,
                 "kd" : 0.0,        //  0.000001,
                 "kf" : 0.0,

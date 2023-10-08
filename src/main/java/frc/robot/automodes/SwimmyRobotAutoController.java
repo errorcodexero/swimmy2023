@@ -33,8 +33,8 @@ public class SwimmyRobotAutoController extends AutoController {
                 addAutoMode(new SwimmyAutoPlaceCollectPlaceFast(this, "Fast Red Two Center", "middle1fast", "red", GridTagPosition.Right, Slot.Left));
                 addAutoMode(new SwimmyAutoPlaceCollectPlaceFast(this, "Fast Blue Two Center", "middle1fast", "blue", GridTagPosition.Left, Slot.Right)) ;
 
-                addAutoMode(new SwimmyAutoPlaceCollectPlace(this, "Red Two Edge", "Edge1", "Red", Location.Top, GamePiece.Cone, GridTagPosition.Left, Slot.Right, Location.Top, GamePiece.Cone, 4.9));
-                addAutoMode(new SwimmyAutoPlaceCollectPlace(this, "Blue Two Edge", "Edge1", "Blue", Location.Top, GamePiece.Cone, GridTagPosition.Right, Slot.Left, Location.Top, GamePiece.Cone, 4.9));
+                addAutoMode(new SwimmyAutoPlaceCollectPlace(this, "Red Two Edge", "Edge1", "Red", Location.Top, GamePiece.Cone, GridTagPosition.Left, Slot.Right, Location.Top, GamePiece.Cone, 5.1));
+                addAutoMode(new SwimmyAutoPlaceCollectPlace(this, "Blue Two Edge", "Edge1", "Blue", Location.Top, GamePiece.Cone, GridTagPosition.Right, Slot.Left, Location.Top, GamePiece.Cone, 5.1));
             }
             catch(Exception ex) {
                 MessageLogger logger = robot.getMessageLogger() ;
