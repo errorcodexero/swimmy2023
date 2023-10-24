@@ -664,7 +664,9 @@
             "hw" : {
                 "sensor" : {
                     "upper" : 0,
-                    "lower" : 1
+                    "lower" : 1,
+                    "left" : 4,
+                    "right" : 5
                 }
             },
             "start" : {
