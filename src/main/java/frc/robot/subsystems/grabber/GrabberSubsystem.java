@@ -13,8 +13,12 @@ public class GrabberSubsystem extends Subsystem {
     private MotorEncoderSubsystem motor_spin_ ;
     private DigitalInput sensor_upper_ ;
     private DigitalInput sensor_lower_ ;
+    private DigitalInput sensor_left_ ;
+    private DigitalInput sensor_right_ ;
     private boolean sensor_upper_value_ ;
     private boolean sensor_lower_value_ ;
+    private boolean sensor_right_value_ ;
+    private boolean sensor_left_value_ ;
 
     public GrabberSubsystem(Subsystem parent) throws Exception {
         super(parent, "grabber");
@@ -29,8 +33,15 @@ public class GrabberSubsystem extends Subsystem {
 
         int v = getSettingsValue("hw:sensor:lower").getInteger();
         sensor_lower_ = new DigitalInput(v);
+
         v = getSettingsValue("hw:sensor:upper").getInteger();
         sensor_upper_ = new DigitalInput(v);
+
+        v = getSettingsValue("hw:sensor:left").getInteger();
+        sensor_left_ = new DigitalInput(v);
+        
+        v = getSettingsValue("hw:sensor:right").getInteger();
+        sensor_right_ = new DigitalInput(v);        
     }
 
     @Override
@@ -48,12 +59,17 @@ public class GrabberSubsystem extends Subsystem {
     protected void computeMyState() {
         sensor_upper_value_ = !sensor_upper_.get() ;
         sensor_lower_value_ = !sensor_lower_.get() ;
+        sensor_left_value_ = !sensor_left_.get() ;
+        sensor_right_value_ = !sensor_right_.get() ;
         putDashboard("s-upper", DisplayType.Always, sensor_upper_value_);
         putDashboard("s-lower", DisplayType.Always, sensor_lower_value_);
+        putDashboard("s-left", DisplayType.Always, sensor_left_value_);
+        putDashboard("s-right", DisplayType.Always, sensor_right_value_);
     }
 
     public boolean getSensor() {
-        return sensor_upper_value_ || sensor_lower_value_;
+        // return sensor_upper_value_ || sensor_lower_value_;
+        return sensor_upper_value_ || sensor_lower_value_ || sensor_left_value_ || sensor_right_value_ ;
     }
 
     public MotorEncoderSubsystem getGrabSubsystem() {
