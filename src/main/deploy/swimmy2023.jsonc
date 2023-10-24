@@ -214,7 +214,7 @@
                             "lower" : {
                                 "maxa" : 10000,                // Max accel/decel for upper arm
                                 "maxv" : 8000,                // Max velocity for upper arm
-                                "target" : 42500,              // Lower arm target position
+                                "target" : 46000,              // Lower arm target position
                                 "strength" : 6                 // The S-curve strength for motion magic
                             },
                             "upper" : {
