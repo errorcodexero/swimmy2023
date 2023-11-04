@@ -40,7 +40,7 @@ public class FieldLocationData {
     // This is the offset from the grid april tag to the position we want the robot to drive to.
     // This offset gets adjusted for the red vs blue end of the field.
     //
-    static final double GridXOffset = 0.98;
+    static final double GridXOffset = 0.88;
 
     //
     // This is the offset from the grid april tag to the position we want the robot to drive to for

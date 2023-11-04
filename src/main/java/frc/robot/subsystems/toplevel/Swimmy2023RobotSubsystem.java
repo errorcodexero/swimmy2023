@@ -5,6 +5,7 @@ import org.xero1425.base.XeroRobot;
 import org.xero1425.base.subsystems.RobotSubsystem;
 import org.xero1425.base.subsystems.oi.Gamepad;
 import org.xero1425.base.subsystems.swerve.common.SwerveBaseSubsystem;
+import org.xero1425.base.subsystems.swerve.common.SwerveVisionProcessing;
 import org.xero1425.base.subsystems.swerve.sdsswerve.SDSSwerveDriveSubsystem;
 import org.xero1425.base.subsystems.vision.LimeLightSubsystem;
 import org.xero1425.misc.BadParameterTypeException;
@@ -12,6 +13,15 @@ import org.xero1425.misc.MessageLogger;
 import org.xero1425.misc.MessageType;
 import org.xero1425.misc.MissingParameterException;
 
+import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.Vector;
+import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.kinematics.SwerveModulePosition;
+import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.wpilibj.DigitalOutput;
 import frc.robot.SwimmyRobot2023;
 import frc.robot.subsystems.gpm.GPMSubsystem;
@@ -240,7 +250,7 @@ public class Swimmy2023RobotSubsystem extends RobotSubsystem {
             }
             else {
                 if (oper.getAction() == Action.Place) {
-                    ctrl_ = new AutoPlaceOpCtrl(this, oper);
+                    ctrl_ = new AutoPlaceOpCtrl2(this, oper);
                 }
                 else {
                     if (oper.getManual()) {
@@ -317,6 +327,62 @@ public class Swimmy2023RobotSubsystem extends RobotSubsystem {
                 getOI().enableGamepad();
                 getSwerve().enableVision(true);
                 ctrl_ = null;
+            }
+        }
+    }
+
+    private void doExperiment()
+    {
+        double width = 0.7112;
+        double length = 0.7112 ;
+        Pose2d initialPose = new Pose2d(0.0, 0.0, Rotation2d.fromDegrees(0.0)) ;
+        Rotation2d initialGyro = Rotation2d.fromDegrees(0.0) ;
+
+        SwerveModulePosition [] poss = new SwerveModulePosition[4] ;
+        poss[0] = new SwerveModulePosition(0.0, Rotation2d.fromDegrees(0.0)) ;
+        poss[1] = new SwerveModulePosition(0.0, Rotation2d.fromDegrees(0.0)) ;
+        poss[2] = new SwerveModulePosition(0.0, Rotation2d.fromDegrees(0.0)) ;
+        poss[3] = new SwerveModulePosition(0.0, Rotation2d.fromDegrees(0.0)) ;
+
+        SwerveDriveKinematics k = new SwerveDriveKinematics(new Translation2d(width / 2.0, length / 2.0), new Translation2d(width / 2.0, -length / 2.0), 
+                        new Translation2d(-width / 2.0, length / 2.0), new Translation2d(-width / 2.0, -length / 2.0)) ;
+
+        Vector<N3> odometry = VecBuilder.fill(0.1, 0.1, 0.9) ;
+        Vector<N3> vparams = VecBuilder.fill(0.9, 0.9, 0.1);
+        SwerveDrivePoseEstimator e = new SwerveDrivePoseEstimator(k, initialGyro, poss, initialPose, odometry, vparams);
+
+        double t = 0.0 ;
+        double tv = 0.0 ;
+        double nextv = 0.0 ;
+        Pose2d vpose = initialPose ;
+        boolean add = false ;
+        
+        Pose2d p = e.getEstimatedPosition() ;
+        System.out.printf("%f %f %f %f\n", t, p.getX(), p.getY(), p.getRotation().getDegrees()); 
+
+        while (t < 2.0) {
+            e.updateWithTime(t, initialGyro, poss) ;
+            if (t >= nextv && t < 1.0) {
+                vpose = new Pose2d(2.0, 0.0, Rotation2d.fromDegrees(30.0));
+                tv = t ;
+                nextv += 0.1 ;
+                add = true ;
+            }
+            else {
+                add = false ;
+            }
+
+            if (t < 1.0 && add) {
+                e.addVisionMeasurement(vpose, tv);
+            }
+
+            t += 0.02 ;
+            p = e.getEstimatedPosition() ;
+            if (t < 1.0 & add) {
+                System.out.printf("%f %f %f %f - vision %f %f %f %f\n", t, p.getX(), p.getY(), p.getRotation().getDegrees(), tv, vpose.getX(), vpose.getY(), vpose.getRotation().getDegrees());
+            }
+            else {
+                System.out.printf("%f %f %f %f\n", t, p.getX(), p.getY(), p.getRotation().getDegrees());                
             }
         }
     }
