@@ -77,7 +77,6 @@ public class SwerveVisionProcessing {
 
     public void processVision() {
         MessageLogger logger = sub_.getRobot().getMessageLogger();
-        boolean ignore = false;
 
         LocationData lc = vision_.getLocation(sub_.getPose()) ;
         setVisionParams();
@@ -91,48 +90,8 @@ public class SwerveVisionProcessing {
             // sample data.  If we see only one april tag, it must be within a given distance (single_tag_distance_threshold_).
             //
             double dist = vision_pose_.getTranslation().getDistance(sub_.getPose().getTranslation());
-            if (dist >= vision_reject_threshold_) {
-                ignore = true ;
-            }
-
-            //
-            // Ok, some special rules about when to apply the vision samples even if they are
-            // more than the threshold away from the current drive pose.  This is usedful if the
-            // drive pose gets way off, or if for instance, the drive team sets up the robot on the
-            // wrong automode.
-            //
-            if (advanced_rejection_ && vision_.getTagCount() > 1) {
-                //
-                // If we see multi tags, we take the value from vision
-                //
-                ignore = false;
-
-                logger.startMessage(MessageType.Info) ;
-                logger.add("added back vision sample");
-                logger.add("distance", dist) ;
-                logger.add("tag count", vision_.getTagCount());
-                logger.endMessage();
-
-            } else if (advanced_rejection_ && vision_.getTagCount() == 1 && vision_.getDistance() < single_tag_distance_threshold_) {
-                ignore = false ;
-
-                logger.startMessage(MessageType.Info) ;
-                logger.add("added back vision sample");
-                logger.add("distance", dist) ;
-                logger.add("tag count", vision_.getTagCount());
-                logger.endMessage();
-            }
-
-            if (!ignore) {
-                sub_.getEstimator().addVisionMeasurement(vision_pose_, lc.when) ; 
-            }
-            else {
-                logger.startMessage(MessageType.Debug, logger_id_);
-                logger.add("Ignoring vision sample");
-                logger.add("dbpose", sub_.getPose());
-                logger.add("vision", vision_pose_);
-                logger.add("dist", dist);
-                logger.endMessage(); 
+            if (dist < vision_reject_threshold_) {
+                sub_.getEstimator().addVisionMeasurement(vision_pose_, lc.when) ;                 
             }
         }      
 
