@@ -37,7 +37,7 @@ public class SwerveDrivePathAction extends SwerveHolonomicControllerAction {
         "vx (m)", "vy (m)", "va (deg)"
     } ;
 
-    public SwerveDrivePathAction(SwerveBaseSubsystem sub, Pose2d start, List<Translation2d> interior, Pose2d end, Rotation2d facing, double maxa, double maxv) throws BadParameterTypeException, MissingParameterException {
+    public SwerveDrivePathAction(SwerveBaseSubsystem sub, Pose2d start, double svel, List<Translation2d> interior, Pose2d end, double evel, Rotation2d facing, double maxa, double maxv) throws BadParameterTypeException, MissingParameterException {
         super(sub) ;
 
         if (maxa == Double.MAX_VALUE) {
@@ -49,6 +49,9 @@ public class SwerveDrivePathAction extends SwerveHolonomicControllerAction {
         }
 
         TrajectoryConfig config = new TrajectoryConfig(maxv, maxa) ;
+        config.setStartVelocity(svel) ;
+        config.setEndVelocity(evel);
+        
         config.setKinematics(getSubsystem().getKinematics());
         trajectory_ = TrajectoryGenerator.generateTrajectory(start, interior, end, config) ;
 
