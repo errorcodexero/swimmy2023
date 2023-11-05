@@ -296,7 +296,7 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
 
         List<Pose2d> pts = computeDrivePathPoints(getRobotSubsystem().getSwerve().getPose(), target_pose_);
         List<Translation2d> interior = new ArrayList<Translation2d>() ;
-        drive_to_action_ = new SwerveDrivePathAction(getRobotSubsystem().getSwerve(), pts.get(0), interior, pts.get(1), target_pose_.getRotation(), max_a, max_v);
+        drive_to_action_ = new SwerveDrivePathAction(getRobotSubsystem().getSwerve(), pts.get(0), 0.0, interior, pts.get(1), 0.0, target_pose_.getRotation(), max_a, max_v);
 
         getRobotSubsystem().getSwerve().setAction(drive_to_action_, true);
         state_ = State.DrivingToLocation ;        

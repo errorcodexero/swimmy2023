@@ -19,11 +19,15 @@ import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 public class SwerveDrivePathAction extends SwerveHolonomicControllerAction {
     private double trajectory_start_time_ ;
     private Trajectory trajectory_ ;
+    private TrajectoryConfig config_ ;
     private Rotation2d facing_ ;
     private Pose2d last_vision_pose_ ;
     private XeroTimer timer_ ;
     private Pose2d start_ ;
     private Pose2d end_ ;
+    private List<Translation2d> interior_ ;
+    private double svel_ ;
+    private double evel_ ;
     private double maxa_ ;
     private double maxv_ ;
 
@@ -48,13 +52,6 @@ public class SwerveDrivePathAction extends SwerveHolonomicControllerAction {
             maxv = getSubsystem().getMaxVelocity();
         }
 
-        TrajectoryConfig config = new TrajectoryConfig(maxv, maxa) ;
-        config.setStartVelocity(svel) ;
-        config.setEndVelocity(evel);
-        
-        config.setKinematics(getSubsystem().getKinematics());
-        trajectory_ = TrajectoryGenerator.generateTrajectory(start, interior, end, config) ;
-
         facing_ = facing;
         timer_ = new XeroTimer(sub.getRobot(), "drivetimer", 0.2);
 
@@ -63,14 +60,54 @@ public class SwerveDrivePathAction extends SwerveHolonomicControllerAction {
 
         start_ = start ;
         end_ = end ;
+        svel_ = svel ;
+        evel_ = evel ;
+        interior_ = interior ;
 
         maxa_ = maxa ;
         maxv_ = maxv ;
     }
 
+    public SwerveDrivePathAction(SwerveBaseSubsystem sub, List<Translation2d> interior, Pose2d end, double evel, Rotation2d facing, double maxa, double maxv) throws BadParameterTypeException, MissingParameterException {
+        super(sub) ;
+
+        if (maxa == Double.MAX_VALUE) {
+            maxa = getSubsystem().getMaxAccel() ;
+        }
+
+        if (maxv == Double.MAX_VALUE) {
+            maxv = getSubsystem().getMaxVelocity();
+        }
+
+        facing_ = facing;
+        timer_ = new XeroTimer(sub.getRobot(), "drivetimer", 0.2);
+
+        plot_data_ = new Double[columns_.length] ;
+        plot_id_ = getSubsystem().initPlot("SwerveDrivePathAction") ;
+
+        start_ = null ;
+        end_ = end ;
+        evel_ = evel ;
+        interior_ = interior ;
+
+        maxa_ = maxa ;
+        maxv_ = maxv ;
+    }    
+
     @Override
     public void start() throws Exception {
         super.start() ;
+
+        if (start_ == null) {
+            start_ = getSubsystem().getPose() ;
+            svel_ = getSubsystem().getVelocity() ;
+        }
+
+        config_ = new TrajectoryConfig(maxv_, maxa_) ;
+        config_.setStartVelocity(svel_) ;
+        config_.setEndVelocity(evel_);
+        config_.setKinematics(getSubsystem().getKinematics());
+        trajectory_ = TrajectoryGenerator.generateTrajectory(start_, interior_, end_, config_) ;
         trajectory_start_time_ = getSubsystem().getRobot().getTime() ;
         getSubsystem().startPlot(plot_id_, columns_);
     }

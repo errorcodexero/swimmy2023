@@ -37,8 +37,6 @@ public class SwerveVisionProcessing {
     private Vector<N3> multi_tag_far_params_ ;
 
     private double vision_reject_threshold_;
-    private double single_tag_distance_threshold_;
-    private boolean advanced_rejection_ ;
 
     private Pose2d vision_pose_ ;
 
@@ -46,11 +44,9 @@ public class SwerveVisionProcessing {
         vision_ = vision ;
         sub_ = sub ;
 
-        advanced_rejection_ = sub_.getSettingsValue("estimator:advanced-rejection").getBoolean();
         single_tag_threshold_ = sub_.getSettingsValue("estimator:single-threshold").getDouble();
         multi_tag_threshold_ = sub_.getSettingsValue("estimator:single-threshold").getDouble();
         vision_reject_threshold_ = sub_.getSettingsValue("estimator:vision-reject-threshold").getDouble();
-        single_tag_distance_threshold_ = sub_.getSettingsValue("estimator:single-tag-ignore-reject-threshold").getDouble();
 
         single_tag_near_params_ = getParams(sub, "vision:single-near");
         single_tag_far_params_ = getParams(sub, "vision:single-far");

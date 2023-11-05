@@ -41,6 +41,7 @@ public class AutoPlaceOpCtrl2 extends OperationCtrl {
 
         state_ = State.Start ;
         april_tag_action_threshold_ = sub.getSettingsValue("april-tag-place-action-threshold").getDouble() ;
+        // april_tag_action_threshold_ = 2.5 ;
         place_action_ = new GPMPlaceAction(sub.getGPM(), oper.getLocation(), oper.getGamePiece(), false, false);
         overall_timer_ = new XeroElapsedTimer(sub.getRobot());
         wait_for_arm_timer_ = new XeroElapsedTimer(sub.getRobot());
@@ -214,12 +215,14 @@ public class AutoPlaceOpCtrl2 extends OperationCtrl {
         Translation2d p = new Translation2d(end.getX() + sign * straightdist, end.getY());
         interior.add(p);
 
+        double svel = getRobotSubsystem().getSwerve().getVelocity() ;
+
         MessageLogger logger = getRobotSubsystem().getRobot().getMessageLogger() ;
         logger.startMessage(MessageType.Info) ;
         logger.add("start", start) ;
         logger.add("middle", p) ;
         logger.add("end", end) ;
 
-        return new SwerveDrivePathAction(getRobotSubsystem().getSwerve(), start, interior, end, end.getRotation(), maxa, maxv);
+        return new SwerveDrivePathAction(getRobotSubsystem().getSwerve(), start, svel, interior, end, 0.0, end.getRotation(), maxa, maxv);
     }
 }
