@@ -119,7 +119,6 @@ public class AutoPlaceOpCtrl2 extends OperationCtrl {
         }
     }
 
-
     private void stateIdle() {
         state_ = State.WaitForTag ;
     }
@@ -143,6 +142,7 @@ public class AutoPlaceOpCtrl2 extends OperationCtrl {
             overall_timer_.reset() ;
 
             try {
+                getRobotSubsystem().getSwerve().enableVision(false);
                 drive_to_action_ = createDriveToLocationAction() ;
                 getRobotSubsystem().getSwerve().setAction(drive_to_action_, true);
                 state_ = State.DrivingToLocation ;   
@@ -164,6 +164,7 @@ public class AutoPlaceOpCtrl2 extends OperationCtrl {
         if (drive_to_action_.isDone()) {
             wait_for_arm_timer_.reset() ;
             state_ = State.WaitForArm ;
+            getRobotSubsystem().getSwerve().enableVision(true);
         }
     }
 
@@ -198,19 +199,26 @@ public class AutoPlaceOpCtrl2 extends OperationCtrl {
     }
 
     private SwerveDrivePathAction createDriveToLocationAction() throws BadParameterTypeException, MissingParameterException {
-        final double straightdist = 0.1 ;
+        final double straightdist = 0.15 ;
+        final double endpos = 0.1 ;
 
-        double maxa = 2.0 ;
-        double maxv = 2.0 ;
+        double maxa = 0.5 ;
+        double maxv = 0.5 ;
 
-        Pose2d start = getRobotSubsystem().getSwerve().getPose() ;
-        Pose2d end = getRobotSubsystem().getFieldData().getGridPose(Alliance.Invalid, getOper().getAprilTag(), getOper().getSlot());
-        
         double sign = (alliance_ == Alliance.Red) ? -1.0 : 1.0 ;
-        
+        Pose2d start = getRobotSubsystem().getSwerve().getPose() ;
+        Pose2d oldend = getRobotSubsystem().getFieldData().getGridPose(Alliance.Invalid, getOper().getAprilTag(), getOper().getSlot());
+        Pose2d end = new Pose2d(oldend.getX() + sign * endpos, oldend.getY(), oldend.getRotation());
+
         List<Translation2d> interior = new ArrayList<Translation2d>() ;
         Translation2d p = new Translation2d(end.getX() + sign * straightdist, end.getY());
         interior.add(p);
+
+        MessageLogger logger = getRobotSubsystem().getRobot().getMessageLogger() ;
+        logger.startMessage(MessageType.Info) ;
+        logger.add("start", start) ;
+        logger.add("middle", p) ;
+        logger.add("end", end) ;
 
         return new SwerveDrivePathAction(getRobotSubsystem().getSwerve(), start, interior, end, end.getRotation(), maxa, maxv);
     }

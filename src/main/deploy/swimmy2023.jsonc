@@ -28,7 +28,7 @@
             "grabber-motor-grab" : false
         },
         "plotting": {
-            "enabled" : false,
+            "enabled" : true,
             "version" : 3
         },
         "pneumatics": {
@@ -942,7 +942,7 @@
             //
             "pid": {                        
                 "xctrl": {
-                    "kp": 12.0,
+                    "kp": 18.0,
                     "ki": 0,
                     "kd": 0
                 },
