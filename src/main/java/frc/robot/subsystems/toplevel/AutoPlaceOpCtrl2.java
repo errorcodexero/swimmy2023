@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.xero1425.base.misc.XeroElapsedTimer;
 import org.xero1425.base.subsystems.swerve.common.SwerveDrivePathAction;
+import org.xero1425.base.subsystems.swerve.common.SwerveBaseSubsystem.VisionMode;
 import org.xero1425.misc.BadParameterTypeException;
 import org.xero1425.misc.MessageLogger;
 import org.xero1425.misc.MessageType;
@@ -64,6 +65,7 @@ public class AutoPlaceOpCtrl2 extends OperationCtrl {
                 break ;
 
             case DrivingToLocation:
+                getRobotSubsystem().getSwerve().setVisionMode(VisionMode.Normal) ;
                 getRobotSubsystem().getSwerve().cancelAction();
                 getRobotSubsystem().getSwerve().drive(new ChassisSpeeds());
                 break;
@@ -143,7 +145,7 @@ public class AutoPlaceOpCtrl2 extends OperationCtrl {
             overall_timer_.reset() ;
 
             try {
-                getRobotSubsystem().getSwerve().enableVision(false);
+                getRobotSubsystem().getSwerve().setVisionMode(VisionMode.Path);
                 drive_to_action_ = createDriveToLocationAction() ;
                 getRobotSubsystem().getSwerve().setAction(drive_to_action_, true);
                 state_ = State.DrivingToLocation ;   
@@ -165,7 +167,7 @@ public class AutoPlaceOpCtrl2 extends OperationCtrl {
         if (drive_to_action_.isDone()) {
             wait_for_arm_timer_.reset() ;
             state_ = State.WaitForArm ;
-            getRobotSubsystem().getSwerve().enableVision(true);
+            getRobotSubsystem().getSwerve().setVisionMode(VisionMode.Normal) ;
         }
     }
 

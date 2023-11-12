@@ -896,44 +896,23 @@
             // This section describes how the vision integration with the drive base behaves
             //
             "estimator" : {
-                "advanced-rejection" : false,                   // If true, the advanced rejection of vision samples is used, see the code for more details
                 "vision-reject-threshold" : 100.0,              // Reject vision samples that are more than this distance from the current robot pose
-                "single-threshold" : 2.0,                       // When we see a single target, and we are greater than this distance, use the single-far std devs
-                                                                // Otherwise use the single-near std devs
-                "multi-threshold" : 2.0,                        // When we see multiple targets, and we are greater than this distance, use the multi-far std devs
-                                                                // Otherwise use the multi-near std devs
-                "single-tag-ignore-reject-threshold" : 2.0,     // If we see a single tag and the pose from the tag is greater than the vision-reject-threshold from the
-                                                                // current robot pose, we normally reject the vision sample.  However, if the distance to the tag is
-                                                                // within this distance, we apply it anyway assuming that the odometry is just way off.
-
                 "odometry" : {                                  // The std devs for the odometry
                     "x" : 0.1,
                     "y" : 0.1,
                     "heading" : 0.1
                 },
-                //
-                // Jack in the bot - Odometry (0.02, 0.02, 0.02), Vision (0.1, 0.1, 0.01).
-                //
+
                 "vision" : {
-                    "single-far" : {
+                    "normal" : {                                // The std devs for vision when driving around
                         "x" : 0.1,
                         "y" : 0.1,
                         "heading" : 0.1
                     },
-                    "single-near" : {
-                        "x" : 0.1,
-                        "y" : 0.1,
+                    "path" : {                                  // The std devs for vision when following at path
+                        "x" : 0.9,
+                        "y" : 0.9,
                         "heading" : 0.1
-                    },
-                    "multi-far" : {
-                        "x" : 0.1,
-                        "y" : 0.1,
-                        "heading" : 0.1
-                    },
-                    "multi-near" : {
-                        "x" : 0.1,
-                        "y" : 0.1,
-                        "heading" : 1
                     }
                 }
             },

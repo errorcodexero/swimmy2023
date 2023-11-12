@@ -6,6 +6,7 @@ import java.util.List;
 import org.xero1425.base.misc.XeroElapsedTimer;
 import org.xero1425.base.misc.XeroTimer;
 import org.xero1425.base.subsystems.swerve.common.SwerveDrivePathAction;
+import org.xero1425.base.subsystems.swerve.common.SwerveBaseSubsystem.VisionMode;
 import org.xero1425.misc.BadParameterTypeException;
 import org.xero1425.misc.MessageLogger;
 import org.xero1425.misc.MessageType;
@@ -189,7 +190,7 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
 
             case AlignRobot:
                 getRobotSubsystem().getOI().enableGamepad() ;
-                getRobotSubsystem().getSwerve().enableVision(true);
+                getRobotSubsystem().getSwerve().setVisionMode(VisionMode.Normal);
                 drive_to_action_.cancel() ;
                 getRobotSubsystem().getSwerve().drive(new ChassisSpeeds());
                 getRobotSubsystem().getLimeLight().setPipeline(0);
@@ -197,7 +198,7 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
 
             case DrivingToLocation:
                 getRobotSubsystem().getOI().enableGamepad() ;
-                getRobotSubsystem().getSwerve().enableVision(true);
+                getRobotSubsystem().getSwerve().setVisionMode(VisionMode.Normal);
                 drive_to_action_.cancel() ;
                 getRobotSubsystem().getSwerve().drive(new ChassisSpeeds());
                 break ;                
@@ -205,18 +206,18 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
             case DriveForward:
                 drive_to_action_.cancel() ;
                 getRobotSubsystem().getOI().enableGamepad() ;
-                getRobotSubsystem().getSwerve().enableVision(true);
+                getRobotSubsystem().getSwerve().setVisionMode(VisionMode.Normal);
                 getRobotSubsystem().getSwerve().drive(new ChassisSpeeds());
                 break ;
 
             case WaitingOnArm:
                 getRobotSubsystem().getOI().enableGamepad() ;
-                getRobotSubsystem().getSwerve().enableVision(true);
+                getRobotSubsystem().getSwerve().setVisionMode(VisionMode.Normal);
                 break;
 
             case SettlingDelay:                
                 getRobotSubsystem().getOI().enableGamepad() ;
-                getRobotSubsystem().getSwerve().enableVision(true);
+                getRobotSubsystem().getSwerve().setVisionMode(VisionMode.Normal);
                 break;
 
             case DroppingPiece:
@@ -275,7 +276,7 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
     }
 
     private void visionNextStep() throws BadParameterTypeException, MissingParameterException {
-        getRobotSubsystem().getSwerve().enableVision(false);
+        getRobotSubsystem().getSwerve().setVisionMode(VisionMode.Normal);
         target_pose_ = getRobotSubsystem().getFieldData().getGridPose(Alliance.Invalid, getOper().getAprilTag(), getOper().getSlot());
 
         double max_v;
@@ -368,7 +369,7 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
             else {
                 if (do_settling_delay_) {
                     getRobotSubsystem().getSwerve().drive(new ChassisSpeeds());
-                    getRobotSubsystem().getSwerve().enableVision(true);
+                    getRobotSubsystem().getSwerve().setVisionMode(VisionMode.Normal);
                     settling_timer_.start() ;
                     state_ = State.SettlingDelay ;
                 }
@@ -393,7 +394,7 @@ public class AutoPlaceOpCtrl extends OperationCtrl {
 
             if (AddSettlingDelay) {
                 getRobotSubsystem().getSwerve().drive(new ChassisSpeeds());
-                getRobotSubsystem().getSwerve().enableVision(true);
+                getRobotSubsystem().getSwerve().setVisionMode(VisionMode.Normal);
                 settling_timer_.start() ;
                 state_ = State.SettlingDelay ;
             }

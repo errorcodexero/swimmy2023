@@ -1,5 +1,7 @@
 package org.xero1425.base.subsystems.swerve.common;
 
+import org.xero1425.base.subsystems.swerve.common.SwerveBaseSubsystem.VisionMode;
+
 public class SwerveEnableDisableVision extends SwerveDriveAction {
     private SwerveBaseSubsystem sub_ ;
     private boolean enable_ ;
@@ -13,7 +15,12 @@ public class SwerveEnableDisableVision extends SwerveDriveAction {
     @Override
     public void start() throws Exception {
         super.start() ;
-        sub_.enableVision(enable_) ;
+        if (enable_) {
+            sub_.setVisionMode(VisionMode.Normal);
+        }
+        else {
+            sub_.setVisionMode(VisionMode.Disabled);            
+        }
         setDone() ;
     }
 

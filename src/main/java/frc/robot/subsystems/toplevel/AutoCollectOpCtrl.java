@@ -3,6 +3,7 @@ package frc.robot.subsystems.toplevel;
 import org.xero1425.base.misc.XeroElapsedTimer;
 import org.xero1425.base.misc.XeroTimer;
 import org.xero1425.base.subsystems.swerve.common.SwerveDriveToPoseAction;
+import org.xero1425.base.subsystems.swerve.common.SwerveBaseSubsystem.VisionMode;
 import org.xero1425.misc.BadParameterTypeException;
 import org.xero1425.misc.MessageLogger;
 import org.xero1425.misc.MessageType;
@@ -129,26 +130,26 @@ public class AutoCollectOpCtrl extends OperationCtrl {
 
             case DrivingToLocation:
                 getRobotSubsystem().getOI().enableGamepad() ;
-                getRobotSubsystem().getSwerve().enableVision(true);
+                getRobotSubsystem().getSwerve().setVisionMode(VisionMode.Normal);
                 getRobotSubsystem().getSwerve().drive(new ChassisSpeeds());
                 drive_to_action_.cancel() ;
                 break ;        
 
             case SettlingDelay:
                 getRobotSubsystem().getOI().enableGamepad() ;
-                getRobotSubsystem().getSwerve().enableVision(true);
+                getRobotSubsystem().getSwerve().setVisionMode(VisionMode.Normal);
                 getRobotSubsystem().getSwerve().drive(new ChassisSpeeds());
                 break ;        
             
             case DriveForward:
                 getRobotSubsystem().getOI().enableGamepad() ;
-                getRobotSubsystem().getSwerve().enableVision(true);
+                getRobotSubsystem().getSwerve().setVisionMode(VisionMode.Normal);
                 getRobotSubsystem().getSwerve().drive(new ChassisSpeeds());
                 break; 
 
             case DriveBack:
                 getRobotSubsystem().getOI().enableGamepad() ;
-                getRobotSubsystem().getSwerve().enableVision(true);
+                getRobotSubsystem().getSwerve().setVisionMode(VisionMode.Normal);
                 getRobotSubsystem().getSwerve().drive(new ChassisSpeeds());
                 break ;
         }
@@ -178,7 +179,7 @@ public class AutoCollectOpCtrl extends OperationCtrl {
     private void stateWaitForVision() throws BadParameterTypeException, MissingParameterException {
         if (wait_for_vision_timer_.isExpired()) {
             target_pose_ = getRobotSubsystem().getFieldData().getLoadingStationPose(Alliance.Invalid, getOper().getSlot());
-            getRobotSubsystem().getSwerve().enableVision(false);
+            getRobotSubsystem().getSwerve().setVisionMode(VisionMode.Path);
             drive_to_action_ = new SwerveDriveToPoseAction(getRobotSubsystem().getSwerve(), target_pose_, 4.0, 2.5);
             getRobotSubsystem().getSwerve().setAction(drive_to_action_);
             state_ = State.DrivingToLocation ;
@@ -259,7 +260,7 @@ public class AutoCollectOpCtrl extends OperationCtrl {
 
     private void stateDriveBack() {
         if (drive_back_timer_.isExpired()) {
-            getRobotSubsystem().getSwerve().enableVision(true);
+            getRobotSubsystem().getSwerve().setVisionMode(VisionMode.Normal);
             getRobotSubsystem().getOI().enableGamepad();
             getRobotSubsystem().getOI().getGamePad().rumble(1.0, 0.5);
             getRobotSubsystem().getSwerve().drive(new ChassisSpeeds()) ;

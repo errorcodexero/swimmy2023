@@ -6,6 +6,7 @@ import java.util.List;
 import org.xero1425.base.misc.XeroTimer;
 import org.xero1425.base.motors.BadMotorRequestException;
 import org.xero1425.base.motors.MotorRequestFailedException;
+import org.xero1425.base.subsystems.swerve.common.SwerveBaseSubsystem.VisionMode;
 import org.xero1425.misc.BadParameterTypeException;
 import org.xero1425.misc.MessageLogger;
 import org.xero1425.misc.MessageType;
@@ -101,7 +102,7 @@ public class SwerveHolonomicPathFollower extends SwerveHolonomicControllerAction
         }
 
         if (disable_vision_) {
-            getSubsystem().enableVision(false);
+            getSubsystem().setVisionMode(VisionMode.Disabled);
         }
         getSubsystem().startPlot(plot_id_, columns_);
 
@@ -197,7 +198,7 @@ public class SwerveHolonomicPathFollower extends SwerveHolonomicControllerAction
             if (index_ == path_.getTrajectoryEntryCount() && (controller().atReference() || end_timer_.isExpired())) {
                 getSubsystem().endPlot(plot_id_);
                 getSubsystem().drive(new ChassisSpeeds()) ;
-                getSubsystem().enableVision(true);
+                getSubsystem().setVisionMode(VisionMode.Path);
                 setDone();
 
                 logger.startMessage(MessageType.Info) ;

@@ -5,6 +5,7 @@ import org.xero1425.base.XeroRobot;
 import org.xero1425.base.subsystems.RobotSubsystem;
 import org.xero1425.base.subsystems.oi.Gamepad;
 import org.xero1425.base.subsystems.swerve.common.SwerveBaseSubsystem;
+import org.xero1425.base.subsystems.swerve.common.SwerveBaseSubsystem.VisionMode;
 import org.xero1425.base.subsystems.swerve.sdsswerve.SDSSwerveDriveSubsystem;
 import org.xero1425.base.subsystems.vision.LimeLightSubsystem;
 import org.xero1425.misc.BadParameterTypeException;
@@ -258,7 +259,7 @@ public class Swimmy2023RobotSubsystem extends RobotSubsystem {
             logger.logStackTrace(ex.getStackTrace());
             logger.endMessage();
             getOI().enableGamepad();
-            getSwerve().enableVision(true);
+            getSwerve().setVisionMode(VisionMode.Normal);
             ctrl_ = null;
 
             return false;
@@ -272,7 +273,7 @@ public class Swimmy2023RobotSubsystem extends RobotSubsystem {
             logger.logStackTrace(ex.getStackTrace());
             logger.endMessage();
             getOI().enableGamepad();
-            getSwerve().enableVision(true);
+            getSwerve().setVisionMode(VisionMode.Normal);
             ctrl_ = null;
 
             return false;
@@ -304,7 +305,7 @@ public class Swimmy2023RobotSubsystem extends RobotSubsystem {
         if (gp != null && gp.isEnabled() == false && gp.isXPressed() && gp.isAPressed()) {
             abort() ;
             getOI().enableGamepad();
-            getSwerve().enableVision(true);
+            getSwerve().setVisionMode(VisionMode.Normal);
         }
 
         if (ctrl_ != null) {
@@ -315,7 +316,7 @@ public class Swimmy2023RobotSubsystem extends RobotSubsystem {
                 logger.add("Swimmy2023RobotSubsystem: completed: " + ctrl_.getOper().toString()) ;
                 logger.endMessage();
                 getOI().enableGamepad();
-                getSwerve().enableVision(true);
+                getSwerve().setVisionMode(VisionMode.Normal);
                 ctrl_ = null;
             }
         }

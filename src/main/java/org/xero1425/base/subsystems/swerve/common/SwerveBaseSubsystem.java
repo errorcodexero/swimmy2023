@@ -30,6 +30,11 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 
 public abstract class SwerveBaseSubsystem extends DriveBaseSubsystem {
+    public enum VisionMode {
+        Disabled,
+        Normal,
+        Path
+    };
 
     private int plotid_ ;
     private double plotstart_ ;
@@ -61,6 +66,10 @@ public abstract class SwerveBaseSubsystem extends DriveBaseSubsystem {
 
     private MinMaxData velocity_ ;
     private MinMaxData rotational_velocity_ ;
+
+    private VisionMode mode_ ;
+    private Vector<N3> normal_params_ ;
+    private Vector<N3> path_params_ ;
    
     static public final int FL = 0;                                                             // Index of the front left module
     static public final int FR = 1;                                                             // Index of the front right module
@@ -69,6 +78,9 @@ public abstract class SwerveBaseSubsystem extends DriveBaseSubsystem {
 
     public SwerveBaseSubsystem(Subsystem parent, String name) throws Exception {
         super(parent, name) ;
+
+        normal_params_ = SwerveVisionProcessing.getParams(this, "vision:normal") ;
+        path_params_ = SwerveVisionProcessing.getParams(this, "vision:path") ;
 
         angles_ = new double[4] ;
         powers_ = new double[4] ;
@@ -102,6 +114,23 @@ public abstract class SwerveBaseSubsystem extends DriveBaseSubsystem {
         last_pose_ = new Pose2d() ;
     }
 
+    public void setVisionMode(VisionMode m) {
+        mode_ = m ;
+
+        switch(mode_) {
+            case Normal:
+                estimator_.setVisionMeasurementStdDevs(normal_params_);
+                break ;
+
+            case Path:
+                estimator_.setVisionMeasurementStdDevs(path_params_);
+                break ;
+
+            case Disabled:
+                break ;
+        }
+    }    
+
     public Pose2d getVisionPose() {
         return vision_.getCurrentPose() ;
     }
@@ -124,14 +153,6 @@ public abstract class SwerveBaseSubsystem extends DriveBaseSubsystem {
                 setPose(new Pose2d());
             }
         }
-    }
-
-    public void enableVision(boolean enable) {
-        vision_enabled_ = enable ;
-    }
-
-    public void pathVision() {
-        
     }
 
     public void setVision(IVisionLocalization vision) {

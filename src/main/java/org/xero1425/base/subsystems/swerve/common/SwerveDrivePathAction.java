@@ -182,12 +182,14 @@ public class SwerveDrivePathAction extends SwerveHolonomicControllerAction {
         String ret ;
 
         if (start_ == null) {
-            return spaces(indent) + "SwerveDrivePathAction(maxv " + maxv_ + ", maxa " + maxa_ + ")" +
+            ret = spaces(indent) + "SwerveDrivePathAction(maxv " + maxv_ + ", maxa " + maxa_ + ")" +
                     ": from ROBOTPOS to " + end_.getTranslation().toString() ;
         }
         else {
-            return spaces(indent) + "SwerveDrivePathAction(maxv " + maxv_ + ", maxa " + maxa_ + ")" +
+            ret = spaces(indent) + "SwerveDrivePathAction(maxv " + maxv_ + ", maxa " + maxa_ + ")" +
                     ": from " + start_.getTranslation().toString() + " to " + end_.getTranslation().toString() ;
         }
+
+        return ret ;
     }
 }
