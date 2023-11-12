@@ -916,24 +916,24 @@
                 //
                 "vision" : {
                     "single-far" : {
-                        "x" : 0.9,
-                        "y" : 0.9,
-                        "heading" : 0.9
+                        "x" : 0.1,
+                        "y" : 0.1,
+                        "heading" : 0.1
                     },
                     "single-near" : {
-                        "x" : 0.3,
-                        "y" : 0.3,
-                        "heading" : 0.9
+                        "x" : 0.1,
+                        "y" : 0.1,
+                        "heading" : 0.1
                     },
                     "multi-far" : {
-                        "x" : 0.3,
-                        "y" : 0.3,
-                        "heading" : 0.9
+                        "x" : 0.1,
+                        "y" : 0.1,
+                        "heading" : 0.1
                     },
                     "multi-near" : {
-                        "x" : 0.3,
-                        "y" : 0.3,
-                        "heading" : 0.9
+                        "x" : 0.1,
+                        "y" : 0.1,
+                        "heading" : 1
                     }
                 }
             },
@@ -942,17 +942,17 @@
             //
             "pid": {                        
                 "xctrl": {
-                    "kp": 18.0,
+                    "kp": 24.0,
                     "ki": 0,
                     "kd": 0
                 },
                 "yctrl": {
-                    "kp": 12.0,
+                    "kp": 24.0,
                     "ki": 0,
                     "kd": 0
                 },
                 "rotation": {
-                    "kp": 8.0,
+                    "kp": 12.0,
                     "ki": 0,
                     "kd": 0
                 }

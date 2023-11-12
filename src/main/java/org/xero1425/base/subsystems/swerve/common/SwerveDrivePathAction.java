@@ -127,7 +127,7 @@ public class SwerveDrivePathAction extends SwerveHolonomicControllerAction {
         plot_data_[i++] = getSubsystem().getRobot().getTime() - trajectory_start_time_;
         plot_data_[i++] = st.poseMeters.getX() ;
         plot_data_[i++] = st.poseMeters.getY() ;
-        plot_data_[i++] = st.poseMeters.getRotation().getDegrees() ;
+        plot_data_[i++] = facing_.getDegrees();
         plot_data_[i++] = actual.getX() ;
         plot_data_[i++] = actual.getY() ;
         plot_data_[i++] = actual.getRotation().getDegrees() ;
@@ -179,7 +179,15 @@ public class SwerveDrivePathAction extends SwerveHolonomicControllerAction {
     }
 
     public String toString(int indent) {
-        return spaces(indent) + "SwerveDrivePathAction(maxv " + maxv_ + ", maxa " + maxa_ + ")" +
-                ": from " + start_.getTranslation().toString() + " to " + end_.getTranslation().toString() ;
+        String ret ;
+
+        if (start_ == null) {
+            return spaces(indent) + "SwerveDrivePathAction(maxv " + maxv_ + ", maxa " + maxa_ + ")" +
+                    ": from ROBOTPOS to " + end_.getTranslation().toString() ;
+        }
+        else {
+            return spaces(indent) + "SwerveDrivePathAction(maxv " + maxv_ + ", maxa " + maxa_ + ")" +
+                    ": from " + start_.getTranslation().toString() + " to " + end_.getTranslation().toString() ;
+        }
     }
 }

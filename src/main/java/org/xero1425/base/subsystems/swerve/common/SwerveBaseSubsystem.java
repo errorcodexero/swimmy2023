@@ -130,6 +130,10 @@ public abstract class SwerveBaseSubsystem extends DriveBaseSubsystem {
         vision_enabled_ = enable ;
     }
 
+    public void pathVision() {
+        
+    }
+
     public void setVision(IVisionLocalization vision) {
         try {
             vision_ = new SwerveVisionProcessing(this, vision) ;

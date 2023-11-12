@@ -41,7 +41,7 @@ public class AutoPlaceOpCtrl2 extends OperationCtrl {
 
         state_ = State.Start ;
         april_tag_action_threshold_ = sub.getSettingsValue("april-tag-place-action-threshold").getDouble() ;
-        // april_tag_action_threshold_ = 2.5 ;
+        april_tag_action_threshold_ = 2.0 ;
         place_action_ = new GPMPlaceAction(sub.getGPM(), oper.getLocation(), oper.getGamePiece(), false, false);
         overall_timer_ = new XeroElapsedTimer(sub.getRobot());
         wait_for_arm_timer_ = new XeroElapsedTimer(sub.getRobot());
@@ -200,29 +200,27 @@ public class AutoPlaceOpCtrl2 extends OperationCtrl {
     }
 
     private SwerveDrivePathAction createDriveToLocationAction() throws BadParameterTypeException, MissingParameterException {
-        final double straightdist = 0.15 ;
-        final double endpos = 0.1 ;
+        final double endpos = 0.06;
+        final double immdpos = 0.2 ;
 
-        double maxa = 0.5 ;
-        double maxv = 0.5 ;
+        double maxa = 0.5;
+        double maxv = 1.0 ;
 
-        double sign = (alliance_ == Alliance.Red) ? -1.0 : 1.0 ;
-        Pose2d start = getRobotSubsystem().getSwerve().getPose() ;
+        double sign = (alliance_ == Alliance.Red) ? 1.0 : -1.0 ;
         Pose2d oldend = getRobotSubsystem().getFieldData().getGridPose(Alliance.Invalid, getOper().getAprilTag(), getOper().getSlot());
+
         Pose2d end = new Pose2d(oldend.getX() + sign * endpos, oldend.getY(), oldend.getRotation());
+        Translation2d immd = new Translation2d(oldend.getX() + -sign * immdpos, oldend.getY()) ;
 
         List<Translation2d> interior = new ArrayList<Translation2d>() ;
-        Translation2d p = new Translation2d(end.getX() + sign * straightdist, end.getY());
-        interior.add(p);
-
-        double svel = getRobotSubsystem().getSwerve().getVelocity() ;
+        interior.add(immd) ;
 
         MessageLogger logger = getRobotSubsystem().getRobot().getMessageLogger() ;
         logger.startMessage(MessageType.Info) ;
-        logger.add("start", start) ;
-        logger.add("middle", p) ;
+        logger.add("middle", oldend.getTranslation()) ;
         logger.add("end", end) ;
+        logger.endMessage();
 
-        return new SwerveDrivePathAction(getRobotSubsystem().getSwerve(), start, svel, interior, end, 0.0, end.getRotation(), maxa, maxv);
+        return new SwerveDrivePathAction(getRobotSubsystem().getSwerve(), interior, end, 0.0, end.getRotation(), maxa, maxv);
     }
 }
