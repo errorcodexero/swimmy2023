@@ -17,10 +17,10 @@ public class SwerveVisionProcessing {
 
 
     private int logger_id_ ;
+    private boolean enabled_ ;
 
     private SwerveBaseSubsystem sub_ ;
     private IVisionLocalization vision_ ;
-
 
     private double vision_reject_threshold_;
 
@@ -34,6 +34,9 @@ public class SwerveVisionProcessing {
         logger_id_ = sub.getRobot().getMessageLogger().registerSubsystem("vision");
     }
 
+    public void enable(boolean b) {
+        enabled_ = b ;
+    }
 
     public Pose2d getCurrentPose() {
         Pose2d ret = null ;
@@ -58,7 +61,7 @@ public class SwerveVisionProcessing {
             vision_pose_ = lc.location.toPose2d();
 
             double dist = vision_pose_.getTranslation().getDistance(sub_.getPose().getTranslation());
-            if (dist < vision_reject_threshold_) {
+            if (dist < vision_reject_threshold_ && enabled_) {
                 sub_.getEstimator().addVisionMeasurement(vision_pose_, lc.when) ;                 
             }
         }

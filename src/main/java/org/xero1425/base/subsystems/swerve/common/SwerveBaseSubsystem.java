@@ -62,7 +62,6 @@ public abstract class SwerveBaseSubsystem extends DriveBaseSubsystem {
     private double maxa_ ;
     private double rotate_angle_ ;
     private Pose2d last_pose_ ;
-    private boolean vision_enabled_ ;
 
     private MinMaxData velocity_ ;
     private MinMaxData rotational_velocity_ ;
@@ -120,13 +119,16 @@ public abstract class SwerveBaseSubsystem extends DriveBaseSubsystem {
         switch(mode_) {
             case Normal:
                 estimator_.setVisionMeasurementStdDevs(normal_params_);
+                vision_.enable(true);
                 break ;
 
             case Path:
                 estimator_.setVisionMeasurementStdDevs(path_params_);
+                vision_.enable(true);
                 break ;
 
             case Disabled:
+                vision_.enable(false);            
                 break ;
         }
     }    
@@ -137,7 +139,7 @@ public abstract class SwerveBaseSubsystem extends DriveBaseSubsystem {
 
     public void resetPose(boolean inverted) {
         boolean reset = false ;
-        if (vision_ != null && vision_enabled_ && vision_.hasTargets()) {
+        if (vision_ != null && vision_.hasTargets()) {
             Pose2d vpose = vision_.getCurrentPose();
             if (vpose != null) {
                 setPose(vpose) ;
@@ -158,7 +160,7 @@ public abstract class SwerveBaseSubsystem extends DriveBaseSubsystem {
     public void setVision(IVisionLocalization vision) {
         try {
             vision_ = new SwerveVisionProcessing(this, vision) ;
-            vision_enabled_ = true ;
+            setVisionMode(VisionMode.Normal);
         }
         catch(Exception ex) {
             MessageLogger logger = getRobot().getMessageLogger();
@@ -244,7 +246,7 @@ public abstract class SwerveBaseSubsystem extends DriveBaseSubsystem {
         poss[3] = getModulePosition(BR) ;
         estimator_.update(Rotation2d.fromDegrees(gyro().getYaw()), poss) ;
 
-        if (vision_ != null && vision_enabled_) {
+        if (vision_ != null) {
             vision_.processVision();
         }
 
