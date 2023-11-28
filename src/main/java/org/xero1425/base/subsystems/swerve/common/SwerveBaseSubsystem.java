@@ -378,35 +378,36 @@ public abstract class SwerveBaseSubsystem extends DriveBaseSubsystem {
         }
     }
 
+    protected int putModuleData(Double[] data, int i) {
+        
+        data[i++] = (getModuleTarget(FL).angle.getDegrees()) ;
+        data[i++] = (getModuleState(FL).angle.getDegrees()) ;
+        data[i++] = (getModuleTarget(FL).speedMetersPerSecond) ;
+        data[i++] = (getModuleState(FL).speedMetersPerSecond) ;
+
+        data[i++] = (getModuleTarget(FR).angle.getDegrees()) ;
+        data[i++] = (getModuleState(FR).angle.getDegrees()) ;
+        data[i++] = (getModuleTarget(FR).speedMetersPerSecond) ;
+        data[i++] = (getModuleState(FR).speedMetersPerSecond) ;
+
+        data[i++] = (getModuleTarget(BL).angle.getDegrees()) ;
+        data[i++] = (getModuleState(BL).angle.getDegrees()) ;
+        data[i++] = (getModuleTarget(BL).speedMetersPerSecond) ;
+        data[i++] = (getModuleState(BL).speedMetersPerSecond) ;
+        
+        data[i++] = (getModuleTarget(BR).angle.getDegrees()) ;
+        data[i++] = (getModuleState(BR).angle.getDegrees()) ;
+        data[i++] = (getModuleTarget(BR).speedMetersPerSecond) ;
+        data[i++] = (getModuleState(BR).speedMetersPerSecond) ;
+
+        return i ;
+    }
+
     protected void newPlotData() {
         index_ = 0 ;
         
-        putData(getRobot().getTime() - plotstart_) ;
-
-        putData(getModuleTarget(FL).angle.getDegrees()) ;
-        putData(getModuleState(FL).angle.getDegrees()) ;
-        putData(getModuleTarget(FL).speedMetersPerSecond) ;
-        putData(getModuleState(FL).speedMetersPerSecond) ;
-
-        putData(getModuleTarget(FR).angle.getDegrees()) ;
-        putData(getModuleState(FR).angle.getDegrees()) ;
-        putData(getModuleTarget(FR).speedMetersPerSecond) ;
-        putData(getModuleState(FR).speedMetersPerSecond) ;
-
-        putData(getModuleTarget(BL).angle.getDegrees()) ;
-        putData(getModuleState(BL).angle.getDegrees()) ;
-        putData(getModuleTarget(BL).speedMetersPerSecond) ;
-        putData(getModuleState(BL).speedMetersPerSecond) ;
-        
-        putData(getModuleTarget(BR).angle.getDegrees()) ;
-        putData(getModuleState(BR).angle.getDegrees()) ;
-        putData(getModuleTarget(BR).speedMetersPerSecond) ;
-        putData(getModuleState(BR).speedMetersPerSecond) ;
-
+        plotdata_[index_++] = (getRobot().getTime() - plotstart_) ;
+        index_ = putModuleData(plotdata_, index_) ;
         addPlotData(plotid_, plotdata_);
-    }
-
-    private void putData(double d) {
-        plotdata_[index_++] = d ;
     }
 }

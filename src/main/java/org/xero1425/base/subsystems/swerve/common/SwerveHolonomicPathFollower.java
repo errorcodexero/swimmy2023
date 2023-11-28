@@ -56,7 +56,11 @@ public class SwerveHolonomicPathFollower extends SwerveHolonomicControllerAction
         "time", "index",
         "tx (m)", "ty (m)", "ta (deg)",
         "ax (m)", "ay (m)", "aa (deg)",
-        "tv (m/s)", "av (m/s)"
+        "tv (m/s)", "av (m/s)",
+        "fl-ang-t (deg)", "fl-ang-a (deg)","fl-drv-t (m/s)","fl-drv-a (m/s)",
+        "fr-ang-t (deg)", "fr-ang-a (deg)","fr-drv-t (m/s)","fr-drv-a (m/s)",
+        "bl-ang-t (deg)", "bl-ang-a (deg)","bl-drv-t (m/s)","bl-drv-a (m/s)",
+        "br-ang-t (deg)", "br-ang-a (deg)","br-drv-t (m/s)","br-drv-a (m/s)",
     } ;
 
     public SwerveHolonomicPathFollower(SwerveBaseSubsystem sub, String pathname, boolean setpose, double endtime) throws BadParameterTypeException, MissingParameterException {
@@ -187,6 +191,8 @@ public class SwerveHolonomicPathFollower extends SwerveHolonomicControllerAction
         plot_data_[i++] = actual.getRotation().getDegrees() ;
         plot_data_[i++] = velocity ;
         plot_data_[i++] = getSubsystem().getVelocity() ;
+        i = getSubsystem().putModuleData(plot_data_, i) ;
+
         getSubsystem().addPlotData(plot_id_, plot_data_) ;   
         
         if (index_ < path_.getTrajectoryEntryCount()) {

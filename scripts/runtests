@@ -25,7 +25,7 @@ function detectos()
 
 function initwin()
 {
-    export JAVA_HOME="C:/users/public/wpilib/2022/jdk"
+    export JAVA_HOME="C:/users/public/wpilib/2023/jdk"
     echo "initialzing for windows"
     JPATH="-Djava.library.path=build/jni/release"
     PATH=build/jni/release:$PATH
@@ -45,7 +45,7 @@ function initlinux()
     echo "initialzing for linux"
     JPATH="-Djava.library.path=build/jni/release:/usr/java/packages/lib:/usr/lib/x86_64-linux-gnu/jni:/lib/x86_64-linux-gnu:/usr/lib/x86_64-linux-gnu:/usr/lib/jni:/lib:/usr/lib"
     echo Found java at $JAVA_HOME
-    # export JAVA_HOME=~/wpilib/2022/jdk
+    # export JAVA_HOME=~/wpilib/2023/jdk
     export LD_LIBRARY_PATH=build/jni/release:$LD_LIBRARY_PATH
 }
 
