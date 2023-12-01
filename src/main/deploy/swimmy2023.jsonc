@@ -921,17 +921,17 @@
             //
             "pid": {                        
                 "xctrl": {
-                    "kp": 0.0,
+                    "kp": 12.0,
                     "ki": 0,
                     "kd": 0
                 },
                 "yctrl": {
-                    "kp": 0.0,
+                    "kp": 12.0,
                     "ki": 0,
                     "kd": 0
                 },
                 "rotation": {
-                    "kp": 0.0,
+                    "kp": 8.0,
                     "ki": 0,
                     "kd": 0
                 }
@@ -959,7 +959,7 @@
                     "kd": 0.0,
                     "kf" : {
                         "PRACTICE" : 0.22272211,
-                        "COMPETITION" : 0.204273400
+                        "COMPETITION" : 0.25
                     },
                     "min": -1.0,
                     "max": 1.0,
@@ -974,7 +974,7 @@
                     "kd": 0.0,
                     "kf" : {
                         "PRACTICE" : 0.222039656,
-                        "COMPETITION" : 0.203025074
+                        "COMPETITION" : 0.25
                     },
                     "min": -1.0,
                     "max": 1.0,
@@ -989,7 +989,7 @@
                     "kd": 0.0,
                     "kf" : {
                         "PRACTICE" : 0.22181802,
-                        "COMPETITION" : 0.203998368
+                        "COMPETITION" : 0.25
                     },
                     "min": -1.0,
                     "max": 1.0,
@@ -1004,7 +1004,7 @@
                     "kd": 0.0,
                     "kf" : {
                         "PRACTICE" : 0.222286438,
-                        "COMPETITION" : 0.202208113
+                        "COMPETITION" : 0.25
                     },
                     "min": -1.0,
                     "max": 1.0,
