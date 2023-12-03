@@ -818,8 +818,8 @@
                     "constraints": [
                     ],
                     "endvelocity": 0,
-                    "maxacceleration": 0.5,
-                    "maxvelocity": 0.5,
+                    "maxacceleration": 1,
+                    "maxvelocity": 4,
                     "name": "straight231",
                     "points": [
                         {
@@ -833,7 +833,7 @@
                             "heading": 0,
                             "swrot": 0,
                             "swrotvel": 0,
-                            "x": 5.861,
+                            "x": 5.875,
                             "y": 0
                         }
                     ],
